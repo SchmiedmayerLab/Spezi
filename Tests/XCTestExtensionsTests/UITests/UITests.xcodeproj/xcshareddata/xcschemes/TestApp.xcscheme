@@ -31,9 +31,9 @@
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "TemplatePackage"
-            BuildableName = "TemplatePackage"
-            BlueprintName = "TemplatePackage"
+            BlueprintIdentifier = "XCTestExtensions"
+            BuildableName = "XCTestExtensions"
+            BlueprintName = "XCTestExtensions"
             ReferencedContainer = "container:../..">
          </BuildableReference>
       </CodeCoverageTargets>
