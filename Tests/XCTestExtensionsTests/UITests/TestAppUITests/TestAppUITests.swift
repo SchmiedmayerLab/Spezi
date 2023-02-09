@@ -12,8 +12,9 @@ import XCTestExtensions
 
 class TestAppUITests: XCTestCase {
     func testDeleteAndLaunch() throws {
-        let app = XCUIApplication()
+        disablePasswordAutofill()
         
+        let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
         
         XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 0.5))

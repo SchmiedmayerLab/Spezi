@@ -25,6 +25,20 @@ app.deleteAndLaunch(withSpringboardAppName: "TestApp")
 ```
 
 
+### Disable Password Autofill
+
+The iOS Simulator has enabled password autofill by default, which can interfere with text entry in password fields in UI tests. The `XCTestCase` extension provides the `disablePasswordAutofill` to navigate to the settings app and disable password autofill.
+```swift
+class TestAppUITests: XCTestCase {
+    func testDeleteAndLaunch() throws {
+        disablePasswordAutofill()
+        
+        // ...
+    }
+}
+```
+
+
 ### Text Entry
 
 Allows a simple extension on `XCUIElement` to delete and type text in a text field or secure text field.
