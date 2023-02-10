@@ -13,7 +13,7 @@ extension XCUIElement {
     /// Delete a fixed number of characters in a text field or secure text field.
     /// - Parameter count: The number of characters that should be deleted.
     public func delete(count: Int) {
-        coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        coordinate(withNormalizedOffset: CGVector(dx: 0.99, dy: 0.5)).tap()
         XCTAssert(XCUIApplication().keyboards.firstMatch.waitForExistence(timeout: 2.0))
         typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: count))
     }
