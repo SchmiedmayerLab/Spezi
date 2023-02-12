@@ -19,6 +19,18 @@ class TestAppUITests: XCTestCase {
         XCTAssert(app.staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
     }
     
+    func testDeleteAndLaunchFromFirstPage() throws {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        springboard.activate()
+        springboard.swipeRight()
+        
+        let app = XCUIApplication()
+        app.deleteAndLaunch(withSpringboardAppName: "TestApp")
+        
+        XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5.0))
+        XCTAssert(app.staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
+    }
+    
     func testDisablePasswordAutofill() throws {
         disablePasswordAutofill()
     }
