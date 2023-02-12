@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "33D2410E-1738-4ECB-8413-855785357B28",
+      "name" : "Default",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:UITests.xcodeproj",
+      "identifier" : "2F6D139128F5F384007C25D6",
+      "name" : "TestApp"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:UITests.xcodeproj",
+        "identifier" : "2F6D13AB28F5F386007C25D6",
+        "name" : "TestAppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -53,3 +53,6 @@ let secureTextField = app.secureTextFields["SecureField"]
 secureTextField.enter(value: "Secure Text")
 secureTextField.delete(count: 5)
 ```
+
+Unfortunately, the iOS simulator sometimes has flaky behavior when entering text in a simulator with low computation resources.
+The `enter(value:)` and `delete(count:)` methods provide the `checkIfTextWasEnteredCorrectly` and `checkIfTextWasDeletedCorrectly` parameters that are set to true by default to check if the values were entered correctly. If your text entry does fail to do so, e.g., an entry in a secure text field, set the `checkIfTextWasEnteredCorrectly` or `checkIfTextWasDeletedCorrectly` parameters to `false`. 
