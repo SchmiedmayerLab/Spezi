@@ -6,12 +6,13 @@
 // SPDX-License-Identifier: MIT
 //
 
+import OSLog
 import XCTest
 
 
 extension XCTestCase {
     /// Navigates to the iOS settings app and disables the password autofill functionality.
-    public func disablePasswordAutofill() {
+    public func disablePasswordAutofill() throws {
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
         settingsApp.terminate()
         settingsApp.launch()
@@ -26,8 +27,8 @@ extension XCTestCase {
             passcodeInput.tap()
             passcodeInput.typeText("1234\r")
         } else {
-            XCTFail("Could not enter the passcode in the device to enter the password section in the settings app.")
-            return
+            os_log("Could not enter the passcode in the device to enter the password section in the settings app.")
+            throw XCTestError(.failureWhileWaiting)
         }
         
         XCTAssertTrue(settingsApp.tables.cells["PasswordOptionsCell"].waitForExistence(timeout: 10.0))

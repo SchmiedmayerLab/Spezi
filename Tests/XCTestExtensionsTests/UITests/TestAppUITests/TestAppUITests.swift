@@ -32,7 +32,7 @@ class TestAppUITests: XCTestCase {
     }
     
     func testDisablePasswordAutofill() throws {
-        disablePasswordAutofill()
+        try disablePasswordAutofill()
     }
     
     func testTextEntry() throws {
@@ -40,7 +40,7 @@ class TestAppUITests: XCTestCase {
         app.launch()
         
         simulateFlakySimulatorTextEntry = false
-        app.callTextEntryExtensions()
+        try app.callTextEntryExtensions()
     }
     
     func testFlakyTextEntry() throws {
@@ -48,33 +48,33 @@ class TestAppUITests: XCTestCase {
         app.launch()
         
         simulateFlakySimulatorTextEntry = true
-        app.callTextEntryExtensions()
+        try app.callTextEntryExtensions()
     }
 }
 
 
 extension XCUIApplication {
-    fileprivate func callTextEntryExtensions() {
+    fileprivate func callTextEntryExtensions() throws {
         XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5.0))
         let textField = textFields["TextField"]
-        textField.enter(value: "Example Text")
+        try textField.enter(value: "Example Text")
         XCTAssert(staticTexts["Example Text"].waitForExistence(timeout: 5.0))
-        textField.delete(count: 5)
+        try textField.delete(count: 5)
         XCTAssert(staticTexts["Example"].waitForExistence(timeout: 5.0))
         
-        textField.delete(count: 42)
+        try textField.delete(count: 42)
         XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5.0))
         
         swipeUp()
         
         XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
         let secureTextField = secureTextFields["SecureField"]
-        secureTextField.enter(value: "Secure Text")
+        try secureTextField.enter(value: "Secure Text")
         XCTAssert(staticTexts["Secure Text"].waitForExistence(timeout: 5.0))
-        secureTextField.delete(count: 5)
+        try secureTextField.delete(count: 5)
         XCTAssert(staticTexts["Secure"].waitForExistence(timeout: 5.0))
         
-        secureTextField.delete(count: 42)
+        try secureTextField.delete(count: 42)
         XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
     }
 }

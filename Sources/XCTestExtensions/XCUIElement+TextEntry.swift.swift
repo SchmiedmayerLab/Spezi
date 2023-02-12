@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import OSLog
 import XCTest
 
 
@@ -30,23 +31,25 @@ extension XCUIElement {
     /// Delete a fixed number of characters in a text field or secure text field.
     /// - Parameter count: The number of characters that should be deleted.
     /// - Parameter checkIfTextWasDeletedCorrectly: Check if the text was deleted correctly.
+    /// - Throws: Throws an `XCTestError` of the number of characters could not be deleted.
     ///
     /// Unfortunately, the iOS simulator sometimes has flaky behavior when entering text in a simulator with low computation resources.
     /// The method provides the `checkIfTextWasDeletedCorrectly` parameter that is set to true by default to check if the characters were deleted correctly.
     /// If your text entry does fail to do so, e.g., a deletion in a secure text field, set the `checkIfTextWasDeletedCorrectly` parameter to `false`.
-    public func delete(count: Int, checkIfTextWasDeletedCorrectly: Bool = true) {
-        delete(count: count, checkIfTextWasDeletedCorrectly: checkIfTextWasDeletedCorrectly, recursiveDepth: 0)
+    public func delete(count: Int, checkIfTextWasDeletedCorrectly: Bool = true) throws {
+        try delete(count: count, checkIfTextWasDeletedCorrectly: checkIfTextWasDeletedCorrectly, recursiveDepth: 0)
     }
     
     /// Type a text in a text field or secure text field.
     /// - Parameter newValue: The text that should be typed.
     /// - Parameter checkIfTextWasEnteredCorrectly: Check if the text was entered correctly.
+    /// - Throws: Throws an `XCTestError` of the text could not be entered in the text field.
     ///
     /// Unfortunately, the iOS simulator sometimes has flaky behavior when entering text in a simulator with low computation resources.
     /// The method provides the `checkIfTextWasEnteredCorrectly` parameter that is set to true by default to check if the characters were entered correctly.
     /// If your text entry does fail to do so, e.g., an entry in a secure text field, set the `checkIfTextWasEnteredCorrectly` parameter to `false`.
-    public func enter(value newValue: String, checkIfTextWasEnteredCorrectly: Bool = true) {
-        enter(value: newValue, checkIfTextWasEnteredCorrectly: checkIfTextWasEnteredCorrectly, recursiveDepth: 0)
+    public func enter(value newValue: String, checkIfTextWasEnteredCorrectly: Bool = true) throws {
+        try enter(value: newValue, checkIfTextWasEnteredCorrectly: checkIfTextWasEnteredCorrectly, recursiveDepth: 0)
     }
     
     
@@ -55,10 +58,10 @@ extension XCUIElement {
         checkIfTextWasDeletedCorrectly: Bool = true,
         // We put this paramter at the end of the function to mimic the public interface with an internal extension.
         recursiveDepth: Int
-    ) {
+    ) throws {
         guard recursiveDepth <= 2 else {
-            XCTFail("Could not successfully delete \(count) characters in the textfield \(self.debugDescription)")
-            return
+            os_log("Could not successfully delete \(count) characters in the textfield \(self.debugDescription)")
+            throw XCTestError(.failureWhileWaiting)
         }
         
         // Get the current value so we can assert if the text deleted was correct.
@@ -77,7 +80,7 @@ extension XCUIElement {
             let countAfterDeletion = currentValue.count
             
             if max(currentValueCount - count, 0) < countAfterDeletion {
-                delete(
+                try delete(
                     count: countAfterDeletion - (currentValueCount - count),
                     checkIfTextWasDeletedCorrectly: true,
                     recursiveDepth: recursiveDepth + 1
@@ -91,10 +94,10 @@ extension XCUIElement {
         checkIfTextWasEnteredCorrectly: Bool = true,
         // We put this paramter at the end of the function to mimic the public interface with an internal extension.
         recursiveDepth: Int
-    ) {
+    ) throws {
         guard recursiveDepth <= 2 else {
-            XCTFail("Could not successfully verify entering \"\(textToEnter)\" in the textfield \(self.debugDescription)")
-            return
+            os_log("Could not successfully verify entering \"\(textToEnter)\" in the textfield \(self.debugDescription)")
+            throw XCTestError(.failureWhileWaiting)
         }
         
         // Get the current value so we can assert if the text entry was correct.
@@ -116,29 +119,30 @@ extension XCUIElement {
             if self.elementType == .secureTextField {
                 if previousValue.isEmpty && textToEnter.count != valueAfterTextEntry.count {
                     // We delete the text twice to ensure that we have an empty text field even if the textfield might go byeond the current scope
-                    delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
-                    delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
+                    try delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
+                    try delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
                     
-                    enter(
+                    try enter(
                         value: previousValue + textToEnter,
                         checkIfTextWasEnteredCorrectly: true,
                         recursiveDepth: recursiveDepth + 1
                     )
                 } else if previousValue.count + textToEnter.count != valueAfterTextEntry.count {
-                    XCTFail(
+                    os_log(
                         """
                         The text entered in the secure text field doesn't seem to match the desired length.
                         We can not re-enter the value as we don't have an insight into the value that was present in the secure text field before.
                         """
                     )
+                    throw XCTestError(.failureWhileWaiting)
                 }
             } else {
                 if previousValue + textToEnter != valueAfterTextEntry {
                     // We delete the text twice to ensure that we have an empty text field even if the textfield might go byeond the current scope
-                    delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
-                    delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
+                    try delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
+                    try delete(count: valueAfterTextEntry.count, checkIfTextWasDeletedCorrectly: false)
                     
-                    enter(
+                    try enter(
                         value: previousValue + textToEnter,
                         checkIfTextWasEnteredCorrectly: true,
                         recursiveDepth: recursiveDepth + 1
