@@ -9,13 +9,16 @@
 import SwiftUI
 
 
-@main
-struct UITestsApp: App {
-    var body: some Scene {
-        WindowGroup {
-            NavigationStack {
-                ContentView()
-            }
-        }
+struct ContentView: View {
+    var body: some View {
+        Text("Passed")
+            .navigationTitle("Tests")
+    }
+}
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
