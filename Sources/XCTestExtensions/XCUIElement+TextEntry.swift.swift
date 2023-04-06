@@ -67,8 +67,10 @@ extension XCUIElement {
         // Get the current value so we can assert if the text deleted was correct.
         let currentValueCount = currentValue.count
         
-        coordinate(withNormalizedOffset: CGVector(dx: 0.99, dy: 0.5)).tap()
-        XCTAssert(XCUIApplication().keyboards.firstMatch.waitForExistence(timeout: 2.0))
+        // Select the textfield
+        selectField()
+        
+        // Delete the text
         if simulateFlakySimulatorTextEntry && recursiveDepth < 2 {
             typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: count - 1))
         } else {
@@ -103,9 +105,10 @@ extension XCUIElement {
         // Get the current value so we can assert if the text entry was correct.
         let previousValue = currentValue
         
+        // Select the textfield
+        selectField()
+        
         // Enter the value
-        coordinate(withNormalizedOffset: CGVector(dx: 0.99, dy: 0.5)).tap()
-        XCTAssert(XCUIApplication().keyboards.firstMatch.waitForExistence(timeout: 2.0))
         if simulateFlakySimulatorTextEntry && recursiveDepth < 2 {
             typeText(String(textToEnter.dropLast(1)))
         } else {
@@ -150,5 +153,15 @@ extension XCUIElement {
                 }
             }
         }
+    }
+    
+    
+    private func selectField() {
+        // Select the textfield
+        var offset = 0.99
+        repeat {
+            coordinate(withNormalizedOffset: CGVector(dx: offset, dy: 0.5)).tap()
+            offset -= 0.05
+        } while !XCUIApplication().keyboards.firstMatch.waitForExistence(timeout: 2.0) && offset > 0
     }
 }

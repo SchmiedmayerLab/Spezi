@@ -10,13 +10,15 @@ import XCTest
 @testable import XCTestExtensions
 
 
-class TestAppUITests: XCTestCase {
+class XCTestExtensionsTests: XCTestCase {
     func testDeleteAndLaunch() throws {
         let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
         
-        XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5.0))
-        XCTAssert(app.staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
+        app.staticTexts["XCTestExtensions"].tap()
+        
+        XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5))
+        XCTAssert(app.staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
     }
     
     func testDeleteAndLaunchFromFirstPage() throws {
@@ -27,8 +29,10 @@ class TestAppUITests: XCTestCase {
         let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
         
-        XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5.0))
-        XCTAssert(app.staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
+        app.staticTexts["XCTestExtensions"].tap()
+        
+        XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5))
+        XCTAssert(app.staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
     }
     
     func testDisablePasswordAutofill() throws {
@@ -39,6 +43,8 @@ class TestAppUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         
+        app.staticTexts["XCTestExtensions"].tap()
+        
         simulateFlakySimulatorTextEntry = false
         try app.callTextEntryExtensions()
     }
@@ -46,6 +52,8 @@ class TestAppUITests: XCTestCase {
     func testFlakyTextEntry() throws {
         let app = XCUIApplication()
         app.launch()
+        
+        app.staticTexts["XCTestExtensions"].tap()
         
         simulateFlakySimulatorTextEntry = true
         try app.callTextEntryExtensions()
@@ -55,26 +63,27 @@ class TestAppUITests: XCTestCase {
 
 extension XCUIApplication {
     fileprivate func callTextEntryExtensions() throws {
-        XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5.0))
+        XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5))
         let textField = textFields["TextField"]
         try textField.enter(value: "Example Text")
-        XCTAssert(staticTexts["Example Text"].waitForExistence(timeout: 5.0))
+        XCTAssert(staticTexts["Example Text"].waitForExistence(timeout: 5))
         try textField.delete(count: 5)
-        XCTAssert(staticTexts["Example"].waitForExistence(timeout: 5.0))
-        
+        XCTAssert(staticTexts["Example"].waitForExistence(timeout: 5))
+
         try textField.delete(count: 42)
-        XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5.0))
-        
+        XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5))
+
+        dismissKeyboard()
         swipeUp()
-        
-        XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
+
+        XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
         let secureTextField = secureTextFields["SecureField"]
         try secureTextField.enter(value: "Secure Text")
-        XCTAssert(staticTexts["Secure Text"].waitForExistence(timeout: 5.0))
+        XCTAssert(staticTexts["Secure Text"].waitForExistence(timeout: 5))
         try secureTextField.delete(count: 5)
-        XCTAssert(staticTexts["Secure"].waitForExistence(timeout: 5.0))
+        XCTAssert(staticTexts["Secure"].waitForExistence(timeout: 5))
         
         try secureTextField.delete(count: 42)
-        XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5.0))
+        XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
     }
 }

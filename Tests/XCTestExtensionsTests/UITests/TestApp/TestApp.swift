@@ -7,26 +7,18 @@
 //
 
 import SwiftUI
+import XCTestApp
 
 
 @main
-struct UITestsApp: App {
+struct TestApp: App {
     @State var text: String = ""
     @State var secureText: String = ""
     
     
     var body: some Scene {
         WindowGroup {
-            Form {
-                Section {
-                    TextField("TextField", text: $text)
-                    Text(text.isEmpty ? "No text set ..." : text)
-                }
-                Section {
-                    SecureField("SecureField", text: $secureText)
-                    Text(secureText.isEmpty ? "No secure text set ..." : secureText)
-                }
-            }
+            TestAppTestsView(tests: TestAppTestCaseEnum.self)
         }
     }
 }

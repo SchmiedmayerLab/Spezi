@@ -42,12 +42,15 @@ class TestAppUITests: XCTestCase {
 ### Text Entry
 
 Allows a simple extension on `XCUIElement` to delete and type text in a text field or secure text field.
+Use the `dismissKeyboard` method of the `XCUIApplication` type to dismiss the keyboard between entering information in textfield.
 ```swift
 let app = XCUIApplication()
 
 let textField = app.textFields["TextField"]
 textField.enter(value: "Example Text")
 textField.delete(count: 5)
+
+app.dismissKeyboard()
 
 let secureTextField = app.secureTextFields["SecureField"]
 secureTextField.enter(value: "Secure Text")

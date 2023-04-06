@@ -11,7 +11,7 @@ import XCTestExtensions
 
 
 final class XCTestExtensionsTests: XCTestCase {
-    // We currently have no functionality in XCTestExtensions that can be unit tested.
-    // swiftlint:disable:next empty_xctest_method
-    func testExample() throws { }
+    func testXCTestExtensions() throws {
+        XCTAssert(true)
+    }
 }
