@@ -1,17 +1,17 @@
 //
-// This source file is part of the CardinalKit open-source project
+// This source file is part of the Stanford Spezi open-source project
 //
 // SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
-import CardinalKitViews
+import SpeziViews
 import SwiftUI
 import XCTestApp
 
 
-enum CardinalKitViewsTests: String, TestAppTests {
+enum SpeziViewsTests: String, TestAppTests {
     case canvas = "Canvas"
     case nameFields = "Name Fields"
     case userProfile = "User Profile"
