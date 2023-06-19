@@ -12,8 +12,12 @@ import XCTest
 extension XCUIApplication {
     /// Dismisses the keyboard if it is currently displayed.
     public func dismissKeyboard() {
-        if XCUIApplication().keyboards.buttons["Return"].isHittable {
-            XCUIApplication().keyboards.buttons["Return"].tap()
+        let keyboard = keyboards.firstMatch
+        
+        let returnKeyTitle = "return"
+        
+        if keyboard.waitForExistence(timeout: 1.0) && keyboard.buttons[returnKeyTitle].isHittable {
+            keyboard.buttons[returnKeyTitle].tap()
         }
     }
 }

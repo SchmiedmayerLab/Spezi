@@ -34,6 +34,9 @@ extension XCUIApplication {
             springboard.alerts["Delete “\(appName)”?"].scrollViews.otherElements.buttons["Delete"].tap()
         }
         
+        // Wait for 5 Seconds for the application to be deleted and removed.
+        sleep(5)
+        
         self.launch()
     }
 }

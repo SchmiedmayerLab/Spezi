@@ -33,8 +33,16 @@ extension XCTestCase {
         
         XCTAssertTrue(settingsApp.tables.cells["PasswordOptionsCell"].waitForExistence(timeout: 10.0))
         settingsApp.tables.cells["PasswordOptionsCell"].buttons["chevron"].tap()
-        if settingsApp.switches["AutoFill Passwords"].value as? String == "1" {
-            settingsApp.switches["AutoFill Passwords"].tap()
+        
+        let autoFillPasswords: String
+        if #available(iOS 17.0, *) {
+            autoFillPasswords = "AutoFill Passwords and Passkeys"
+        } else {
+            autoFillPasswords = "AutoFill Passwords"
+        }
+        
+        if settingsApp.switches[autoFillPasswords].value as? String == "1" {
+            settingsApp.switches[autoFillPasswords].tap()
         }
     }
 }

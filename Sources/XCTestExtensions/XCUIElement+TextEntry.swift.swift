@@ -37,7 +37,11 @@ extension XCUIElement {
     /// The method provides the `checkIfTextWasDeletedCorrectly` parameter that is set to true by default to check if the characters were deleted correctly.
     /// If your text entry does fail to do so, e.g., a deletion in a secure text field, set the `checkIfTextWasDeletedCorrectly` parameter to `false`.
     public func delete(count: Int, checkIfTextWasDeletedCorrectly: Bool = true) throws {
-        try delete(count: count, checkIfTextWasDeletedCorrectly: checkIfTextWasDeletedCorrectly, recursiveDepth: 0)
+        try delete(
+            count: count,
+            checkIfTextWasDeletedCorrectly: checkIfTextWasDeletedCorrectly,
+            recursiveDepth: 0
+        )
     }
     
     /// Type a text in a text field or secure text field.
@@ -49,7 +53,11 @@ extension XCUIElement {
     /// The method provides the `checkIfTextWasEnteredCorrectly` parameter that is set to true by default to check if the characters were entered correctly.
     /// If your text entry does fail to do so, e.g., an entry in a secure text field, set the `checkIfTextWasEnteredCorrectly` parameter to `false`.
     public func enter(value newValue: String, checkIfTextWasEnteredCorrectly: Bool = true) throws {
-        try enter(value: newValue, checkIfTextWasEnteredCorrectly: checkIfTextWasEnteredCorrectly, recursiveDepth: 0)
+        try enter(
+            value: newValue,
+            checkIfTextWasEnteredCorrectly: checkIfTextWasEnteredCorrectly,
+            recursiveDepth: 0
+        )
     }
     
     
@@ -89,6 +97,8 @@ extension XCUIElement {
                 )
             }
         }
+        
+        XCUIApplication().dismissKeyboard()
     }
     
     private func enter( // swiftlint:disable:this function_default_parameter_at_end
@@ -153,15 +163,27 @@ extension XCUIElement {
                 }
             }
         }
+        
+        XCUIApplication().dismissKeyboard()
     }
     
     
     private func selectField() {
+        let app = XCUIApplication()
+        let keyboard = app.keyboards.firstMatch
+        
+        // Press the return button if the keyboard is currently active.
+        app.dismissKeyboard()
+        
         // Select the textfield
         var offset = 0.99
         repeat {
             coordinate(withNormalizedOffset: CGVector(dx: offset, dy: 0.5)).tap()
             offset -= 0.05
-        } while !XCUIApplication().keyboards.firstMatch.waitForExistence(timeout: 2.0) && offset > 0
+        } while !keyboard.waitForExistence(timeout: 2.0) && offset > 0
+        
+        if !keyboard.buttons["space"].isHittable && app.buttons["Continue"].isHittable {
+            app.buttons["Continue"].tap()
+        }
     }
 }

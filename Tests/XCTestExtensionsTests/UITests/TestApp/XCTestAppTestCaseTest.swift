@@ -18,7 +18,7 @@ struct XCTestAppTestCaseTest: TestAppTestCase {
         try testAssertUnwrap()
     }
     
-    private func testAssert() throws {
+    func testAssert() throws {
         try XCTAssert(true)
         
         do {
@@ -27,7 +27,7 @@ struct XCTestAppTestCaseTest: TestAppTestCase {
         } catch { }
     }
     
-    private func testAssertEqual() async throws {
+    func testAssertEqual() async throws {
         try await Task.sleep(for: .seconds(0.1))
         
         
@@ -39,7 +39,7 @@ struct XCTestAppTestCaseTest: TestAppTestCase {
         } catch { }
     }
     
-    private func testAssertNil() async throws {
+    func testAssertNil() async throws {
         try XCTAssertNil(Optional<Int>.none)
         
         do {
@@ -51,7 +51,7 @@ struct XCTestAppTestCaseTest: TestAppTestCase {
         try await Task.sleep(for: .seconds(0.1))
     }
     
-    private func testAssertUnwrap() throws {
+    func testAssertUnwrap() throws {
         print(try XCTUnwrap(42))
         
         do {
