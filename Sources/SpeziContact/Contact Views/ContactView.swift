@@ -105,13 +105,8 @@ public struct ContactView: View {
         if let address = contact.address {
             Button(action: openMaps) {
                 ZStack {
-                    if #available(iOS 17.0, *) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.background.secondary)
-                    } else {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color(.systemGroupedBackground))
-                    }
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(Color(uiColor: .secondarySystemBackground))
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("CONTACT_ADDRESS", bundle: .module)
@@ -145,13 +140,8 @@ public struct ContactView: View {
     private func contactButton(_ contactOption: ContactOption) -> some View {
         Button(action: contactOption.action) {
             ZStack {
-                if #available(iOS 17.0, *) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(.background.secondary)
-                } else {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(Color(.systemGroupedBackground))
-                }
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(Color(uiColor: .secondarySystemBackground))
                 VStack(spacing: 8) {
                     contactOption.image
                         .font(.title3)
