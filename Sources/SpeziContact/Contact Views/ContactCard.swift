@@ -18,9 +18,15 @@ struct ContactCard: View {
         ContactView(contact: contact)
             .padding()
             .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(Color(.systemBackground))
-                    .shadow(radius: 5)
+                if #available(iOS 17.0, *) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(.background)
+                        .shadow(radius: 5)
+                } else {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color(.systemBackground))
+                        .shadow(radius: 5)
+                }
             }
     }
     

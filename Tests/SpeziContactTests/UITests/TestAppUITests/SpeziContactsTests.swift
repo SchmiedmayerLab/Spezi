@@ -27,7 +27,17 @@ final class ContactsTests: XCTestCase {
         
         XCTAssertEqual(app.buttons.matching(identifier: "Text").count, 2)
         app.buttons.matching(identifier: "Text").element(boundBy: 0).tap()
-        app.alerts["Text"].scrollViews.otherElements.buttons["Ok"].tap()
+        if #available(iOS 17.0, *) {
+            let messages = XCUIApplication(bundleIdentifier: "com.apple.MobileSMS")
+            XCTAssert(messages.wait(for: .runningForeground, timeout: 2))
+            app.activate()
+            XCTAssert(app.wait(for: .runningForeground, timeout: 2))
+        } else {
+            app.alerts["Text"].scrollViews.otherElements.buttons["Ok"].tap()
+        }
+        
+        sleep(2)
+        app.swipeUp()
         
         XCTAssertEqual(app.buttons.matching(identifier: "Email").count, 2)
         app.buttons.matching(identifier: "Email").element(boundBy: 0).tap()

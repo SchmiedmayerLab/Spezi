@@ -34,6 +34,8 @@ public struct ContactOption {
 }
 
 extension ContactOption {
+    private static var delegateReference: NSObject?
+    
     private static var rootViewController: UIViewController? {
         UIApplication
             .shared
@@ -69,19 +71,14 @@ extension ContactOption {
             image: Image(systemName: "message.fill"),
             title: String(localized: "CONTACT_OPTION_TEXT", bundle: .module)
         ) {
-            guard MFMessageComposeViewController.canSendText() else {
+            guard let url = URL(string: "sms:\(number)"), UIApplication.shared.canOpenURL(url) else {
                 presentAlert(
                     title: String(localized: "CONTACT_OPTION_TEXT", bundle: .module),
                     message: String(localized: "CONTACT_OPTION_TEXT_MANUAL \(number)", bundle: .module)
                 )
                 return
             }
-            
-            let controller = MFMessageComposeViewController()
-
-            controller.recipients = [number]
-            
-            rootViewController?.present(controller, animated: true, completion: nil)
+            UIApplication.shared.open(url)
         }
     }
     
@@ -95,21 +92,15 @@ extension ContactOption {
             image: Image(systemName: "envelope.fill"),
             title: String(localized: "CONTACT_OPTION_EMAIL", bundle: .module)
         ) {
-            guard MFMailComposeViewController.canSendMail() else {
+            guard let subject = (subject ?? "").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                  let url = URL(string: "mailto:\(addresses.joined(separator: ";"))?subject=\(subject)"), UIApplication.shared.canOpenURL(url) else {
                 presentAlert(
                     title: String(localized: "CONTACT_OPTION_EMAIL", bundle: .module),
                     message: String(localized: "CONTACT_OPTION_EMAIL_MANUAL \(addresses.joined(separator: ", "))", bundle: .module)
                 )
                 return
             }
-            
-            let controller = MFMailComposeViewController()
-            controller.setToRecipients(addresses)
-            if let subject {
-                controller.setSubject(subject)
-            }
-            
-            rootViewController?.present(controller, animated: true, completion: nil)
+            UIApplication.shared.open(url)
         }
     }
     

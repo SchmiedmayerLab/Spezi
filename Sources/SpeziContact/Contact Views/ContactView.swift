@@ -21,7 +21,7 @@ public struct ContactView: View {
     
     
     private var contactOptions: (grid: some RandomAccessCollection<ContactOption>, leftOverStack: some RandomAccessCollection<ContactOption>) {
-        let columnCount = Int(contactGridWidth / contentElementWidth)
+        let columnCount = max(Int(contactGridWidth / max(contentElementWidth, 64)), 1)
         let (numberOfRows, leftOverElements) = contact.contactOptions.count.quotientAndRemainder(dividingBy: columnCount)
         return (contact.contactOptions.dropLast(leftOverElements), contact.contactOptions.dropFirst(columnCount * numberOfRows))
     }
@@ -105,8 +105,13 @@ public struct ContactView: View {
         if let address = contact.address {
             Button(action: openMaps) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10.0)
-                        .foregroundColor(Color(.systemGroupedBackground))
+                    if #available(iOS 17.0, *) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(.background.secondary)
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color(.systemGroupedBackground))
+                    }
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("CONTACT_ADDRESS", bundle: .module)
@@ -140,8 +145,13 @@ public struct ContactView: View {
     private func contactButton(_ contactOption: ContactOption) -> some View {
         Button(action: contactOption.action) {
             ZStack {
-                RoundedRectangle(cornerRadius: 10.0)
-                    .foregroundColor(Color(.systemGroupedBackground))
+                if #available(iOS 17.0, *) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(.background.secondary)
+                } else {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color(.systemGroupedBackground))
+                }
                 VStack(spacing: 8) {
                     contactOption.image
                         .font(.title3)
