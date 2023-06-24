@@ -31,15 +31,21 @@ extension XCUIElement {
     /// Delete a fixed number of characters in a text field or secure text field.
     /// - Parameter count: The number of characters that should be deleted.
     /// - Parameter checkIfTextWasDeletedCorrectly: Check if the text was deleted correctly.
+    /// - Parameter dismissKeyboard: Press the return key after deleting the text.
     /// - Throws: Throws an `XCTestError` of the number of characters could not be deleted.
-    ///
+    ///  
     /// Unfortunately, the iOS simulator sometimes has flaky behavior when entering text in a simulator with low computation resources.
     /// The method provides the `checkIfTextWasDeletedCorrectly` parameter that is set to true by default to check if the characters were deleted correctly.
     /// If your text entry does fail to do so, e.g., a deletion in a secure text field, set the `checkIfTextWasDeletedCorrectly` parameter to `false`.
-    public func delete(count: Int, checkIfTextWasDeletedCorrectly: Bool = true) throws {
+    public func delete(
+        count: Int,
+        checkIfTextWasDeletedCorrectly: Bool = true,
+        dismissKeyboard: Bool = true
+    ) throws {
         try delete(
             count: count,
             checkIfTextWasDeletedCorrectly: checkIfTextWasDeletedCorrectly,
+            dismissKeyboard: dismissKeyboard,
             recursiveDepth: 0
         )
     }
@@ -47,23 +53,30 @@ extension XCUIElement {
     /// Type a text in a text field or secure text field.
     /// - Parameter newValue: The text that should be typed.
     /// - Parameter checkIfTextWasEnteredCorrectly: Check if the text was entered correctly.
+    /// - Parameter dismissKeyboard: Press the return key after entering the text.
     /// - Throws: Throws an `XCTestError` of the text could not be entered in the text field.
     ///
     /// Unfortunately, the iOS simulator sometimes has flaky behavior when entering text in a simulator with low computation resources.
     /// The method provides the `checkIfTextWasEnteredCorrectly` parameter that is set to true by default to check if the characters were entered correctly.
     /// If your text entry does fail to do so, e.g., an entry in a secure text field, set the `checkIfTextWasEnteredCorrectly` parameter to `false`.
-    public func enter(value newValue: String, checkIfTextWasEnteredCorrectly: Bool = true) throws {
+    public func enter(
+        value newValue: String,
+        checkIfTextWasEnteredCorrectly: Bool = true,
+        dismissKeyboard: Bool = true
+    ) throws {
         try enter(
             value: newValue,
             checkIfTextWasEnteredCorrectly: checkIfTextWasEnteredCorrectly,
+            dismissKeyboard: dismissKeyboard,
             recursiveDepth: 0
         )
     }
     
     
-    private func delete( // swiftlint:disable:this function_default_parameter_at_end
+    private func delete(
         count: Int,
-        checkIfTextWasDeletedCorrectly: Bool = true,
+        checkIfTextWasDeletedCorrectly: Bool,
+        dismissKeyboard: Bool,
         // We put this paramter at the end of the function to mimic the public interface with an internal extension.
         recursiveDepth: Int
     ) throws {
@@ -76,7 +89,7 @@ extension XCUIElement {
         let currentValueCount = currentValue.count
         
         // Select the textfield
-        selectField()
+        selectField(dismissKeyboard: dismissKeyboard)
         
         // Delete the text
         if simulateFlakySimulatorTextEntry && recursiveDepth < 2 {
@@ -93,17 +106,21 @@ extension XCUIElement {
                 try delete(
                     count: countAfterDeletion - (currentValueCount - count),
                     checkIfTextWasDeletedCorrectly: true,
+                    dismissKeyboard: dismissKeyboard,
                     recursiveDepth: recursiveDepth + 1
                 )
             }
         }
         
-        XCUIApplication().dismissKeyboard()
+        if dismissKeyboard {
+            XCUIApplication().dismissKeyboard()
+        }
     }
     
-    private func enter( // swiftlint:disable:this function_default_parameter_at_end
+    private func enter(
         value textToEnter: String,
-        checkIfTextWasEnteredCorrectly: Bool = true,
+        checkIfTextWasEnteredCorrectly: Bool,
+        dismissKeyboard: Bool,
         // We put this paramter at the end of the function to mimic the public interface with an internal extension.
         recursiveDepth: Int
     ) throws {
@@ -116,7 +133,7 @@ extension XCUIElement {
         let previousValue = currentValue
         
         // Select the textfield
-        selectField()
+        selectField(dismissKeyboard: dismissKeyboard)
         
         // Enter the value
         if simulateFlakySimulatorTextEntry && recursiveDepth < 2 {
@@ -138,6 +155,7 @@ extension XCUIElement {
                     try enter(
                         value: previousValue + textToEnter,
                         checkIfTextWasEnteredCorrectly: true,
+                        dismissKeyboard: dismissKeyboard,
                         recursiveDepth: recursiveDepth + 1
                     )
                 } else if previousValue.count + textToEnter.count != valueAfterTextEntry.count {
@@ -158,22 +176,27 @@ extension XCUIElement {
                     try enter(
                         value: previousValue + textToEnter,
                         checkIfTextWasEnteredCorrectly: true,
+                        dismissKeyboard: dismissKeyboard,
                         recursiveDepth: recursiveDepth + 1
                     )
                 }
             }
         }
         
-        XCUIApplication().dismissKeyboard()
+        if dismissKeyboard {
+            XCUIApplication().dismissKeyboard()
+        }
     }
     
     
-    private func selectField() {
+    private func selectField(dismissKeyboard: Bool) {
         let app = XCUIApplication()
         let keyboard = app.keyboards.firstMatch
         
         // Press the return button if the keyboard is currently active.
-        app.dismissKeyboard()
+        if dismissKeyboard {
+            app.dismissKeyboard()
+        }
         
         // Select the textfield
         var offset = 0.99
