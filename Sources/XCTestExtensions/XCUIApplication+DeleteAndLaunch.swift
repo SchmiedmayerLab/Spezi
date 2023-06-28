@@ -24,13 +24,13 @@ extension XCUIApplication {
             }
             
             XCTAssertTrue(springboard.icons[appName].firstMatch.isHittable)
-            springboard.icons[appName].firstMatch.press(forDuration: 1.5)
+            springboard.icons[appName].firstMatch.press(forDuration: 1.75)
             
-            XCTAssertTrue(springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 5.0))
+            XCTAssertTrue(springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0))
             springboard.collectionViews.buttons["Remove App"].tap()
-            XCTAssertTrue(springboard.alerts["Remove “\(appName)”?"].scrollViews.otherElements.buttons["Delete App"].waitForExistence(timeout: 5.0))
+            XCTAssertTrue(springboard.alerts["Remove “\(appName)”?"].scrollViews.otherElements.buttons["Delete App"].waitForExistence(timeout: 10.0))
             springboard.alerts["Remove “\(appName)”?"].scrollViews.otherElements.buttons["Delete App"].tap()
-            XCTAssertTrue(springboard.alerts["Delete “\(appName)”?"].scrollViews.otherElements.buttons["Delete"].waitForExistence(timeout: 5.0))
+            XCTAssertTrue(springboard.alerts["Delete “\(appName)”?"].scrollViews.otherElements.buttons["Delete"].waitForExistence(timeout: 10.0))
             springboard.alerts["Delete “\(appName)”?"].scrollViews.otherElements.buttons["Delete"].tap()
         }
         

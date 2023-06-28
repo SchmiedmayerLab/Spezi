@@ -25,14 +25,27 @@ extension XCTestCase {
         if springboard.secureTextFields["Passcode field"].waitForExistence(timeout: 30.0) {
             let passcodeInput = springboard.secureTextFields["Passcode field"]
             passcodeInput.tap()
+            
+            sleep(2)
+            
             passcodeInput.typeText("1234\r")
+            
+            sleep(2)
         } else {
             os_log("Could not enter the passcode in the device to enter the password section in the settings app.")
             throw XCTestError(.failureWhileWaiting)
         }
         
-        XCTAssertTrue(settingsApp.tables.cells["PasswordOptionsCell"].waitForExistence(timeout: 10.0))
-        settingsApp.tables.cells["PasswordOptionsCell"].buttons["chevron"].tap()
+        var counter = 0
+        let passwordOptionsCell = settingsApp.tables.cells["PasswordOptionsCell"]
+        while !passwordOptionsCell.isHittable || counter > 10 {
+            _ = settingsApp.tables.cells["PasswordOptionsCell"].waitForExistence(timeout: 2.0)
+            counter += 1
+        }
+        
+        sleep(3)
+        
+        settingsApp.tables.cells["PasswordOptionsCell"].tap()
         
         let autoFillPasswords: String
         if #available(iOS 17.0, *) {
@@ -41,6 +54,7 @@ extension XCTestCase {
             autoFillPasswords = "AutoFill Passwords"
         }
         
+        XCTAssert(settingsApp.switches[autoFillPasswords].waitForExistence(timeout: 5))
         if settingsApp.switches[autoFillPasswords].value as? String == "1" {
             settingsApp.switches[autoFillPasswords].tap()
         }

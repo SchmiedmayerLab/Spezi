@@ -205,8 +205,13 @@ extension XCUIElement {
             offset -= 0.05
         } while !keyboard.waitForExistence(timeout: 2.0) && offset > 0
         
-        if !keyboard.buttons["space"].isHittable && app.buttons["Continue"].isHittable {
-            app.buttons["Continue"].tap()
+        if !keyboard.buttons["space"].isHittable {
+            if app.buttons["Continue"].isHittable {
+                app.buttons["Continue"].tap()
+            }
+            if app.buttons["Done"].isHittable {
+                app.buttons["Done"].tap()
+            }
         }
     }
 }
