@@ -114,7 +114,7 @@ private func setupXCTRuntimeAssertionInjector(fulfillmentCount: Counter, validat
                     return
                 }
                 
-                if condition() {
+                if !condition() {
                     // We execute the message closure independent of the availability of the `validateRuntimeAssertion` closure.
                     let message = message()
                     validateRuntimeAssertion?(message)

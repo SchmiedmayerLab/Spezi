@@ -70,6 +70,6 @@ public func assertionFailure(
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    XCTRuntimeAssertionInjector.assert({ true }, message: message, file: file, line: line)
+    XCTRuntimeAssertionInjector.assert({ false }, message: message, file: file, line: line)
 }
 #endif

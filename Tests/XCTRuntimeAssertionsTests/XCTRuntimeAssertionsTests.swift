@@ -31,8 +31,8 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
             "testXCTRuntimeAssertion"
         ) {
             assertionFailure(messages[0])
-            assert(true, messages[1])
-            assert(number == 42, messages[2])
+            assert(false, messages[1])
+            assert(number != 42, messages[2])
         }
         
         XCTAssertEqual(messages, collectedMessages)

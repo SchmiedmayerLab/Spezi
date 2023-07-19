@@ -78,7 +78,7 @@ public func preconditionFailure(
     file: StaticString = #file,
     line: UInt = #line
 ) -> Never {
-    XCTRuntimeAssertionInjector.precondition({ true }, message: message, file: file, line: line)
+    XCTRuntimeAssertionInjector.precondition({ false }, message: message, file: file, line: line)
     neverReturn()
 }
 #endif

@@ -24,7 +24,7 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
             },
             "testXCTRuntimePrecondition"
         ) {
-            precondition(number == 42, "preconditionFailure()")
+            precondition(number != 42, "preconditionFailure()")
         }
         
         wait(for: [expectation], timeout: 0.01)
