@@ -26,7 +26,7 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
         ) {
             precondition(number != 42, "preconditionFailure()")
         }
-        
+
         wait(for: [expectation], timeout: 0.01)
         
         
@@ -78,7 +78,18 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
             }
         } catch let error as XCTFail {
             try? await Task.sleep(for: .seconds(0.5))
-            XCTAssertTrue(error.description.contains("The precondition was never called."))
+            XCTAssertTrue(error.description.contains("The precondition was called multiple times."))
         }
+    }
+
+    func testCallHappensWithoutInjection() {
+        var called = false
+
+        precondition({
+            called = true
+            return true
+        }(), "This could fail")
+
+        XCTAssertTrue(called, "precondition was never called!")
     }
 }

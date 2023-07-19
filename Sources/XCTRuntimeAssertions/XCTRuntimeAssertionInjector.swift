@@ -35,8 +35,8 @@ class XCTRuntimeAssertionInjector {
     ) {
         self.id = id
         self._assert = assert
-        self._precondition = { _, condition, messsage, file, line in
-            Swift.precondition(condition(), messsage(), file: file, line: line)
+        self._precondition = { _, condition, message, file, line in
+            Swift.precondition(condition(), message(), file: file, line: line)
         }
     }
     
@@ -45,8 +45,8 @@ class XCTRuntimeAssertionInjector {
         precondition: @escaping (UUID, () -> Bool, () -> String, StaticString, UInt) -> Void
     ) {
         self.id = id
-        self._assert = { _, condition, messsage, file, line in
-            Swift.assert(condition(), messsage(), file: file, line: line)
+        self._assert = { _, condition, message, file, line in
+            Swift.assert(condition(), message(), file: file, line: line)
         }
         self._precondition = precondition
     }
@@ -55,11 +55,11 @@ class XCTRuntimeAssertionInjector {
         id: UUID
     ) {
         self.id = id
-        self._assert = { _, condition, messsage, file, line in
-            Swift.assert(condition(), messsage(), file: file, line: line)
+        self._assert = { _, condition, message, file, line in
+            Swift.assert(condition(), message(), file: file, line: line)
         }
-        self._precondition = { _, condition, messsage, file, line in
-            Swift.precondition(condition(), messsage(), file: file, line: line)
+        self._precondition = { _, condition, message, file, line in
+            Swift.precondition(condition(), message(), file: file, line: line)
         }
     }
     
@@ -74,12 +74,20 @@ class XCTRuntimeAssertionInjector {
     
     
     static func assert(_ condition: () -> Bool, message: () -> String, file: StaticString, line: UInt) {
+        if injected.isEmpty {
+            Swift.assert(condition(), message(), file: file, line: line)
+        }
+
         for runtimeAssertionInjector in injected {
             runtimeAssertionInjector._assert(runtimeAssertionInjector.id, condition, message, file, line)
         }
     }
     
     static func precondition(_ condition: () -> Bool, message: () -> String, file: StaticString, line: UInt) {
+        if injected.isEmpty {
+            Swift.precondition(condition(), message(), file: file, line: line)
+        }
+
         for runtimeAssertionInjector in injected {
             runtimeAssertionInjector._precondition(runtimeAssertionInjector.id, condition, message, file, line)
         }

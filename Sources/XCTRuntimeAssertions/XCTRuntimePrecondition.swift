@@ -12,14 +12,14 @@ import Foundation
 
 /// `XCTRuntimePrecondition` allows you to test assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
 /// - Parameters:
-///   - validateRuntimeAssertion: An optional closure that can be used to furhter validate the messages passed to the
+///   - validateRuntimeAssertion: An optional closure that can be used to further validate the messages passed to the
 ///                               `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
 ///   - timeout: A timeout defining how long to wait for the precondition to be triggered.
 ///   - message: A message that is posted on failure.
 ///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 ///   - expression: The expression that is evaluated.
-/// - Throws: Throws an `XCTFail` error if the expection does not trigger a runtime assertion with the parameters defined above.
+/// - Throws: Throws an `XCTFail` error if the expression does not trigger a runtime assertion with the parameters defined above.
 public func XCTRuntimePrecondition(
     validateRuntimeAssertion: ((String) -> Void)? = nil,
     timeout: Double = 0.01,
@@ -48,26 +48,26 @@ public func XCTRuntimePrecondition(
     usleep(useconds_t(1_000_000 * timeout))
     expressionWorkItem.cancel()
     
+    XCTRuntimeAssertionInjector.removeRuntimeAssertionInjector(withId: xctRuntimeAssertionId)
+
     try assertFulfillmentCount(
         fulfillmentCount,
         message,
         file: file,
         line: line
     )
-    
-    XCTRuntimeAssertionInjector.removeRuntimeAssertionInjector(withId: xctRuntimeAssertionId)
 }
 
 /// `XCTRuntimePrecondition` allows you to test async assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
 /// - Parameters:
-///   - validateRuntimeAssertion: An optional closure that can be used to furhter validate the messages passed to the
+///   - validateRuntimeAssertion: An optional closure that can be used to further validate the messages passed to the
 ///                               `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
 ///   - timeout: A timeout defining how long to wait for the precondition to be triggered.
 ///   - message: A message that is posted on failure.
 ///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 ///   - expression: The async expression that is evaluated.
-/// - Throws: Throws an `XCTFail` error if the expection does not trigger a runtime assertion with the parameters defined above.
+/// - Throws: Throws an `XCTFail` error if the expression does not trigger a runtime assertion with the parameters defined above.
 public func XCTRuntimePrecondition(
     validateRuntimeAssertion: ((String) -> Void)? = nil,
     timeout: Double = 0.01,
@@ -92,14 +92,14 @@ public func XCTRuntimePrecondition(
     usleep(useconds_t(1_000_000 * timeout))
     task.cancel()
     
+    XCTRuntimeAssertionInjector.removeRuntimeAssertionInjector(withId: xctRuntimeAssertionId)
+
     try assertFulfillmentCount(
         fulfillmentCount,
         message,
         file: file,
         line: line
     )
-    
-    XCTRuntimeAssertionInjector.removeRuntimeAssertionInjector(withId: xctRuntimeAssertionId)
 }
 
 

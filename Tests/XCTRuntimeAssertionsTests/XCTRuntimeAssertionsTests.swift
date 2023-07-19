@@ -75,7 +75,7 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 0.1)
     }
     
-    func testXCTRuntimeAssertationNotTriggered() throws {
+    func testXCTRuntimeAssertionNotTriggered() throws {
         struct XCTRuntimeAssertionNotTriggeredError: Error {}
         
         do {
@@ -94,5 +94,16 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         } catch let error as XCTFail {
             XCTAssertTrue(error.description.contains("Measured an fulfillment count of 0, expected 1."))
         }
+    }
+
+    func testCallHappensWithoutInjection() {
+        var called = false
+
+        assert({
+            called = true
+            return true
+        }(), "This could fail")
+
+        XCTAssertTrue(called, "assert was never called!")
     }
 }
