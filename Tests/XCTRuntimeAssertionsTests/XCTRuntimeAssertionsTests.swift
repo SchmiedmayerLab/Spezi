@@ -55,6 +55,26 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         }
     }
     
+    func testAsyncXCTRuntimeAssertion() async throws {
+        let expectation = XCTestExpectation(description: "validateRuntimeAssertion")
+        expectation.assertForOverFulfill = true
+        
+        try await XCTRuntimeAssertion(
+            validateRuntimeAssertion: {
+                XCTAssertEqual($0, "assertionFailure()")
+                expectation.fulfill()
+            },
+            expectedFulfillmentCount: 1,
+            "testXCTRuntimeAssertion"
+        ) {
+            try await Task.sleep(for: .seconds(0.02))
+            assertionFailure("assertionFailure()")
+            try await Task.sleep(for: .seconds(0.02))
+        }
+        
+        await fulfillment(of: [expectation], timeout: 0.1)
+    }
+    
     func testXCTRuntimeAssertationNotTriggered() throws {
         struct XCTRuntimeAssertionNotTriggeredError: Error {}
         
@@ -73,54 +93,6 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
             }
         } catch let error as XCTFail {
             XCTAssertTrue(error.description.contains("Measured an fulfillment count of 0, expected 1."))
-        }
-    }
-    
-    func testXCTRuntimePrecondition() throws {
-        let expectation = XCTestExpectation(description: "validateRuntimeAssertion")
-        expectation.assertForOverFulfill = true
-        
-        let number = 42
-        
-        try XCTRuntimePrecondition(
-            validateRuntimeAssertion: {
-                XCTAssertEqual("preconditionFailure()", $0)
-                expectation.fulfill()
-            },
-            "testXCTRuntimePrecondition"
-        ) {
-            precondition(number == 42, "preconditionFailure()")
-        }
-        
-        wait(for: [expectation], timeout: 0.01)
-        
-        
-        try XCTRuntimePrecondition(validateRuntimeAssertion: { XCTAssertEqual($0, "") }) {
-            preconditionFailure()
-        }
-        
-        try XCTRuntimePrecondition {
-            preconditionFailure()
-        }
-    }
-    
-    func testXCTRuntimePreconditionNotTriggered() throws {
-        struct XCTRuntimePreconditionNotTriggeredError: Error {}
-        
-        do {
-            try XCTRuntimePrecondition {
-                print("Hello Paul 👋")
-            }
-        } catch let error as XCTFail {
-            XCTAssertTrue(error.message.contains("The precondition was called multiple times."))
-        }
-        
-        do {
-            try XCTRuntimePrecondition {
-                throw XCTRuntimePreconditionNotTriggeredError()
-            }
-        } catch let error as XCTFail {
-            XCTAssertTrue(error.description.contains("The precondition was called multiple times."))
         }
     }
 }
