@@ -100,8 +100,7 @@ public struct ContactView: View {
         }
     }
     
-    @ViewBuilder
-    private var addressButton: some View {
+    @ViewBuilder private var addressButton: some View {
         if let address = contact.address {
             Button(action: openMaps) {
                 ZStack {

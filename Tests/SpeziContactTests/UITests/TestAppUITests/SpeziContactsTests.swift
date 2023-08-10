@@ -27,13 +27,13 @@ final class ContactsTests: XCTestCase {
         
         XCTAssertEqual(app.buttons.matching(identifier: "Text").count, 2)
         app.buttons.matching(identifier: "Text").element(boundBy: 0).tap()
-        if #available(iOS 17.0, *) {
+        if app.alerts["Text"].scrollViews.otherElements.buttons["Ok"].waitForExistence(timeout: 5) {
+            app.alerts["Text"].scrollViews.otherElements.buttons["Ok"].tap()
+        } else {
             let messages = XCUIApplication(bundleIdentifier: "com.apple.MobileSMS")
             XCTAssert(messages.wait(for: .runningForeground, timeout: 2))
             app.activate()
             XCTAssert(app.wait(for: .runningForeground, timeout: 2))
-        } else {
-            app.alerts["Text"].scrollViews.otherElements.buttons["Ok"].tap()
         }
         
         sleep(2)
