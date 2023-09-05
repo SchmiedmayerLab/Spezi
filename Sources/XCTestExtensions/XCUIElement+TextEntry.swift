@@ -188,8 +188,13 @@ extension XCUIElement {
         }
     }
     
-    
-    private func selectField(dismissKeyboard: Bool) {
+
+    /// Taps the text field on a XCUIElement that is a text field or secure text field.
+    ///
+    /// - Note: This will not necessarly bring up the keyboard in the simulator. Don't expect buttons to show there.
+    ///     If the user interacted with the Simulator (e.g. Mouse clicks) the keyboard won't show as the simulator expects input via the Mac Keyboard.
+    ///     This is controlled via I/O -> Keyboard -> Connect Hardware Keyboard / Toggle Software Keyboard
+    func selectField(dismissKeyboard: Bool) {
         let app = XCUIApplication()
         let keyboard = app.keyboards.firstMatch
         
@@ -198,20 +203,14 @@ extension XCUIElement {
             app.dismissKeyboard()
         }
         
-        // Select the textfield
+        // Select the text field
         var offset = 0.99
         repeat {
             coordinate(withNormalizedOffset: CGVector(dx: offset, dy: 0.5)).tap()
             offset -= 0.05
         } while !keyboard.waitForExistence(timeout: 2.0) && offset > 0
-        
-        if !keyboard.buttons["space"].isHittable {
-            if app.buttons["Continue"].isHittable {
-                app.buttons["Continue"].tap()
-            }
-            if app.buttons["Done"].isHittable {
-                app.buttons["Done"].tap()
-            }
-        }
+
+        // With latest simulator releases it seems like the "swift to type" tutorial isn't popping up anymore.
+        // For more information see https://developer.apple.com/forums/thread/650826.
     }
 }

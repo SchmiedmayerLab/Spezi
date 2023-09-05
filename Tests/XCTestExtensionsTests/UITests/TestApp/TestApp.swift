@@ -12,10 +12,6 @@ import XCTestApp
 
 @main
 struct TestApp: App {
-    @State var text: String = ""
-    @State var secureText: String = ""
-    
-    
     var body: some Scene {
         WindowGroup {
             TestAppTestsView(tests: TestAppTestCaseEnum.self)

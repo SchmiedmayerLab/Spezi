@@ -13,6 +13,7 @@ import XCTestApp
 enum TestAppTestCaseEnum: String, TestAppTests {
     case xcTestApp = "XCTestApp"
     case xcTestExtensions = "XCTestExtensions"
+    case dismissKeyboard = "DismissKeyboard"
     
     
     func view(withNavigationPath path: Binding<NavigationPath>) -> some View {
@@ -20,7 +21,9 @@ enum TestAppTestCaseEnum: String, TestAppTests {
         case .xcTestApp:
             TestAppView(testCase: XCTestAppTestCaseTest())
         case .xcTestExtensions:
-            XCTestExentionsTest()
+            XCTestExtensionsTest()
+        case .dismissKeyboard:
+            DismissKeyboardTest()
         }
     }
 }

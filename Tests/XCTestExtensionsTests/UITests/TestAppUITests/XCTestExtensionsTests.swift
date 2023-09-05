@@ -58,6 +58,36 @@ class XCTestExtensionsTests: XCTestCase {
         simulateFlakySimulatorTextEntry = true
         try app.callTextEntryExtensions()
     }
+
+    func testKeyboardBehavior() throws {
+        // make sure you disconnect the hardware keyboard when running this test! Also language must be english.
+        let app = XCUIApplication()
+        app.launch()
+
+        app.staticTexts["DismissKeyboard"].tap()
+
+        let checkLabel = { (label: String) in
+            app.textFields[label].selectField(dismissKeyboard: false)
+            XCTAssertTrue(app.keyboards.firstMatch.exists)
+            print(app.keyboards.buttons.debugDescription)
+            sleep(1)
+
+            app.dismissKeyboard()
+            sleep(1)
+            XCTAssertFalse(app.keyboards.firstMatch.exists)
+        }
+
+        // this way we know exactly which button failed by line numbers.
+        checkLabel("Continue")
+        checkLabel("Done")
+        checkLabel("Go")
+        checkLabel("Join")
+        checkLabel("Next")
+        checkLabel("Return")
+        checkLabel("Route")
+        checkLabel("Search")
+        checkLabel("Send")
+    }
 }
 
 
@@ -83,5 +113,7 @@ extension XCUIApplication {
         
         try secureTextField.delete(count: 42)
         XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
+
+        XCTAssertFalse(staticTexts["Button was pressed!"].waitForExistence(timeout: 5.0))
     }
 }
