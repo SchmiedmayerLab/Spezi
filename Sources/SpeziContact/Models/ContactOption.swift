@@ -46,7 +46,7 @@ extension ContactOption {
     }
     
     
-    /// A ``ContactOption`` encoding a possibility to call an individual using a phone numer.
+    /// A ``ContactOption`` encoding a possibility to call an individual using a phone number.
     /// - Parameter number: The phone number to be called.
     public static func call(_ number: String) -> ContactOption {
         ContactOption(

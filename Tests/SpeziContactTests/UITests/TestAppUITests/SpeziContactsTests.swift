@@ -13,10 +13,9 @@ final class ContactsTests: XCTestCase {
     func testContactsView() throws {
         let app = XCUIApplication()
         app.launch()
-        
-        XCTAssertEqual(app.staticTexts.matching(identifier: "Paul Schmiedmayer").count, 2)
-        XCTAssertEqual(app.staticTexts.matching(identifier: "A Title").count, 2)
-        XCTAssertEqual(app.staticTexts.matching(identifier: "Stanford University").count, 2)
+
+        XCTAssertEqual(app.staticTexts.matching(identifier: "Contact: Paul Schmiedmayer").count, 2)
+        XCTAssertEqual(app.staticTexts.matching(identifier: "A Title at Stanford University").count, 2)
         
         let labelPredicate = NSPredicate(format: "label CONTAINS[c] %@", "This is a description")
         XCTAssert(app.staticTexts.element(matching: labelPredicate).exists)
@@ -45,9 +44,10 @@ final class ContactsTests: XCTestCase {
         
         XCTAssertEqual(app.buttons.matching(identifier: "Cloud").count, 2)
         app.buttons.matching(identifier: "Cloud").element(boundBy: 0).tap()
-        
-        XCTAssertEqual(app.buttons.matching(identifier: "Address, 450 Serra Mall\nStanford CA 94305\nUSA").count, 2)
-        app.buttons.matching(identifier: "Address, 450 Serra Mall\nStanford CA 94305\nUSA").element(boundBy: 0).tap()
+
+        let address = "Navigate to Address: 450 Serra Mall\nStanford CA 94305\nUSA"
+        XCTAssertEqual(app.buttons.matching(identifier: address).count, 2)
+        app.buttons.matching(identifier: address).element(boundBy: 0).tap()
         let maps = XCUIApplication(bundleIdentifier: "com.apple.Maps")
         XCTAssert(maps.wait(for: .runningForeground, timeout: 2))
     }

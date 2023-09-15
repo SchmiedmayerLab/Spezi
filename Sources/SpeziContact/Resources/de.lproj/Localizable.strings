@@ -8,11 +8,15 @@
 
 // MARK: - Contact Options
 "CONTACT_OPTION_CALL" = "Anrufen";
-"CONTACT_OPTION_CALL_MANUAL %@" = "Das Gerät kann keinen Anruf tätigen. Sie können %@ anderswertig erreichen.";
+"CONTACT_OPTION_CALL_MANUAL %@" = "Das Gerät kann keinen Anruf tätigen. Sie können %@ anderweitig erreichen.";
 "CONTACT_OPTION_TEXT" = "Nachricht";
-"CONTACT_OPTION_TEST_MANUAL %@" = "Das Gerät kann keine SMS senden. Sie können %@ anderswertig erreichen.";
+"CONTACT_OPTION_TEST_MANUAL %@" = "Das Gerät kann keine SMS senden. Sie können %@ anderweitig erreichen.";
 "CONTACT_OPTION_EMAIL" = "E-Mail";
-"CONTACT_OPTION_EMAIL_MANUAL %@" = "Das Gerät kann keine E-Mail senden. Sie können %@ anderswertig erreichen.";
+"CONTACT_OPTION_EMAIL_MANUAL %@" = "Das Gerät kann keine E-Mail senden. Sie können %@ anderweitig erreichen.";
 "CONTACT_MANUAL_DISMISS" = "Ok";
 
 "CONTACT_ADDRESS" = "Adresse";
+
+"CONTACT %@" = "Kontakt: %@";
+"TITLE_AT_ORG" = "bei";
+"ADDRESS_NAVIGATE %@" = "Navigiere zur Address: %@";

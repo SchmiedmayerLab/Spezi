@@ -13,7 +13,7 @@ import SwiftUI
 struct ContactsTestsView: View {
     static let mock = Contact(
         name: PersonNameComponents(givenName: "Paul", familyName: "Schmiedmayer"),
-        image: Image(systemName: "figure.wave.circle"),
+        image: Image(systemName: "figure.wave.circle"), // swiftlint:disable:this accessibility_label_for_image
         title: "A Title",
         description: """
         This is a description of a contact that will be displayed. It might even be longer than what has to be displayed in the contact card.
@@ -34,6 +34,7 @@ struct ContactsTestsView: View {
             .call("+1 (234) 567-892"),
             .text("+1 (234) 567-893"),
             .email(addresses: ["lelandstanford@stanford.edu"], subject: "Hi Leland!"),
+            // swiftlint:disable:next accessibility_label_for_image
             ContactOption(image: Image(systemName: "icloud.fill"), title: "Cloud", action: { })
         ]
     )

@@ -25,6 +25,23 @@ public struct ContactView: View {
         let (numberOfRows, leftOverElements) = contact.contactOptions.count.quotientAndRemainder(dividingBy: columnCount)
         return (contact.contactOptions.dropLast(leftOverElements), contact.contactOptions.dropFirst(columnCount * numberOfRows))
     }
+
+    private var subtitleLabel: Text {
+        var text: Text?
+        if let title = contact.title {
+            text = Text(verbatim: title)
+        }
+
+        if let organization = contact.organization {
+            if let titleText = text {
+                text = titleText + Text(" ") + Text("TITLE_AT_ORG", bundle: .module) + Text(" ") + Text(verbatim: organization)
+            } else {
+                text = Text(verbatim: organization)
+            }
+        }
+
+        return text ?? Text(verbatim: "")
+    }
     
     public var body: some View {
         VStack {
@@ -50,24 +67,34 @@ public struct ContactView: View {
                 contact.image
             }
                 .frame(height: 40)
+                .accessibilityHidden(true)
             Spacer()
                 .frame(width: 16)
             VStack(alignment: .leading, spacing: 2) {
-                Text(contact.name.formatted(.name(style: .long)))
+                let name = contact.name.formatted(.name(style: .long))
+                Text(verbatim: name)
                     .font(.title3.bold())
-                HStack(spacing: 0) {
-                    if let title = contact.title {
-                        Text(title)
+                    .accessibilityLabel(Text("CONTACT \(name)", bundle: .module))
+                    .accessibilityAddTraits(.isHeader)
+
+                if contact.title != nil || contact.organization != nil {
+                    HStack(spacing: 0) {
+                        if let title = contact.title {
+                            Text(verbatim: title)
+                        }
+                        if contact.title != nil && contact.organization != nil {
+                            Text(" - ")
+                        }
+                        if let organization = contact.organization {
+                            Text(verbatim: organization)
+                        }
                     }
-                    if contact.title != nil && contact.organization != nil {
-                        Text(" - ")
-                    }
-                    if let organization = contact.organization {
-                        Text(organization)
-                    }
-                }
                     .foregroundColor(Color(.secondaryLabel))
                     .font(.subheadline)
+                    .accessibilityRepresentation {
+                        subtitleLabel
+                    }
+                }
             }
             Spacer()
         }
@@ -110,7 +137,7 @@ public struct ContactView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("CONTACT_ADDRESS", bundle: .module)
                                 .foregroundColor(.accentColor)
-                            Text(CNPostalAddressFormatter().string(from: address))
+                            Text(verbatim: CNPostalAddressFormatter().string(from: address))
                                 .multilineTextAlignment(.leading)
                                 .foregroundColor(Color(.label))
                         }
@@ -118,11 +145,13 @@ public struct ContactView: View {
                         Spacer()
                         Image(systemName: "location.fill")
                             .foregroundColor(.accentColor)
+                            .accessibilityHidden(true)
                     }
                         .padding(15)
                 }
                     .fixedSize(horizontal: false, vertical: true)
             }
+                .accessibilityLabel(Text("ADDRESS_NAVIGATE \(Text(verbatim: CNPostalAddressFormatter().string(from: address)))", bundle: .module))
         } else {
             EmptyView()
         }
