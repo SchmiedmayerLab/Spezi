@@ -10,7 +10,7 @@
 import SwiftUI
 
 
-/// A ``Contact`` encodes the contact information.
+/// Encodes the contact information.
 public struct Contact {
     let id = UUID()
     /// The name of the individual. Ideally provide at least a first and given name.

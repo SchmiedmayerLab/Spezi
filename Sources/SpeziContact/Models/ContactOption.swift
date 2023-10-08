@@ -10,7 +10,7 @@ import MessageUI
 import SwiftUI
 
 
-/// A ``ContactOption`` encodes a way to get in contact with an individual and usually connected to a ``Contact``.
+/// Customizable way to get in contact with an individual and usually connected to a ``Contact``.
 public struct ContactOption {
     let id = UUID()
     /// The image representing the ``ContactOption`` in the user interface.

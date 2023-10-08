@@ -12,7 +12,7 @@ import SpeziViews
 import SwiftUI
 
 
-/// A ``ContactView`` enables the display of contact information as defined by a ``Contact``.
+/// Display contact information as defined by a ``Contact``.
 public struct ContactView: View {
     private let contact: Contact
     
