@@ -1,0 +1,193 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    " at %@" : {
+      "comment" : "Accessibility label: ' at <organization>'",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " bei %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " at %@"
+          }
+        }
+      }
+    },
+    "Address" : {
+      "comment" : "Contact Button Title",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
+          }
+        }
+      }
+    },
+    "Address: %@" : {
+      "comment" : "Accessibility Label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address: %@"
+          }
+        }
+      }
+    },
+    "Call" : {
+      "comment" : "Contact Option",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anrufen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Call"
+          }
+        }
+      }
+    },
+    "Call unavailable. You can manually reach out to %@" : {
+      "comment" : "Call unavailable. Manual approach.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Gerät kann keinen Anruf tätigen. Sie können %@ anderweitig erreichen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The device is not setup to make a call. You can manually reach out to %@."
+          }
+        }
+      }
+    },
+    "Contact: %@" : {
+      "comment" : "Accessibility Label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact: %@"
+          }
+        }
+      }
+    },
+    "Email" : {
+      "comment" : "Contact Option",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "Email unavailable. You can manually reach out to %@" : {
+      "comment" : "Email unavailable. Manual approach.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Gerät kann keine E-Mail senden. Sie können %@ anderweitig erreichen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The device is not setup to send email. You can manually reach out to %@."
+          }
+        }
+      }
+    },
+    "Ok" : {
+      "comment" : "Dismiss alert",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        }
+      }
+    },
+    "Text" : {
+      "comment" : "Contact Option",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nachricht"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text"
+          }
+        }
+      }
+    },
+    "Text unavailable. You can manually reach out to %@" : {
+      "comment" : "Text unavailable. Manual approach.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Gerät kann keine Nachriten senden. Sie können %@ anderweitig erreichen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The device is not setup to send a text. You can manually reach out to %@."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

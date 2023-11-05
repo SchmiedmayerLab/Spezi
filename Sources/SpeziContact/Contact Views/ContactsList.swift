@@ -22,15 +22,14 @@ public struct ContactsList: View {
     
     
     public var body: some View {
-        ScrollView(.vertical) {
+        List {
             ForEach(contacts, id: \.id) { contact in
-                ContactCard(contact: contact)
-                    .padding(.horizontal)
-                    .padding(.vertical, 6)
+                Section {
+                    ContactView(contact: contact)
+                        .buttonStyle(.plain) // ensure the whole list row doesn't render as a button
+                }
             }
-                .padding(.vertical, 6)
         }
-            .background(Color(.systemGroupedBackground))
     }
     
     
@@ -53,7 +52,7 @@ struct ContactsList_Previews: PreviewProvider {
                     ContactView_Previews.mock
                 ]
             )
-                .navigationTitle("Contacts")
+                .navigationTitle(Text(verbatim: "Contacts"))
                 .background(Color(.systemGroupedBackground))
         }
     }

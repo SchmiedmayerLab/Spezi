@@ -51,12 +51,12 @@ extension ContactOption {
     public static func call(_ number: String) -> ContactOption {
         ContactOption(
             image: Image(systemName: "phone.fill"),
-            title: String(localized: "CONTACT_OPTION_CALL", bundle: .module)
+            title: String(localized: "Call", bundle: .module, comment: "Contact Option")
         ) {
             guard let url = URL(string: "tel://\(number)"), UIApplication.shared.canOpenURL(url) else {
                 presentAlert(
-                    title: String(localized: "CONTACT_OPTION_CALL", bundle: .module),
-                    message: String(localized: "CONTACT_OPTION_CALL_MANUAL \(number)", bundle: .module)
+                    title: String(localized: "Call", bundle: .module),
+                    message: String(localized: "Call unavailable. You can manually reach out to \(number)", bundle: .module, comment: "Call unavailable. Manual approach.")
                 )
                 return
             }
@@ -69,12 +69,12 @@ extension ContactOption {
     public static func text(_ number: String) -> ContactOption {
         ContactOption(
             image: Image(systemName: "message.fill"),
-            title: String(localized: "CONTACT_OPTION_TEXT", bundle: .module)
+            title: String(localized: "Text", bundle: .module, comment: "Contact Option")
         ) {
             guard let url = URL(string: "sms:\(number)"), UIApplication.shared.canOpenURL(url) else {
                 presentAlert(
-                    title: String(localized: "CONTACT_OPTION_TEXT", bundle: .module),
-                    message: String(localized: "CONTACT_OPTION_TEXT_MANUAL \(number)", bundle: .module)
+                    title: String(localized: "Text", bundle: .module),
+                    message: String(localized: "Text unavailable. You can manually reach out to \(number)", bundle: .module, comment: "Text unavailable. Manual approach.")
                 )
                 return
             }
@@ -90,13 +90,17 @@ extension ContactOption {
     public static func email(addresses: [String], subject: String? = nil) -> ContactOption {
         ContactOption(
             image: Image(systemName: "envelope.fill"),
-            title: String(localized: "CONTACT_OPTION_EMAIL", bundle: .module)
+            title: String(localized: "Email", bundle: .module, comment: "Contact Option")
         ) {
             guard let subject = (subject ?? "").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                   let url = URL(string: "mailto:\(addresses.joined(separator: ";"))?subject=\(subject)"), UIApplication.shared.canOpenURL(url) else {
                 presentAlert(
-                    title: String(localized: "CONTACT_OPTION_EMAIL", bundle: .module),
-                    message: String(localized: "CONTACT_OPTION_EMAIL_MANUAL \(addresses.joined(separator: ", "))", bundle: .module)
+                    title: String(localized: "Email", bundle: .module),
+                    message: String(
+                        localized: "Email unavailable. You can manually reach out to \(addresses.joined(separator: ", "))",
+                        bundle: .module,
+                        comment: "Email unavailable. Manual approach."
+                    )
                 )
                 return
             }
@@ -106,7 +110,7 @@ extension ContactOption {
     
     private static func presentAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: String(localized: "CONTACT_MANUAL_DISMISS", bundle: .module), style: .default))
+        alert.addAction(UIAlertAction(title: String(localized: "Ok", bundle: .module, comment: "Dismiss alert"), style: .default))
         rootViewController?.present(alert, animated: true, completion: nil)
     }
 }

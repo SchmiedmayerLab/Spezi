@@ -19,7 +19,7 @@ public struct Contact {
     public let image: Image?
     /// The title of the individual.
     public let title: String?
-    /// The desciption of the individual.
+    /// The description of the individual.
     public let description: String?
     /// The organization of the individual.
     public let organization: String?
@@ -30,11 +30,11 @@ public struct Contact {
     
     
     /// - Parameters:
-    ///   - id: Identiifer of the `Contact` instance.
+    ///   - id: Identifier of the `Contact` instance.
     ///   - name: The name of the individual. Ideally provide at least a first and given name.
     ///   - image: The image of the ``Contact``.
     ///   - title: The title of the individual.
-    ///   - description: The desciption of the individual.
+    ///   - description: The description of the individual.
     ///   - organization: The organization of the individual.
     ///   - address: The address of the individual.
     ///   - contactOptions: The contact options of the individual.

@@ -45,9 +45,9 @@ final class ContactsTests: XCTestCase {
         XCTAssertEqual(app.buttons.matching(identifier: "Cloud").count, 2)
         app.buttons.matching(identifier: "Cloud").element(boundBy: 0).tap()
 
-        let address = "Navigate to Address: 450 Serra Mall\nStanford CA 94305\nUSA"
-        XCTAssertEqual(app.buttons.matching(identifier: address).count, 2)
-        app.buttons.matching(identifier: address).element(boundBy: 0).tap()
+        let predicate = NSPredicate(format: "label BEGINSWITH 'Address: 450 Serra Mall'")
+        XCTAssertEqual(app.buttons.matching(predicate).count, 2)
+        app.buttons.matching(predicate).element(boundBy: 0).tap()
         let maps = XCUIApplication(bundleIdentifier: "com.apple.Maps")
         XCTAssert(maps.wait(for: .runningForeground, timeout: 2))
     }

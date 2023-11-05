@@ -8,6 +8,7 @@
 
 import Contacts
 import MessageUI
+import SpeziPersonalInfo
 import SpeziViews
 import SwiftUI
 
@@ -26,7 +27,21 @@ public struct ContactView: View {
         return (contact.contactOptions.dropLast(leftOverElements), contact.contactOptions.dropFirst(columnCount * numberOfRows))
     }
 
-    private var subtitleLabel: Text {
+    private var subtitleText: Text {
+        var text = Text(verbatim: "")
+        if let title = contact.title {
+            text = text + Text(verbatim: title) // swiftlint:disable:this shorthand_operator
+        }
+        if contact.title != nil && contact.organization != nil {
+            text = text + Text(verbatim: " - ") // swiftlint:disable:this shorthand_operator
+        }
+        if let organization = contact.organization {
+            text = text + Text(verbatim: organization) // swiftlint:disable:this shorthand_operator
+        }
+        return text
+    }
+
+    private var subtitleAccessibilityLabel: Text {
         var text: Text?
         if let title = contact.title {
             text = Text(verbatim: title)
@@ -34,7 +49,7 @@ public struct ContactView: View {
 
         if let organization = contact.organization {
             if let titleText = text {
-                text = titleText + Text(" ") + Text("TITLE_AT_ORG", bundle: .module) + Text(" ") + Text(verbatim: organization)
+                text = titleText + Text(" at \(organization)", bundle: .module, comment: "Accessibility label: ' at <organization>'")
             } else {
                 text = Text(verbatim: organization)
             }
@@ -42,13 +57,13 @@ public struct ContactView: View {
 
         return text ?? Text(verbatim: "")
     }
-    
+
     public var body: some View {
         VStack {
             header
             Divider()
             if let description = contact.description {
-                Label(description, textStyle: .subheadline)
+                Label(verbatim: description, textStyle: .subheadline)
                     .padding(.vertical, 4)
             }
             HorizontalGeometryReader { _ in
@@ -60,7 +75,7 @@ public struct ContactView: View {
             addressButton
         }
     }
-    
+
     private var header: some View {
         HStack(spacing: 0) {
             UserProfileView(name: contact.name) {
@@ -74,25 +89,19 @@ public struct ContactView: View {
                 let name = contact.name.formatted(.name(style: .long))
                 Text(verbatim: name)
                     .font(.title3.bold())
-                    .accessibilityLabel(Text("CONTACT \(name)", bundle: .module))
+                    .accessibilityLabel(Text("Contact: \(name)", bundle: .module, comment: "Accessibility Label"))
                     .accessibilityAddTraits(.isHeader)
 
                 if contact.title != nil || contact.organization != nil {
                     HStack(spacing: 0) {
-                        if let title = contact.title {
-                            Text(verbatim: title)
-                        }
-                        if contact.title != nil && contact.organization != nil {
-                            Text(" - ")
-                        }
-                        if let organization = contact.organization {
-                            Text(verbatim: organization)
-                        }
+                        subtitleText
+                            .lineLimit(1...2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                     .foregroundColor(Color(.secondaryLabel))
                     .font(.subheadline)
                     .accessibilityRepresentation {
-                        subtitleLabel
+                        subtitleAccessibilityLabel
                     }
                 }
             }
@@ -104,7 +113,7 @@ public struct ContactView: View {
     private var contactSection: some View {
         VStack(spacing: 8) {
             LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 100))],
+                columns: [GridItem(.adaptive(minimum: 95))],
                 alignment: .center,
                 spacing: 8
             ) {
@@ -135,7 +144,7 @@ public struct ContactView: View {
                         .foregroundStyle(Color(uiColor: .secondarySystemBackground))
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("CONTACT_ADDRESS", bundle: .module)
+                            Text("Address", bundle: .module, comment: "Contact Button Title")
                                 .foregroundColor(.accentColor)
                             Text(verbatim: CNPostalAddressFormatter().string(from: address))
                                 .multilineTextAlignment(.leading)
@@ -151,7 +160,11 @@ public struct ContactView: View {
                 }
                     .fixedSize(horizontal: false, vertical: true)
             }
-                .accessibilityLabel(Text("ADDRESS_NAVIGATE \(Text(verbatim: CNPostalAddressFormatter().string(from: address)))", bundle: .module))
+                .accessibilityLabel(Text(
+                    "Address: \(Text(verbatim: CNPostalAddressFormatter().string(from: address)))",
+                    bundle: .module,
+                    comment: "Accessibility Label"
+                ))
         } else {
             EmptyView()
         }
