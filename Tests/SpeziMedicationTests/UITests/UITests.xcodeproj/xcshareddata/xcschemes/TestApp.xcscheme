@@ -14,9 +14,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "TemplatePackage"
-               BuildableName = "TemplatePackage"
-               BlueprintName = "TemplatePackage"
+               BlueprintIdentifier = "SpeziMedication"
+               BuildableName = "SpeziMedication"
+               BlueprintName = "SpeziMedication"
                ReferencedContainer = "container:../..">
             </BuildableReference>
          </BuildActionEntry>
