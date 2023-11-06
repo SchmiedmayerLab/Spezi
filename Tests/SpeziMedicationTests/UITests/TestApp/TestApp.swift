@@ -14,7 +14,7 @@ import SwiftUI
 struct UITestsApp: App {
     var body: some Scene {
         WindowGroup {
-            Text(SpeziMedication().stanford)
+            ContentView()
         }
     }
 }

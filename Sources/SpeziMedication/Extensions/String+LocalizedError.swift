@@ -6,12 +6,11 @@
 // SPDX-License-Identifier: MIT
 //
 
-@testable import SpeziMedication
-import XCTest
+import Foundation
 
 
-final class SpeziMedicationTests: XCTestCase {
-    func testSpeziMedication() throws {
-        XCTAssert(true)
+extension String: LocalizedError {
+    public var errorDescription: String? {
+        self
     }
 }

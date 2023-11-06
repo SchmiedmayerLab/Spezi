@@ -11,6 +11,12 @@
 		2F6D139A28F5F386007C25D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F6D139928F5F386007C25D6 /* Assets.xcassets */; };
 		2F8A431329130A8C005D2B8F /* TestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8A431229130A8C005D2B8F /* TestAppUITests.swift */; };
 		2FA7382C290ADFAA007ACEB9 /* TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7382B290ADFAA007ACEB9 /* TestApp.swift */; };
+		2FADBE962AF86D010003EC4E /* ExampleMedication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FADBE952AF86D010003EC4E /* ExampleMedication.swift */; };
+		2FADBE982AF86D290003EC4E /* ExampleDosage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FADBE972AF86D290003EC4E /* ExampleDosage.swift */; };
+		2FADBE9A2AF871ED0003EC4E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FADBE992AF871ED0003EC4E /* ContentView.swift */; };
+		2FADBE9C2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FADBE9B2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift */; };
+		2FE5BC612AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE5BC602AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift */; };
+		2FE5BC632AF86CA20089B6C0 /* ExampleMedicationInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE5BC622AF86CA20089B6C0 /* ExampleMedicationInstance.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +49,13 @@
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F8A431229130A8C005D2B8F /* TestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppUITests.swift; sourceTree = "<group>"; };
 		2FA7382B290ADFAA007ACEB9 /* TestApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestApp.swift; sourceTree = "<group>"; };
+		2FADBE952AF86D010003EC4E /* ExampleMedication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleMedication.swift; sourceTree = "<group>"; };
+		2FADBE972AF86D290003EC4E /* ExampleDosage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleDosage.swift; sourceTree = "<group>"; };
+		2FADBE992AF871ED0003EC4E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2FADBE9B2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+ButtonTap.swift"; sourceTree = "<group>"; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
+		2FE5BC602AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleMedicationSettingsViewModel.swift; sourceTree = "<group>"; };
+		2FE5BC622AF86CA20089B6C0 /* ExampleMedicationInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleMedicationInstance.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +102,11 @@
 			isa = PBXGroup;
 			children = (
 				2FA7382B290ADFAA007ACEB9 /* TestApp.swift */,
+				2FADBE992AF871ED0003EC4E /* ContentView.swift */,
+				2FE5BC602AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift */,
+				2FE5BC622AF86CA20089B6C0 /* ExampleMedicationInstance.swift */,
+				2FADBE952AF86D010003EC4E /* ExampleMedication.swift */,
+				2FADBE972AF86D290003EC4E /* ExampleDosage.swift */,
 				2F6D139928F5F386007C25D6 /* Assets.xcassets */,
 			);
 			path = TestApp;
@@ -99,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				2F8A431229130A8C005D2B8F /* TestAppUITests.swift */,
+				2FADBE9B2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift */,
 			);
 			path = TestAppUITests;
 			sourceTree = "<group>";
@@ -213,7 +231,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FADBE982AF86D290003EC4E /* ExampleDosage.swift in Sources */,
 				2FA7382C290ADFAA007ACEB9 /* TestApp.swift in Sources */,
+				2FADBE9A2AF871ED0003EC4E /* ContentView.swift in Sources */,
+				2FE5BC612AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift in Sources */,
+				2FE5BC632AF86CA20089B6C0 /* ExampleMedicationInstance.swift in Sources */,
+				2FADBE962AF86D010003EC4E /* ExampleMedication.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F8A431329130A8C005D2B8F /* TestAppUITests.swift in Sources */,
+				2FADBE9C2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +312,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -343,6 +368,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -526,6 +552,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

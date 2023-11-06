@@ -1,0 +1,186 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "ADD_MEDICATION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a Medication"
+          }
+        }
+      }
+    },
+    "ADD_MEDICATION_DUPLICATE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medication with this dosage already exists."
+          }
+        }
+      }
+    },
+    "ADD_MEDICATION_TITLE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Medication"
+          }
+        }
+      }
+    },
+    "ADD_NEW_MEDICATION_BUTTON" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add New Medication"
+          }
+        }
+      }
+    },
+    "CANCEL" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "DELETE_MEDICATION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "EDIT_DOSAGE_DESCRIPTION %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ dosage:"
+          }
+        }
+      }
+    },
+    "EDIT_DOSAGE_PICKER" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosage Picker"
+          }
+        }
+      }
+    },
+    "MEDICATION_DUPLICATE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medication with this dosage already exists."
+          }
+        }
+      }
+    },
+    "MEDICATION_SETTINGS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medication Settings"
+          }
+        }
+      }
+    },
+    "MEDICATION_SETTINGS_CANCEL_ALERT_CANCEL" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "MEDICATION_SETTINGS_CANCEL_ALERT_DELETE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard Changes"
+          }
+        }
+      }
+    },
+    "MEDICATION_SETTINGS_CANCEL_ALERT_MESSAGE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are about to leave the medication settings view without saving your settings."
+          }
+        }
+      }
+    },
+    "MEDICATION_SETTINGS_CANCEL_ALERT_TITLE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard Changes"
+          }
+        }
+      }
+    },
+    "NO_MEDICATION_DESCRIPTION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use the \\\"+\\\" button at the top to add all the medications you take."
+          }
+        }
+      }
+    },
+    "SAVE_MEDICATIONS_BUTTON" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save Medications"
+          }
+        }
+      }
+    },
+    "SAVE_NO_MEDICATIONS_BUTTON" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with no Medications"
+          }
+        }
+      }
+    },
+    "SEARCH_FOR_MEDICATION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a medication"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -6,12 +6,13 @@
 // SPDX-License-Identifier: MIT
 //
 
-@testable import SpeziMedication
 import XCTest
 
 
-final class SpeziMedicationTests: XCTestCase {
-    func testSpeziMedication() throws {
-        XCTAssert(true)
+extension XCUIApplication {
+    func buttonTap(_ identifier: String) {
+        XCTAssertTrue(buttons[identifier].waitForExistence(timeout: 2))
+        sleep(1)
+        buttons[identifier].tap()
     }
 }
