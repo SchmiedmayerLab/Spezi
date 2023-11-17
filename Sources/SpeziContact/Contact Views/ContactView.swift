@@ -141,7 +141,7 @@ public struct ContactView: View {
             Button(action: openMaps) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color(uiColor: .secondarySystemBackground))
+                        .foregroundStyle(Color(uiColor: .tertiarySystemFill))
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Address", bundle: .module, comment: "Contact Button Title")
@@ -182,7 +182,7 @@ public struct ContactView: View {
         Button(action: contactOption.action) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color(uiColor: .secondarySystemBackground))
+                    .foregroundStyle(Color(uiColor: .tertiarySystemFill))
                 VStack(spacing: 8) {
                     contactOption.image
                         .font(.title3)
