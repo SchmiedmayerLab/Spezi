@@ -7,14 +7,19 @@
 //
 
 import XCTest
-import XCTestExtensions
 
 
-final class SpeziSpeechTests: XCTestCase {
+class TestAppUITests: XCTestCase {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        
+        continueAfterFailure = false
+    }
+    
+    
     func testSpeziSpeech() throws {
         let app = XCUIApplication()
         app.launch()
-        
-        XCTAssert(app.staticTexts["Spezi Speech"].waitForExistence(timeout: 2))
+        XCTAssert(app.staticTexts["SpeziSpeech"].waitForExistence(timeout: 1))
     }
 }

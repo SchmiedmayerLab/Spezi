@@ -13,8 +13,13 @@
       "targets" : [
         {
           "containerPath" : "container:..\/..",
-          "identifier" : "SpeziSpeech",
-          "name" : "SpeziSpeech"
+          "identifier" : "SpeziSpeechRecognizer",
+          "name" : "SpeziSpeechRecognizer"
+        },
+        {
+          "containerPath" : "container:..\/..",
+          "identifier" : "SpeziSpeechSynthesizer",
+          "name" : "SpeziSpeechSynthesizer"
         }
       ]
     },

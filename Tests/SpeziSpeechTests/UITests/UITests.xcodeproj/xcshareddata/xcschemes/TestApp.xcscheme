@@ -14,9 +14,23 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "SpeziSpeech"
-               BuildableName = "SpeziSpeech"
-               BlueprintName = "SpeziSpeech"
+               BlueprintIdentifier = "SpeziSpeechRecognizer"
+               BuildableName = "SpeziSpeechRecognizer"
+               BlueprintName = "SpeziSpeechRecognizer"
+               ReferencedContainer = "container:../..">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "SpeziSpeechSynthesizer"
+               BuildableName = "SpeziSpeechSynthesizer"
+               BlueprintName = "SpeziSpeechSynthesizer"
                ReferencedContainer = "container:../..">
             </BuildableReference>
          </BuildActionEntry>
@@ -37,7 +51,7 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Test"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">

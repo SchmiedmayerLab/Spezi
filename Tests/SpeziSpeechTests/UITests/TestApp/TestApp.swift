@@ -17,9 +17,7 @@ struct UITestsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                Text("Spezi Speech")
-            }
+            SpeechTestView()
                 .spezi(appDelegate)
         }
     }

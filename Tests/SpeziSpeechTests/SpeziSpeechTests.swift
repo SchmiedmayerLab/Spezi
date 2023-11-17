@@ -6,12 +6,13 @@
 // SPDX-License-Identifier: MIT
 //
 
-@testable import SpeziSpeech
+@testable import SpeziSpeechRecognizer
+@testable import SpeziSpeechSynthesizer
 import XCTest
 
 
 final class SpeziSpeechTests: XCTestCase {
     func testSpeziSpeech() throws {
-        XCTAssertTrue(true)
+        XCTAssert(true)
     }
 }

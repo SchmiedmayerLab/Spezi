@@ -7,14 +7,15 @@
 //
 
 import Spezi
-import SpeziSpeech
-import SwiftUI
+import SpeziSpeechRecognizer
+import SpeziSpeechSynthesizer
 
 
 class TestAppDelegate: SpeziAppDelegate {
     override var configuration: Configuration {
         Configuration {
-            Speech()
+            SpeechRecognizer()
+            SpeechSynthesizer()
         }
     }
 }
