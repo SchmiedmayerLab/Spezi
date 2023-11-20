@@ -11,10 +11,10 @@ import os
 import Speech
 import Spezi
 
-/// The Spezi ``SpeechRecognizer`` encapsulates the functionality of Apple's `Speech` framework, more specifically the `SFSpeechRecognizer`.
-/// It provides methods to start and stop voice recognition, and publishes the state of recognition and its availability.
+/// The Spezi ``SpeechRecognizer`` encapsulates the functionality of Apple's `Speech` framework, more specifically, the `SFSpeechRecognizer`.
+/// It provides methods to start and stop voice recognition and publishes the state of recognition and its availability.
 ///
-/// > Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) setup the core Spezi infrastructure.
+/// > Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
 ///
 /// The module needs to be registered in a Spezi-based application using the [`configuration`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate/configuration)
 /// in a [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate):
