@@ -7,14 +7,17 @@
 //
 
 import SwiftUI
-import SpeziLocation
 
 
 @main
 struct UITestsApp: App {
+    @UIApplicationDelegateAdaptor(TestAppDelegate.self) var appDelegate
+    
+    
     var body: some Scene {
         WindowGroup {
-            Text(SpeziLocation().stanford)
+            LocationView()
+                .spezi(appDelegate)
         }
     }
 }
