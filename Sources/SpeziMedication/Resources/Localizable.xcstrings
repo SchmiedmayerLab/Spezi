@@ -1,185 +1,139 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "ADD_MEDICATION" : {
+    "Add a Medication" : {
+
+    },
+    "Add a time" : {
+
+    },
+    "Add Medication" : {
+
+    },
+    "Add New Medication" : {
+
+    },
+    "As Needed" : {
+
+    },
+    "At Regular Intervals" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Choose Days" : {
+
+    },
+    "Choose Interval" : {
+
+    },
+    "Continue with no Medications" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Discard Changes" : {
+
+    },
+    "Done" : {
+
+    },
+    "Dosage" : {
+
+    },
+    "Dosage Picker" : {
+
+    },
+    "Dosage: %@" : {
+
+    },
+    "Every" : {
+
+    },
+    "Every %lld days" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a Medication"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Every day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Every %lld days"
+                }
+              }
+            }
           }
         }
       }
     },
-    "ADD_MEDICATION_DUPLICATE" : {
+    "Every Day" : {
+
+    },
+    "Every other Day" : {
+
+    },
+    "Frequency" : {
+
+    },
+    "Medication Schedule" : {
+
+    },
+    "Medication Settings" : {
+
+    },
+    "Medication with this dosage already exists." : {
+
+    },
+    "On Specific Days of the Week" : {
+
+    },
+    "Save Dosage" : {
+
+    },
+    "Save Medications" : {
+
+    },
+    "Schedule" : {
+
+    },
+    "Schedule Times" : {
+
+    },
+    "Search for a medication" : {
+
+    },
+    "Start Date" : {
+
+    },
+    "Time" : {
+
+    },
+    "Use the \"+\" button at the top to add all the medications you take." : {
+
+    },
+    "Weekend" : {
+
+    },
+    "When will you take %@ (%@)?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Medication with this dosage already exists."
+            "state" : "new",
+            "value" : "When will you take %1$@ (%2$@)?"
           }
         }
       }
     },
-    "ADD_MEDICATION_TITLE" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Medication"
-          }
-        }
-      }
-    },
-    "ADD_NEW_MEDICATION_BUTTON" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add New Medication"
-          }
-        }
-      }
-    },
-    "CANCEL" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
-          }
-        }
-      }
-    },
-    "DELETE_MEDICATION" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
-          }
-        }
-      }
-    },
-    "EDIT_DOSAGE_DESCRIPTION %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ dosage:"
-          }
-        }
-      }
-    },
-    "EDIT_DOSAGE_PICKER" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dosage Picker"
-          }
-        }
-      }
-    },
-    "MEDICATION_DUPLICATE" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Medication with this dosage already exists."
-          }
-        }
-      }
-    },
-    "MEDICATION_SETTINGS" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Medication Settings"
-          }
-        }
-      }
-    },
-    "MEDICATION_SETTINGS_CANCEL_ALERT_CANCEL" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
-          }
-        }
-      }
-    },
-    "MEDICATION_SETTINGS_CANCEL_ALERT_DELETE" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Discard Changes"
-          }
-        }
-      }
-    },
-    "MEDICATION_SETTINGS_CANCEL_ALERT_MESSAGE" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You are about to leave the medication settings view without saving your settings."
-          }
-        }
-      }
-    },
-    "MEDICATION_SETTINGS_CANCEL_ALERT_TITLE" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Discard Changes"
-          }
-        }
-      }
-    },
-    "NO_MEDICATION_DESCRIPTION" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use the \\\"+\\\" button at the top to add all the medications you take."
-          }
-        }
-      }
-    },
-    "SAVE_MEDICATIONS_BUTTON" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save Medications"
-          }
-        }
-      }
-    },
-    "SAVE_NO_MEDICATIONS_BUTTON" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue with no Medications"
-          }
-        }
-      }
-    },
-    "SEARCH_FOR_MEDICATION" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search for a medication"
-          }
-        }
-      }
+    "You are about to leave the medication settings view without saving your settings." : {
+
     }
   },
   "version" : "1.0"

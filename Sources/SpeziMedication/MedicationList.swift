@@ -13,21 +13,8 @@ struct MedicationList<MI: MedicationInstance>: View {
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
     
-    private var description: String {
-        guard !viewModel.medicationInstances.isEmpty else {
-            return "No Medications"
-        }
-        
-        return viewModel.medicationInstances
-            .map { medicationInstance in
-                "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription)"
-            }
-            .joined(separator: ", ")
-    }
-    
     private var sortedMedicationInstances: [MI] {
-        print(description)
-        return Array(viewModel.medicationInstances).sorted()
+        Array(viewModel.medicationInstances).sorted()
     }
     
     
@@ -37,7 +24,8 @@ struct MedicationList<MI: MedicationInstance>: View {
                 NavigationLink {
                     EditMedication<MI>(
                         medicationInstance: medicationInstance.id,
-                        initialDosage: medicationInstance.dosage
+                        initialDosage: medicationInstance.dosage,
+                        initialSchedule: medicationInstance.schedule
                     )
                         .environment(viewModel)
                 } label: {

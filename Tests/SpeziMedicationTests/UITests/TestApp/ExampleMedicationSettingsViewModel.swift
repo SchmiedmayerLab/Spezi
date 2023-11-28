@@ -12,7 +12,7 @@ import SwiftUI
 
 
 @Observable
-class ExampleMedicationSettingsViewModel: Component, MedicationSettingsViewModel, CustomStringConvertible {
+class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, CustomStringConvertible {
     var medicationInstances: Set<ExampleMedicationInstance> = []
     let medicationOptions: Set<ExampleMedication>
     
@@ -24,7 +24,7 @@ class ExampleMedicationSettingsViewModel: Component, MedicationSettingsViewModel
         
         return medicationInstances
             .map { medicationInstance in
-                "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription)"
+                "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription) - \(medicationInstance.schedule)"
             }
             .joined(separator: ", ")
     }

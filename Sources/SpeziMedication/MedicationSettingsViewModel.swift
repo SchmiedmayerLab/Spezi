@@ -12,7 +12,7 @@ import Observation
 /// Defines a unified interface to provide data and functionality of the ``MedicationSettings``
 ///
 /// The implementation needs to provide functionalities to manage medication instances and options and persist the medications.
-public protocol MedicationSettingsViewModel<Medications> {
+public protocol MedicationSettingsViewModel<Medications>: Observable {
     /// The ``MedicationInstance`` type that the ``MedicationSettingsViewModel`` implementation supports.
     associatedtype Medications: MedicationInstance
     
@@ -33,7 +33,11 @@ public protocol MedicationSettingsViewModel<Medications> {
     ///  - type: The type of the medication instance to be created.
     ///  - dosage: The dosage of the medication instance.
     /// - Returns: A new medication instance.
-    func createMedicationInstance(withType type: Medications.InstanceType, dosage: Medications.InstanceDosage) -> Medications
+    func createMedicationInstance(
+        withType type: Medications.InstanceType,
+        dosage: Medications.InstanceDosage,
+        schedule: Schedule
+    ) -> Medications
     
     /// Persists a set of medication instances.
     ///
@@ -48,7 +52,11 @@ public protocol MedicationSettingsViewModel<Medications> {
 extension MedicationSettingsViewModel where Medications: MedicationInstanceInitializable {
     // Swiftlint does unfortunately not pick up on the documentation as we override a protocol requirement.
     // swiftlint:disable:next missing_docs
-    public func createMedicationInstance(withType type: Medications.InstanceType, dosage: Medications.InstanceDosage) -> Medications {
-        Medications(type: type, dosage: dosage)
+    public func createMedicationInstance(
+        withType type: Medications.InstanceType,
+        dosage: Medications.InstanceDosage,
+        schedule: Schedule
+    ) -> Medications {
+        Medications(type: type, dosage: dosage, schedule: schedule)
     }
 }

@@ -26,7 +26,9 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     var body: some View {
         VStack(spacing: 0) {
             Form {
-                EditDosageSection<MI>(dosage: $dosage, medication: medicationOption)
+                Section {
+                    EditDosage<MI>(dosage: $dosage, medication: medicationOption)
+                }
             }
             actionSection
         }
@@ -43,21 +45,11 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     @MainActor @ViewBuilder private var actionSection: some View {
         VStack(alignment: .center) {
             if isDuplicate {
-                Text("ADD_MEDICATION_DUPLICATE", bundle: .module)
+                Text("Medication with this dosage already exists.", bundle: .module)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
             }
-            AsyncButton(
-                action: {
-                    viewModel.medicationInstances.insert(viewModel.createMedicationInstance(medicationOption, dosage))
-                    isPresented = false
-                },
-                label: {
-                    Text("ADD_MEDICATION_TITLE", bundle: .module)
-                        .frame(maxWidth: .infinity, minHeight: 38)
-                }
-            )
-                .buttonStyle(.borderedProminent)
+            addMedicationSaveDosageButton
         }
             .disabled(isDuplicate)
             .padding()
@@ -65,7 +57,26 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
                 Color(uiColor: .systemGroupedBackground)
                     .edgesIgnoringSafeArea(.bottom)
             }
+            .navigationTitle(medicationOption.localizedDescription)
     }
+    
+    private var addMedicationSaveDosageButton: some View {
+        NavigationLink(
+            destination: {
+                AddMedicationSchedule<MI>(
+                    medicationOption: medicationOption,
+                    dosage: dosage,
+                    isPresented: $isPresented
+                )
+            },
+            label: {
+                Text("Save Dosage", bundle: .module)
+                    .frame(maxWidth: .infinity, minHeight: 38)
+            }
+        )
+        .buttonStyle(.borderedProminent)
+    }
+    
     
     init(medicationOption: MI.InstanceType, isPresented: Binding<Bool>) {
         self.medicationOption = medicationOption

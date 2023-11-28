@@ -35,7 +35,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
         VStack(spacing: 0) {
             if viewModel.medicationInstances.isEmpty {
                 Spacer()
-                Text("NO_MEDICATION_DESCRIPTION", bundle: .module)
+                Text("Use the \"+\" button at the top to add all the medications you take.", bundle: .module)
                     .multilineTextAlignment(.center)
                     .font(.title3)
                     .padding(.horizontal)
@@ -49,7 +49,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                 Color(uiColor: .systemGroupedBackground)
                     .edgesIgnoringSafeArea(.all)
             }
-            .navigationTitle(String(localized: "MEDICATION_SETTINGS", bundle: .module))
+            .navigationTitle(String(localized: "Medication Settings", bundle: .module))
             .sheet(isPresented: $showAddMedicationSheet) {
                 addMedicationView
             }
@@ -60,7 +60,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                 }
                 if let isPresented {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button(String(localized: "CANCEL", bundle: .module)) {
+                        Button(String(localized: "Cancel", bundle: .module)) {
                             if !modifiedMedications {
                                 isPresented.wrappedValue = false
                             } else {
@@ -73,16 +73,16 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
             .viewStateAlert(state: $viewState)
             .alert(isPresented: $cancelAlert) {
                 Alert(
-                    title: Text("MEDICATION_SETTINGS_CANCEL_ALERT_TITLE", bundle: .module),
-                    message: Text("MEDICATION_SETTINGS_CANCEL_ALERT_MESSAGE", bundle: .module),
+                    title: Text("Discard Changes", bundle: .module),
+                    message: Text("You are about to leave the medication settings view without saving your settings.", bundle: .module),
                     primaryButton: .default(
-                        Text("MEDICATION_SETTINGS_CANCEL_ALERT_CANCEL", bundle: .module),
+                        Text("Cancel", bundle: .module),
                         action: {
                             cancelAlert = false
                         }
                     ),
                     secondaryButton: .destructive(
-                        Text("MEDICATION_SETTINGS_CANCEL_ALERT_DELETE", bundle: .module),
+                        Text("Discard Changes", bundle: .module),
                         action: discardChangesAction
                     )
                 )
@@ -94,9 +94,9 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
     @MainActor private var saveMedicationButton: some View {
         let title: String
         if viewModel.medicationInstances.isEmpty, !modifiedMedications && allowEmtpySave {
-            title = String(localized: "SAVE_NO_MEDICATIONS_BUTTON", bundle: .module)
+            title = String(localized: "Continue with no Medications", bundle: .module)
         } else {
-            title = String(localized: "SAVE_MEDICATIONS_BUTTON", bundle: .module)
+            title = String(localized: "Save Medications", bundle: .module)
         }
         
         return AsyncButton(
@@ -106,7 +106,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                     try await medicationSettingsViewModel.persist(medicationInstances: viewModel.medicationInstances)
                     viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances
                     action()
-                    isPresented?.wrappedValue = false
+isPresented?.wrappedValue = false
                     viewState = .idle
                 } catch let error as LocalizedError {
                     viewState = .error(error)
@@ -133,7 +133,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
             showAddMedicationSheet.toggle()
         } label: {
             Image(systemName: "plus")
-                .accessibilityLabel(String(localized: "ADD_NEW_MEDICATION_BUTTON", bundle: .module))
+                .accessibilityLabel(String(localized: "Add New Medication", bundle: .module))
         }
     }
     
@@ -172,7 +172,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
         viewModel.medicationOptions
     }
     
-    private func createMedicationInstance(_ viewModel: some MedicationSettingsViewModel<MI>) -> (MI.InstanceType, MI.InstanceDosage) -> MI {
-        viewModel.createMedicationInstance(withType:dosage:)
+    private func createMedicationInstance(_ viewModel: some MedicationSettingsViewModel<MI>) -> (MI.InstanceType, MI.InstanceDosage, Schedule) -> MI {
+        viewModel.createMedicationInstance
     }
 }

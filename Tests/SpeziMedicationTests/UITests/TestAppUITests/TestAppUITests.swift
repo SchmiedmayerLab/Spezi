@@ -30,12 +30,13 @@ class TestAppUITests: XCTestCase {
         app.navigationBars["Medication Settings"].buttons["Add New Medication"].tap()
         
         app.buttonTap("Medication 1")
+        app.buttonTap("Save Dosage")
         app.buttonTap("Add Medication")
         app.buttonTap("Save Medications")
         
         try await Task.sleep(for: .seconds(2))
         
-        XCTAssertTrue(app.staticTexts["Medication 1 - Dosage 1.1"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["Medication 1 - Dosage 1.1 - Schedule(frequency: Every Day, times: [])"].waitForExistence(timeout: 2))
     }
     
     func testSpeziMedicationDelete() throws {
@@ -52,6 +53,7 @@ class TestAppUITests: XCTestCase {
         app.navigationBars["Medication Settings"].buttons["Add New Medication"].tap()
         
         app.buttonTap("Medication 1")
+        app.buttonTap("Save Dosage")
         app.buttonTap("Add Medication")
         
         app.buttonTap("Medication 1, Dosage 1.1")
@@ -72,6 +74,7 @@ class TestAppUITests: XCTestCase {
         app.navigationBars["Medication Settings"].buttons["Add New Medication"].tap()
         
         app.buttonTap("Medication 1")
+        app.buttonTap("Save Dosage")
         app.buttonTap("Add Medication")
         
         app.buttonTap("Cancel")
@@ -92,6 +95,7 @@ class TestAppUITests: XCTestCase {
         app.navigationBars["Medication Settings"].buttons["Add New Medication"].tap()
         
         app.buttonTap("Medication 1")
+        app.buttonTap("Save Dosage")
         app.buttonTap("Add Medication")
         
         XCTAssertTrue(app.navigationBars["Medication Settings"].buttons["Add New Medication"].waitForExistence(timeout: 10))
@@ -102,6 +106,7 @@ class TestAppUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Medication with this dosage already exists."].waitForExistence(timeout: 2))
         
         app.buttonTap("Dosage 1.2")
+        app.buttonTap("Save Dosage")
         app.buttonTap("Add Medication")
         
         app.buttonTap("Medication 1, Dosage 1.1")

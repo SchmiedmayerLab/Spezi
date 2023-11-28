@@ -14,6 +14,7 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
     let id: UUID
     let type: ExampleMedication
     var dosage: ExampleDosage
+    var schedule: Schedule
     
     
     var localizedDescription: String {
@@ -21,14 +22,19 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
     }
     
     
-    init(type: ExampleMedication, dosage: ExampleDosage) {
+    init(type: ExampleMedication, dosage: ExampleDosage, schedule: Schedule) {
         self.id = UUID()
         self.type = type
         self.dosage = dosage
+        self.schedule = schedule
     }
     
     
     static func < (lhs: ExampleMedicationInstance, rhs: ExampleMedicationInstance) -> Bool {
         lhs.localizedDescription < rhs.localizedDescription
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
