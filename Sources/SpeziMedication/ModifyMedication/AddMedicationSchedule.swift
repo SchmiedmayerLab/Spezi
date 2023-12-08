@@ -15,7 +15,8 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
     @Binding private var isPresented: Bool
     
     @State private var frequency: Frequency = .regularDayIntervals(1)
-    @State private var times: [ScheduleTime] = []
+    @State private var startDate: Date = .now
+    @State private var times: [ScheduledTime] = []
     
     private let medicationOption: MI.InstanceType
     private let dosage: MI.InstanceDosage
@@ -25,7 +26,10 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
         VStack(spacing: 0) {
             Form {
                 titleSection
-                EditFrequency(frequency: $frequency)
+                    .onTapGesture {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }
+                EditFrequency(frequency: $frequency, startDate: $startDate)
                 EditScheduleTime(times: $times)
             }
             VStack(alignment: .center) {
@@ -35,7 +39,7 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                             viewModel.createMedicationInstance(
                                 medicationOption,
                                 dosage,
-                                Schedule(frequency: frequency, times: times)
+                                Schedule(frequency: frequency, times: times, startDate: startDate)
                             )
                         )
                         isPresented = false

@@ -10,84 +10,81 @@ import SwiftUI
 
 
 struct EditScheduleTime: View {
-    @Binding private var times: [ScheduleTime]
+    // We assume that a user doesn't take a single medication more than the number of possible times which are 12 * 24 for 5 minute intervals.
+    private static let maxTimesCount = (60 / ScheduledTimeDatePicker.minuteInterval) * 24
+    
+    @Binding private var times: [ScheduledTime]
+    
+    private let numberOfDosageFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
     
     
     var body: some View {
         Section {
-            List {
-                ForEach(times.sorted()) { time in
-                    HStack {
-                        Button(
-                            action: {
-                                times.removeAll(where: { $0 == time })
-                            },
-                            label: {
-                                Image(systemName: "minus.circle.fill")
-                                    .accessibilityLabel(Text("Delete", bundle: .module))
-                                    .foregroundStyle(Color.red)
-                            }
-                        )
-                        DatePicker(
-                            "Time",
-                            selection: dateBinding(time: time),
-                            displayedComponents: .hourAndMinute
-                        )
-                            .labelsHidden()
-                    }
+            if !times.isEmpty {
+                timesList
+            }
+            if times.count < Self.maxTimesCount {
+                addTimeButton
+            }
+        }
+            .onChange(of: times, initial: true) {
+                withAnimation {
+                    times.sort()
                 }
             }
-            Button(
-                action: {
-                    addNewTime()
-                },
-                label: {
-                    HStack {
-                        Image(systemName: "plus.circle.fill")
-                            .accessibilityHidden(true)
-                            .foregroundStyle(Color.green)
-                        Text("Add a time")
-                    }
-                }
-            )
+    }
+    
+    
+    private var timesList: some View {
+        List($times) { $time in
+            EditScheduleTimeRow(time: $time, times: $times, excludedDates: times.map(\.date))
         }
     }
     
-    
-    init(times: Binding<[ScheduleTime]>) {
-        self._times = times
-    }
-    
-    
-    private func dateBinding(time: ScheduleTime) -> Binding<Date> {
-        Binding(
-            get: {
-                time.date
+    private var addTimeButton: some View {
+        Button(
+            action: {
+                addNewTime()
             },
-            set: { newValue in
-                times.removeAll(where: { $0 == time })
-                let newScheduleTime = ScheduleTime(date: newValue)
-                
-                guard !times.contains(newScheduleTime) else {
-                    return
+            label: {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                        .accessibilityHidden(true)
+                        .foregroundStyle(Color.green)
+                    Text("Add a time")
                 }
-                
-                times.append(newScheduleTime)
             }
         )
     }
     
     
+    init(times: Binding<[ScheduledTime]>) {
+        self._times = times
+    }
+    
+    
     private func addNewTime() {
         var endlessLoopCounter = 0
-        var newTimeAdded = times.last?.time.date?.addingTimeInterval(60) ?? Date.now
+        let possibleNewTime = times.last?.time.date?.addingTimeInterval(Double(ScheduledTimeDatePicker.minuteInterval) * 60) ?? Date.now
+        let possibleNewTimeMinute = Calendar.current.dateComponents([.minute], from: possibleNewTime)
         
-        // We assume that a user doesn't take a single medication more than the loop limit.
-        while endlessLoopCounter < 100 {
-            let newScheduleTime = ScheduleTime(time: Calendar.current.dateComponents([.hour, .minute], from: newTimeAdded))
+        guard var newTimeAdded = Calendar.current.date(
+            bySetting: .minute,
+            value: ((possibleNewTimeMinute.minute ?? 0) / 5) * 5,
+            of: possibleNewTime
+        ) else {
+            return
+        }
+        
+        while endlessLoopCounter <= Self.maxTimesCount {
+            let newScheduleTime = ScheduledTime(date: newTimeAdded)
             
             guard !times.contains(newScheduleTime) else {
-                newTimeAdded.addTimeInterval(60)
+                newTimeAdded.addTimeInterval(Double(ScheduledTimeDatePicker.minuteInterval) * 60)
                 endlessLoopCounter += 1
                 continue
             }

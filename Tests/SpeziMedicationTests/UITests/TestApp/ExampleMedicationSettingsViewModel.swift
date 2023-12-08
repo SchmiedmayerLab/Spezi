@@ -24,7 +24,17 @@ class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, C
         
         return medicationInstances
             .map { medicationInstance in
-                "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription) - \(medicationInstance.schedule)"
+                let scheduleDescription: String
+                switch medicationInstance.schedule.frequency {
+                case let .regularDayIntervals(dayInterval):
+                    scheduleDescription = "RegularDayIntervals: \(dayInterval)"
+                case let .specificDaysOfWeek(weekdays):
+                    scheduleDescription = "SpecificDaysOfWeek: \(weekdays)"
+                case .asNeeded:
+                    scheduleDescription = "AsNeeded"
+                }
+                
+                return "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription) - \(scheduleDescription)"
             }
             .joined(separator: ", ")
     }

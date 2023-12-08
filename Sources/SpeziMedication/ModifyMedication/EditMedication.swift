@@ -33,7 +33,7 @@ struct EditMedication<MI: MedicationInstance>: View {
                             .labelsHidden()
                     }
                     Section(String(localized: "Schedule", bundle: .module)) {
-                        EditFrequency(frequency: $schedule.frequency)
+                        EditFrequency(frequency: $schedule.frequency, startDate: $schedule.startDate)
                     }
                     Section(String(localized: "Schedule Times", bundle: .module)) {
                         EditScheduleTime(times: $schedule.times)

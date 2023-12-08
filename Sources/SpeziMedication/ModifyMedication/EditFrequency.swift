@@ -11,6 +11,7 @@ import SwiftUI
 
 struct EditFrequency: View {
     @Binding private var frequency: Frequency
+    @Binding private var startDate: Date
     @State private var showFrequencySheet = false
     
     
@@ -32,12 +33,13 @@ struct EditFrequency: View {
             )
         }
             .sheet(isPresented: $showFrequencySheet) {
-                ScheduleFrequencyView(frequency: $frequency)
+                ScheduleFrequencyView(frequency: $frequency, startDate: $startDate)
             }
     }
     
     
-    init(frequency: Binding<Frequency>) {
+    init(frequency: Binding<Frequency>, startDate: Binding<Date>) {
         self._frequency = frequency
+        self._startDate = startDate
     }
 }

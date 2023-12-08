@@ -36,7 +36,7 @@ class TestAppUITests: XCTestCase {
         
         try await Task.sleep(for: .seconds(2))
         
-        XCTAssertTrue(app.staticTexts["Medication 1 - Dosage 1.1 - Schedule(frequency: Every Day, times: [])"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["Medication 1 - Dosage 1.1 - RegularDayIntervals: 1"].waitForExistence(timeout: 2))
     }
     
     func testSpeziMedicationDelete() throws {

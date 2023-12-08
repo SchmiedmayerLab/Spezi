@@ -12,11 +12,11 @@ import SwiftUI
 struct ScheduleFrequencyView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var outsideFrequency: Frequency
+    @Binding private var outsideFrequency: Frequency
+    @Binding private var startDate: Date
     @State private var frequency: Frequency
     @State private var regularInterval: Int = 1
     @State private var daysOfTheWeek: Weekdays = .all
-    @State private var startDate: Date = .now
     
     var body: some View {
         NavigationStack {
@@ -114,8 +114,9 @@ struct ScheduleFrequencyView: View {
     }
     
     
-    init(frequency: Binding<Frequency>) {
+    init(frequency: Binding<Frequency>, startDate: Binding<Date>) {
         self._outsideFrequency = frequency
+        self._startDate = startDate
         self._frequency = State(wrappedValue: frequency.wrappedValue)
         
         switch frequency.wrappedValue {
@@ -153,6 +154,7 @@ struct ScheduleFrequencyView: View {
 
 #Preview {
     @State var frequency: Frequency = .specificDaysOfWeek(.all)
+    @State var startDate: Date = .now
     
-    return ScheduleFrequencyView(frequency: $frequency)
+    return ScheduleFrequencyView(frequency: $frequency, startDate: $startDate)
 }

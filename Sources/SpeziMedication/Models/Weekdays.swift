@@ -53,6 +53,32 @@ public struct Weekdays: OptionSet, Codable, Hashable, CaseIterable, Identifiable
     }
     
     
+    /// Creates a Weekday instance using the index of Gregorian calendar weekdays.
+    ///
+    /// The weekday units are the numbers 1 through N (where for the Gregorian calendar N=7 and 1 is Sunday).
+    /// - Parameter weekDay: The number of the weekday (N=7 and 1 is Sunday).
+    public init?(weekDay: Int) {
+        switch weekDay {
+        case 1:
+            self = .sunday
+        case 2:
+            self = .monday
+        case 3:
+            self = .tuesday
+        case 4:
+            self = .wednesday
+        case 5:
+            self = .thursday
+        case 6:
+            self = .friday
+        case 7:
+            self = .saturday
+        default:
+            return nil
+        }
+    }
+    
+    
     private func descriptionFrom(weekdayDescriptions: [String]) -> String {
         if self == .all {
             return String(localized: "Every Day", bundle: .module)
