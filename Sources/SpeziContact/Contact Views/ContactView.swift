@@ -7,7 +7,7 @@
 //
 
 import Contacts
-import MessageUI
+@_implementationOnly import MessageUI
 import SpeziPersonalInfo
 import SpeziViews
 import SwiftUI
@@ -238,9 +238,44 @@ struct ContactView_Previews: PreviewProvider {
             ]
         )
     }
-    
-    
+
+    static let leland = Contact(
+        name: PersonNameComponents(
+            givenName: "Leland",
+            familyName: "Stanford"
+        ),
+        image: Image(systemName: "figure.wave.circle"),
+        title: "University Founder",
+        description: """
+                     Amasa Leland Stanford (March 9, 1824 – June 21, 1893) was an American industrialist and politician. [...] \
+                     He and his wife Jane were also the founders of Stanford University, which they named after their late son.
+                     [https://en.wikipedia.org/wiki/Leland_Stanford]
+                     """,
+        organization: "Stanford University",
+        address: {
+            let address = CNMutablePostalAddress()
+            address.country = "USA"
+            address.state = "CA"
+            address.postalCode = "94305"
+            address.city = "Stanford"
+            address.street = "450 Serra Mall"
+            return address
+        }(),
+        contactOptions: [
+            .call("+1 (650) 723-2300"),
+            .text("+1 (650) 723-2300"),
+            .email(addresses: ["contact@stanford.edu"]),
+            ContactOption(
+                image: Image(systemName: "safari.fill"),
+                title: "Website",
+                action: {}
+            )
+        ]
+    )
+
+
     static var previews: some View {
+        ContactView(contact: Self.leland)
         ContactView(contact: Self.mock)
     }
 }

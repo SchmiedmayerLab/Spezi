@@ -47,8 +47,7 @@ struct ContactsList_Previews: PreviewProvider {
         NavigationStack {
             ContactsList(
                 contacts: [
-                    ContactView_Previews.mock,
-                    ContactView_Previews.mock,
+                    ContactView_Previews.leland,
                     ContactView_Previews.mock
                 ]
             )

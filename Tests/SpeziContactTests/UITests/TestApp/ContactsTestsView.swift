@@ -11,6 +11,44 @@ import SwiftUI
 
 
 struct ContactsTestsView: View {
+    @MainActor static let leland = Contact(
+        name: PersonNameComponents(
+            givenName: "Leland",
+            familyName: "Stanford"
+        ),
+        image: Image(systemName: "figure.wave.circle"), // swiftlint:disable:this accessibility_label_for_image
+        title: "University Founder",
+        description: """
+                     Amasa Leland Stanford (March 9, 1824 – June 21, 1893) was an American industrialist and politician. [...] \
+                     He and his wife Jane were also the founders of Stanford University, which they named after their late son.
+                     [https://en.wikipedia.org/wiki/Leland_Stanford]
+                     """,
+        organization: "Stanford University",
+        address: {
+            let address = CNMutablePostalAddress()
+            address.country = "USA"
+            address.state = "CA"
+            address.postalCode = "94305"
+            address.city = "Stanford"
+            address.street = "450 Serra Mall"
+            return address
+        }(),
+        contactOptions: [
+            .call("+1 (650) 723-2300"),
+            .text("+1 (650) 723-2300"),
+            .email(addresses: ["contact@stanford.edu"]),
+            ContactOption(
+                image: Image(systemName: "safari.fill"), // swiftlint:disable:this accessibility_label_for_image
+                title: "Website",
+                action: {
+                    if let url = URL(string: "https://stanford.edu") {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            )
+        ]
+    )
+
     static let mock = Contact(
         name: PersonNameComponents(givenName: "Paul", familyName: "Schmiedmayer"),
         image: Image(systemName: "figure.wave.circle"), // swiftlint:disable:this accessibility_label_for_image
@@ -38,10 +76,10 @@ struct ContactsTestsView: View {
             ContactOption(image: Image(systemName: "icloud.fill"), title: "Cloud", action: { })
         ]
     )
-    
-    
+
+
     var body: some View {
-        ContactsList(contacts: [ContactsTestsView.mock, ContactsTestsView.mock])
+        ContactsList(contacts: [ContactsTestsView.mock, ContactsTestsView.leland])
             .navigationTitle("Contacts")
             .background(Color(.systemGroupedBackground))
     }

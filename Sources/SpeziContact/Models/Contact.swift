@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-@_exported import Contacts
+@_exported import Contacts.CNPostalAddress
 import SwiftUI
 
 

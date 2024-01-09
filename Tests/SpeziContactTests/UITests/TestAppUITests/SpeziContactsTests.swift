@@ -14,13 +14,14 @@ final class ContactsTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        XCTAssertEqual(app.staticTexts.matching(identifier: "Contact: Paul Schmiedmayer").count, 2)
-        XCTAssertEqual(app.staticTexts.matching(identifier: "A Title at Stanford University").count, 2)
+
+        XCTAssertTrue(app.staticTexts["Contact: Paul Schmiedmayer"].waitForExistence(timeout: 2.0))
+        XCTAssertTrue(app.staticTexts["A Title at Stanford University"].exists)
         
         let labelPredicate = NSPredicate(format: "label CONTAINS[c] %@", "This is a description")
         XCTAssert(app.staticTexts.element(matching: labelPredicate).exists)
         
-        XCTAssertEqual(app.buttons.matching(identifier: "Call").count, 4)
+        XCTAssertEqual(app.buttons.matching(identifier: "Call").count, 3)
         app.buttons.matching(identifier: "Call").element(boundBy: 0).tap()
         app.alerts["Call"].scrollViews.otherElements.buttons["Ok"].tap()
         
@@ -42,7 +43,7 @@ final class ContactsTests: XCTestCase {
         app.buttons.matching(identifier: "Email").element(boundBy: 0).tap()
         app.alerts["Email"].scrollViews.otherElements.buttons["Ok"].tap()
         
-        XCTAssertEqual(app.buttons.matching(identifier: "Cloud").count, 2)
+        XCTAssertEqual(app.buttons.matching(identifier: "Cloud").count, 1)
         app.buttons.matching(identifier: "Cloud").element(boundBy: 0).tap()
 
         let predicate = NSPredicate(format: "label BEGINSWITH 'Address: 450 Serra Mall'")
