@@ -14,7 +14,7 @@ Provides speech-to-text capabilities via Apple's `Speech` framework.
 
 ## Overview
 
-The Spezi ``SpeechRecognizer` encapsulates the functionality of Apple's `Speech` framework, more specifically, the `SFSpeechRecognizer`.
+The Spezi ``SpeechRecognizer`` encapsulates the functionality of Apple's `Speech` framework, more specifically, the `SFSpeechRecognizer`.
 It provides methods to start and stop voice recognition and publishes the state of recognition and its availability.
 
 ## Setup

@@ -10,7 +10,10 @@ import AVFoundation
 import Observation
 import Spezi
 
-/// The Spezi ``SpeechSynthesizer`` encapsulates the functionality of Apple's `AVFoundation` framework, more specifically, the `AVSpeechSynthesizer`.
+
+/// Produces synthesized speech from text utterances.
+///
+/// The Spezi `SpeechSynthesizer` encapsulates the functionality of Apple's `AVFoundation` framework, more specifically, the `AVSpeechSynthesizer`.
 /// It provides methods to start and stop voice synthesizing and publishes the state of the process.
 ///
 /// > Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
