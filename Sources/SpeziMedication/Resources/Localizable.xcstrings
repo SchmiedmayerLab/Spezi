@@ -20,13 +20,30 @@
 
     },
     "Cancel" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "Choose Days" : {
 
     },
     "Choose Interval" : {
 
+    },
+    "Close" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
     },
     "Continue with no Medications" : {
 

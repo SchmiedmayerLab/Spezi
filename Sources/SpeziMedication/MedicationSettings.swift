@@ -31,6 +31,14 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
         medicationOptions(medicationSettingsViewModel)
     }
     
+    private var cancelButtonTitie: String {
+        if modifiedMedications {
+            String(localized: "Cancel", bundle: .module)
+        } else {
+            String(localized: "Close", bundle: .module)
+        }
+    }
+    
     public var body: some View {
         VStack(spacing: 0) {
             if viewModel.medicationInstances.isEmpty {
@@ -60,7 +68,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                 }
                 if let isPresented {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button(String(localized: "Cancel", bundle: .module)) {
+                        Button(cancelButtonTitie) {
                             if !modifiedMedications {
                                 isPresented.wrappedValue = false
                             } else {
