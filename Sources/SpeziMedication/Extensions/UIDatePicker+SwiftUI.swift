@@ -13,7 +13,7 @@ struct ScheduledTimeDatePicker: UIViewRepresentable {
     class Coordinator: NSObject {
         private var lastDate: Date
         private let date: Binding<Date>
-        private let excludedDates: [Date]
+        fileprivate var excludedDates: [Date]
         
         
         fileprivate init(date: Binding<Date>, excludedDates: [Date]) {
@@ -69,5 +69,6 @@ struct ScheduledTimeDatePicker: UIViewRepresentable {
     
     func updateUIView(_ datePicker: UIDatePicker, context: Context) {
         datePicker.date = date
+        context.coordinator.excludedDates = excludedDates.filter { $0 != date }
     }
 }

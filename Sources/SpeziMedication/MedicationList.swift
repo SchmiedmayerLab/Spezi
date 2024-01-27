@@ -13,33 +13,27 @@ struct MedicationList<MI: MedicationInstance>: View {
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
     
-    private var sortedMedicationInstances: [MI] {
-        Array(viewModel.medicationInstances).sorted()
-    }
-    
-    
     var body: some View {
+        @Bindable var viewModel = viewModel
         List {
-            ForEach(sortedMedicationInstances) { medicationInstance in
+            ForEach($viewModel.medicationInstances) { medicationInstance in
                 NavigationLink {
-                    EditMedication<MI>(
-                        medicationInstance: medicationInstance.id,
-                        initialDosage: medicationInstance.dosage,
-                        initialSchedule: medicationInstance.schedule
-                    )
+                    EditMedication(medicationInstance: medicationInstance)
                         .environment(viewModel)
                 } label: {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(medicationInstance.localizedDescription)
+                        Text(medicationInstance.wrappedValue.localizedDescription)
                             .font(.headline)
-                        Text(medicationInstance.dosage.localizedDescription)
+                        Text(medicationInstance.wrappedValue.dosage.localizedDescription)
                             .font(.subheadline)
                     }
                 }
             }
                 .onDelete { offsets in
                     for offset in offsets {
-                        viewModel.medicationInstances.remove(sortedMedicationInstances[offset])
+                        withAnimation {
+                            _ = viewModel.medicationInstances.remove(at: offset)
+                        }
                     }
                 }
         }

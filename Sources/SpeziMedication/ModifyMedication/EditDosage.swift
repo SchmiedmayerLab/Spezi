@@ -47,6 +47,9 @@ struct EditDosage<MI: MedicationInstance>: View {
         }
             .pickerStyle(.inline)
             .accessibilityIdentifier(String(localized: "Dosage Picker", bundle: .module))
+            .onChange(of: dosage) {
+                viewModel.medicationInstances.sort()
+            }
     }
     
     

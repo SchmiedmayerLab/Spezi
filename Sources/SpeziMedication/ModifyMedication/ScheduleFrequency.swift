@@ -14,9 +14,11 @@ struct ScheduleFrequencyView: View {
     
     @Binding private var outsideFrequency: Frequency
     @Binding private var startDate: Date
+    
     @State private var frequency: Frequency
     @State private var regularInterval: Int = 1
     @State private var daysOfTheWeek: Weekdays = .all
+    
     
     var body: some View {
         NavigationStack {

@@ -13,12 +13,20 @@ import Foundation
 ///
 /// ``Medication``'s are instanced as ``MedicationInstance``s.
 public protocol Medication: Codable, Comparable, Hashable {
-/// The dosage type associated with the medication.
+    /// The dosage type associated with the medication.
     associatedtype MedicationDosage: Dosage
     
     
-/// Localized description of the medication.
+    /// Localized description of the medication.
     var localizedDescription: String { get }
-/// Dosage options defining a set of options when instantiating a ``MedicationInstance``.
+    /// Dosage options defining a set of options when instantiating a ``MedicationInstance``.
     var dosages: [MedicationDosage] { get }
+}
+
+
+extension Medication {
+    /// See Comparable
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.localizedDescription < rhs.localizedDescription
+    }
 }

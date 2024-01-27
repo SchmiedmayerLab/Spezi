@@ -35,13 +35,14 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
             VStack(alignment: .center) {
                 AsyncButton(
                     action: {
-                        viewModel.medicationInstances.insert(
+                        viewModel.medicationInstances.append(
                             viewModel.createMedicationInstance(
                                 medicationOption,
                                 dosage,
                                 Schedule(frequency: frequency, times: times, startDate: startDate)
                             )
                         )
+                        viewModel.medicationInstances.sort()
                         isPresented = false
                     },
                     label: {

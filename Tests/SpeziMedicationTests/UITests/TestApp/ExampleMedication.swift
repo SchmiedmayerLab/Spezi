@@ -12,9 +12,4 @@ import SpeziMedication
 struct ExampleMedication: Medication, Comparable {
     var localizedDescription: String
     var dosages: [ExampleDosage]
-    
-    
-    static func < (lhs: ExampleMedication, rhs: ExampleMedication) -> Bool {
-        lhs.localizedDescription < rhs.localizedDescription
-    }
 }

@@ -10,8 +10,7 @@ import Foundation
 
 
 /// Schedule of a medication.
-@Observable
-public class Schedule: Codable, Equatable, Hashable {
+public struct Schedule: Codable, Equatable, Hashable {
     enum CodingKeys: CodingKey {
         case frequency
         case times
@@ -36,7 +35,7 @@ public class Schedule: Codable, Equatable, Hashable {
         self.startDate = startDate
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.frequency = try container.decode(Frequency.self, forKey: .frequency)
         self.times = try container.decode([ScheduledTime].self, forKey: .times)
@@ -84,7 +83,9 @@ public class Schedule: Codable, Equatable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.frequency, forKey: .frequency)
-        try container.encode(self.times, forKey: .times)
+        if !times.isEmpty {
+            try container.encode(self.times, forKey: .times)
+        }
         try container.encode(self.startDate, forKey: .startDate)
     }
 }

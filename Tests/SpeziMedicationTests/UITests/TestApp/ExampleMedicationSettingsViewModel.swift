@@ -34,7 +34,7 @@ class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, C
                     scheduleDescription = "AsNeeded"
                 }
                 
-                return "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription) - \(scheduleDescription)"
+                return "\(medicationInstance.type.localizedDescription) - \(medicationInstance.dosage.localizedDescription) - \(scheduleDescription)"
             }
             .joined(separator: ", ")
     }

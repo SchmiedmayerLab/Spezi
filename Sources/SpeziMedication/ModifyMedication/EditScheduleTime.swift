@@ -13,35 +13,20 @@ struct EditScheduleTime: View {
     // We assume that a user doesn't take a single medication more than the number of possible times which are 12 * 24 for 5 minute intervals.
     private static let maxTimesCount = (60 / ScheduledTimeDatePicker.minuteInterval) * 24
     
-    @Binding private var times: [ScheduledTime]
     
-    private let numberOfDosageFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
+    @Binding private var times: [ScheduledTime]
     
     
     var body: some View {
         Section {
             if !times.isEmpty {
-                timesList
+                List($times) { time in
+                    EditScheduleTimeRow(time: time, times: $times)
+                }
             }
             if times.count < Self.maxTimesCount {
                 addTimeButton
             }
-        }
-            .onChange(of: times, initial: true) {
-                withAnimation {
-                    times.sort()
-                }
-            }
-    }
-    
-    
-    private var timesList: some View {
-        List($times) { $time in
-            EditScheduleTimeRow(time: $time, times: $times, excludedDates: times.map(\.date))
         }
     }
     
@@ -89,7 +74,10 @@ struct EditScheduleTime: View {
                 continue
             }
             
-            times.append(newScheduleTime)
+            withAnimation {
+                times.append(newScheduleTime)
+                times.sort()
+            }
             return
         }
     }
