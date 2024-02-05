@@ -17,6 +17,7 @@
 		2FADBE9C2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FADBE9B2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift */; };
 		2FE5BC612AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE5BC602AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift */; };
 		2FE5BC632AF86CA20089B6C0 /* ExampleMedicationInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE5BC622AF86CA20089B6C0 /* ExampleMedicationInstance.swift */; };
+		97B786BA2B717396004066DB /* Spezi in Frameworks */ = {isa = PBXBuildFile; productRef = 97B786B92B717396004066DB /* Spezi */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97B786BA2B717396004066DB /* Spezi in Frameworks */,
 				2F68C3C8292EA52000B3E12C /* SpeziMedication in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,6 +150,7 @@
 			name = TestApp;
 			packageProductDependencies = (
 				2F68C3C7292EA52000B3E12C /* SpeziMedication */,
+				97B786B92B717396004066DB /* Spezi */,
 			);
 			productName = Example;
 			productReference = 2F6D139228F5F384007C25D6 /* TestApp.app */;
@@ -199,6 +202,9 @@
 				Base,
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
+			packageReferences = (
+				97B786B82B717396004066DB /* XCRemoteSwiftPackageReference "Spezi" */,
+			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -683,10 +689,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		97B786B82B717396004066DB /* XCRemoteSwiftPackageReference "Spezi" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/StanfordSpezi/Spezi";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		2F68C3C7292EA52000B3E12C /* SpeziMedication */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SpeziMedication;
+		};
+		97B786B92B717396004066DB /* Spezi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97B786B82B717396004066DB /* XCRemoteSwiftPackageReference "Spezi" */;
+			productName = Spezi;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

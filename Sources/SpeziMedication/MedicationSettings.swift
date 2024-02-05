@@ -10,7 +10,7 @@ import SpeziViews
 import SwiftUI
 
 
-/// Present medication settings includings mechanisms to add, edit, and delete medications.
+/// Present medication settings including mechanisms to add, edit, and delete medications.
 public struct MedicationSettings<MI: MedicationInstance>: View {
     private let isPresented: Binding<Bool>?
     private let allowEmtpySave: Bool
