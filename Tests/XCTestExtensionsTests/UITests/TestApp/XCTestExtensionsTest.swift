@@ -27,12 +27,12 @@ struct XCTestExtensionsTest: View {
                 }
             }
             Section {
-                TextField("TextField", text: $text)
+                TextField("TextField", text: $text, prompt: Text("TextField"))
                 Text(text.isEmpty ? "No text set ..." : text)
             }
                 .submitLabel(.continue)
             Section {
-                SecureField("SecureField", text: $secureText)
+                SecureField("SecureField", text: $secureText, prompt: Text("SecureField"))
                 Text(secureText.isEmpty ? "No secure text set ..." : secureText)
             }
         }

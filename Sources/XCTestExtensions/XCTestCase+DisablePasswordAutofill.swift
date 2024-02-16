@@ -20,7 +20,11 @@ extension XCTestCase {
     ///
     /// > Warning: While this workaround worked well until 17.2, we experienced a crash of the passwords section in the IOS 17.2 passwords app on the iOS simulator, which no longer allows us to use this workaround.
     /// We recommend using a custom setup script to skip password-related functionality in your UI tests until there is a better workaround. Plase inspect the logic to setup simulators in the [xcodebuild-or-fastlane.yml](https://github.com/StanfordBDHG/.github/blob/main/.github/workflows/xcodebuild-or-fastlane.yml) workflow and be sure to `setupSimulators: true` if you use the GitHub action as a reusable workflow.
-    @available(iOS, deprecated: 17.2, message: "Plase use a custom setup script in your CI environment to disable password autofill.")
+    @available(iOS, deprecated: 17.2, message: "Please use a custom setup script in your CI environment to disable password autofill.")
+    @available(watchOS, unavailable)
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
+    @available(visionOS, unavailable)
     public func disablePasswordAutofill() throws {
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
         settingsApp.terminate()
@@ -28,7 +32,7 @@ extension XCTestCase {
         
         XCTAssert(settingsApp.staticTexts["PASSWORDS"].waitForExistence(timeout: 5.0))
         settingsApp.staticTexts["PASSWORDS"].tap()
-        
+
         if #available(iOS 17.2, *) {
             sleep(2)
             
@@ -40,7 +44,7 @@ extension XCTestCase {
             XCTAssert(settingsApp.navigationBars.staticTexts["Passwords"].waitForExistence(timeout: 2.0))
         }
         
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let springboard = XCUIApplication(bundleIdentifier: XCUIApplication.homeScreenBundle)
         if springboard.secureTextFields["Passcode field"].waitForExistence(timeout: 30.0) {
             let passcodeInput = springboard.secureTextFields["Passcode field"]
             passcodeInput.tap()

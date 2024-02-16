@@ -24,11 +24,21 @@ private enum SubmitLabels: String, CaseIterable {
     case send = "Send"
 }
 
+
 extension XCUIApplication {
     /// Dismisses the keyboard if it is currently displayed.
     public func dismissKeyboard() {
+        #if os(visionOS)
+        let keyboard = visionOSKeyboard
+        #else
         let keyboard = keyboards.firstMatch
+        #endif
 
+        #if os(macOS)
+        return // we cannot dismiss a keyboard in macOS
+        #endif
+
+        // on vision os this check always succeed. So dismissing a keyboard in visionOS when it isn't launched is a problem!
         guard keyboard.exists else {
             return
         }

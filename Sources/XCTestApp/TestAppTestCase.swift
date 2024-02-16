@@ -7,7 +7,7 @@
 //
 
 
-/// A collection of test cases that can be exectured in an ``TestAppView``.
+/// A collection of test cases that can be executed in an ``TestAppView``.
 public protocol TestAppTestCase: Identifiable {
     /// Implement this method to run all the tests that should be executed.
     func runTests() async throws

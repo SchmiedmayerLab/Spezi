@@ -10,14 +10,37 @@ import XCTest
 
 
 extension XCUIApplication {
+    /// The bundle identifier for the home screen for the specific platform.
+    ///
+    /// E.g., `com.apple.springboard` on iOS.
+    @available(macOS, unavailable)
+    @available(watchOS, unavailable)
+    public static var homeScreenBundle: String {
+#if os(visionOS)
+        "com.apple.RealityLauncher"
+#elseif os(tvOS)
+        "com.apple.pineboard"
+#elseif os(iOS)
+        "com.apple.springboard"
+#else
+        preconditionFailure("Unsupported platform.")
+#endif
+    }
+
     /// Deletes the application from the iOS springboard (iOS home screen) and launches it after it has been deleted and reinstalled.
     /// - Parameter appName: The name of the application as displayed on the springboard (iOS home screen).
+    @available(macOS, unavailable)
+    @available(watchOS, unavailable)
     public func deleteAndLaunch(withSpringboardAppName appName: String) {
         self.terminate()
-        
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+
+        let springboard = XCUIApplication(bundleIdentifier: Self.homeScreenBundle)
+        #if os(visionOS)
+        springboard.launch() // springboard is in `runningBackgroundSuspended` state on visionOS. So we need to launch it not just activate
+        #else
         springboard.activate()
-        
+        #endif
+
         if springboard.icons[appName].firstMatch.waitForExistence(timeout: 10.0) {
             if !springboard.icons[appName].firstMatch.isHittable {
                 springboard.swipeLeft()
@@ -37,12 +60,22 @@ extension XCUIApplication {
                 
                 XCTAssertTrue(springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0))
             }
+
+            springboard.buttons["Remove App"].tap()
             
-            springboard.collectionViews.buttons["Remove App"].tap()
-            XCTAssertTrue(springboard.alerts["Remove “\(appName)”?"].scrollViews.otherElements.buttons["Delete App"].waitForExistence(timeout: 10.0))
-            springboard.alerts["Remove “\(appName)”?"].scrollViews.otherElements.buttons["Delete App"].tap()
-            XCTAssertTrue(springboard.alerts["Delete “\(appName)”?"].scrollViews.otherElements.buttons["Delete"].waitForExistence(timeout: 10.0))
-            springboard.alerts["Delete “\(appName)”?"].scrollViews.otherElements.buttons["Delete"].tap()
+            #if os(visionOS)
+            // alerts are running in their own process on visionOS (lol). Took me literally 3 hours.
+            let notifications = visionOSNotifications
+
+            XCTAssert(notifications.staticTexts["Delete “\(appName)”?"].waitForExistence(timeout: 5.0))
+            XCTAssert(notifications.buttons["Delete"].waitForExistence(timeout: 2.0))
+            notifications.buttons["Delete"].tap() // currently no better way of hitting some "random" delete button.
+            #else
+            XCTAssertTrue(springboard.alerts["Remove “\(appName)”?"].buttons["Delete App"].waitForExistence(timeout: 10.0))
+            springboard.alerts["Remove “\(appName)”?"].buttons["Delete App"].tap()
+            XCTAssertTrue(springboard.alerts["Delete “\(appName)”?"].buttons["Delete"].waitForExistence(timeout: 10.0))
+            springboard.alerts["Delete “\(appName)”?"].buttons["Delete"].tap()
+            #endif
         }
         
         // Wait for 5 Seconds for the application to be deleted and removed.

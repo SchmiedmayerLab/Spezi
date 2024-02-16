@@ -15,7 +15,7 @@ struct DismissKeyboardTest: View {
         var label: String
 
         var body: some View {
-            TextField(text: $text) {
+            TextField(text: $text, prompt: Text(label)) {
                 Text(label)
             }
                 .submitLabel(submitLabel)

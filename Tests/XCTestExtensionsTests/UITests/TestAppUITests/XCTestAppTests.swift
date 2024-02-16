@@ -14,7 +14,8 @@ class XCTestAppTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         
-        app.staticTexts["XCTestApp"].tap()
+        XCTAssert(app.buttons["XCTestApp"].waitForExistence(timeout: 5.0))
+        app.buttons["XCTestApp"].tap()
         
         XCTAssert(app.staticTexts["Passed"].waitForExistence(timeout: 5))
     }
