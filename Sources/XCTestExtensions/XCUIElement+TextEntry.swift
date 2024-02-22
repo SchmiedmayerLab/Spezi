@@ -202,7 +202,7 @@ extension XCUIElement {
         #if os(visionOS)
         tap()
         _ = app.visionOSKeyboard.waitForExistence(timeout: 2.0) // this will always succeed
-        #elseif os(macOS)
+        #elseif os(macOS) || targetEnvironment(macCatalyst)
         // this should hit the keyboard most likely. The `.keyboard` query doesn't exist on macOS.
         coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         #else
