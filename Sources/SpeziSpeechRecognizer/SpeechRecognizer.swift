@@ -73,7 +73,7 @@ import Spezi
 /// }
 /// ```
 @Observable
-public class SpeechRecognizer: NSObject, Module, DefaultInitializable, EnvironmentAccessible, SFSpeechRecognizerDelegate {
+public final class SpeechRecognizer: NSObject, Module, DefaultInitializable, EnvironmentAccessible, SFSpeechRecognizerDelegate, @unchecked Sendable {
     private static let logger = Logger(subsystem: "edu.stanford.spezi", category: "SpeziSpeech")
     private let speechRecognizer: SFSpeechRecognizer?
     private let audioEngine: AVAudioEngine?
@@ -133,6 +133,8 @@ public class SpeechRecognizer: NSObject, Module, DefaultInitializable, Environme
                 return
             }
             
+            // No alternative on macOS, only minor impact on functionality
+            #if !os(macOS)
             do {
                 let audioSession = AVAudioSession.sharedInstance()
                 try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
@@ -142,6 +144,7 @@ public class SpeechRecognizer: NSObject, Module, DefaultInitializable, Environme
                 stop()
                 continuation.finish(throwing: error)
             }
+            #endif
             
             let inputNode = audioEngine.inputNode
             

@@ -57,7 +57,8 @@ import Spezi
 /// }
 /// ```
 @Observable
-public class SpeechSynthesizer: NSObject, Module, DefaultInitializable, EnvironmentAccessible, AVSpeechSynthesizerDelegate {
+public final class SpeechSynthesizer: NSObject, Module, DefaultInitializable, EnvironmentAccessible,
+                                      AVSpeechSynthesizerDelegate, @unchecked Sendable {
     /// The wrapped  `AVSpeechSynthesizer` instance.
     private let avSpeechSynthesizer = AVSpeechSynthesizer()
     

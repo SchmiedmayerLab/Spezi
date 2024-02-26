@@ -6,11 +6,13 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Speech
 import SpeziSpeechRecognizer
 import SpeziSpeechSynthesizer
 import SwiftUI
 
 
+@MainActor
 struct SpeechTestView: View {
     @Environment(SpeechRecognizer.self) private var speechRecognizer
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
@@ -26,8 +28,8 @@ struct SpeechTestView: View {
                     .padding()
             }
                 .frame(
-                    width: UIScreen.main.bounds.width * 0.8,
-                    height: UIScreen.main.bounds.height * 0.3
+                    width: 350,
+                    height: 200
                 )
                 .border(.gray)
                 .padding(.horizontal)
@@ -55,7 +57,7 @@ struct SpeechTestView: View {
                     .accessibilityLabel(Text("Microphone Button"))
                     .font(.largeTitle)
                     .foregroundColor(
-                        speechRecognizer.isRecording ? .red : Color(.systemGray2)
+                        speechRecognizer.isRecording ? .red : .gray
                     )
                     .scaleEffect(speechRecognizer.isRecording ? 1.2 : 1.0)
                     .opacity(speechRecognizer.isRecording ? 0.7 : 1.0)
@@ -77,7 +79,7 @@ struct SpeechTestView: View {
                     .accessibilityLabel(Text("Playback Button"))
                     .font(.largeTitle)
                     .foregroundColor(
-                        speechSynthesizer.isSpeaking ? .blue : Color(.systemGray2)
+                        speechSynthesizer.isSpeaking ? .blue : .gray
                     )
                     .scaleEffect(speechSynthesizer.isSpeaking ? 1.2 : 1.0)
                     .opacity(speechSynthesizer.isSpeaking ? 0.7 : 1.0)
@@ -119,3 +121,6 @@ struct SpeechTestView: View {
 #Preview {
     SpeechTestView()
 }
+
+
+extension SFSpeechRecognitionResult: @unchecked Sendable {}
