@@ -13,7 +13,7 @@ import SwiftUI
 /// Present medication settings including mechanisms to add, edit, and delete medications.
 public struct MedicationSettings<MI: MedicationInstance>: View {
     private let isPresented: Binding<Bool>?
-    private let allowEmtpySave: Bool
+    private let allowEmptySave: Bool
     private let medicationSettingsViewModel: any MedicationSettingsViewModel<MI>
     private let action: () -> Void
         
@@ -101,7 +101,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
     
     @MainActor private var saveMedicationButton: some View {
         let title: String
-        if viewModel.medicationInstances.isEmpty, !modifiedMedications && allowEmtpySave {
+        if viewModel.medicationInstances.isEmpty, !modifiedMedications && allowEmptySave {
             title = String(localized: "Continue with no Medications", bundle: .module)
         } else {
             title = String(localized: "Save Medications", bundle: .module)
@@ -128,7 +128,7 @@ isPresented?.wrappedValue = false
             }
         )
             .buttonStyle(.borderedProminent)
-            .disabled(!modifiedMedications && !allowEmtpySave)
+            .disabled(!modifiedMedications && !allowEmptySave)
             .padding()
             .background {
                 Color(uiColor: .systemGroupedBackground)
@@ -153,18 +153,18 @@ isPresented?.wrappedValue = false
     /// Initializes a new ``MedicationSettings`` view.
     /// - Parameters:
     ///   - isPresented: An optional binding to allow the ``MedicationSettings`` view to control the presentation of itself, should be used in combination with e.g. a `.sheet(isPresented:)` modifier.
-    ///   - allowEmtpySave: Flag to determine if saving without any medication instances is allowed.
+    ///   - allowEmptySave: Flag to determine if saving without any medication instances is allowed.
     ///   - medicationSettingsViewModel: The ``MedicationSettingsViewModel`` to manage the medication settings.
     ///   - action: An optional closure to be executed after persisting medications and performing custom logic.
     public init( // swiftlint:disable:this function_default_parameter_at_end
         // We disable the default parameter order here to ensure that the action can be a trailing closure but only needs to be optionally provided.
         isPresented: Binding<Bool>? = nil,
-        allowEmtpySave: Bool = false,
+        allowEmptySave: Bool = false,
         medicationSettingsViewModel: any MedicationSettingsViewModel<MI>,
         action: @escaping () -> Void = {}
     ) {
         self.isPresented = isPresented
-        self.allowEmtpySave = allowEmtpySave
+        self.allowEmptySave = allowEmptySave
         self.medicationSettingsViewModel = medicationSettingsViewModel
         self.action = action
         self.viewModel = medicationSettingsViewModel.internalViewModel
