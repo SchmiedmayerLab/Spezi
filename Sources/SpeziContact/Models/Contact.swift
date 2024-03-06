@@ -11,6 +11,56 @@ import SwiftUI
 
 
 /// Encodes the contact information.
+///
+/// ### Usage
+///
+/// The following example demonstrates the initialization of a ``Contact`` and an example view
+/// that displays its corresponding ``Contact`` name, image, title, and organization.
+/// ```swift
+/// struct ContactRow: View {
+///     let contact =
+///         Contact(
+///             name: PersonNameComponents(
+///                 givenName: "First",
+///                 familyName: "Last"
+///             ),
+///             image: Image(systemName: "figure.wave.circle"),
+///             title: "Title",
+///             description: "Description",
+///             organization: "Organization",
+///             address: {
+///                 let address = CNMutablePostalAddress()
+///                 address.country = "USA"
+///                 address.state = "CA"
+///                 address.postalCode = "94305"
+///                 address.city = "City"
+///                 address.street = "123 ABC St"
+///                 return address
+///             }(),
+///             contactOptions: [
+///                 .call("+1 (123) 456-7890"),
+///                 .text("+1 (123) 456-7890"),
+///                 .email(addresses: ["email@address.com"]),
+///             ]
+///         )
+///
+///     var body: some View {
+///         VStack(alignment: .leading) {
+///             // Accessing different properties of the contact
+///             contact.image
+///                 .resizable()
+///                 .frame(width: 50, height: 50)
+///                 .cornerRadius(25)
+///             Text("\(contact.name.givenName) \(contact.name.familyName)")
+///                 .font(.headline)
+///             Text(contact.title)
+///                 .font(.subheadline)
+///             Text(contact.organization)
+///                 .font(.subheadline)
+///         }
+///     }
+/// }
+/// ```
 public struct Contact {
     let id = UUID()
     /// The name of the individual. Ideally provide at least a first and given name.
