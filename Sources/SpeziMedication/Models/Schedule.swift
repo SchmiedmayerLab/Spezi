@@ -38,7 +38,7 @@ public struct Schedule: Codable, Equatable, Hashable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.frequency = try container.decode(Frequency.self, forKey: .frequency)
-        self.times = try container.decode([ScheduledTime].self, forKey: .times)
+        self.times = try container.decodeIfPresent([ScheduledTime].self, forKey: .times) ?? []
         self.startDate = try container.decode(Date.self, forKey: .startDate)
     }
     

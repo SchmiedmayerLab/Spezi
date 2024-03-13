@@ -11,6 +11,59 @@ import XCTest
 
 
 final class SpeziMedicationTests: XCTestCase {
+    func testScheduleDecodingWithAndWithoutTimes() throws {
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.dateDecodingStrategy = .iso8601
+
+        // Test decoding without times
+        let noTimesJSON = """
+        {
+            "frequency": {
+                "asNeeded": true
+            },
+            "startDate": "2023-12-07T08:00:00Z"
+        }
+        """
+        guard let data = noTimesJSON.data(using: .utf8) else {
+            XCTFail("Failed to encode JSON string to Data")
+            return
+        }
+        let noTimesSchedule = try jsonDecoder.decode(Schedule.self, from: data)
+        XCTAssertEqual(noTimesSchedule.times, [])
+
+        // Test decoding with times
+        let withTimesJSON = """
+        {
+            "frequency": {
+                "regularDayIntervals": 2
+            },
+            "startDate": "2023-12-07T08:00:00Z",
+            "times": [
+                {
+                    "time": {
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "dosage": 5.0
+                },
+                {
+                    "time": {
+                        "hour": 15,
+                        "minute": 0
+                    },
+                    "dosage": 5.0
+                }
+            ]
+        }
+        """
+        guard let dataWithTimes = withTimesJSON.data(using: .utf8) else {
+            XCTFail("Failed to encode JSON string to Data")
+            return
+        }
+        let withTimesSchedule = try jsonDecoder.decode(Schedule.self, from: dataWithTimes)
+        XCTAssertNotNil(withTimesSchedule.times)
+    }
+    
     // swiftlint:disable:next function_body_length
     func testScheduleEncoding() throws {
         let jsonEncoder = JSONEncoder()
