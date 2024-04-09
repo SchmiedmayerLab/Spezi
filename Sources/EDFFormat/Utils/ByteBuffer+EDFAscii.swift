@@ -32,4 +32,8 @@ extension ByteBuffer {
     mutating func writeEDFAscii<Value: BinaryInteger>(_ value: Value, length: Int) {
         writeEDFAscii(value.description, length: length)
     }
+
+    mutating func writeEDFAsciiTrimming(_ value: Double, length: Int) {
+        writeEDFAscii(value.edfRepresentation(idealLength: length), length: length)
+    }
 }

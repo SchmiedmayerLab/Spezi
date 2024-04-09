@@ -11,7 +11,7 @@ import NIO
 
 
 /// The file format.
-public enum FileFormat {
+public enum FileFormat: String {
     /// European Data Format
     ///
     /// 16-bit signals.
@@ -20,10 +20,20 @@ public enum FileFormat {
     ///
     /// 24-bit signals.
     case bdf
+
+
+    var bdfReservedField: String {
+        switch self {
+        case .edf:
+            "BIOSEMI"
+        case .bdf:
+            "24BIT"
+        }
+    }
 }
 
 
-extension FileFormat: Sendable {}
+extension FileFormat: Hashable, Sendable {}
 
 
 extension FileFormat: ByteEncodable {

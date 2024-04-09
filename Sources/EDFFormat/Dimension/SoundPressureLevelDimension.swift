@@ -15,3 +15,6 @@ public enum SoundPressureLevelDimension: String {
     case dBC
     case DBL
 }
+
+
+extension SoundPressureLevelDimension: Hashable, Sendable {}

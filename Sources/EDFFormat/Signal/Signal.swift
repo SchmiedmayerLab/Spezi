@@ -85,7 +85,7 @@ public struct Signal {
 }
 
 
-extension Signal: Sendable {}
+extension Signal: Hashable, Sendable {}
 
 
 extension Signal {

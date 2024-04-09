@@ -119,9 +119,9 @@ public final class GenericFileWriter<S: Sample> {
     /// The file format.
     public let format: FileFormat
     /// File information
-    public let fileInformation: FileInformation
-    /// The format of the file records.
-    private let dataFormat: FileRecordsFormat
+    public var fileInformation: FileInformation
+    /// The format of the file records (e.g., `EDF+C`).
+    private let dataFormat: String
     /// Array of signal descriptions.
     public let signals: [Signal]
 
@@ -137,14 +137,23 @@ public final class GenericFileWriter<S: Sample> {
         signals.count
     }
 
+    /// Retrieve the data record format (e.g., continuous vs. interrupted recording).
+    ///
+    /// Storing information about continuous vs. interrupted recording is only supported in
+    /// EDF+ or BDF+ files. Plain EDF or BDF files have this field as reserved and a file
+    /// might contain arbitrary string output if not adhering to the specification.
+    public var recordingFormat: RecordingFormat {
+        RecordingFormat(from: dataFormat)
+    }
+
     private var headerLength: Int {
         256 * (1 + channelCount)
     }
 
-    private init(url: URL, format: FileFormat, fileInformation: FileInformation, dataFormat: FileRecordsFormat, signals: [Signal]) throws {
+    private init(url: URL, format: FileFormat, fileInformation: FileInformation, dataFormat: String?, signals: [Signal]) throws {
         self.format = format
         self.fileInformation = fileInformation
-        self.dataFormat = dataFormat
+        self.dataFormat = dataFormat ?? ""
         self.signals = signals
 
         self.fileHandle = try FileHandle(forWritingTo: url)
@@ -156,6 +165,23 @@ public final class GenericFileWriter<S: Sample> {
         for signal in signals {
             try signal.verifyAsciiInputs()
         }
+    }
+
+    /// Update the file information of the file.
+    ///
+    /// This updates the ``FileInformation`` of a file to modify it after instantiation (e.g., update the record duration or recording start date).
+    ///
+    /// - Important: If you already called ``writeHeader()`` make sure to re-write the header after a call to this method to ensure
+    ///     that the updated information is persisted on disk as well.
+    ///
+    /// - Parameter fileInformation: The updated ``FileInformation``.
+    public func updateFileInformation(_ fileInformation: FileInformation) {
+        lock.lock()
+        defer {
+            lock.unlock()
+        }
+
+        self.fileInformation = fileInformation
     }
 
 
@@ -317,10 +343,15 @@ extension GenericFileWriter {
         byteBuffer.writeEDFAscii(Self.timeFormatter.string(from: fileInformation.recording.startDate), length: 8)
 
         byteBuffer.writeEDFAscii(headerLength, length: 8)
-        dataFormat.encode(to: &byteBuffer, preferredEndianness: .little)
+        byteBuffer.writeEDFAscii(dataFormat, length: 44)
 
         byteBuffer.writeEDFAscii(dataRecordsCount, length: 8)
-        byteBuffer.writeEDFAscii(fileInformation.recordDuration, length: 8)
+        switch fileInformation._recordDuration {
+        case let .integer(value):
+            byteBuffer.writeEDFAscii(value, length: 8)
+        case let .decimal(value):
+            byteBuffer.writeEDFAsciiTrimming(value, length: 8)
+        }
 
         byteBuffer.writeEDFAscii(channelCount, length: 4)
         signals.encode(to: &byteBuffer, preferredEndianness: .little)
@@ -336,9 +367,9 @@ extension GenericFileWriter where S == EDFSample {
     ///   - information: The file information.
     ///   - signals: The array of signal descriptions.
     /// - Throws: Throws if FileHandle creation fails.
-    public convenience init(url: URL, format: EDFRecordsFormat = .custom(), information: FileInformation, signals: [Signal]) throws {
+    public convenience init(url: URL, format: RecordingFormat? = nil, information: FileInformation, signals: [Signal]) throws {
         // swiftlint:disable:previous function_default_parameter_at_end
-        try self.init(url: url, format: .edf, fileInformation: information, dataFormat: .init(from: format), signals: signals)
+        try self.init(url: url, format: .edf, fileInformation: information, dataFormat: format?.dataFormat(for: .edf), signals: signals)
     }
 }
 
@@ -347,21 +378,19 @@ extension GenericFileWriter where S == BDFSample {
     /// Create a new BDF file writer.
     /// - Parameters:
     ///   - url:  The url to the file to write. Note that the file must be created already.
-    ///   - format: The file format.
+    ///   - type: The file type. There is a compatibility mode of encoding BDF files via the EDF version header.
+    ///   - format: The data records format.
     ///   - information: The file information.
     ///   - signals: The array of signal descriptions.
     /// - Throws: Throws if FileHandle creation fails.
-    public convenience init(url: URL, format: FileFormat = .bdf, information: FileInformation, signals: [Signal]) throws {
-        // swiftlint:disable:previous function_default_parameter_at_end
-
-        let dataFormat: FileRecordsFormat
-        switch format {
-        case .edf:
-            dataFormat = .biosemi
-        case .bdf:
-            dataFormat = .bits24
-        }
-
-        try self.init(url: url, format: format, fileInformation: information, dataFormat: dataFormat, signals: signals)
+    public convenience init( // swiftlint:disable:this function_default_parameter_at_end
+        url: URL,
+        type: FileFormat = .bdf,
+        format: RecordingFormat? = nil,
+        information: FileInformation,
+        signals: [Signal]
+    ) throws {
+        let dataFormat = format?.dataFormat(for: type) ?? type.bdfReservedField
+        try self.init(url: url, format: type, fileInformation: information, dataFormat: dataFormat, signals: signals)
     }
 }

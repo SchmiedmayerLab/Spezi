@@ -13,3 +13,6 @@ public enum TemperatureDimension: String {
     case celsius = "degC"
     case fahrenheit = "degF"
 }
+
+
+extension TemperatureDimension: Hashable, Sendable {}

@@ -12,3 +12,6 @@ public enum AngleDimension: String {
     case degree = "deg"
     case radian = "rad"
 }
+
+
+extension AngleDimension: Hashable, Sendable {}

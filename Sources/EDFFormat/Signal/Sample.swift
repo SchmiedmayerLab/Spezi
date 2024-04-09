@@ -43,7 +43,7 @@ public struct EDFSample {
 
 
 /// A recorded sample.
-public protocol Sample: ByteCodable, Sendable {
+public protocol Sample: ByteCodable, Hashable, Sendable {
     /// The sample value type (e.g., `Int16`).
     associatedtype Value: BinaryInteger
 
@@ -53,8 +53,8 @@ public protocol Sample: ByteCodable, Sendable {
 }
 
 
-extension BDFSample: Sample {}
-extension EDFSample: Sample {}
+extension BDFSample: Hashable, Sample {}
+extension EDFSample: Hashable, Sample {}
 
 
 extension BDFSample: ByteCodable {

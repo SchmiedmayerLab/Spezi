@@ -55,9 +55,9 @@ public enum SubjectIdentification {
 }
 
 
-extension PatientInformation.Sex: Sendable {}
-extension PatientInformation: Sendable {}
-extension SubjectIdentification: Sendable {}
+extension PatientInformation.Sex: Hashable, Sendable {}
+extension PatientInformation: Hashable, Sendable {}
+extension SubjectIdentification: Hashable, Sendable {}
 
 
 extension SubjectIdentification {

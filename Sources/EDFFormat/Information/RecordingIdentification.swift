@@ -57,8 +57,8 @@ public enum RecordingIdentification {
 }
 
 
-extension RecordingInformation: Sendable {}
-extension RecordingIdentification: Sendable {}
+extension RecordingInformation: Hashable, Sendable {}
+extension RecordingIdentification: Hashable, Sendable {}
 
 
 extension RecordingIdentification {

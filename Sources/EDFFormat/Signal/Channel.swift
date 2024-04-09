@@ -24,6 +24,9 @@ public struct Channel<S: Sample> {
 }
 
 
+extension Channel: Hashable, Sendable {}
+
+
 extension Channel: ByteEncodable {
     public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
         for sample in samples {

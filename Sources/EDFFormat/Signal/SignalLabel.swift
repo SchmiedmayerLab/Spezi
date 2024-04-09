@@ -33,7 +33,7 @@ public struct SignalLabel {
 }
 
 
-extension SignalLabel: Sendable, Equatable {}
+extension SignalLabel: Hashable, Sendable {}
 
 
 extension SignalLabel {

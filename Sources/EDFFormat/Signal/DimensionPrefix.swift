@@ -54,3 +54,6 @@ public enum DimensionPrefix: String {
     /// Decimal power of -24
     case yocto = "y"
 }
+
+
+extension DimensionPrefix: Hashable, Sendable {}
