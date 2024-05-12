@@ -16,10 +16,20 @@ class TestAppUITests: XCTestCase {
         continueAfterFailure = false
     }
     
-    
-    func testSpeziLocation() throws {
+    func testRequestPermissions() throws {
         let app = XCUIApplication()
         app.launch()
-        XCTAssert(app.staticTexts["Stanford University"].waitForExistence(timeout: 0.1))
+        
+        XCTAssert(app.staticTexts["Location not available"].waitForExistence(timeout: 3))
+        
+        XCTAssert(app.buttons["Request When In Use Permission"].waitForExistence(timeout: 3))
+        app.buttons["Request When In Use Permission"].tap()
+        
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        if springboard.buttons["Allow Once"].waitForExistence(timeout: 10) {
+            springboard.buttons["Allow Once"].tap()
+        }
+        
+        XCTAssert(app.staticTexts["Authorization Status: Authorized when in use"].waitForExistence(timeout: 10))
     }
 }

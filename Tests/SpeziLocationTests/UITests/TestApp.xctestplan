@@ -13,10 +13,13 @@
       "targets" : [
         {
           "containerPath" : "container:..\/..",
-          "identifier" : "TemplatePackage",
-          "name" : "TemplatePackage"
+          "identifier" : "SpeziLocation",
+          "name" : "SpeziLocation"
         }
       ]
+    },
+    "locationScenario" : {
+      "identifier" : "..\/..\/TestAppUITests\/TestAppLocation.gpx"
     },
     "targetForVariableExpansion" : {
       "containerPath" : "container:UITests.xcodeproj",

@@ -10,18 +10,27 @@ import CoreLocation
 import SpeziLocation
 import SwiftUI
 
+
 struct LocationView: View {
     @Environment(SpeziLocation.self) private var speziLocation
     @State private var location: CLLocation?
-
+    @State private var authorizationStatus = "Unknown"
+    
+    
     var body: some View {
         VStack {
-            if let location = location {
+            Spacer()
+            
+            Text("Authorization Status: \(authorizationStatus)")
+            
+            if let location {
                 Text("Latitude: \(location.coordinate.latitude)")
                 Text("Longitude: \(location.coordinate.longitude)")
             } else {
                 Text("Location not available")
             }
+            
+            Spacer()
 
             Button("Request When In Use Permission") {
                 Task {
@@ -34,34 +43,37 @@ struct LocationView: View {
                     await getLatestLocation()
                 }
             }
+            
+            Spacer()
         }
         .buttonStyle(.borderedProminent)
     }
-
-    func requestWhenInUseAuthorization() async {
+    
+    
+    private func requestWhenInUseAuthorization() async {
         do {
-            let authorized = try await self.speziLocation.requestWhenInUseAuthorization()
+            let authorizationResult = try await speziLocation.requestWhenInUseAuthorization()
 
-            switch authorized {
+            switch authorizationResult {
             case .authorizedAlways:
-                print("Authorized Always")
+                authorizationStatus = "Authorized Always"
             case .notDetermined:
-                print("Not determined")
+                authorizationStatus = "Not determined"
             case .authorizedWhenInUse:
-                print("Authorized when in use")
+                authorizationStatus = "Authorized when in use"
             case .denied:
-                print("Denied")
+                authorizationStatus = "Denied"
             case .restricted:
-                print("Restricted")
+                authorizationStatus = "Restricted"
             @unknown default:
-                print("Unknown")
+                authorizationStatus = "Unknown"
             }
         } catch {
             print("An error occurred.")
         }
     }
 
-    func getLatestLocation() async {
+    private func getLatestLocation() async {
         do {
             let locations = try await speziLocation.getLatestLocations()
             self.location = locations.last
@@ -70,6 +82,7 @@ struct LocationView: View {
         }
     }
 }
+
 
 #Preview {
     LocationView()

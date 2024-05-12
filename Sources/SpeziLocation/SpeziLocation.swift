@@ -17,7 +17,7 @@ public final class SpeziLocation: Module, DefaultInitializable, EnvironmentAcces
     private(set) var locationManager = CLLocationManager()
     
     /// The `LocationDelegate` instance used to handle callbacks from the location manager.
-    private(set) var locationDelegate: LocationDelegate?
+    private(set) var locationDelegate: LocationDelegate? // swiftlint:disable:this weak_delegate
     
     /// The `LocationTaskManager` instance used to manage location-related tasks.
     private(set) var taskManager = LocationTaskManager()
