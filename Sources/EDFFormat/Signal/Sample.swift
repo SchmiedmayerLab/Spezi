@@ -8,6 +8,7 @@
 
 import ByteCoding
 import NIO
+import SpeziNumerics
 
 
 /// A sample for a given channel.

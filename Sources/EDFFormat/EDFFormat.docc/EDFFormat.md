@@ -27,7 +27,7 @@ This library supports [EDF+](https://www.edfplus.info/specs/edfplus.html) by def
 - ``GenericFileWriter``
 - ``EDFEncodingError``
 - ``FileFormat``
-- ``EDFRecordsFormat``
+- ``RecordingFormat``
 
 ### Describing a recording
 
