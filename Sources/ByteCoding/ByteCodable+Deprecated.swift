@@ -102,7 +102,7 @@ extension ByteDecodable {
     @available(*, deprecated, message: "Preferred Endianness was removed. Refer to PrimitiveByteDecodable/init(data:endianness:) if applicable.")
     @_documentation(visibility: internal)
     @_disfavoredOverload
-    public init?(data: Data, preferredEndianness endianness: Endianness = .little) {
+    public init?(data: Data, preferredEndianness endianness: Endianness) {
         var buffer = ByteBuffer(data: data)
         self.init(from: &buffer)
     }
@@ -121,7 +121,7 @@ extension PrimitiveByteDecodable {
     ///     This might not apply to certain data structures that operate on single byte level.
     @available(*, deprecated, renamed: "init(data:endianness:)", message: "Preferred Endianness was replaced by the PrimitiveCodable protocols.")
     @_documentation(visibility: internal)
-    public init?(data: Data, preferredEndianness endianness: Endianness = .little) {
+    public init?(data: Data, preferredEndianness endianness: Endianness) {
         self.init(data: data, endianness: endianness)
     }
 }
@@ -138,7 +138,7 @@ extension ByteEncodable {
     @available(*, deprecated, message: "Preferred Endianness was removed. Please refer to PrimitiveByteEncodable/encode(endianness:) if applicable.")
     @_documentation(visibility: internal)
     @_disfavoredOverload
-    public func encode(preferredEndianness endianness: Endianness = .little) -> Data {
+    public func encode(preferredEndianness endianness: Endianness) -> Data {
         var buffer = ByteBuffer()
         encode(to: &buffer)
         return buffer.getData(at: 0, length: buffer.readableBytes) ?? Data()
@@ -155,7 +155,7 @@ extension PrimitiveByteEncodable {
     /// - Returns: The encoded data.
     @available(*, deprecated, renamed: "encode(endianness:)", message: "Preferred Endianness was replaced by the PrimitiveCodable protocols.")
     @_documentation(visibility: internal)
-    public func encode(preferredEndianness endianness: Endianness = .little) -> Data {
+    public func encode(preferredEndianness endianness: Endianness) -> Data {
         encode(endianness: endianness)
     }
 }

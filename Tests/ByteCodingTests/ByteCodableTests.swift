@@ -32,7 +32,22 @@ final class ByteCodableTests: XCTestCase {
         XCTAssertEqual(data0, data)
         XCTAssertEqual(buffer.getData(at: 0, length: buffer.readableBytes), data)
     }
-    
+
+    func testAmbiguousData() throws {
+        // basically just a test if it compiles
+
+        // PRIMITIVE BYTE CODABLE
+        let data = try XCTUnwrap(Data(hex: "0x050D"))
+        let value = UInt16(data: data)
+
+        XCTAssertEqual(value, 3333)
+
+        // BYTE CODABLE
+        let stringData = try XCTUnwrap("Hello World".data(using: .utf8))
+        let stringValue = try XCTUnwrap(String(data: stringData))
+        XCTAssertEqual(stringValue, "Hello World")
+    }
+
     func testData() throws {
         let data = try XCTUnwrap(Data(hex: "0xAABBCCDDEE"))
 

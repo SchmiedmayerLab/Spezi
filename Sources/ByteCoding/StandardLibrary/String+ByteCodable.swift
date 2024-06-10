@@ -9,18 +9,15 @@
 import NIO
 
 
-extension String: PrimitiveByteCodable {
+extension String: ByteCodable {
     /// Decodes an utf8 string from its byte representation.
     ///
     /// Decodes an utf8 string from a `ByteBuffer`.
     ///
     /// - Note: This implementation assumes that all bytes in the ByteBuffer are representing
     ///     the string.
-    /// - Parameters
-    ///   - byteBuffer: The ByteBuffer to decode from.
-    ///   - endianness: The preferred endianness to use for decoding if applicable.
-    ///     This is unused with the String implementation.
-    public init?(from byteBuffer: inout ByteBuffer, endianness: Endianness) {
+    /// - Parameter byteBuffer: The ByteBuffer to decode from.
+    public init?(from byteBuffer: inout ByteBuffer) {
         guard let string = byteBuffer.readString(length: byteBuffer.readableBytes) else {
             return nil
         }
@@ -32,11 +29,8 @@ extension String: PrimitiveByteCodable {
     ///
     /// Encodes an utf8 string into a `ByteBuffer`.
     ///
-    /// - Parameters
-    ///   - byteBuffer: The ByteBuffer to write to.
-    ///   - endianness: The preferred endianness to use for decoding if applicable.
-    ///     This is unused with the String implementation.
-    public func encode(to byteBuffer: inout ByteBuffer, endianness: Endianness) {
+    /// - Parameter byteBuffer: The ByteBuffer to write to.
+    public func encode(to byteBuffer: inout ByteBuffer) {
         byteBuffer.writeString(self)
     }
 }
