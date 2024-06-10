@@ -10,15 +10,15 @@ import Foundation
 import NIO
 
 
-extension Float32: ByteCodable {
+extension Float32: PrimitiveByteCodable {
     /// Decodes a float from its byte representation.
     ///
     /// Decodes a `Float32` from a `ByteBuffer`.
     /// - Parameters:
     ///   - byteBuffer: The ByteBuffer to decode from.
     ///   - endianness: The endianness to use for decoding.
-    public init?(from byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        guard let bitPattern = UInt32(from: &byteBuffer, preferredEndianness: endianness) else {
+    public init?(from byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        guard let bitPattern = UInt32(from: &byteBuffer, endianness: endianness) else {
             return nil
         }
 
@@ -31,21 +31,21 @@ extension Float32: ByteCodable {
     /// - Parameters:
     ///   - byteBuffer: The ByteBuffer to write to.
     ///   - endianness: The endianness to use for encoding.
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        bitPattern.encode(to: &byteBuffer, preferredEndianness: endianness)
+    public func encode(to byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        bitPattern.encode(to: &byteBuffer, endianness: endianness)
     }
 }
 
 
-extension Float64: ByteCodable {
+extension Float64: PrimitiveByteCodable {
     /// Decodes a float from its byte representation.
     ///
     /// Decodes a `Float64` from a `ByteBuffer`.
     /// - Parameters:
     ///   - byteBuffer: The ByteBuffer to decode from.
     ///   - endianness: The endianness to use for decoding.
-    public init?(from byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        guard let bitPattern = UInt64(from: &byteBuffer, preferredEndianness: endianness) else {
+    public init?(from byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        guard let bitPattern = UInt64(from: &byteBuffer, endianness: endianness) else {
             return nil
         }
 
@@ -58,7 +58,7 @@ extension Float64: ByteCodable {
     /// - Parameters:
     ///   - byteBuffer: The ByteBuffer to write to.
     ///   - endianness: The endianness to use for encoding.
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        bitPattern.encode(to: &byteBuffer, preferredEndianness: endianness)
+    public func encode(to byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        bitPattern.encode(to: &byteBuffer, endianness: endianness)
     }
 }

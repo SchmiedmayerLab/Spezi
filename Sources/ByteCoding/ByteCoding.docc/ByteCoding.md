@@ -18,8 +18,18 @@ This library provides a standardized approach of encoding and decoding types fro
 
 ## Topics
 
-### Coding
+### Codable Types
+
+Byte Codable types that are composed of other codable types that have a fixed byte representation.
 
 - ``ByteCodable``
 - ``ByteEncodable``
 - ``ByteDecodable``
+
+### Primitive Codable Types
+
+Byte Codable types which are not composed out of other types and which might be represented in little or big endian representation.
+
+- ``PrimitiveByteCodable``
+- ``PrimitiveByteEncodable``
+- ``PrimitiveByteDecodable``

@@ -553,17 +553,17 @@ extension MedFloat16: SignedNumeric {
 }
 
 
-extension MedFloat16: ByteCodable {
-    public init?(from byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        guard let bitPattern = UInt16(from: &byteBuffer, preferredEndianness: endianness) else {
+extension MedFloat16: PrimitiveByteCodable {
+    public init?(from byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        guard let bitPattern = UInt16(from: &byteBuffer, endianness: endianness) else {
             return nil
         }
 
         self.init(bitPattern: bitPattern)
     }
 
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        bitPattern.encode(to: &byteBuffer, preferredEndianness: endianness)
+    public func encode(to byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        bitPattern.encode(to: &byteBuffer, endianness: endianness)
     }
 }
 

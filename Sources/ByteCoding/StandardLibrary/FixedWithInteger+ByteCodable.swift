@@ -10,7 +10,7 @@ import NIO
 
 
 /// `ByteCodable` types that are a `FixedWithInteger`.
-protocol FixedWidthByteCodable: FixedWidthInteger, ByteCodable {}
+protocol FixedWidthByteCodable: FixedWidthInteger, PrimitiveByteCodable {}
 
 
 extension FixedWidthByteCodable {
@@ -20,7 +20,7 @@ extension FixedWidthByteCodable {
     /// - Parameters:
     ///   - byteBuffer: The ByteBuffer to decode from.
     ///   - endianness: The endianness to use for decoding.
-    public init?(from byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public init?(from byteBuffer: inout ByteBuffer, endianness: Endianness) {
         guard let value = byteBuffer.readInteger(endianness: endianness, as: Self.self) else {
             return nil
         }
@@ -33,7 +33,7 @@ extension FixedWidthByteCodable {
     /// - Parameters:
     ///   - byteBuffer: The ByteBuffer to write to.
     ///   - endianness: The endianness to use for encoding.
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer, endianness: Endianness) {
         byteBuffer.writeInteger(self, endianness: endianness)
     }
 }

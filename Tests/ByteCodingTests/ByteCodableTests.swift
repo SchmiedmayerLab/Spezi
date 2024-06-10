@@ -13,6 +13,26 @@ import XCTest
 
 
 final class ByteCodableTests: XCTestCase {
+    @available(*, deprecated, message: "Forward deprecation warning.")
+    func testDeprecatedTypes() throws {
+        // ensure that preferredEndianness is still forwarded to Primitive ByteCodable protocols and isn't just ignored
+
+        let data = try XCTUnwrap(Data(hex: "0x0D05"))
+        var buffer = ByteBuffer(data: data)
+
+        let value = try XCTUnwrap(UInt16(data: data, preferredEndianness: .big))
+        let value0 = try XCTUnwrap(UInt16(from: &buffer, preferredEndianness: .big))
+        XCTAssertEqual(value, 3333)
+        XCTAssertEqual(value0, 3333)
+
+        buffer = ByteBuffer()
+
+        let data0 = value.encode(preferredEndianness: .big)
+        value0.encode(to: &buffer, preferredEndianness: .big)
+        XCTAssertEqual(data0, data)
+        XCTAssertEqual(buffer.getData(at: 0, length: buffer.readableBytes), data)
+    }
+    
     func testData() throws {
         let data = try XCTUnwrap(Data(hex: "0xAABBCCDDEE"))
 
