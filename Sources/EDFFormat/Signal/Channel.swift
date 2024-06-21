@@ -28,9 +28,9 @@ extension Channel: Hashable, Sendable {}
 
 
 extension Channel: ByteEncodable {
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer) {
         for sample in samples {
-            sample.encode(to: &byteBuffer, preferredEndianness: endianness)
+            sample.encode(to: &byteBuffer, endianness: .little)
         }
     }
 }

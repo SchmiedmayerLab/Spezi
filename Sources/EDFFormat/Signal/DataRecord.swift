@@ -27,9 +27,9 @@ public struct DataRecord<S: Sample> {
 extension DataRecord: Hashable, Sendable {}
 
 extension DataRecord: ByteEncodable {
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer) {
         for channel in channels {
-            channel.encode(to: &byteBuffer, preferredEndianness: endianness)
+            channel.encode(to: &byteBuffer)
         }
     }
 }

@@ -108,7 +108,7 @@ extension Signal {
 
 
 extension Array: ByteEncodable where Element == Signal {
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer) {
         for header in self {
             byteBuffer.writeEDFAsciiTrimming(header.label.rawValue, length: 16)
         }

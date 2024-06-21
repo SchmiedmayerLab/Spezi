@@ -244,7 +244,7 @@ public final class GenericFileWriter<S: Sample> {
         case .bdf:
             recordBuffer.reserveCapacity(24 * totalSampleCount)
         }
-        record.encode(to: &recordBuffer, preferredEndianness: .little)
+        record.encode(to: &recordBuffer)
 
         let recordData = recordBuffer.getData(at: 0, length: recordBuffer.readableBytes) ?? .init()
         try fileHandle.write(contentsOf: recordData)
@@ -324,10 +324,10 @@ extension GenericFileWriter {
     }
 
     func encodeHeader(to byteBuffer: inout ByteBuffer) {
-        format.encode(to: &byteBuffer, preferredEndianness: .little)
+        format.encode(to: &byteBuffer)
 
-        fileInformation.subject.encode(to: &byteBuffer, preferredEndianness: .little)
-        fileInformation.recording.encode(to: &byteBuffer, preferredEndianness: .little)
+        fileInformation.subject.encode(to: &byteBuffer)
+        fileInformation.recording.encode(to: &byteBuffer)
 
         let year = Calendar.current.component(.year, from: fileInformation.recording.startDate)
         if year >= 1985 && year <= 2084 {
@@ -354,7 +354,7 @@ extension GenericFileWriter {
         }
 
         byteBuffer.writeEDFAscii(channelCount, length: 4)
-        signals.encode(to: &byteBuffer, preferredEndianness: .little)
+        signals.encode(to: &byteBuffer)
     }
 }
 

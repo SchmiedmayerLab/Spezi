@@ -94,7 +94,7 @@ extension RecordingInformation: EDFRepresentable {
 
 
 extension RecordingIdentification: ByteEncodable {
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer) {
         switch self {
         case let .unstructured(recording, _):
             byteBuffer.writeEDFAsciiTrimming(recording, length: 80)

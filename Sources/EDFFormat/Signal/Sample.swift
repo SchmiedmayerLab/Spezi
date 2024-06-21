@@ -44,7 +44,7 @@ public struct EDFSample {
 
 
 /// A recorded sample.
-public protocol Sample: ByteCodable, Hashable, Sendable {
+public protocol Sample: PrimitiveByteCodable, Hashable, Sendable {
     /// The sample value type (e.g., `Int16`).
     associatedtype Value: BinaryInteger
 
@@ -58,29 +58,29 @@ extension BDFSample: Hashable, Sample {}
 extension EDFSample: Hashable, Sample {}
 
 
-extension BDFSample: ByteCodable {
-    public init?(from byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+extension BDFSample: PrimitiveByteCodable {
+    public init?(from byteBuffer: inout ByteBuffer, endianness: Endianness) {
         guard let value = byteBuffer.readInt24(endianness: endianness) else {
             return nil
         }
         self.init(value)
     }
 
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer, endianness: Endianness) {
         byteBuffer.writeInt24(value, endianness: endianness)
     }
 }
 
 
-extension EDFSample: ByteCodable {
-    public init?(from byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        guard let value = Int16(from: &byteBuffer, preferredEndianness: endianness) else {
+extension EDFSample: PrimitiveByteCodable {
+    public init?(from byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        guard let value = Int16(from: &byteBuffer, endianness: endianness) else {
             return nil
         }
         self.init(value)
     }
 
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
-        value.encode(to: &byteBuffer, preferredEndianness: endianness)
+    public func encode(to byteBuffer: inout ByteBuffer, endianness: Endianness) {
+        value.encode(to: &byteBuffer, endianness: endianness)
     }
 }

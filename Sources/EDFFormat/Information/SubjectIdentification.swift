@@ -99,7 +99,7 @@ extension PatientInformation.Sex: EDFRepresentable {
 
 
 extension SubjectIdentification: ByteEncodable {
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer) {
         switch self {
         case let .unstructured(subject):
             byteBuffer.writeEDFAsciiTrimming(subject, length: 80)

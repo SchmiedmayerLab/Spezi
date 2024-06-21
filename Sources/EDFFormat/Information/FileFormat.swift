@@ -37,7 +37,7 @@ extension FileFormat: Hashable, Sendable {}
 
 
 extension FileFormat: ByteEncodable {
-    public func encode(to byteBuffer: inout ByteBuffer, preferredEndianness endianness: Endianness) {
+    public func encode(to byteBuffer: inout ByteBuffer) {
         switch self {
         case .edf:
             byteBuffer.writeEDFAscii(".", length: 8)
