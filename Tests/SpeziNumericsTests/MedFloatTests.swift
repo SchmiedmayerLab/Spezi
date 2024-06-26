@@ -284,4 +284,29 @@ final class MedFloatTests: XCTestCase {
         try testIdentity(of: MedFloat16.self, from: XCTUnwrap(Data(hex: "0x0800")))
         try testIdentity(of: MedFloat16.self, from: XCTUnwrap(Data(hex: "0x0801")))
     }
+
+    func testCodable() throws {
+        func testCodableReturningResult<T: Codable & Equatable>(from value: T) throws -> T {
+            let encoder = JSONEncoder()
+            let decoder = JSONDecoder()
+
+            let data = try encoder.encode(value)
+            return try decoder.decode(T.self, from: data)
+        }
+        func testCodable<T: Codable & Equatable>(from value: T) throws {
+            let result = try testCodableReturningResult(from: value)
+            XCTAssertEqual(result, value)
+        }
+
+        try testCodable(from: MedFloat16.infinity)
+        try testCodable(from: MedFloat16.negativeInfinity)
+        try testCodable(from: MedFloat16.zero)
+        try testCodable(from: MedFloat16(12.5))
+        try testCodable(from: MedFloat16(-12.5))
+
+        // nan-like values don't compare, therefore we check for byte-wise equality
+        XCTAssertEqual(try testCodableReturningResult(from: MedFloat16.nan).bitPattern, MedFloat16.nan.bitPattern)
+        XCTAssertEqual(try testCodableReturningResult(from: MedFloat16.nres).bitPattern, MedFloat16.nres.bitPattern)
+        XCTAssertEqual(try testCodableReturningResult(from: MedFloat16.reserved0).bitPattern, MedFloat16.reserved0.bitPattern)
+    }
 }
