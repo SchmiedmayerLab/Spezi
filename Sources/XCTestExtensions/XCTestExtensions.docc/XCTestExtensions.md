@@ -25,20 +25,6 @@ app.deleteAndLaunch(withSpringboardAppName: "TestApp")
 ```
 
 
-### Disable Password Autofill
-
-The iOS Simulator has enabled password autofill by default, which can interfere with text entry in password fields in UI tests. The `XCTestCase` extension provides the `disablePasswordAutofill` to navigate to the settings app and disable password autofill.
-```swift
-class TestAppUITests: XCTestCase {
-    func testDeleteAndLaunch() throws {
-        disablePasswordAutofill()
-        
-        // ...
-    }
-}
-```
-
-
 ### Text Entry
 
 Allows a simple extension on `XCUIElement` to delete and type text in a text field or secure text field.
@@ -59,3 +45,21 @@ secureTextField.delete(count: 5)
 
 Unfortunately, the iOS simulator sometimes has flaky behavior when entering text in a simulator with low computation resources.
 The `enter(value:)` and `delete(count:)` methods provide the `checkIfTextWasEnteredCorrectly` and `checkIfTextWasDeletedCorrectly` parameters that are set to true by default to check if the values were entered correctly. If your text entry does fail to do so, e.g., an entry in a secure text field, set the `checkIfTextWasEnteredCorrectly` or `checkIfTextWasDeletedCorrectly` parameters to `false`. 
+
+
+## Topics
+
+### Assertions
+
+- ``XCTAssertThrowsErrorAsync``
+
+### Text Entry
+
+- ``XCTest/XCUIElement/enter(value:checkIfTextWasEnteredCorrectly:dismissKeyboard:)``
+- ``XCTest/XCUIElement/delete(count:checkIfTextWasDeletedCorrectly:dismissKeyboard:)``
+
+### App Interaction
+
+- ``XCTest/XCUIApplication/deleteAndLaunch(withSpringboardAppName:)``
+- ``XCTest/XCUIApplication/dismissKeyboard()``
+- ``XCTest/XCUIApplication/homeScreenBundle``

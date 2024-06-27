@@ -19,8 +19,16 @@ extension XCTestCase {
     /// Use this function used to to disable password autofill by navigating to the iOS settings app and turning off the password autofill functionality in the settings UI.
     ///
     /// > Warning: While this workaround worked well until 17.2, we experienced a crash of the passwords section in the IOS 17.2 passwords app on the iOS simulator, which no longer allows us to use this workaround.
-    /// We recommend using a custom setup script to skip password-related functionality in your UI tests until there is a better workaround. Plase inspect the logic to setup simulators in the [xcodebuild-or-fastlane.yml](https://github.com/StanfordBDHG/.github/blob/main/.github/workflows/xcodebuild-or-fastlane.yml) workflow and be sure to `setupSimulators: true` if you use the GitHub action as a reusable workflow.
-    @available(iOS, deprecated: 17.2, message: "Please use a custom setup script in your CI environment to disable password autofill.")
+    /// We recommend using a custom setup script to skip password-related functionality in your UI tests until there is a better workaround. Please inspect the logic to setup simulators in the [xcodebuild-or-fastlane.yml](https://github.com/StanfordBDHG/.github/blob/main/.github/workflows/xcodebuild-or-fastlane.yml) workflow and be sure to `setupSimulators: true` if you use the GitHub action as a reusable workflow.
+    @available(
+        iOS,
+        deprecated: 17.2,
+        message: """
+                 To avoid having the password autofill interfere with your UI test, \
+                 avoid specifying the password text content type for simulator builds.
+                 This method will be removed in a future version.
+                 """
+    )
     @available(watchOS, unavailable)
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
@@ -45,7 +53,9 @@ extension XCTestCase {
         }
         
         let springboard = XCUIApplication(bundleIdentifier: XCUIApplication.homeScreenBundle)
-        if springboard.secureTextFields["Passcode field"].waitForExistence(timeout: 30.0) {
+
+        sleep(1)
+        if springboard.secureTextFields["Passcode field"].exists {
             let passcodeInput = springboard.secureTextFields["Passcode field"]
             passcodeInput.tap()
             
@@ -54,7 +64,8 @@ extension XCTestCase {
             passcodeInput.typeText("1234\r")
             
             sleep(2)
-        } else {
+        } else if #unavailable(iOS 17.4) {
+            // other versions just don't need a passcode anymore
             os_log("Could not enter the passcode in the device to enter the password section in the settings app.")
             throw XCTestError(.failureWhileWaiting)
         }
