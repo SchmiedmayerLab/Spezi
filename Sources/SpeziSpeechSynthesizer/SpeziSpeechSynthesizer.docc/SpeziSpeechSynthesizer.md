@@ -75,6 +75,46 @@ struct SpeechTestView: View {
 }
 ```
 
+SpeziSpeech also supports selecting voices, including [personal voices](https://support.apple.com/en-us/104993). 
+
+The following example shows how a user can be given a choice of voices in their current locale and the selected voice can be used to synthesize speech.
+
+```swift
+struct SpeechVoiceSelectionExample: View {
+   @Environment(SpeechSynthesizer.self) private var speechSynthesizer
+   @State private var selectedVoiceIndex = 0
+   @State private var message = ""
+
+
+   var body: some View {
+      VStack {
+         TextField("Enter text to be spoken", text: $message)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .padding()
+          Picker("Voice", selection: $selectedVoiceIndex) {
+              ForEach(speechSynthesizer.voices.indices, id: \.self) { index in
+                  Text(speechSynthesizer.voices[index].name)
+                      .tag(index)
+              }
+          }
+              .pickerStyle(.inline)
+              .accessibilityIdentifier("voicePicker")
+              .padding()
+         Button("Speak") {
+            speechSynthesizer.speak(
+                message,
+                voice: speechSynthesizer.voices[selectedVoiceIndex]
+            )
+         }
+      }
+         .padding()
+   }
+}
+```
+
+Personal voices are supported on iOS 17 and above. Users must first [create a personal voice](https://support.apple.com/en-us/104993). Using personal voices also requires obtaining authorization from the user. To request access to any available personal voices, you can use the `getPersonalVoices()` method of the `SpeechSynthesizer`. Personal voices will then become available alongside system voices.
+
+
 ## Topics
 
 - ``SpeechSynthesizer``

@@ -10,6 +10,7 @@
 		2F6D139A28F5F386007C25D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F6D139928F5F386007C25D6 /* Assets.xcassets */; };
 		2F8A431329130A8C005D2B8F /* TestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8A431229130A8C005D2B8F /* TestAppUITests.swift */; };
 		2FA7382C290ADFAA007ACEB9 /* TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7382B290ADFAA007ACEB9 /* TestApp.swift */; };
+		63E92BD82C32293F0070D826 /* SpeechVoiceSelectionTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E92BD72C32293F0070D826 /* SpeechVoiceSelectionTestView.swift */; };
 		979087112AFF07FF00F78FA4 /* SpeechTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979087102AFF07FF00F78FA4 /* SpeechTestView.swift */; };
 		97E117752AFF0A89002EA48A /* SpeziSpeechRecognizer in Frameworks */ = {isa = PBXBuildFile; productRef = 97E117742AFF0A89002EA48A /* SpeziSpeechRecognizer */; };
 		97E117772AFF0A89002EA48A /* SpeziSpeechSynthesizer in Frameworks */ = {isa = PBXBuildFile; productRef = 97E117762AFF0A89002EA48A /* SpeziSpeechSynthesizer */; };
@@ -47,6 +48,7 @@
 		2F8A431229130A8C005D2B8F /* TestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppUITests.swift; sourceTree = "<group>"; };
 		2FA7382B290ADFAA007ACEB9 /* TestApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestApp.swift; sourceTree = "<group>"; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
+		63E92BD72C32293F0070D826 /* SpeechVoiceSelectionTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechVoiceSelectionTestView.swift; sourceTree = "<group>"; };
 		973B3CE42AFC725B00FBC8B1 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		979087102AFF07FF00F78FA4 /* SpeechTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTestView.swift; sourceTree = "<group>"; };
 		97FC62772B02AEDF0025D933 /* TestAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				97FC62772B02AEDF0025D933 /* TestAppDelegate.swift */,
 				2FA7382B290ADFAA007ACEB9 /* TestApp.swift */,
+				63E92BD72C32293F0070D826 /* SpeechVoiceSelectionTestView.swift */,
 				979087102AFF07FF00F78FA4 /* SpeechTestView.swift */,
 				2F6D139928F5F386007C25D6 /* Assets.xcassets */,
 			);
@@ -226,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63E92BD82C32293F0070D826 /* SpeechVoiceSelectionTestView.swift in Sources */,
 				979087112AFF07FF00F78FA4 /* SpeechTestView.swift in Sources */,
 				2FA7382C290ADFAA007ACEB9 /* TestApp.swift in Sources */,
 				97FC62782B02AEDF0025D933 /* TestAppDelegate.swift in Sources */,

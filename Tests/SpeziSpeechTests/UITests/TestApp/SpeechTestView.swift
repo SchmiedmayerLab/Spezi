@@ -21,8 +21,6 @@ struct SpeechTestView: View {
     
     var body: some View {
         VStack {
-            Text("SpeziSpeech")
-            
             ScrollView {
                 Text(message)
                     .padding()

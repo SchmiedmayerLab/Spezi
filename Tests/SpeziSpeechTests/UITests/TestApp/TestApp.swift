@@ -17,8 +17,24 @@ struct UITestsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SpeechTestView()
-                .spezi(appDelegate)
+            NavigationStack {
+                MenuView()
+            }
+            .spezi(appDelegate)
         }
+    }
+}
+
+struct MenuView: View {
+    var body: some View {
+        List {
+            NavigationLink(destination: SpeechTestView()) {
+                Text("Speech Test View")
+            }
+            NavigationLink(destination: SpeechVoiceSelectionTestView()) {
+                Text("Speech Voice Selection Test View")
+            }
+        }
+        .navigationTitle("Spezi Speech Tests")
     }
 }
