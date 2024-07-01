@@ -568,15 +568,13 @@ extension MedFloat16: PrimitiveByteCodable {
 }
 
 
-extension MedFloat16: Codable {
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        self.init(bitPattern: try container.decode(UInt16.self))
+extension MedFloat16: RawRepresentable, Codable {
+    public var rawValue: UInt16 {
+        bitPattern
     }
 
-    public func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(bitPattern)
+    public init(rawValue: UInt16) {
+        self.init(bitPattern: rawValue)
     }
 }
 
