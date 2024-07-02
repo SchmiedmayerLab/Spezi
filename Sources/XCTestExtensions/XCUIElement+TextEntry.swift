@@ -13,7 +13,7 @@ import XCTest
 /// An internal flag that is used to test the flaky simulator text entry behavior in the iOS simulator.
 ///
 /// Do not use this flag outside of the UI tests in the ``XCTestExtensions`` target!
-var simulateFlakySimulatorTextEntry = false
+@MainActor var simulateFlakySimulatorTextEntry = false
 
 
 extension XCUIElement {

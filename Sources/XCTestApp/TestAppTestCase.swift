@@ -10,6 +10,7 @@
 /// A collection of test cases that can be executed in an ``TestAppView``.
 public protocol TestAppTestCase: Identifiable {
     /// Implement this method to run all the tests that should be executed.
+    @MainActor
     func runTests() async throws
 }
 

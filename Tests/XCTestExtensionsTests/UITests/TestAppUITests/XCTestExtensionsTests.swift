@@ -59,6 +59,7 @@ class XCTestExtensionsTests: XCTestCase {
         XCTAssert(app.staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
     }
     
+    @MainActor
     func testDisablePasswordAutofill() throws {
         #if os(iOS)
         try disablePasswordAutofill()
@@ -75,6 +76,7 @@ class XCTestExtensionsTests: XCTestCase {
         try app.callTextEntryExtensions()
     }
     
+    @MainActor
     func testFlakyTextEntry() throws {
         let app = XCUIApplication()
         app.launch()

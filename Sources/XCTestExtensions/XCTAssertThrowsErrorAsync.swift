@@ -20,11 +20,11 @@ import XCTest
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 ///   - errorHandler: An optional handler for errors that expression throws.
 public func XCTAssertThrowsErrorAsync<T>(
-    _ expression: @autoclosure () async throws -> T,
-    _ message: @autoclosure () -> String = "",
+    _ expression: @autoclosure @Sendable  () async throws -> T,
+    _ message: @autoclosure @Sendable () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line,
-    _ errorHandler: (Error) throws -> Void = { _ in }
+    _ errorHandler: @Sendable (Error) throws -> Void = { _ in }
 ) async rethrows {
     do {
         _ = try await expression()

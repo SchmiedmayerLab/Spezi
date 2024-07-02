@@ -33,6 +33,7 @@ extension XCTestCase {
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(visionOS, unavailable)
+    @MainActor
     public func disablePasswordAutofill() throws {
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
         settingsApp.terminate()
