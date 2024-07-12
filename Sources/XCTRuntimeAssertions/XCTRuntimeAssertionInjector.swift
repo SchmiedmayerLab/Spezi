@@ -10,9 +10,39 @@
 import Foundation
 
 
+private final class RuntimeInjections: Sendable {
+    private nonisolated(unsafe) var injected: [XCTRuntimeAssertionInjector] = []
+    private let lock = NSLock()
+
+    @inlinable var isEmpty: Bool {
+        injected.isEmpty
+    }
+
+    var injections: [XCTRuntimeAssertionInjector] {
+        lock.withLock {
+            injected
+        }
+    }
+
+    init() {}
+
+    func append(_ element: XCTRuntimeAssertionInjector) {
+        lock.withLock {
+            injected.append(element)
+        }
+    }
+
+    func removeAll(for id: UUID) {
+        lock.withLock {
+            injected.removeAll(where: { $0.id == id })
+        }
+    }
+}
+
+
 class XCTRuntimeAssertionInjector {
-    private static var injected: [XCTRuntimeAssertionInjector] = []
-    
+    private static let injection = RuntimeInjections()
+
     
     let id: UUID
     private let _assert: (UUID, () -> Bool, () -> String, StaticString, UInt) -> Void
@@ -65,30 +95,32 @@ class XCTRuntimeAssertionInjector {
     
     
     static func inject(runtimeAssertionInjector: XCTRuntimeAssertionInjector) {
-        injected.append(runtimeAssertionInjector)
+        injection.append(runtimeAssertionInjector)
     }
     
     static func removeRuntimeAssertionInjector(withId id: UUID) {
-        injected.removeAll(where: { $0.id == id })
+        injection.removeAll(for: id)
     }
     
-    
+
+    @inlinable
     static func assert(_ condition: () -> Bool, message: () -> String, file: StaticString, line: UInt) {
-        if injected.isEmpty {
+        if injection.isEmpty {
             Swift.assert(condition(), message(), file: file, line: line)
         }
 
-        for runtimeAssertionInjector in injected {
+        for runtimeAssertionInjector in injection.injections {
             runtimeAssertionInjector._assert(runtimeAssertionInjector.id, condition, message, file, line)
         }
     }
-    
+
+    @inlinable
     static func precondition(_ condition: () -> Bool, message: () -> String, file: StaticString, line: UInt) {
-        if injected.isEmpty {
+        if injection.isEmpty {
             Swift.precondition(condition(), message(), file: file, line: line)
         }
 
-        for runtimeAssertionInjector in injected {
+        for runtimeAssertionInjector in injection.injections {
             runtimeAssertionInjector._precondition(runtimeAssertionInjector.id, condition, message, file, line)
         }
     }
