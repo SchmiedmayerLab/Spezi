@@ -106,4 +106,20 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
 
         XCTAssertTrue(called, "assert was never called!")
     }
+
+    @MainActor
+    func testActorAnnotatedClosure() throws {
+        @MainActor
+        class Test {
+            var property = "Hello World"
+
+            nonisolated init() {}
+        }
+
+        let test = Test()
+
+        try XCTRuntimeAssertion {
+            assert(test.property != "Hello World", "Failed successfully")
+        }
+    }
 }

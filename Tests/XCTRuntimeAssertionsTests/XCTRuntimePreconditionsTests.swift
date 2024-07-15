@@ -92,4 +92,18 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
 
         XCTAssertTrue(called, "precondition was never called!")
     }
+
+    @MainActor
+    func testAsyncInvocationOnMainActor() throws {
+        @MainActor
+        class Test {
+            var property = "Hello World"
+        }
+
+        let test = Test()
+
+        try XCTRuntimePrecondition {
+            precondition(test.property != "Hello World", "Failed successfully.")
+        }
+    }
 }

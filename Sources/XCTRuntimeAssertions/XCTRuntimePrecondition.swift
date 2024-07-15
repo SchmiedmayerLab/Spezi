@@ -11,6 +11,11 @@ import Foundation
 
 
 /// `XCTRuntimePrecondition` allows you to test assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
+///
+/// - Important: The `expression` is executed on a background thread, even though it is not annotated as `@Sendable`. This is by design. Preconditions return `Never` and, therefore,
+/// need to be run on a separate thread that can block forever. Without this workaround, testing preconditions that are isolated to `@MainActor` would be impossible.
+/// Make sure to only run isolated parts of your code that don't suffer from concurrency issues in such a scenario.
+///
 /// - Parameters:
 ///   - validateRuntimeAssertion: An optional closure that can be used to further validate the messages passed to the
 ///                               `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
@@ -22,11 +27,11 @@ import Foundation
 /// - Throws: Throws an `XCTFail` error if the expression does not trigger a runtime assertion with the parameters defined above.
 public func XCTRuntimePrecondition(
     validateRuntimeAssertion: ((String) -> Void)? = nil,
-    timeout: Double = 0.01,
+    timeout: TimeInterval = 0.01,
     _ message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line,
-    _ expression: @escaping @Sendable () -> Void
+    _ expression: @escaping () -> Void
 ) throws {
     let fulfillmentCount = Counter()
     let xctRuntimeAssertionId = setupXCTRuntimeAssertionInjector(
@@ -59,6 +64,11 @@ public func XCTRuntimePrecondition(
 }
 
 /// `XCTRuntimePrecondition` allows you to test async assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
+///
+/// - Important: The `expression` is executed on a background thread, even though it is not annotated as `@Sendable`. This is by design. Preconditions return `Never` and, therefore,
+/// need to be run on a separate thread that can block forever. Without this workaround, testing preconditions that are isolated to `@MainActor` would be impossible.
+/// Make sure to only run isolated parts of your code that don't suffer from concurrency issues in such a scenario.
+///
 /// - Parameters:
 ///   - validateRuntimeAssertion: An optional closure that can be used to further validate the messages passed to the
 ///                               `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
@@ -70,20 +80,25 @@ public func XCTRuntimePrecondition(
 /// - Throws: Throws an `XCTFail` error if the expression does not trigger a runtime assertion with the parameters defined above.
 public func XCTRuntimePrecondition(
     validateRuntimeAssertion: ((String) -> Void)? = nil,
-    timeout: Double = 0.01,
+    timeout: TimeInterval = 0.01,
     _ message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line,
-    _ expression: @escaping @Sendable () async -> Void
+    _ expression: @escaping () async -> Void
 ) throws {
+    struct HackySendable<Value>: @unchecked Sendable {
+        let value: Value
+    }
+
     let fulfillmentCount = Counter()
     let xctRuntimeAssertionId = setupXCTRuntimeAssertionInjector(
         fulfillmentCount: fulfillmentCount,
         validateRuntimeAssertion: validateRuntimeAssertion
     )
-    
+
+    let expressionClosure = HackySendable(value: expression)
     let task = Task {
-        await expression()
+        await expressionClosure.value()
     }
     
     // We don't use:
