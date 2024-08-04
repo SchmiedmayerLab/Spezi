@@ -26,6 +26,18 @@ extension XCUIApplication {
         preconditionFailure("Unsupported platform.")
 #endif
     }
+    
+    private static var visionOS2: Bool {
+        #if os(visionOS)
+        if #available(visionOS 2.0, *) {
+            true
+        } else {
+            false
+        }
+        #else
+        false
+        #endif
+    }
 
     /// Deletes the application from the iOS springboard (iOS home screen) and launches it after it has been deleted and reinstalled.
     /// - Parameter appName: The name of the application as displayed on the springboard (iOS home screen).
@@ -49,19 +61,34 @@ extension XCUIApplication {
             XCTAssertTrue(springboard.icons[appName].firstMatch.isHittable)
             springboard.icons[appName].firstMatch.press(forDuration: 1.75)
             
-            if !springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0) && springboard.state != .runningForeground {
-                // The long press did not work, let's launch the springboard again and then try long pressing the app icon again.
-                springboard.activate()
-                
-                sleep(2)
-                
-                XCTAssertTrue(springboard.icons[appName].firstMatch.isHittable)
-                springboard.icons[appName].firstMatch.press(forDuration: 1.75)
-                
-                XCTAssertTrue(springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0))
-            }
+            if XCUIApplication.visionOS2 {
+                // VisionOS 2.0 changed the behavior how apps are deleted, showing a delete button above the app icon.
+                sleep(5)
+                let deleteButtons = springboard.collectionViews.buttons.matching(identifier: "Delete")
+                // There is no isEmtpy property on the `XCUIElementQuery`.
+                // swiftlint:disable:next empty_count
+                if deleteButtons.count > 0 {
+                    // We assume that the latest installed app is on the trailing part of the screen and therefore also the last button.
+                    let lastDeleteButton = deleteButtons.element(boundBy: deleteButtons.count - 1)
+                    lastDeleteButton.tap()
+                } else {
+                    XCTFail("No 'Delete' buttons found")
+                }
+            } else {
+                if !springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0) && springboard.state != .runningForeground {
+                    // The long press did not work, let's launch the springboard again and then try long pressing the app icon again.
+                    springboard.activate()
+                    
+                    sleep(2)
+                    
+                    XCTAssertTrue(springboard.icons[appName].firstMatch.isHittable)
+                    springboard.icons[appName].firstMatch.press(forDuration: 1.75)
+                    
+                    XCTAssertTrue(springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0))
+                }
 
-            springboard.buttons["Remove App"].tap()
+                springboard.buttons["Remove App"].tap()
+            }
             
             #if os(visionOS)
             // alerts are running in their own process on visionOS (lol). Took me literally 3 hours.
