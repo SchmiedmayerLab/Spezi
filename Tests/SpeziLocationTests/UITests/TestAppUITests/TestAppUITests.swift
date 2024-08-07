@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import XCTestExtensions
 
 
 class TestAppUITests: XCTestCase {
@@ -14,11 +15,18 @@ class TestAppUITests: XCTestCase {
         try super.setUpWithError()
         
         continueAfterFailure = false
+        
+        let app = XCUIApplication()
+        
+        #if !os(macOS)
+        app.deleteAndLaunch(withSpringboardAppName: "TestApp")
+        #else
+        app.launch()
+        #endif
     }
     
     func testRequestPermissions() throws {
         let app = XCUIApplication()
-        app.launch()
         
         XCTAssert(app.staticTexts["Location not available"].waitForExistence(timeout: 3))
         
@@ -26,8 +34,9 @@ class TestAppUITests: XCTestCase {
         app.buttons["Request When In Use Permission"].tap()
         
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        if springboard.buttons["Allow Once"].waitForExistence(timeout: 10) {
-            springboard.buttons["Allow Once"].tap()
+        
+        if springboard.buttons["Allow While Using App"].waitForExistence(timeout: 10) {
+            springboard.buttons["Allow While Using App"].tap()
         }
         
         XCTAssert(app.staticTexts["Authorization Status: Authorized when in use"].waitForExistence(timeout: 10))
