@@ -107,7 +107,7 @@ extension Signal {
 }
 
 
-extension Array: ByteEncodable where Element == Signal {
+extension Swift.Array: ByteCoding.ByteEncodable where Element == Signal {
     public func encode(to byteBuffer: inout ByteBuffer) {
         for header in self {
             byteBuffer.writeEDFAsciiTrimming(header.label.rawValue, length: 16)
