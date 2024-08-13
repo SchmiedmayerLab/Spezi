@@ -9,9 +9,9 @@
 import SwiftUI
 
 
-/// Display different ``Contact``s in a card-like style in a scroll view.
+/// Display different `Contact`s in a card-like style in a scroll view.
 ///
-/// You pass multiple ``Contact``s to the ``ContactsList`` to populate its content: ``ContactsList/init(contacts:)``:
+/// You pass multiple ``Contact``s to the `ContactsList` to populate its content:
 /// ```swift
 /// ContactsList(contacts: [/* ... */])
 ///     .navigationTitle("Contacts")
@@ -33,8 +33,8 @@ public struct ContactsList: View {
     }
     
     
-    /// Create a ``ContactsList`` using  multiple ``Contact``s.
-    /// - Parameter contact: The ``Contact`` instances to populate the list.
+    /// Create a view displaying a list of  multiple `Contact`s.
+    /// - Parameter contact: The `Contact` instances to populate the list.
     public init(contacts: [Contact]) {
         self.contacts = contacts
     }

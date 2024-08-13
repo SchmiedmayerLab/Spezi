@@ -10,9 +10,12 @@ import XCTest
 
 
 final class ContactsTests: XCTestCase {
+    @MainActor
     func testContactsView() throws {
         let app = XCUIApplication()
         app.launch()
+
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 2.0))
 
 
         XCTAssertTrue(app.staticTexts["Contact: Paul Schmiedmayer"].waitForExistence(timeout: 2.0))

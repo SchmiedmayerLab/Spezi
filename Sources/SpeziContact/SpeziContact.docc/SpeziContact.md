@@ -89,7 +89,7 @@ The contact views that can be used to display contact information.
 
 ### Models
 
-Use the ``Contact`` and ``ContactOption`` to configure the contact views.
+Use the `Contact` and `ContactOption` to configure the contact views.
 
 - ``Contact``
 - ``ContactOption``

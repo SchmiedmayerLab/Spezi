@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Contacts
 import SpeziContact
 import SwiftUI
 
@@ -49,7 +50,7 @@ struct ContactsTestsView: View {
         ]
     )
 
-    static let mock = Contact(
+    @MainActor static let mock = Contact(
         name: PersonNameComponents(givenName: "Paul", familyName: "Schmiedmayer"),
         image: Image(systemName: "figure.wave.circle"), // swiftlint:disable:this accessibility_label_for_image
         title: "A Title",

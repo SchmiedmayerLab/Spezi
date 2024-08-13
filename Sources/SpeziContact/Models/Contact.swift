@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-@_exported import Contacts.CNPostalAddress
+@preconcurrency @_exported import class Contacts.CNPostalAddress
 import SwiftUI
 
 
@@ -79,10 +79,11 @@ public struct Contact {
     public let contactOptions: [ContactOption]
     
     
+    /// Create new contact information.
     /// - Parameters:
     ///   - id: Identifier of the `Contact` instance.
     ///   - name: The name of the individual. Ideally provide at least a first and given name.
-    ///   - image: The image of the ``Contact``.
+    ///   - image: The image of the `Contact`.
     ///   - title: The title of the individual.
     ///   - description: The description of the individual.
     ///   - organization: The organization of the individual.

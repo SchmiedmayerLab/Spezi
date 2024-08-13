@@ -13,7 +13,9 @@ import SpeziViews
 import SwiftUI
 
 
-/// Display contact information as defined by a ``Contact``.
+/// Display contact information as defined by a `Contact`.
+///
+/// This view represents the content define in a ``Contact``.
 public struct ContactView: View {
     private let contact: Contact
     
@@ -171,8 +173,8 @@ public struct ContactView: View {
     }
     
     
-    /// A ``ContactView`` enables the display of contact information as defined by a ``Contact``.
-    /// - Parameter contact: The ``Contact`` that should be displayed.
+    /// Display contact information.
+    /// - Parameter contact: The `Contact` that should be displayed.
     public init(contact: Contact) {
         self.contact = contact
     }

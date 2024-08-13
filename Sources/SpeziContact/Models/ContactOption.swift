@@ -10,11 +10,9 @@
 import SwiftUI
 
 
-/// Customizable way to get in contact with an individual and usually connected to a ``Contact``.
+/// Customizable way to get in contact with an individual and usually connected to a `Contact`.
 ///
-/// ### Usage
-///
-/// The following example demonstrates the usage of the ``ContactOption`` within a ``Contact``. For additional details, refer to the ``Contact`` documentation.
+/// The following example demonstrates the usage of the `ContactOption` within a `Contact`. For additional details, refer to the ``Contact`` documentation.
 /// ```swift
 /// Contact(
 ///     // other parameters for Contact
@@ -35,30 +33,29 @@ import SwiftUI
 /// ```
 public struct ContactOption {
     let id = UUID()
-    /// The image representing the ``ContactOption`` in the user interface.
+    /// The image representing the `ContactOption` in the user interface.
     public let image: Image
-    /// The title representing the ``ContactOption`` in the user interface.
+    /// The title representing the `ContactOption` in the user interface.
     public let title: String
-    /// The action that should be taken when a user chooses to use the ``ContactOption``.
-    public let action: () -> Void
+    /// The action that should be taken when a user chooses to use the `ContactOption`.
+    public let action: @MainActor () -> Void
+
     
-    
-    /// A ``ContactOption`` encodes a way to get in contact with an individual and usually connected to a ``Contact``.
+    /// Encodes a way to get in contact with an individual and usually connected to a `Contact`.
     /// - Parameters:
-    ///   - image: The image representing the ``ContactOption`` in the user interface.
-    ///   - title: The title representing the ``ContactOption`` in the user interface.
-    ///   - action: The action that should be taken when a user chooses to use the ``ContactOption``.
-    public init(image: Image, title: String, action: @escaping () -> Void) {
+    ///   - image: The image representing the `ContactOption` in the user interface.
+    ///   - title: The title representing the `ContactOption` in the user interface.
+    ///   - action: The action that should be taken when a user chooses to use the `ContactOption`.
+    public init(image: Image, title: String, action: @escaping @MainActor () -> Void) {
         self.image = image
         self.title = title
         self.action = action
     }
 }
 
+
 extension ContactOption {
-    private static var delegateReference: NSObject?
-    
-    private static var rootViewController: UIViewController? {
+    @MainActor private static var rootViewController: UIViewController? {
         UIApplication
             .shared
             .connectedScenes
@@ -129,7 +126,8 @@ extension ContactOption {
             UIApplication.shared.open(url)
         }
     }
-    
+
+    @MainActor
     private static func presentAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: String(localized: "Ok", bundle: .module, comment: "Dismiss alert"), style: .default))
