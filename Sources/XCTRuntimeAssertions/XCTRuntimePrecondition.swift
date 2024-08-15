@@ -27,7 +27,7 @@ import Foundation
 /// - Throws: Throws an `XCTFail` error if the expression does not trigger a runtime assertion with the parameters defined above.
 public func XCTRuntimePrecondition(
     validateRuntimeAssertion: ((String) -> Void)? = nil,
-    timeout: TimeInterval = 0.01,
+    timeout: TimeInterval = 1,
     _ message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line,
@@ -80,7 +80,7 @@ public func XCTRuntimePrecondition(
 /// - Throws: Throws an `XCTFail` error if the expression does not trigger a runtime assertion with the parameters defined above.
 public func XCTRuntimePrecondition(
     validateRuntimeAssertion: ((String) -> Void)? = nil,
-    timeout: TimeInterval = 0.01,
+    timeout: TimeInterval = 1,
     _ message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line,
