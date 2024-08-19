@@ -24,7 +24,12 @@ public struct TestAppTestsView<Tests: TestAppTests>: View {
                 NavigationLink(test.rawValue, value: test)
             }
                 .navigationDestination(for: Tests.self) { test in
-                    test.view(withNavigationPath: $path)
+                    test
+                        .view(withNavigationPath: $path)
+                        .navigationTitle(test.rawValue)
+#if !os(macOS) && !os(tvOS)
+                        .navigationBarTitleDisplayMode(.inline)
+#endif
                 }
                 .navigationTitle(String(describing: Tests.self))
                 .toolbar {

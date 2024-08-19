@@ -51,12 +51,13 @@ The `enter(value:)` and `delete(count:)` methods provide the `checkIfTextWasEnte
 
 ### Assertions
 
-- ``XCTAssertThrowsErrorAsync``
+- ``XCTAssertThrowsErrorAsync(_:_:file:line:_:)``
 
 ### Text Entry
 
-- ``XCTest/XCUIElement/enter(value:checkIfTextWasEnteredCorrectly:dismissKeyboard:)``
-- ``XCTest/XCUIElement/delete(count:checkIfTextWasDeletedCorrectly:dismissKeyboard:)``
+- ``TextInputOptions``
+- ``XCTest/XCUIElement/enter(value:options:)``
+- ``XCTest/XCUIElement/delete(count:options:)``
 
 ### App Interaction
 

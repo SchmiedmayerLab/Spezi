@@ -13,10 +13,13 @@ class XCTestAppTests: XCTestCase {
     func testTestAppTestCaseTest() throws {
         let app = XCUIApplication()
         app.launch()
-        
-        XCTAssert(app.buttons["XCTestApp"].waitForExistence(timeout: 5.0))
+
+        XCTAssert(app.wait(for: .runningForeground, timeout: 2.0))
+
+        XCTAssert(app.buttons["XCTestApp"].waitForExistence(timeout: 2.0))
         app.buttons["XCTestApp"].tap()
-        
-        XCTAssert(app.staticTexts["Passed"].waitForExistence(timeout: 5))
+
+        XCTAssert(app.navigationBars.staticTexts["XCTestApp"].waitForExistence(timeout: 2.0))
+        XCTAssert(app.staticTexts["Passed"].waitForExistence(timeout: 5.0))
     }
 }

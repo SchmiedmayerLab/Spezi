@@ -14,7 +14,7 @@ public struct TestAppView: View {
     @State private var testState = "Running ..."
     private let testCase: any TestAppTestCase
     
-    
+
     public var body: some View {
         Text(testState)
             .task {
