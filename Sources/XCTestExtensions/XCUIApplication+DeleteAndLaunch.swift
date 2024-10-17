@@ -28,15 +28,15 @@ extension XCUIApplication {
     }
     
     private static var visionOS2: Bool {
-        #if os(visionOS)
+#if os(visionOS)
         if #available(visionOS 2.0, *) {
             true
         } else {
             false
         }
-        #else
+#else
         false
-        #endif
+#endif
     }
 
     /// Deletes the application from the iOS springboard (iOS home screen) and launches it after it has been deleted and reinstalled.
@@ -44,70 +44,77 @@ extension XCUIApplication {
     @available(macOS, unavailable)
     @available(watchOS, unavailable)
     public func deleteAndLaunch(withSpringboardAppName appName: String) {
+        self.delete(app: appName)
+        self.launch()
+    }
+    
+    /// Delete the application from the home screen.
+    ///
+    /// Deletes the application from the iOS Springboard, visionOS RealityLauncher or tvOS Pineboard.
+    /// - Parameter appName: The springboard name of the application.
+    @available(macOS, unavailable)
+    @available(watchOS, unavailable)
+    public func delete(app appName: String) {
         self.terminate()
 
         let springboard = XCUIApplication(bundleIdentifier: Self.homeScreenBundle)
-        #if os(visionOS)
+#if os(visionOS)
         springboard.launch() // springboard is in `runningBackgroundSuspended` state on visionOS. So we need to launch it not just activate
-        #else
+#else
         springboard.activate()
-        #endif
+#endif
 
-        if springboard.icons[appName].firstMatch.waitForExistence(timeout: 10.0) {
+        // There might be multiple apps installed with the same name (e.g., we use "TestApp" a lot), so delete all of them
+        while springboard.icons[appName].firstMatch.waitForExistence(timeout: 10.0) {
             if !springboard.icons[appName].firstMatch.isHittable {
                 springboard.swipeLeft()
             }
-            
+
             XCTAssertTrue(springboard.icons[appName].firstMatch.isHittable)
-            springboard.icons[appName].firstMatch.press(forDuration: 1.75)
-            
+#if os(visionOS)
+            springboard.icons[appName].firstMatch.press(forDuration: 1)
+#else
+            springboard.icons[appName].firstMatch.press(forDuration: 1.5)
+#endif
+
             if XCUIApplication.visionOS2 {
                 // VisionOS 2.0 changed the behavior how apps are deleted, showing a delete button above the app icon.
-                sleep(5)
-                let deleteButtons = springboard.collectionViews.buttons.matching(identifier: "Delete")
-                // There is no isEmtpy property on the `XCUIElementQuery`.
-                // swiftlint:disable:next empty_count
-                if deleteButtons.count > 0 {
-                    // We assume that the latest installed app is on the trailing part of the screen and therefore also the last button.
-                    let lastDeleteButton = deleteButtons.element(boundBy: deleteButtons.count - 1)
-                    lastDeleteButton.tap()
-                } else {
-                    XCTFail("No 'Delete' buttons found")
-                }
+                let deleteButton = springboard.icons[appName].buttons["Delete"]
+
+                XCTAssertTrue(deleteButton.waitForExistence(timeout: 5.0))
+                deleteButton.tap()
             } else {
                 if !springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0) && springboard.state != .runningForeground {
                     // The long press did not work, let's launch the springboard again and then try long pressing the app icon again.
                     springboard.activate()
-                    
-                    sleep(2)
-                    
+
+                    XCTAssert(springboard.wait(for: .runningForeground, timeout: 2.0))
+
                     XCTAssertTrue(springboard.icons[appName].firstMatch.isHittable)
                     springboard.icons[appName].firstMatch.press(forDuration: 1.75)
-                    
+
                     XCTAssertTrue(springboard.collectionViews.buttons["Remove App"].waitForExistence(timeout: 10.0))
                 }
-
                 springboard.buttons["Remove App"].tap()
             }
-            
-            #if os(visionOS)
+
+#if os(visionOS)
             // alerts are running in their own process on visionOS (lol). Took me literally 3 hours.
             let notifications = visionOSNotifications
 
             XCTAssert(notifications.staticTexts["Delete “\(appName)”?"].waitForExistence(timeout: 5.0))
             XCTAssert(notifications.buttons["Delete"].waitForExistence(timeout: 2.0))
             notifications.buttons["Delete"].tap() // currently no better way of hitting some "random" delete button.
-            #else
+#else
             XCTAssertTrue(springboard.alerts["Remove “\(appName)”?"].buttons["Delete App"].waitForExistence(timeout: 10.0))
             springboard.alerts["Remove “\(appName)”?"].buttons["Delete App"].tap()
             XCTAssertTrue(springboard.alerts["Delete “\(appName)”?"].buttons["Delete"].waitForExistence(timeout: 10.0))
             springboard.alerts["Delete “\(appName)”?"].buttons["Delete"].tap()
-            #endif
+#endif
+
+            if springboard.icons[appName].waitForNonExistence(timeout: 2.0) {
+                break
+            }
         }
-        
-        // Wait for 5 Seconds for the application to be deleted and removed.
-        sleep(5)
-        
-        self.launch()
     }
 }

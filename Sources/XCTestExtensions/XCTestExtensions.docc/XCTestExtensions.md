@@ -62,5 +62,6 @@ The `enter(value:)` and `delete(count:)` methods provide the `checkIfTextWasEnte
 ### App Interaction
 
 - ``XCTest/XCUIApplication/deleteAndLaunch(withSpringboardAppName:)``
+- ``XCTest/XCUIApplication/delete(app:)``
 - ``XCTest/XCUIApplication/dismissKeyboard()``
 - ``XCTest/XCUIApplication/homeScreenBundle``
