@@ -9,8 +9,8 @@
 import Foundation
 
 
-public struct Weekdays: OptionSet, Codable, Hashable, CaseIterable, Identifiable {
-    public static var allCases: [Weekdays] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+public struct Weekdays: OptionSet, Codable, Hashable, CaseIterable, Identifiable, Sendable {
+    public static let allCases: [Weekdays] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     
     static let sunday = Weekdays(rawValue: 1 << 0)
     static let monday = Weekdays(rawValue: 1 << 1)

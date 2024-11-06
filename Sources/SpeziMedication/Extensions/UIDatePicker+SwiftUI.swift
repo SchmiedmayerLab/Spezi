@@ -10,6 +10,7 @@ import SwiftUI
 
 
 struct ScheduledTimeDatePicker: UIViewRepresentable {
+    @MainActor
     class Coordinator: NSObject {
         private var lastDate: Date
         private let date: Binding<Date>

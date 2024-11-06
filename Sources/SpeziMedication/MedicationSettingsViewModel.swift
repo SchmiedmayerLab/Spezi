@@ -45,6 +45,7 @@ public protocol MedicationSettingsViewModel<Medications>: Observable {
     ///
     /// Be sure that the ``medicationInstances`` property is updated with the resulting set of medications.
     /// - Parameter medications: The set of medications to be persisted.
+    @MainActor
     func persist(medicationInstances: Set<Medications>) async throws
 }
 

@@ -15,7 +15,7 @@ import SwiftUI
 class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, CustomStringConvertible {
     var medicationInstances: Set<ExampleMedicationInstance> = []
     let medicationOptions: Set<ExampleMedication>
-    
+
     
     var description: String {
         guard !medicationInstances.isEmpty else {

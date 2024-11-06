@@ -155,8 +155,8 @@ struct ScheduleFrequencyView: View {
 }
 
 #Preview {
-    @State var frequency: Frequency = .specificDaysOfWeek(.all)
-    @State var startDate: Date = .now
+    @Previewable @State var frequency: Frequency = .specificDaysOfWeek(.all)
+    @Previewable @State var startDate: Date = .now
     
     return ScheduleFrequencyView(frequency: $frequency, startDate: $startDate)
 }

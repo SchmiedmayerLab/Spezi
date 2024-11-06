@@ -32,7 +32,8 @@ struct EditMedication<MI: MedicationInstance>: View {
                 }
                 Section {
                     Button(String(localized: "Delete", bundle: .module), role: .destructive) {
-                        viewModel.medicationInstances.removeAll(where: { $0.id == medicationInstance.id })
+                        let id = medicationInstance.id
+                        viewModel.medicationInstances.removeAll(where: { $0.id == id })
                         dismiss()
                     }
                 }

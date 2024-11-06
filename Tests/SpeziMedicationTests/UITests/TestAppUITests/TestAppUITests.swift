@@ -38,7 +38,8 @@ class TestAppUITests: XCTestCase {
         
         XCTAssertTrue(app.staticTexts["Medication 1 - Dosage 1.1 - RegularDayIntervals: 1"].waitForExistence(timeout: 2))
     }
-    
+
+    @MainActor
     func testSpeziMedicationDelete() throws {
         let app = XCUIApplication()
         app.launch()
@@ -61,7 +62,8 @@ class TestAppUITests: XCTestCase {
         
         XCTAssertTrue(app.staticTexts["Use the \"+\" button at the top to add all the medications you take."].waitForExistence(timeout: 2))
     }
-    
+
+    @MainActor
     func testSpeziMedicationDismiss() throws {
         let app = XCUIApplication()
         app.launch()
@@ -82,7 +84,8 @@ class TestAppUITests: XCTestCase {
         
         XCTAssertTrue(app.staticTexts["No Medications"].waitForExistence(timeout: 2))
     }
-    
+
+    @MainActor
     func testSpeziMedicationEdit() throws {
         let app = XCUIApplication()
         app.launch()
