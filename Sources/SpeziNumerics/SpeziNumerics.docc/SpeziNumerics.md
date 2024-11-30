@@ -22,6 +22,7 @@ or are only found in networking protocols.
 ### Health Data Types
 
 - ``MedFloat16``
+- ``MedFloat32``
 
 ### 24 Bit Integer Support
 
