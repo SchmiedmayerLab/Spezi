@@ -25,10 +25,10 @@ extension XCUIApplication {
     ///   - type: The trigger type to assert.
     ///   - nextTrigger: The next trigger label to assert.
     ///   - nextTriggerExistenceTimeout: The time to await for the trigger label to appear.
-    public func assertNotificationDetails( // swiftlint:disable:this function_default_parameter_at_end
-        identifier: String? = nil,
+    public func assertNotificationDetails(
+        identifier: String? = nil, // swiftlint:disable:this function_default_parameter_at_end
         title: String,
-        subtitle: String? = nil,
+        subtitle: String? = nil, // swiftlint:disable:this function_default_parameter_at_end
         body: String,
         category: String? = nil,
         thread: String? = nil,

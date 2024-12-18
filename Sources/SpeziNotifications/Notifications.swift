@@ -55,7 +55,7 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
     ///   - isolation: Inherits the current isolation.
     ///   - badgeCount: The new badge count to display.
     @available(watchOS, unavailable)
-    public func setBadgeCount( // swiftlint:disable:this function_default_parameter_at_end
+    public func setBadgeCount(
         isolation: isolated (any Actor)? = #isolation,
         _ badgeCount: Int
     ) async throws {
@@ -66,7 +66,7 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
     /// - Parameters:
     ///   - isolation: Inherits the current isolation.
     ///   - request: The notification request.
-    public func add( // swiftlint:disable:this function_default_parameter_at_end
+    public func add(
         isolation: isolated (any Actor)? = #isolation,
         request: UNNotificationRequest
     ) async throws {
@@ -114,7 +114,7 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
     ///   - isolation: Inherits the current isolation.
     ///   - categories: The notification categories you support.
     @available(tvOS, unavailable)
-    public func add( // swiftlint:disable:this function_default_parameter_at_end
+    public func add(
         isolation: isolated (any Actor)? = #isolation,
         categories: Set<UNNotificationCategory>
     ) async {
