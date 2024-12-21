@@ -213,3 +213,9 @@ public final class SpeechRecognizer: NSObject, Module, DefaultInitializable, Env
         self.isAvailable = available
     }
 }
+
+
+/// Necessary `Sendable` conformance for Swift 6 language mode.
+///
+/// - Note: Wrapping the `SFSpeechRecognitionResult` in a custom `Sendable` struct is not desired as it would break API.
+extension SFSpeechRecognitionResult: @retroactive @unchecked Sendable {}
