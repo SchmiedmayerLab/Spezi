@@ -33,7 +33,38 @@ class XCTestExtensionsTests: XCTestCase {
         XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5))
         XCTAssert(app.staticTexts["No secure text set ..."].exists)
     }
+    
+    @available(macOS, unavailable)
+    @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
+    @available(tvOS, unavailable)
+    func testDeleteAndLaunchWithHealthKitSample() throws {
+#if os(macOS) || os(watchOS) || os(visionOS) || os(tvOS)
+        throw XCTSkip("Not supported on this platform")
+#endif
 
+        let app = XCUIApplication()
+        app.deleteAndLaunch(withSpringboardAppName: "TestApp")
+        
+        XCTAssert(app.buttons["HealthKitDataEntry"].waitForExistence(timeout: 5.0))
+        app.buttons["HealthKitDataEntry"].tap()
+        
+        XCTAssert(app.buttons["Add a HealthKit sample"].waitForExistence(timeout: 3))
+        app.buttons["Add a HealthKit sample"].tap()
+        
+        if app.staticTexts["Has access"].waitForNonExistence(timeout: 2) {
+            // if the view isn't telling us that it has access, it's currently requesting access
+            app.tables.staticTexts["Turn On All"].tap()
+            app.navigationBars["Health Access"].buttons["Allow"].tap()
+        }
+        
+        XCTAssert(app.staticTexts["Did add sample!"].waitForExistence(timeout: 5))
+        XCTAssert(app.staticTexts["Did add sample!"].exists)
+        
+        app.deleteAndLaunch(withSpringboardAppName: "TestApp")
+    }
+
+    
     @available(macOS, unavailable)
     @available(watchOS, unavailable)
     func testDeleteAndLaunchFromFirstPage() throws {

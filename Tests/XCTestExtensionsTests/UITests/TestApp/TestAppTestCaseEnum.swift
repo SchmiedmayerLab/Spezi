@@ -14,7 +14,7 @@ enum TestAppTestCaseEnum: String, TestAppTests {
     case xcTestApp = "XCTestApp"
     case xcTestExtensions = "XCTestExtensions"
     case dismissKeyboard = "DismissKeyboard"
-    
+    case healthKitDataEntry = "HealthKitDataEntry"
     
     func view(withNavigationPath path: Binding<NavigationPath>) -> some View {
         switch self {
@@ -24,6 +24,8 @@ enum TestAppTestCaseEnum: String, TestAppTests {
             XCTestExtensionsTest()
         case .dismissKeyboard:
             DismissKeyboardTest()
+        case .healthKitDataEntry:
+            HealthKitDataEntryView()
         }
     }
 }

@@ -113,6 +113,11 @@ extension XCUIApplication {
 #endif
 
             if springboard.icons[appName].waitForNonExistence(timeout: 2.0) {
+                // If the app had health data stored, deleting the app will show an alert, which we need to dismiss
+                let alertTitle = "There is data from “\(appName)” saved in Health"
+                if springboard.alerts[alertTitle].waitForExistence(timeout: 2) {
+                    springboard.alerts[alertTitle].buttons["OK"].tap()
+                }
                 break
             }
         }

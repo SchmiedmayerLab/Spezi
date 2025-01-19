@@ -16,6 +16,7 @@
 		2F87F9EE2952F10600810247 /* XCTestExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 2F87F9ED2952F10600810247 /* XCTestExtensions */; };
 		2F8A431329130A8C005D2B8F /* XCTestExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8A431229130A8C005D2B8F /* XCTestExtensionsTests.swift */; };
 		2FA7382C290ADFAA007ACEB9 /* TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7382B290ADFAA007ACEB9 /* TestApp.swift */; };
+		80A1F4312D393F6800183BFF /* HealthKitDataEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1F4302D393F6800183BFF /* HealthKitDataEntry.swift */; };
 		A9E8E2552AA375DC0051274C /* DismissKeyboardTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8E2542AA375DC0051274C /* DismissKeyboardTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,8 @@
 		2F8A431229130A8C005D2B8F /* XCTestExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestExtensionsTests.swift; sourceTree = "<group>"; };
 		2FA7382B290ADFAA007ACEB9 /* TestApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestApp.swift; sourceTree = "<group>"; };
 		2FE5AAA829985FD9004A0442 /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
+		80A1F42F2D393F3600183BFF /* TestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestApp.entitlements; sourceTree = "<group>"; };
+		80A1F4302D393F6800183BFF /* HealthKitDataEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitDataEntry.swift; sourceTree = "<group>"; };
 		A9E8E2542AA375DC0051274C /* DismissKeyboardTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissKeyboardTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,6 +92,7 @@
 		2F6D139428F5F384007C25D6 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				80A1F42F2D393F3600183BFF /* TestApp.entitlements */,
 				2F273FCA298DC10300FCA397 /* Info.plist */,
 				2FA7382B290ADFAA007ACEB9 /* TestApp.swift */,
 				2F2D337729DE323E00081B1D /* XCTestAppTestCaseTest.swift */,
@@ -96,6 +100,7 @@
 				2F2D338829DE570C00081B1D /* TestAppTestCaseEnum.swift */,
 				2F6D139928F5F386007C25D6 /* Assets.xcassets */,
 				A9E8E2542AA375DC0051274C /* DismissKeyboardTest.swift */,
+				80A1F4302D393F6800183BFF /* HealthKitDataEntry.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 				A9E8E2552AA375DC0051274C /* DismissKeyboardTest.swift in Sources */,
 				2F2D338929DE570C00081B1D /* TestAppTestCaseEnum.swift in Sources */,
 				2F2D337829DE323E00081B1D /* XCTestAppTestCaseTest.swift in Sources */,
+				80A1F4312D393F6800183BFF /* HealthKitDataEntry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +380,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
@@ -411,6 +418,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
