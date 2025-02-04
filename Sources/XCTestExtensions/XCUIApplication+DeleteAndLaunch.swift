@@ -112,12 +112,17 @@ extension XCUIApplication {
             springboard.alerts["Delete “\(appName)”?"].buttons["Delete"].tap()
 #endif
 
-            if springboard.icons[appName].waitForNonExistence(timeout: 2.0) {
-                // If the app had health data stored, deleting the app will show an alert, which we need to dismiss
-                let alertTitle = "There is data from “\(appName)” saved in Health"
-                if springboard.alerts[alertTitle].waitForExistence(timeout: 2) {
-                    springboard.alerts[alertTitle].buttons["OK"].tap()
-                }
+            // If the app had health data stored, deleting the app will show an alert, which we need to dismiss.
+            // We also use this check to provide a 5 second timeout for the app to be deleted.
+            let alertTitle = "There is data from “\(appName)” saved in Health"
+            if springboard.alerts[alertTitle].waitForExistence(timeout: 5.0) {
+                springboard.alerts[alertTitle].buttons["OK"].tap()
+            }
+            
+            // Exit the while loop early without a `springboard.icons[appName].firstMatch.waitForExistence(timeout: 10.0)` call.
+            // If the app takes longer to be deleted, this will give it some more time.
+            // Only leads to a delay if we have to delete multiple apps with the same name; otherwise, it exits as soon as the app is removed or even immediately.
+            if springboard.icons[appName].waitForNonExistence(timeout: 10.0) {
                 break
             }
         }
