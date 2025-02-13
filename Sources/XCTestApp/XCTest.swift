@@ -13,11 +13,9 @@ public struct XCTestFailure: Error, CustomStringConvertible {
     let file: StaticString
     let line: UInt
     
-    
     public var description: String {
         "XCTestFailure in \(file) at line \(line)\(message.isEmpty ? "" : ": \(message)")"
     }
-    
     
     /// An error thrown in the XCT-based functions of the `XCTestExtensions` target.
     /// - Parameters:
@@ -42,12 +40,12 @@ public struct XCTestFailure: Error, CustomStringConvertible {
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 /// - Throws: This function throws an ``XCTestFailure`` failure when `expression == false`.
 public func XCTAssert(
-    _ condition: @autoclosure () -> Bool,
+    _ condition: @autoclosure () throws -> Bool,
     message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line
 ) throws {
-    guard condition() else {
+    guard try condition() else {
         throw XCTestFailure(
             message: formatFailureMessage(baseText: "", additionalMessage: message()),
             file: file,
@@ -67,12 +65,12 @@ public func XCTAssert(
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 /// - Throws: This function throws an ``XCTestFailure`` failure when `expression == false`.
 public func XCTAssertTrue(
-    _ condition: @autoclosure () -> Bool,
+    _ condition: @autoclosure () throws -> Bool,
     message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line
 ) throws {
-    guard condition() else {
+    guard try condition() else {
         throw XCTestFailure(
             message: formatFailureMessage(baseText: "", additionalMessage: message()),
             file: file,
@@ -92,12 +90,12 @@ public func XCTAssertTrue(
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 /// - Throws: This function throws an ``XCTestFailure`` failure when `expression == false`.
 public func XCTAssertFalse(
-    _ condition: @autoclosure () -> Bool,
+    _ condition: @autoclosure () throws -> Bool,
     message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line
 ) throws {
-    guard !condition() else {
+    guard try !condition() else {
         throw XCTestFailure(
             message: formatFailureMessage(baseText: "", additionalMessage: message()),
             file: file,
@@ -171,12 +169,12 @@ public func XCTAssertNotEqual<T: Equatable>(
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 /// - Throws: This function throws an ``XCTestFailure`` failure when `expression != nil`.
 public func XCTAssertNil(
-    _ expression: (some Any)?,
+    _ expression: @autoclosure () throws -> (some Any)?,
     message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line
 ) throws {
-    if let value = expression {
+    if let value = try expression() {
         throw XCTestFailure(
             message: formatFailureMessage(baseText: "'\(value)'", additionalMessage: message()),
             file: file,
@@ -196,12 +194,12 @@ public func XCTAssertNil(
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 /// - Throws: This function throws an ``XCTestFailure`` failure when `expression != nil`.
 public func XCTAssertNotNil(
-    _ expression: (some Any)?,
+    _ expression: @autoclosure () throws -> (some Any)?,
     message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line
 ) throws {
-    if expression == nil {
+    if try expression() == nil {
         throw XCTestFailure(
             message: formatFailureMessage(baseText: "", additionalMessage: message()),
             file: file,
@@ -215,19 +213,19 @@ public func XCTAssertNotNil(
 ///
 /// This function generates a failure when expression is `nil`. Otherwise, it returns the unwrapped value of expression for subsequent use in the test.
 /// - Parameters:
-///   - optional: An expression of type `T?`. The expression’s type determines the type of the return value.
+///   - expression: An expression of type `T?`. The expression’s type determines the type of the return value.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 /// - Throws: This function throws an ``XCTestFailure`` failure when expression is not `nil`.
 /// - Returns: The result of evaluating and unwrapping the expression, which is of type `T`. `XCTUnwrap()` only returns a value if expression is not `nil`.
 public func XCTUnwrap<T>(
-    _ optional: T?,
+    _ expression: @autoclosure () throws -> T?,
     message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line
 ) throws -> T {
-    guard let unwrapped = optional else {
+    guard let unwrapped = try expression() else {
         throw XCTestFailure(
             message: formatFailureMessage(baseText: "Expected non-nil value of type '\(T.self)'", additionalMessage: message()),
             file: file,
