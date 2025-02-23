@@ -121,4 +121,16 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
         let previousCategories = await UNUserNotificationCenter.current().notificationCategories()
         UNUserNotificationCenter.current().setNotificationCategories(categories.union(previousCategories))
     }
+    
+    
+    /// Removes all pending notification requests that satisfy the predicate.
+    public func removePendingNotificationRequests(
+        isolation: isolated (any Actor)? = #isolation,
+        where predicate: (UNNotificationRequest) -> Bool
+    ) async {
+        let identifiers = await UNUserNotificationCenter.current().pendingNotificationRequests().compactMap { request in
+            predicate(request) ? request.identifier : nil
+        }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+    }
 }

@@ -104,7 +104,7 @@ final class NotificationsTests: XCTestCase {
         let action = module.registerRemoteNotifications
 
         let expectation = XCTestExpectation(description: "RegisterRemoteNotifications")
-        var caught: Error?
+        var caught: (any Error)?
 
         Task { // this task also runs on main actor
             do {
@@ -147,7 +147,7 @@ final class NotificationsTests: XCTestCase {
         let action = module.registerRemoteNotifications
 
         let expectation = XCTestExpectation(description: "RegisterRemoteNotifications")
-        var caught: Error?
+        var caught: (any Error)?
 
         Task { // this task also runs on main actor
             do {

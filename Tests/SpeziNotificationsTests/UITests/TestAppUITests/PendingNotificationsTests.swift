@@ -18,7 +18,21 @@ final class PendingNotificationsTests: XCTestCase {
     }
 
     @MainActor
-    func testPendingNotifications() {
+    func testPendingNotifications() { // swiftlint:disable:this function_body_length
+        func navigateToTab(_ tabName: String, line: UInt = #line) {
+            #if os(visionOS)
+            XCTAssert(app.buttons[tabName].exists, line: line)
+            app.buttons[tabName].firstMatch.tap()
+            usleep(500000)
+            app.buttons[tabName].firstMatch.tap()
+            #else
+            XCTAssert(app.tabBars.buttons[tabName].exists, line: line)
+            app.tabBars.buttons[tabName].tap()
+            usleep(500000)
+            app.tabBars.buttons[tabName].tap()
+            #endif
+        }
+        
         let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
 
@@ -31,13 +45,7 @@ final class PendingNotificationsTests: XCTestCase {
 
         XCTAssert(app.staticTexts["Authorization, provisional"].waitForExistence(timeout: 0.5))
 
-        #if os(visionOS)
-        XCTAssert(app.buttons["Notifications"].exists)
-        app.buttons["Notifications"].firstMatch.tap()
-        #else
-        XCTAssert(app.tabBars.buttons["Notifications"].exists)
-        app.tabBars.buttons["Notifications"].tap()
-        #endif
+        navigateToTab("Notifications")
 
         XCTAssert(app.navigationBars.staticTexts["Pending Notifications"].waitForExistence(timeout: 2.0))
 
@@ -74,5 +82,17 @@ final class PendingNotificationsTests: XCTestCase {
             interruption: .critical,
             type: "Interval"
         )
+        
+        // Test cancellation
+        
+        navigateToTab("Controls")
+        
+        XCTAssert(app.buttons["Cancel Pending Notifications"].waitForExistence(timeout: 1))
+        app.buttons["Cancel Pending Notifications"].tap()
+        
+        navigateToTab("Notifications")
+        
+        XCTAssertFalse(app.staticTexts["Calendar Notification"].exists)
+        XCTAssertFalse(app.staticTexts["Interval Notification"].exists)
     }
 }

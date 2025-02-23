@@ -95,6 +95,9 @@ struct ControlsView: View {
                     AsyncButton("Schedule Notifications", state: $viewState) {
                         try await scheduleNotifications()
                     }
+                    AsyncButton("Cancel Pending Notifications") {
+                        await notifications.removePendingNotificationRequests { _ in true }
+                    }
                 }
             }
         }
