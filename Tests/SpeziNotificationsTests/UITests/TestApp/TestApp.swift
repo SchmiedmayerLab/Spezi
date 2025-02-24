@@ -25,14 +25,18 @@ struct UITestsApp: App {
                         ControlsView()
                     }
                 }
-
                 Tab("Notifications", systemImage: "mail") {
                     NavigationStack {
                         NotificationsView()
                     }
                 }
             }
-                .spezi(appDelegate)
+            .spezi(appDelegate)
         }
+        // for some reason, XCTest can't swipeUp() in visionOS (you can call the function; it just doesn't do anything),
+        // so we instead need to make the window super large so that everything fits on screen without having to scroll.
+        #if os(visionOS)
+        .defaultSize(width: 1250, height: 1250)
+        #endif
     }
 }

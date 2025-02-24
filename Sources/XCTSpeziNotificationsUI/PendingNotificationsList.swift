@@ -76,7 +76,6 @@ public struct PendingNotificationsList: View {
         defer {
             viewState = .idle
         }
-
         pendingNotifications.removeAll()
         pendingNotifications = await localNotifications.pendingNotificationRequests()
     }

@@ -57,14 +57,15 @@ extension XCUIApplication {
         XCTAssert(staticTexts["Sound, \(sound ? "Yes" : "No")"].exists)
         XCTAssert(staticTexts["Interruption, \(interruption.description)"].exists)
 
-#if os(visionOS)
+        #if os(visionOS)
         staticTexts["Interruption, \(interruption.description)"].swipeUp(velocity: .fast)
-#endif
+        #elseif !os(tvOS)
+        swipeUp()
+        #endif
 
         if let type {
             XCTAssert(staticTexts["Type, \(type)"].exists)
         }
-
 
         if let nextTrigger {
             XCTAssert(staticTexts["Next Trigger, \(nextTrigger)"].waitForExistence(timeout: nextTriggerExistenceTimeout))

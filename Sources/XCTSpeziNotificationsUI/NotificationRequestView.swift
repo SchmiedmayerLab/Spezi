@@ -124,7 +124,9 @@ public struct NotificationRequestView: View {
                     Text("Type", bundle: .module)
                 }
                     .accessibilityElement(children: .combine)
-
+                if let trigger = trigger as? UNCalendarNotificationTrigger {
+                    LabeledContent("Date", value: trigger.dateComponents.description)
+                }
                 if let nextDate = trigger.nextDate() {
                     LabeledContent("Next Trigger") {
                         NotificationTriggerLabel(nextDate)
@@ -134,6 +136,7 @@ public struct NotificationRequestView: View {
                             viewUpdate.schedule(at: nextDate)
                         }
                 }
+                LabeledContent("Repeats", value: "\(trigger.repeats)")
             } header: {
                 Text("Trigger", bundle: .module)
             }
