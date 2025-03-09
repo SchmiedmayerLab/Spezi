@@ -6,10 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-@_spi(TestingSupport) @testable import ByteCoding
-import NIO
-import XCTByteCoding
-import XCTest
+@testable import ByteCoding
+import ByteCodingTesting
+import NIOCore
+import Testing
 
 
 private enum SimpleEnum: UInt8, ByteCodable {
@@ -24,7 +24,9 @@ private enum PrimitiveSimpleEnum: UInt16, PrimitiveByteCodable {
 }
 
 
-final class RawRepresentableTests: XCTestCase {
+@Suite("RawRepresentable Integration")
+struct RawRepresentableTests {
+    @Test("ByteCodable")
     func testRawRepresentableByteCodable() throws {
         try testIdentity(from: SimpleEnum.hello)
         try testIdentity(from: SimpleEnum.world)
@@ -35,6 +37,7 @@ final class RawRepresentableTests: XCTestCase {
         _ = SimpleEnum(from: &buffer)
     }
 
+    @Test("PrimitiveByteCodable")
     func testRawRepresentablePrimitiveByteCodable() throws {
         try testIdentity(from: PrimitiveSimpleEnum.hello)
         try testIdentity(from: PrimitiveSimpleEnum.world)

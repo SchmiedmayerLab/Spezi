@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import NIO
+import NIOCore
 
 
 extension Float32: PrimitiveByteCodable {

@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-import NIO
+import NIOCore
 
 
 extension Bool: PrimitiveByteCodable {

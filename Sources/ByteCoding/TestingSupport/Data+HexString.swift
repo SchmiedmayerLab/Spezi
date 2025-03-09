@@ -14,7 +14,6 @@ extension Data {
     ///
     /// The hex string may be prefixed with `"0x"` or `"0X"`.
     /// - Parameter hex: The hex string.
-    @_spi(TestingSupport)
     public init?(hex: String) {
         // while this seems complicated, and you can do it with shorter code,
         // this doesn't incur any heap allocations for string. Pretty neat.
@@ -61,7 +60,6 @@ extension Data {
     
     /// Create hex string from Data.
     /// - Returns: The hex formatted data string
-    @_spi(TestingSupport)
     public func hexString() -> String {
         map { character in
             String(format: "%02hhx", character)

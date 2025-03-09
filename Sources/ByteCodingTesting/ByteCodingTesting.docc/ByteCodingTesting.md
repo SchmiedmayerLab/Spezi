@@ -1,6 +1,6 @@
-# ``XCTByteCoding``
+# ``ByteCodingTesting``
 
-XCTest utilities for Byte Coding.
+Swift Testing utilities for Byte Coding.
 
 <!--
 #
@@ -14,7 +14,7 @@ XCTest utilities for Byte Coding.
 
 ## Overview
 
-This package provides several utilities that make your life easier when testing your `ByteCodable` implementation using XCTest.
+This package provides several utilities that make your life easier when testing your `ByteCodable` implementation using Swift Testing.
 
 ## Topics
 
