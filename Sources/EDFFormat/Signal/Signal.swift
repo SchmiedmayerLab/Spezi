@@ -61,10 +61,10 @@ public struct Signal {
     ///   - digitalMinimum: The digital minimum.
     ///   - digitalMaximum: The digital maximum.
     ///   - reserved: 32 bytes of reserved area.
-    public init( // swiftlint:disable:this function_default_parameter_at_end
+    public init(
         label: SignalLabel,
         transducerType: String? = nil,
-        prefiltering: String? = nil,
+        prefiltering: String? = nil, // swiftlint:disable:this function_default_parameter_at_end
         sampleCount: Int,
         physicalMinimum: Int,
         physicalMaximum: Int,

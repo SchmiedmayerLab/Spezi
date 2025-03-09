@@ -307,18 +307,21 @@ extension GenericFileWriter: @unchecked Sendable {}
 extension GenericFileWriter {
     private static var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
+        formatter.locale = .init(identifier: "en_US")
         formatter.dateFormat = "dd.MM.yy"
         return formatter
     }
 
     private static var yyDateFormatter: DateFormatter {
         let formatter = DateFormatter()
+        formatter.locale = .init(identifier: "en_US")
         formatter.dateFormat = "dd.MM."
         return formatter
     }
 
     private static var timeFormatter: DateFormatter {
         let formatter = DateFormatter()
+        formatter.locale = .init(identifier: "en_US")
         formatter.dateFormat = "HH.mm.ss"
         return formatter
     }
@@ -383,10 +386,10 @@ extension GenericFileWriter where S == BDFSample {
     ///   - information: The file information.
     ///   - signals: The array of signal descriptions.
     /// - Throws: Throws if FileHandle creation fails.
-    public convenience init( // swiftlint:disable:this function_default_parameter_at_end
+    public convenience init(
         url: URL,
         type: FileFormat = .bdf,
-        format: RecordingFormat? = nil,
+        format: RecordingFormat? = nil, // swiftlint:disable:this function_default_parameter_at_end
         information: FileInformation,
         signals: [Signal]
     ) throws {

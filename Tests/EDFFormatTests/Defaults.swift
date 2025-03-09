@@ -8,14 +8,14 @@
 
 @testable import EDFFormat
 import Foundation
-import XCTest
+import Testing
 
 
 extension URL {
     static func createTmpFile(name: String) throws -> URL {
         let tmpDir = NSTemporaryDirectory()
 
-        let url = try XCTUnwrap(NSURL.fileURL(withPathComponents: [tmpDir, name]))
+        let url = try #require(NSURL.fileURL(withPathComponents: [tmpDir, name]))
         if FileManager.default.fileExists(atPath: url.path) {
             try FileManager.default.removeItem(at: url)
         }
@@ -44,7 +44,7 @@ extension Date {
         components.second = second
 
         let date = Calendar.current.date(from: components)
-        return try XCTUnwrap(date)
+        return try #require(date)
     }
 }
 

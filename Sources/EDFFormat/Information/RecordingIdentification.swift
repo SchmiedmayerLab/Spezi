@@ -76,6 +76,7 @@ extension RecordingIdentification {
 extension RecordingInformation: EDFRepresentable {
     private static var longYearFormatter: DateFormatter {
         let formatter = DateFormatter()
+        formatter.locale = .init(identifier: "en_US")
         formatter.dateFormat = "dd-MMM-yyyy"
         return formatter
     }

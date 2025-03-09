@@ -75,6 +75,7 @@ extension SubjectIdentification {
 extension PatientInformation: EDFRepresentable {
     private static var birthdayFormatter: DateFormatter {
         let formatter = DateFormatter()
+        formatter.locale = .init(identifier: "en_US")
         formatter.dateFormat = "dd-MMM-yyyy"
         return formatter
     }
