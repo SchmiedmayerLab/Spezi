@@ -48,8 +48,8 @@ import SwiftUI
 
 struct ContactsExample: View {
     let contact = Contact(
-        image: Image(systemName: "figure.wave.circle"),
         name: PersonNameComponents(givenName: "Leland", familyName: "Stanford"),
+        image: Image(systemName: "figure.wave.circle"),
         title: "Founder",
         description: """
         Leland Stanford is the founder of Stanford University.
