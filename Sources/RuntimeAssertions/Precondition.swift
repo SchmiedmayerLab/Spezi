@@ -1,12 +1,11 @@
 //
-// This source file is part of the Stanford XCTRuntimeAssertions open-source project
+// This source file is part of the Stanford RuntimeAssertions open-source project
 //
 // SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
-#if DEBUG || TEST
 import Foundation
 
 
@@ -37,13 +36,18 @@ import Foundation
 ///   - line: The line number to print along with `message` if the assertion
 ///     fails. The default is the line number where
 ///     `precondition(_:_:file:line:)` is called.
+@inlinable
 public func precondition(
     _ condition: @autoclosure () -> Bool,
     _ message: @autoclosure () -> String = String(),
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    XCTRuntimeAssertionInjector.precondition(condition, message: message, file: file, line: line)
+    debugOnly {
+        RuntimeAssertionInjection.precondition(condition, message: message, file: file, line: line)
+    } else: {
+        Swift.precondition(condition(), message(), file: file, line: line)
+    }
 }
 
 /// Indicates that a precondition was violated.
@@ -73,12 +77,17 @@ public func precondition(
 ///     where `preconditionFailure(_:file:line:)` is called.
 ///   - line: The line number to print along with `message`. The default is the
 ///     line number where `preconditionFailure(_:file:line:)` is called.
+@inlinable
 public func preconditionFailure(
     _ message: @autoclosure () -> String = String(),
     file: StaticString = #file,
     line: UInt = #line
 ) -> Never {
-    XCTRuntimeAssertionInjector.precondition({ false }, message: message, file: file, line: line)
+    debugOnly {
+        RuntimeAssertionInjection.precondition({ false }, message: message, file: file, line: line)
+    } else: {
+        Swift.preconditionFailure(message(), file: file, line: line)
+    }
+
     neverReturn()
 }
-#endif

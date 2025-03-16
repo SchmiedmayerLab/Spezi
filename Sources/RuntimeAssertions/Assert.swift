@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford XCTRuntimeAssertions open-source project
+// This source file is part of the Stanford RuntimeAssertions open-source project
 //
 // SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -7,7 +7,6 @@
 //
 
 
-#if DEBUG || TEST
 /// Performs a traditional C-style assert with an optional message.
 ///
 /// Use this function for internal sanity checks that are active during testing
@@ -35,13 +34,18 @@
 ///   - line: The line number to print along with `message` if the assertion
 ///     fails. The default is the line number where `assert(_:_:file:line:)`
 ///     is called.
+@inlinable
 public func assert(
     _ condition: @autoclosure () -> Bool,
     _ message: @autoclosure () -> String = String(),
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    XCTRuntimeAssertionInjector.assert(condition, message: message, file: file, line: line)
+    debugOnly {
+        RuntimeAssertionInjection.assert(condition, message: message, file: file, line: line)
+    } else: {
+        Swift.assert(condition(), message(), file: file, line: line)
+    }
 }
 
 /// Indicates that an internal sanity check failed.
@@ -65,11 +69,15 @@ public func assert(
 ///     where `assertionFailure(_:file:line:)` is called.
 ///   - line: The line number to print along with `message`. The default is the
 ///     line number where `assertionFailure(_:file:line:)` is called.
+@inlinable
 public func assertionFailure(
     _ message: @autoclosure () -> String = String(),
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    XCTRuntimeAssertionInjector.assert({ false }, message: message, file: file, line: line)
+    debugOnly {
+        RuntimeAssertionInjection.assert({ false }, message: message, file: file, line: line)
+    } else: {
+        Swift.assertionFailure(message(), file: file, line: line)
+    }
 }
-#endif

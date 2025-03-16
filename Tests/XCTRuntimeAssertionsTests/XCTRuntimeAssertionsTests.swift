@@ -1,5 +1,5 @@
 //
-// This source file is part of the Stanford XCTRuntimeAssertions open-source project
+// This source file is part of the Stanford RuntimeAssertions open-source project
 //
 // SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
@@ -20,10 +20,10 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
             "assert(false)",
             "assert(42 == 42)"
         ]
-        var collectedMessages: [String] = []
+        nonisolated(unsafe) var collectedMessages: [String] = []
         let number = 42
         
-        try XCTRuntimeAssertion(
+        XCTRuntimeAssertion(
             validateRuntimeAssertion: {
                 collectedMessages.append($0)
             },
@@ -37,11 +37,11 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         
         XCTAssertEqual(messages, collectedMessages)
         
-        try XCTRuntimeAssertion(validateRuntimeAssertion: { XCTAssertEqual($0, "") }) {
+        XCTRuntimeAssertion(validateRuntimeAssertion: { XCTAssertEqual($0, "") }) {
             assertionFailure()
         }
         
-        try XCTRuntimeAssertion {
+        XCTRuntimeAssertion {
             assertionFailure()
         }
         
@@ -77,23 +77,22 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
     
     func testXCTRuntimeAssertionNotTriggered() throws {
         struct XCTRuntimeAssertionNotTriggeredError: Error {}
-        
-        do {
-            let result = try XCTRuntimeAssertion {
+
+        XCTExpectFailure {
+            let result = XCTRuntimeAssertion {
                 "Hello Paul 👋"
             }
             XCTAssertEqual(result, "Hello Paul 👋")
-        } catch let error as XCTFail {
-            XCTAssertTrue(error.message.contains("Measured an fulfillment count of 0, expected 1."))
         }
-        
-        do {
-            try XCTRuntimeAssertion {
-                throw XCTRuntimeAssertionNotTriggeredError()
+
+
+        try XCTAssertThrowsError({
+            try XCTExpectFailure {
+                try XCTRuntimeAssertion {
+                    throw XCTRuntimeAssertionNotTriggeredError()
+                }
             }
-        } catch let error as XCTFail {
-            XCTAssertTrue(error.description.contains("Measured an fulfillment count of 0, expected 1."))
-        }
+        }())
     }
 
     func testCallHappensWithoutInjection() {
@@ -118,7 +117,7 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
 
         let test = Test()
 
-        try XCTRuntimeAssertion {
+        XCTRuntimeAssertion {
             assert(test.property != "Hello World", "Failed successfully")
         }
     }
