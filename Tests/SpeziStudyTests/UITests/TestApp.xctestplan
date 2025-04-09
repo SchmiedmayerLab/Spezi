@@ -13,8 +13,13 @@
       "targets" : [
         {
           "containerPath" : "container:..\/..",
-          "identifier" : "TemplatePackage",
-          "name" : "TemplatePackage"
+          "identifier" : "SpeziStudy",
+          "name" : "SpeziStudy"
+        },
+        {
+          "containerPath" : "container:..\/..",
+          "identifier" : "SpeziStudyDefinition",
+          "name" : "SpeziStudyDefinition"
         }
       ]
     },

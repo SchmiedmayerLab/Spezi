@@ -1,21 +1,29 @@
 //
-// This source file is part of the TemplatePackage open-source project
+// This source file is part of the Stanford Spezi open-source project
 //
-// SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
+// SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
+import Spezi
+import SpeziStudy
 import SwiftUI
-import TemplatePackage
 
 
 @main
 struct UITestsApp: App {
+    @UIApplicationDelegateAdaptor(TestAppDelegate.self)
+    private var appDelegate
+    
     var body: some Scene {
         WindowGroup {
-            Text(TemplatePackage().stanford)
-            Text(operatingSystem)
+            TabView {
+                Tab("Home", systemImage: "house") {
+                    HomeTab()
+                }
+            }
+            .spezi(appDelegate)
         }
     }
 }
