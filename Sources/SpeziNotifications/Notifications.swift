@@ -14,6 +14,8 @@ import Spezi
 ///
 /// This module provides some easy to use API to schedule and manage local notifications.
 ///
+/// - Note: The `Notification` module is not functional during unit tests; in this case all operations will silently fail.
+///
 /// ## Topics
 ///
 /// ### Configuration
@@ -46,9 +48,26 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
 
     @Application(\.requestNotificationAuthorization)
     public var requestNotificationAuthorization
+    
+    private let notificationCenter: UNUserNotificationCenter?
 
     /// Configure the local notifications module.
-    public init() {}
+    public init() {
+        #if DEBUG
+        if NSClassFromString("XCTest") != nil {
+            // When the module exists as part of a Unit Test, we can't access the UNUserNotificationCenter, because no test host exists.
+            // Calling `+[UNUserNotificationCenter current]` in such a scenario will lead to a runtime crash.
+            // In order to avoid this, and allow modules that depend on the Notifications module to not crash during unit tests,
+            // we disable the notification center functionality under these circumstances.
+            // Note that the condition above is only true for Unit Tests, but not for UI Tests (in which case a test host will exist, anyway...)
+            notificationCenter = nil
+        } else {
+            notificationCenter = .current()
+        }
+        #else
+        notificationCenter = .current()
+        #endif
+    }
 
     /// Updates the badge count for your app’s icon.
     /// - Parameters:
@@ -59,7 +78,10 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
         isolation: isolated (any Actor)? = #isolation,
         _ badgeCount: Int
     ) async throws {
-        try await UNUserNotificationCenter.current().setBadgeCount(badgeCount)
+        guard let notificationCenter else {
+            return
+        }
+        try await notificationCenter.setBadgeCount(badgeCount)
     }
 
     /// Schedule a new notification request.
@@ -70,7 +92,10 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
         isolation: isolated (any Actor)? = #isolation,
         request: UNNotificationRequest
     ) async throws {
-        try await UNUserNotificationCenter.current().add(request)
+        guard let notificationCenter else {
+            return
+        }
+        try await notificationCenter.add(request)
     }
 
     /// Retrieve the amount of notifications that can be scheduled for the app.
@@ -80,8 +105,11 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
     /// - Note: Already delivered notifications do not count towards this limit.
     /// - Parameter isolation: Inherits the current isolation.
     /// - Returns: Returns the remaining amount of notifications that can be scheduled for the application.
-    public func remainingNotificationLimit(isolation: isolated (any Actor)? = #isolation) async -> Int {
-        let pendingRequests = await UNUserNotificationCenter.current().pendingNotificationRequests()
+    public func remainingNotificationLimit(isolation: isolated (any Actor)? = #isolation) async throws -> Int {
+        guard let notificationCenter else {
+            return 0
+        }
+        let pendingRequests = await notificationCenter.pendingNotificationRequests()
         return max(0, Self.pendingNotificationsLimit - pendingRequests.count)
     }
 
@@ -89,7 +117,10 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
     /// - Parameter isolation: Inherits the current isolation.
     /// - Returns: The array of pending notifications requests.
     public func pendingNotificationRequests(isolation: isolated (any Actor)? = #isolation) async -> sending [UNNotificationRequest] {
-        await UNUserNotificationCenter.current().pendingNotificationRequests()
+        guard let notificationCenter else {
+            return []
+        }
+        return await notificationCenter.pendingNotificationRequests()
     }
 
     /// Fetch all delivered notifications that are still shown in the notification center.
@@ -97,7 +128,10 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
     /// - Returns: The array of local and remote notifications that have been delivered and are still show in the notification center.
     @available(tvOS, unavailable)
     public func deliveredNotifications(isolation: isolated (any Actor)? = #isolation) async -> sending [UNNotification] {
-        await UNUserNotificationCenter.current().deliveredNotifications()
+        guard let notificationCenter else {
+            return []
+        }
+        return await notificationCenter.deliveredNotifications()
     }
 
     /// Add additional notification categories.
@@ -118,8 +152,11 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
         isolation: isolated (any Actor)? = #isolation,
         categories: Set<UNNotificationCategory>
     ) async {
-        let previousCategories = await UNUserNotificationCenter.current().notificationCategories()
-        UNUserNotificationCenter.current().setNotificationCategories(categories.union(previousCategories))
+        guard let notificationCenter else {
+            return
+        }
+        let previousCategories = await notificationCenter.notificationCategories()
+        notificationCenter.setNotificationCategories(categories.union(previousCategories))
     }
     
     
@@ -128,9 +165,12 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
         isolation: isolated (any Actor)? = #isolation,
         where predicate: (UNNotificationRequest) -> Bool
     ) async {
-        let identifiers = await UNUserNotificationCenter.current().pendingNotificationRequests().compactMap { request in
+        guard let notificationCenter else {
+            return
+        }
+        let identifiers = await notificationCenter.pendingNotificationRequests().compactMap { request in
             predicate(request) ? request.identifier : nil
         }
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
 }
