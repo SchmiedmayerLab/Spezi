@@ -42,7 +42,7 @@ extension StudyDefinition {
         public var studyDependency: StudyDefinition.ID?
         
         /// The criteria which need to be satisfied by a person wishing to participate in the study
-        public var participationCriteria: ParticipationCriteria
+        public var participationCriterion: ParticipationCriterion
         
         /// The condition by which it is determined whether someone who satisfies the ``participationCriteria`` is allowed to enroll into the study.
         public var enrollmentConditions: EnrollmentConditions
@@ -56,7 +56,7 @@ extension StudyDefinition {
             explanationText: String,
             shortExplanationText: String,
             studyDependency: StudyDefinition.ID? = nil, // swiftlint:disable:this function_default_parameter_at_end
-            participationCriteria: ParticipationCriteria,
+            participationCriterion: ParticipationCriterion,
             enrollmentConditions: EnrollmentConditions
         ) {
             self.id = id
@@ -66,7 +66,7 @@ extension StudyDefinition {
             self.explanationText = explanationText
             self.shortExplanationText = shortExplanationText
             self.studyDependency = studyDependency
-            self.participationCriteria = participationCriteria
+            self.participationCriterion = participationCriterion
             self.enrollmentConditions = enrollmentConditions
         }
     }

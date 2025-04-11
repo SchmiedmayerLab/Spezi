@@ -9,6 +9,7 @@
 import Combine
 import Foundation
 import Spezi
+import SpeziFoundation
 import SpeziHealthKit
 import SpeziLocalStorage
 import SpeziScheduler
@@ -43,7 +44,7 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
         /// The ``StudyManager`` will use an on-disk database for persistence.
         case onDisk
         /// The ``StudyManager`` will use an in-memory database for persistence.
-        /// Intended for testing purposes.
+        /// Intended primarily for testing purposes.
         case inMemory
     }
     
@@ -72,17 +73,28 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
     }
     
     /// Creates a new Study Manager.
-    public convenience init() {
+    public nonisolated convenience init() {
         self.init(persistence: .onDisk)
     }
     
     /// Creates a new Study Manager, using the specified persistence configuration
-    public init(persistence: PersistenceConfiguration = .onDisk) {
+    public nonisolated init(persistence: PersistenceConfiguration) {
         modelContainer = { () -> ModelContainer in
             let schema = Schema([StudyEnrollment.self], version: Schema.Version(0, 0, 2))
             let config: ModelConfiguration
             switch persistence {
             case .onDisk:
+                guard ProcessInfo.isRunningInSandbox else {
+                    preconditionFailure(
+                        """
+                        The current application is running in a non-sandboxed environment.
+                        In this case, the `onDisk` persistence configuration is not available,
+                        since the \(StudyManager.self) module would end up placing its database directly into
+                        the current user's Documents directory (i.e., `~/Documents`).
+                        Specify another persistence option, or enable sandboxing for the application.
+                        """
+                    )
+                }
                 config = ModelConfiguration(
                     "SpeziStudy",
                     schema: schema,
@@ -344,12 +356,13 @@ extension StudyManager {
     
     
     /// Removes all SpeziScheduler Tasks which are in the SpeziStudy domain (based on the task id's prefix), but for which we don't have any matching study enrollments.
-    private func removeOrphanedTasks() throws {
-        let activeStudies = try modelContext.fetch(FetchDescriptor<StudyEnrollment>()).mapIntoSet(\.studyId.uuidString)
+    @_spi(TestingSupport)
+    public func removeOrphanedTasks() throws {
+        let activeStudyIds = try modelContext.fetch(FetchDescriptor<StudyEnrollment>()).mapIntoSet(\.studyId)
         // Note: it sadly seems like we can't use a #Predicate to filter through SwiftData here. (doing so will simply crash the app...)
         let orphanedTasks = try scheduler.queryTasks(for: Date.distantPast...Date.distantFuture).filter { task in
             // fetch all tasks which are in the SpeziStudy domain, but don't match one of the currently-enrolled-in studies.
-            task.id.starts(with: Self.speziStudyDomainTaskIdPrefix) && !activeStudies.contains { task.id.starts(with: $0) }
+            task.id.starts(with: Self.speziStudyDomainTaskIdPrefix) && !activeStudyIds.contains { task.id.starts(with: taskIdPrefix(forStudyId: $0)) }
         }
         for task in orphanedTasks {
             logger.notice("Found orphaned task in SpeziStudy domain which doesn't match any current enrollment: '\(task.id)'. Will delete.")

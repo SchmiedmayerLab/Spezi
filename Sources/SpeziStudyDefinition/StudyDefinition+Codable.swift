@@ -45,7 +45,7 @@ extension StudyDefinition {
             }
         }
         switch schemaVersion {
-        case Version(0, 2, 0):
+        case Version(0, 3, 0):
             do {
                 studyRevision = try container.decode(UInt.self, forKey: .studyRevision)
             } catch DecodingError.keyNotFound where configuration.allowTrivialSchemaMigrations {
@@ -73,5 +73,32 @@ extension StudyDefinition {
         try container.encode(metadata, forKey: .metadata)
         try container.encode(components, forKey: .components)
         try container.encode(componentSchedules, forKey: .componentSchedules)
+    }
+}
+
+
+extension StudyDefinition {
+    private struct SchemaVersionAccessor: Decodable {
+        let schemaVersion: Version
+        
+        init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeysV0.self)
+            schemaVersion = try container.decode(Version.self, forKey: .schemaVersion)
+        }
+    }
+    
+    
+    /// Extracts the schema version of an encoded study.
+    ///
+    /// Use this function to decode only the schema version, and ignore all other encoded fields.
+    /// This is useful in situations where you don't know for a fact that a decoding operation would suceed.
+    ///
+    /// - parameter encodedStudy: An encoded ``StudyDefinition``.
+    /// - parameter decoder: The decoder that should be used to decode the study definition's schema version.
+    public static func schemaVersion<D: SpeziFoundation.TopLevelDecoder>(
+        of encodedStudy: D.Input,
+        using decoder: D
+    ) throws -> Version {
+        try decoder.decode(SchemaVersionAccessor.self, from: encodedStudy).schemaVersion
     }
 }
