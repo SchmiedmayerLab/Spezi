@@ -45,7 +45,7 @@ extension StudyDefinition {
             }
         }
         switch schemaVersion {
-        case Version(0, 3, 0):
+        case Self.schemaVersion:
             do {
                 studyRevision = try container.decode(UInt.self, forKey: .studyRevision)
             } catch DecodingError.keyNotFound where configuration.allowTrivialSchemaMigrations {
@@ -59,7 +59,7 @@ extension StudyDefinition {
         default:
             throw DecodingError.dataCorrupted(.init(
                 codingPath: [],
-                debugDescription: "Unsupported schema version: got \(schemaVersion); current is \(Self.schemaVersion)"
+                debugDescription: "Incompatible schema version: got \(schemaVersion); current is \(Self.schemaVersion)"
             ))
         }
     }

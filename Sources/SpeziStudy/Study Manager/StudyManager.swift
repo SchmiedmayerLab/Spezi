@@ -23,7 +23,7 @@ import SwiftUI
 ///
 /// ## Usage
 ///
-/// Your app uses a single
+/// The ``StudyManager`` module handles enrollment into Studies, and coordinates the scheduling of a study's components.
 ///
 /// ## Topics
 ///
@@ -243,19 +243,18 @@ extension StudyManager {
             guard let study = enrollment.study else {
                 continue
             }
+            func setupSampleCollection<Sample>(_ sampleType: some AnySampleType<Sample>) async {
+                let sampleType = SampleType(sampleType)
+                await healthKit.addHealthDataCollector(CollectSample(
+                    sampleType,
+                    start: .automatic,
+                    continueInBackground: true
+                ))
+            }
             for component in study.healthDataCollectionComponents {
-                func setupSampleCollection(_ sampleTypes: some Collection<SampleType<some Any>>) async {
-                    for sampleType in sampleTypes {
-                        await healthKit.addHealthDataCollector(CollectSample(
-                            sampleType,
-                            start: .automatic,
-                            continueInBackground: true
-                        ))
-                    }
+                for sampleType in component.sampleTypes {
+                    await setupSampleCollection(sampleType)
                 }
-                await setupSampleCollection(component.sampleTypes.quantityTypes)
-                await setupSampleCollection(component.sampleTypes.correlationTypes.flatMap(\.associatedQuantityTypes))
-                await setupSampleCollection(component.sampleTypes.categoryTypes)
             }
         }
         // we want to request HealthKit auth once, at the end, for everything we just registered.

@@ -8,6 +8,7 @@
 
 import Foundation
 import SpeziFoundation
+import SpeziHealthKit
 
 
 /// A type that can appear in a ``StudyDefinition``.
@@ -67,7 +68,6 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``StudyDefinitionElement``
 /// - ``EnrollmentConditions``
 /// - ``ParticipationCriteria``
-/// - ``HealthSampleTypesCollection``
 /// ### Working with a study definition
 /// - ``allCollectedHealthData``
 /// - ``healthDataCollectionComponents``
@@ -76,7 +76,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 3, 0)
+    public static let schemaVersion = Version(0, 4, 0)
     
     /// The revision of the study.
     ///
@@ -108,9 +108,9 @@ public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, Deco
 
 extension StudyDefinition {
     /// The combined, effective HealthKit data collection of the entire study.
-    public var allCollectedHealthData: HealthSampleTypesCollection {
-        healthDataCollectionComponents.reduce(into: HealthSampleTypesCollection()) { acc, component in
-            acc.merge(with: component.sampleTypes)
+    public var allCollectedHealthData: SampleTypesCollection {
+        healthDataCollectionComponents.reduce(into: SampleTypesCollection()) { acc, component in
+            acc.insert(contentsOf: component.sampleTypes)
         }
     }
     

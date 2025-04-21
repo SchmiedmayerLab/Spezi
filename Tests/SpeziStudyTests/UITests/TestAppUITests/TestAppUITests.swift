@@ -24,6 +24,7 @@ class TestAppUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         
+        // enroll into version 1 of the study
         app.buttons["Enroll in TestStudy (v1)"].tap()
         if app.navigationBars["Health Access"].waitForExistence(timeout: 5) {
             try app.handleHealthKitAuthorization()

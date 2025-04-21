@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpeziHealthKit
 @preconcurrency import class ModelsR4.Questionnaire
 
 
@@ -109,9 +110,9 @@ extension StudyDefinition {
     /// Study Component which initiates background Health data collection
     public struct HealthDataCollectionComponent: Identifiable, StudyDefinitionElement {
         public var id: UUID
-        public var sampleTypes: HealthSampleTypesCollection
+        public var sampleTypes: SampleTypesCollection
         
-        public init(id: UUID, sampleTypes: HealthSampleTypesCollection) {
+        public init(id: UUID, sampleTypes: SampleTypesCollection) {
             self.id = id
             self.sampleTypes = sampleTypes
         }

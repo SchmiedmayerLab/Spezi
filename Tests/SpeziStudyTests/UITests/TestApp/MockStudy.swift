@@ -63,10 +63,10 @@ func mockStudy(revision: MockStudyRevision) -> StudyDefinition { // swiftlint:di
             ))
             StudyDefinition.Component.healthDataCollection(.init(
                 id: .healthComponentId,
-                sampleTypes: HealthSampleTypesCollection(
-                    quantityTypes: [.stepCount, .heartRate, .activeEnergyBurned],
-                    correlationTypes: [.bloodPressure],
-                    categoryTypes: [.sleepAnalysis]
+                sampleTypes: SampleTypesCollection(
+                    quantity: [.stepCount, .heartRate, .activeEnergyBurned],
+                    correlation: [.bloodPressure],
+                    category: [.sleepAnalysis]
                 )
             ))
             switch revision {
