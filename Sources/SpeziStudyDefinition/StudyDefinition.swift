@@ -29,7 +29,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// Currently, there are 3 kinds of components:
 /// 1. ``InformationalComponent``s, which display static informational text, e.g. an article;
 /// 2. ``QuestionnaireComponent``s, which prompt the participant to answer a questionnaire;
-/// 3. ``HealthDataCollectionComponent``s, which configure and enable background collection of HealthKit data.
+/// 3. ``HealthDataCollectionComponent``s, which configure and enable background collection of HealthKit data, including optional collection of historical data.
 ///
 /// The ``StudyDefinition`` type is explicitly designed to be used with Swift's `Codable` infrastructure: it conforms to both the `Encodable` protocol, as well as `DecodableWithConfiguration`.
 /// This allows apps to easily locally persist study definitions across app launches, and to transfer them between devices, e.g., an a study app could host its study definition on a server and then
@@ -76,7 +76,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 4, 0)
+    public static let schemaVersion = Version(0, 5, 0)
     
     /// The revision of the study.
     ///

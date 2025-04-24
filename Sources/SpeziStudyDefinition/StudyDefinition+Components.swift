@@ -7,11 +7,7 @@
 //
 
 import Foundation
-import SpeziHealthKit
-@preconcurrency import class ModelsR4.Questionnaire
 
-
-// MARK: Definitions
 
 extension StudyDefinition {
     /// A Component within a ``StudyDefinition``
@@ -68,53 +64,6 @@ extension StudyDefinition {
             case .healthDataCollection:
                 .internal
             }
-        }
-    }
-}
-
-
-extension StudyDefinition {
-    /// Study Component which prompts the participant to read an informational article
-    public struct InformationalComponent: Identifiable, StudyDefinitionElement {
-        public var id: UUID
-        public var title: String
-        public var headerImage: String
-        public var body: String
-        
-        public init(id: UUID, title: String, headerImage: String, body: String) {
-            self.id = id
-            self.title = title
-            self.headerImage = headerImage
-            self.body = body
-        }
-    }
-}
-
-
-extension StudyDefinition {
-    /// Study Component which prompts the participant to answer a questionnaire
-    public struct QuestionnaireComponent: Identifiable, StudyDefinitionElement {
-        /// - parameter id: the id of this study component, **not** of the questionnaire
-        public let id: UUID
-        public let questionnaire: Questionnaire
-        
-        public init(id: UUID, questionnaire: Questionnaire) {
-            self.id = id
-            self.questionnaire = questionnaire
-        }
-    }
-}
-
-
-extension StudyDefinition {
-    /// Study Component which initiates background Health data collection
-    public struct HealthDataCollectionComponent: Identifiable, StudyDefinitionElement {
-        public var id: UUID
-        public var sampleTypes: SampleTypesCollection
-        
-        public init(id: UUID, sampleTypes: SampleTypesCollection) {
-            self.id = id
-            self.sampleTypes = sampleTypes
         }
     }
 }

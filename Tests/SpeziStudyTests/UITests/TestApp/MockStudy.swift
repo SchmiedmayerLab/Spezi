@@ -67,7 +67,8 @@ func mockStudy(revision: MockStudyRevision) -> StudyDefinition { // swiftlint:di
                     quantity: [.stepCount, .heartRate, .activeEnergyBurned],
                     correlation: [.bloodPressure],
                     category: [.sleepAnalysis]
-                )
+                ),
+                historicalDataCollection: .disabled
             ))
             switch revision {
             case .v1:

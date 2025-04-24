@@ -9,10 +9,13 @@
 import Foundation
 import class ModelsR4.Questionnaire
 import SpeziFoundation
+import SpeziHealthKit
+import SpeziHealthKitBulkExport
 @testable import SpeziStudyDefinition
 import Testing
 
 
+@Suite
 struct StudyDefinitionTests {
     @Test
     func studyEncodingAndDecoding() throws {
@@ -63,6 +66,7 @@ extension StudyDefinitionTests {
             let article1ComponentId = UUID(uuidString: "F924B17E-F45C-40D8-8B8A-C694C6D4956D")!
             let article2ComponentId = UUID(uuidString: "6BE663DB-912F-4F4E-BD62-D743A9FB8941")!
             let questionnaireComponentId = UUID(uuidString: "7E3CD36F-26CD-418B-9CAD-CFB268070162")!
+            let healthDataCollectionComponentId = UUID(uuidString: "A52CBB75-6F9D-4B59-BA86-01532EFE41D2")!
             // swiftlint:enable force_unwrapping
             return StudyDefinition(
                 studyRevision: 0,
@@ -91,6 +95,11 @@ extension StudyDefinitionTests {
                     .questionnaire(.init(
                         id: questionnaireComponentId,
                         questionnaire: try .named("SocialSupportQuestionnaire")
+                    )),
+                    .healthDataCollection(.init(
+                        id: healthDataCollectionComponentId,
+                        sampleTypes: [SampleType.heartRate, SampleType.stepCount, SampleType.sleepAnalysis],
+                        historicalDataCollection: .enabled(.last(DateComponents(year: 7, month: 6)))
                     ))
                 ],
                 componentSchedules: [
