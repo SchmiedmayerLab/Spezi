@@ -31,7 +31,7 @@ public struct NotificationsView: View {
             .toolbar {
                 if requestAuthorization {
                     AsyncButton(state: $viewState) {
-                        try await requestNotificationAuthorization(options: [.alert, .sound, .badge])
+                        _ = try await requestNotificationAuthorization(options: [.alert, .sound, .badge])
                         await queryAuthorization()
                         authorizationAction()
                     } label: {

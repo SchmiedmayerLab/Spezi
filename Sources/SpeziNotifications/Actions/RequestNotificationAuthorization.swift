@@ -19,8 +19,9 @@ extension Spezi {
         fileprivate init() {}
 
         /// Request notification authorization.
-        /// - Parameter options: The authorization options your app is requesting.
-        public func callAsFunction(options: UNAuthorizationOptions) async throws {
+        /// - parameter options: The authorization options your app is requesting.
+        /// - returns: A Boolean value indicating whether the user granted the requested permissions.
+        public func callAsFunction(options: UNAuthorizationOptions) async throws -> Bool {
             try await UNUserNotificationCenter.current().requestAuthorization(options: options)
         }
     }
