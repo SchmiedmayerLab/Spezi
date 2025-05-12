@@ -46,9 +46,11 @@ struct StudyManagerTests {
         ],
         componentSchedules: [
             .init(
+                id: UUID(),
                 componentId: Self.articleComponentId,
-                scheduleDefinition: .repeated(.daily(hour: 1, minute: 0), startOffsetInDays: 0),
-                completionPolicy: .afterStart
+                scheduleDefinition: .repeated(.daily(hour: 1, minute: 0)),
+                completionPolicy: .afterStart,
+                notifications: .enabled(thread: .custom("Articles"))
             )
         ]
     )

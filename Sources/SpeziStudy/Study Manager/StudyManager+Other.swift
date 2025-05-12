@@ -23,7 +23,19 @@ extension StudyManager {
 }
 
 extension Task.Context {
-    // ISSUE for some reason only .json works? .propertyList (the default) fails to decode the input?!
+    /// The study-related context of a Task
+    public struct StudyContext: Codable, Hashable, Sendable {
+        /// The identifier of the study to which the Task belongs
+        public let studyId: StudyDefinition.ID
+        /// The identifier of the study component for which the Task was created
+        public let componentId: StudyDefinition.Component.ID
+        /// The identifier of the specific study schedule from which the Task was created
+        public let scheduleId: StudyDefinition.ComponentSchedule.ID
+    }
+    
+    /// The study to which this Task belongs, and the component for which it was scheduled.
+    @Property(coding: .json)
+    public var studyContext: StudyContext?
     
     /// The ``StudyManager/ScheduledTaskAction`` associated with the task.
     @Property(coding: .json)
@@ -46,31 +58,37 @@ extension View {
 
 
 extension SpeziScheduler.Schedule {
+    /// Creates a `SpeziScheduler.Schedule` from a `StudyDefinition.ComponentSchedule.ScheduleDefinition.repeated`.
+    ///
     /// - parameter other: the study definition schedule element which should be turned into a `Schedule`
     /// - parameter participationStartDate: the date at which the user started to participate in the study.
-    init(_ other: StudyDefinition.ComponentSchedule.ScheduleDefinition, participationStartDate: Date) {
+    ///
+    /// - invariant: `other` MUST be a `.repeated` `ScheduleDefinition`, otherwise the function will abort.
+    static func fromRepeated(_ other: StudyDefinition.ComponentSchedule.ScheduleDefinition, participationStartDate: Date) -> Self {
         switch other {
-        case let .repeated(.daily(interval, hour, minute), startOffsetInDays):
-            self = .daily(
+        case let .repeated(.daily(interval, hour, minute), offset):
+            return .daily(
                 interval: interval,
                 hour: hour,
                 minute: minute,
                 second: 0,
-                startingAt: participationStartDate.addingTimeInterval(60 * 60 * 24 * TimeInterval(startOffsetInDays)),
+                startingAt: participationStartDate.addingTimeInterval(offset.timeInterval),
                 end: .never,
                 duration: .tillEndOfDay
             )
-        case let .repeated(.weekly(interval, weekday, hour, minute), startOffsetInDays):
-            self = .weekly(
+        case let .repeated(.weekly(interval, weekday, hour, minute), offset):
+            return .weekly(
                 interval: interval,
                 weekday: weekday,
                 hour: hour,
                 minute: minute,
                 second: 0,
-                startingAt: participationStartDate.addingTimeInterval(60 * 60 * 24 * TimeInterval(startOffsetInDays)),
+                startingAt: participationStartDate.addingTimeInterval(offset.timeInterval),
                 end: .never,
                 duration: .tillEndOfDay
             )
+        case .after, .once:
+            preconditionFailure("Unexpected input: expected .repeated, got '\(other)'")
         }
     }
 }

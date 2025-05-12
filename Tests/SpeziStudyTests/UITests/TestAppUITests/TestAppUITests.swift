@@ -24,6 +24,10 @@ class TestAppUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         
+        let completeWelcomeArticleButton = app.buttons["Complete Informational: Welcome to our TestStudy!"]
+        let completeQuestionnaireButton = app.buttons["Complete Questionnaire: Social Support"]
+        let completeInformationalArticleButton = app.buttons["Complete Informational: Article1 Title"]
+        
         // enroll into version 1 of the study
         app.buttons["Enroll in TestStudy (v1)"].tap()
         if app.navigationBars["Health Access"].waitForExistence(timeout: 5) {
@@ -39,16 +43,20 @@ class TestAppUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Article1 Title"].waitForExistence(timeout: 1))
         XCTAssertTrue(app.staticTexts["Social Support"].waitForExistence(timeout: 1))
         
-        XCTAssertTrue(app.buttons["Complete Informational"].waitForExistence(timeout: 1))
-        app.buttons["Complete Informational"].tap()
-        XCTAssertTrue(app.buttons["Complete Informational"].waitForNonExistence(timeout: 1))
+        XCTAssertTrue(completeWelcomeArticleButton.waitForExistence(timeout: 1))
+        completeWelcomeArticleButton.tap()
+        XCTAssertTrue(completeWelcomeArticleButton.waitForNonExistence(timeout: 1))
+        XCTAssertTrue(completeInformationalArticleButton.waitForExistence(timeout: 1))
+        completeInformationalArticleButton.tap()
+        XCTAssertTrue(completeInformationalArticleButton.waitForNonExistence(timeout: 1))
         
         // update the study to a newer version.
         // going from 1 to 2 will remove the questionnaire component.
         // since the informational component remains, and has already been completed, we expect it to stay completed.
         app.buttons["Update enrollment to study revision 2"].tap()
         XCTAssertTrue(app.staticTexts["Study Revision, 2"].waitForExistence(timeout: 1))
-        XCTAssertTrue(app.buttons["Complete Informational"].waitForNonExistence(timeout: 1))
+        XCTAssertTrue(completeWelcomeArticleButton.waitForNonExistence(timeout: 1))
+        XCTAssertTrue(completeInformationalArticleButton.waitForNonExistence(timeout: 1))
         XCTAssertTrue(app.staticTexts["Social Support"].waitForNonExistence(timeout: 1))
         
         // update the study to a newer version.
@@ -57,6 +65,7 @@ class TestAppUITests: XCTestCase {
         app.buttons["Update enrollment to study revision 3"].tap()
         XCTAssertTrue(app.staticTexts["Study Revision, 3"].waitForExistence(timeout: 1))
         XCTAssertTrue(app.staticTexts["Article2 Title"].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.staticTexts["Welcome to our TestStudy!, Completed"].waitForExistence(timeout: 1))
         XCTAssertTrue(app.staticTexts["Article1 Title, Completed"].waitForExistence(timeout: 1))
         
         // unenroll and make sure that everything gets removed

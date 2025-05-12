@@ -18,10 +18,19 @@ import SpeziStudyDefinition
 extension UUID {
     // swiftlint:disable force_unwrapping
     fileprivate static let studyId = UUID(uuidString: "885099E4-6318-43CC-BFF1-7D7FAD1968F6")!
+    fileprivate static let article0ComponentId = UUID(uuidString: "609FFB20-8D8C-4E95-932D-5F8ACD849D14")!
     fileprivate static let article1ComponentId = UUID(uuidString: "BFAF8AA3-211B-40AF-AE6F-3472DCEECFA8")!
     fileprivate static let article2ComponentId = UUID(uuidString: "C3651C0F-BF75-49FB-AB73-E8779746C621")!
+    /// the "you have successfully answered the questionnaire" component
+    fileprivate static let article3ComponentId = UUID(uuidString: "8024E8D3-B22C-4DCF-9F83-7B1557274DF5")!
     fileprivate static let questionnaireComponentId = UUID(uuidString: "898513A2-356A-4D45-AD41-81AED3CB18E8")!
     fileprivate static let healthComponentId = UUID(uuidString: "2B054B83-6165-4C45-AFA0-391701FD101B")!
+    fileprivate static let schedule0Id = UUID(uuidString: "9E943F28-6B03-43CE-B7C7-1A0971C3D375")!
+    fileprivate static let schedule1Id = UUID(uuidString: "E43521BF-899F-480B-9EA7-00558789DD69")!
+    fileprivate static let schedule2Id = UUID(uuidString: "02330D9F-CF3E-4D8E-9F5B-D6A77268FEB5")!
+    fileprivate static let schedule3Id = UUID(uuidString: "19CCB43F-34C8-49E3-B1C7-2BDF7311F3D9")!
+    /// schedule for the "you have successfully answered the questionnaire" component
+    fileprivate static let schedule4Id = UUID(uuidString: "0ECE08A0-9DC5-402A-9BD4-527F0FB11418")!
     // swiftlint:enable force_unwrapping
 }
 
@@ -70,6 +79,18 @@ func mockStudy(revision: MockStudyRevision) -> StudyDefinition { // swiftlint:di
                 ),
                 historicalDataCollection: .disabled
             ))
+            StudyDefinition.Component.informational(.init(
+                id: .article0ComponentId,
+                title: "Welcome to our TestStudy!",
+                headerImage: "",
+                body: ""
+            ))
+            StudyDefinition.Component.informational(.init(
+                id: .article3ComponentId,
+                title: "You have answered the SocialSupport questionnaire!",
+                headerImage: "",
+                body: ""
+            ))
             switch revision {
             case .v1:
                 StudyDefinition.Component.questionnaire(.init(
@@ -94,30 +115,48 @@ func mockStudy(revision: MockStudyRevision) -> StudyDefinition { // swiftlint:di
                 ))
             }
         },
-        componentSchedules: Array {
+        componentSchedules: Array { // swiftlint:disable:this closure_body_length
             StudyDefinition.ComponentSchedule(
+                id: .schedule0Id,
+                componentId: .article0ComponentId,
+                scheduleDefinition: .after(.enrollment),
+                completionPolicy: .afterStart,
+                notifications: .disabled
+            )
+            StudyDefinition.ComponentSchedule(
+                id: .schedule1Id,
                 componentId: .article1ComponentId,
-                scheduleDefinition: .repeated(.weekly(weekday: .wednesday, hour: 09, minute: 00), startOffsetInDays: 0),
-                completionPolicy: .anytime
+                scheduleDefinition: .repeated(.weekly(weekday: .wednesday, hour: 09, minute: 00)),
+                completionPolicy: .anytime,
+                notifications: .enabled(thread: .none)
             )
             switch revision {
             case .v1:
                 StudyDefinition.ComponentSchedule(
+                    id: .schedule2Id,
                     componentId: .questionnaireComponentId,
-                    scheduleDefinition: .repeated(.weekly(weekday: .monday, hour: 09, minute: 00), startOffsetInDays: 0),
-                    completionPolicy: .afterStart
+                    scheduleDefinition: .repeated(.weekly(weekday: .monday, hour: 09, minute: 00)),
+                    completionPolicy: .anytime,
+                    notifications: .enabled(thread: .none)
+                )
+                StudyDefinition.ComponentSchedule(
+                    id: .schedule4Id,
+                    componentId: .article3ComponentId,
+                    scheduleDefinition: .after(.completedTask(componentId: .questionnaireComponentId)),
+                    completionPolicy: .anytime,
+                    notifications: .enabled(thread: .none)
                 )
             case .v2:
                 let _ = () // swiftlint:disable:this redundant_discardable_let
             case .v3:
                 StudyDefinition.ComponentSchedule(
+                    id: .schedule3Id,
                     componentId: .article2ComponentId,
-                    scheduleDefinition: .repeated(.weekly(weekday: .friday, hour: 09, minute: 00), startOffsetInDays: 0),
-                    completionPolicy: .anytime
+                    scheduleDefinition: .repeated(.weekly(weekday: .friday, hour: 09, minute: 00)),
+                    completionPolicy: .anytime,
+                    notifications: .enabled(thread: .none)
                 )
             }
         }
     )
 }
-
-// swiftlint:enable file_types_order

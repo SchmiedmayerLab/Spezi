@@ -59,7 +59,7 @@ extension Questionnaire {
 // MARK: Test Study
 
 extension StudyDefinitionTests {
-    var testStudy: StudyDefinition {
+    private var testStudy: StudyDefinition {
         get throws {
             // swiftlint:disable force_unwrapping
             let studyId = UUID(uuidString: "1E82CA84-E031-43C1-9CA4-9F68B5F246B8")!
@@ -67,6 +67,9 @@ extension StudyDefinitionTests {
             let article2ComponentId = UUID(uuidString: "6BE663DB-912F-4F4E-BD62-D743A9FB8941")!
             let questionnaireComponentId = UUID(uuidString: "7E3CD36F-26CD-418B-9CAD-CFB268070162")!
             let healthDataCollectionComponentId = UUID(uuidString: "A52CBB75-6F9D-4B59-BA86-01532EFE41D2")!
+            let schedule1Id = UUID(uuidString: "92E77E46-4135-41B4-BE23-59AD233C4C79")!
+            let schedule2Id = UUID(uuidString: "D7263B0D-29BB-42BB-BF92-FE4DBC170281")!
+            let schedule3Id = UUID(uuidString: "B73A310D-692A-4C9F-9FA5-897FDAEAC796")!
             // swiftlint:enable force_unwrapping
             return StudyDefinition(
                 studyRevision: 0,
@@ -104,19 +107,25 @@ extension StudyDefinitionTests {
                 ],
                 componentSchedules: [
                     .init(
+                        id: schedule1Id,
                         componentId: article1ComponentId,
-                        scheduleDefinition: .repeated(.daily(hour: 11, minute: 21), startOffsetInDays: 4),
-                        completionPolicy: .afterStart
+                        scheduleDefinition: .repeated(.daily(hour: 11, minute: 21), offset: .days(4)),
+                        completionPolicy: .afterStart,
+                        notifications: .enabled(thread: .none)
                     ),
                     .init(
+                        id: schedule2Id,
                         componentId: article2ComponentId,
-                        scheduleDefinition: .repeated(.daily(interval: 2, hour: 17, minute: 41), startOffsetInDays: 0),
-                        completionPolicy: .anytime
+                        scheduleDefinition: .repeated(.daily(interval: 2, hour: 17, minute: 41)),
+                        completionPolicy: .anytime,
+                        notifications: .enabled(thread: .global)
                     ),
                     .init(
+                        id: schedule3Id,
                         componentId: questionnaireComponentId,
-                        scheduleDefinition: .repeated(.weekly(weekday: .wednesday, hour: 21, minute: 59), startOffsetInDays: 1),
-                        completionPolicy: .sameDayAfterStart
+                        scheduleDefinition: .repeated(.weekly(weekday: .wednesday, hour: 21, minute: 59), offset: .days(1)),
+                        completionPolicy: .sameDayAfterStart,
+                        notifications: .enabled(thread: .task)
                     )
                 ]
             )

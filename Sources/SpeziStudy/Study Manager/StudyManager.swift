@@ -12,6 +12,7 @@ import Spezi
 import SpeziFoundation
 import SpeziHealthKit
 import SpeziLocalStorage
+@_spi(APISupport)
 import SpeziScheduler
 import SpeziSchedulerUI
 @_exported import SpeziStudyDefinition
@@ -66,6 +67,8 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
     var modelContext: ModelContext {
         modelContainer.mainContext
     }
+    
+    private var outcomesObserverToken: AnyObject?
     
     /// All ``StudyEnrollment``s currently registered with the ``StudyManager``.
     public var studyEnrollments: [StudyEnrollment] {
@@ -132,6 +135,17 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
                 }
             }
             #endif
+            outcomesObserverToken = scheduler.observeNewOutcomes { [weak self] outcome in
+                guard let self,
+                      let studyContext = outcome.task.studyContext,
+                      let studyDefinition = self.studyEnrollments.first(where: { $0.studyId == studyContext.studyId })?.study else {
+                    return
+                }
+                self.handleStudyLifecycleEvent(
+                    .completedTask(componentId: studyContext.componentId),
+                    for: studyDefinition
+                )
+            }
         }
     }
     
@@ -168,14 +182,22 @@ extension StudyManager {
         }
     }
     
+    private enum TaskCreationError: Error {
+        /// Attempted to create a `Task` for a component which cannot be scheduled (eg: a health data collection component)
+        case componentNotEligibleForTaskCreation
+        /// Asked to create a `Task` for an invalid `ComponentSchedule`, e.g. because the referenced component doesn't exist.
+        case unableToFindComponent
+    }
     
-    @MainActor // swiftlint:disable:next function_body_length
+    
+    @MainActor // swiftlint:disable:next cyclomatic_complexity
     private func registerStudyTasksWithScheduler(_ enrollments: some Collection<StudyEnrollment>) throws {
         for enrollment in enrollments {
             guard let study = enrollment.study else {
                 continue
             }
-            var createdTasks = Set<Task>()
+            /// The IDs of all Tasks belonging to this study we consider to be "active" (i.e., we don't want to delete).
+            var activeTaskIds = Set<Task.ID>()
             for schedule in study.componentSchedules {
                 guard let component: StudyDefinition.Component = study.component(withId: schedule.componentId) else {
                     // ideally this shouldn't happen, but if it does (we have a schedule but can't resolve the corresponding component),
@@ -190,39 +212,33 @@ extension StudyManager {
                     // ... but internal components don't
                     continue
                 }
-                let category: Task.Category?
-                let action: ScheduledTaskAction?
-                switch component {
-                case .questionnaire(let component):
-                    category = .questionnaire
-                    action = .answerQuestionnaire(component.questionnaire, enrollmentId: enrollment.persistentModelID)
-                case .informational(let component):
-                    category = .informational
-                    action = .presentInformationalStudyComponent(component)
-                case .healthDataCollection:
+                let taskSchedule: SpeziScheduler.Schedule
+                switch schedule.scheduleDefinition {
+                case .after:
+                    // study-lifecycle-relative schedules aren't configured here...
+                    activeTaskIds.insert(taskId(for: schedule, in: study))
                     continue
-                }
-                let task = try scheduler.createOrUpdateTask(
-                    id: taskId(for: component, in: study),
-                    title: component.displayTitle.map { "\($0)" } ?? "",
-                    instructions: "",
-                    category: category,
-                    schedule: .init(schedule.scheduleDefinition, participationStartDate: enrollment.enrollmentDate),
-                    completionPolicy: schedule.completionPolicy,
-                    // not passing true here currently, since that sometimes leads to SwiftData crashes (for some inputs)
-                    scheduleNotifications: false,
-                    notificationThread: NotificationThread.none,
-                    tags: nil,
-                    effectiveFrom: .now,
-                    shadowedOutcomesHandling: .delete,
-                    with: { context in
-                        context.studyScheduledTaskAction = action
+                case .once(let dateComponents):
+                    guard let date = Calendar.current.date(from: dateComponents) else {
+                        continue
                     }
-                ).task
-                createdTasks.insert(task)
+                    taskSchedule = .once(at: date, duration: .tillEndOfDay)
+                case .repeated:
+                    taskSchedule = .fromRepeated(schedule.scheduleDefinition, participationStartDate: enrollment.enrollmentDate)
+                }
+                do {
+                    let task = try createOrUpdateTask(
+                        componentSchedule: schedule,
+                        enrollment: enrollment,
+                        taskSchedule: taskSchedule
+                    )
+                    activeTaskIds.insert(task.id)
+                } catch TaskCreationError.unableToFindComponent, TaskCreationError.componentNotEligibleForTaskCreation {
+                    continue
+                } catch {
+                    throw error
+                }
             }
-            
-            let activeTaskIds = createdTasks.mapIntoSet(\.id)
             let prefix = taskIdPrefix(for: study)
             let orphanedTasks = (try? scheduler.queryTasks(for: Date.distantPast...Date.distantFuture, predicate: #Predicate<Task> {
                 // we filter for all tasks that are part of this study (determined based on prefix),
@@ -232,10 +248,63 @@ extension StudyManager {
                 $0.id.starts(with: prefix) && !activeTaskIds.contains($0.id)
             })) ?? []
             for orphanedTask in orphanedTasks {
+                logger.notice("Deleting orphaned Task for study '\(study.metadata.title)' (\(study.id)): \(orphanedTask)")
                 try scheduler.deleteAllVersions(of: orphanedTask)
             }
         }
     }
+    
+    
+    /// Creates (or updates) a `Task` for a study component, based on a schedule.
+    @MainActor
+    private func createOrUpdateTask(
+        componentSchedule: StudyDefinition.ComponentSchedule,
+        enrollment: StudyEnrollment,
+        taskSchedule: SpeziScheduler.Schedule
+    ) throws -> Task {
+        guard let study = enrollment.study, let component = study.component(withId: componentSchedule.componentId) else {
+            throw TaskCreationError.unableToFindComponent
+        }
+        let category: Task.Category?
+        let action: ScheduledTaskAction?
+        switch component {
+        case .questionnaire(let component):
+            category = .questionnaire
+            action = .answerQuestionnaire(component.questionnaire, enrollmentId: enrollment.persistentModelID)
+        case .informational(let component):
+            category = .informational
+            action = .presentInformationalStudyComponent(component)
+        case .healthDataCollection:
+            throw TaskCreationError.componentNotEligibleForTaskCreation
+        }
+        return try scheduler.createOrUpdateTask(
+            id: taskId(for: componentSchedule, in: study),
+            title: component.displayTitle.map { "\($0)" } ?? "",
+            instructions: "",
+            category: category,
+            schedule: taskSchedule,
+            completionPolicy: componentSchedule.completionPolicy,
+            scheduleNotifications: {
+                switch componentSchedule.notifications {
+                case .disabled: false
+                case .enabled: true
+                }
+            }(),
+            notificationThread: componentSchedule.notifications.thread,
+            tags: nil,
+            effectiveFrom: .now,
+            shadowedOutcomesHandling: .delete,
+            with: { context in
+                context.studyContext = .init(
+                    studyId: study.id,
+                    componentId: component.id,
+                    scheduleId: componentSchedule.id
+                )
+                context.studyScheduledTaskAction = action
+            }
+        ).task
+    }
+    
     
     @MainActor
     private func setupStudyBackgroundComponents(_ enrollments: some Collection<StudyEnrollment>) async throws {
@@ -270,8 +339,8 @@ extension StudyManager {
         Self.speziStudyDomainTaskIdPrefix + studyId.uuidString
     }
     
-    private func taskId(for component: StudyDefinition.Component, in study: StudyDefinition) -> String {
-        "\(taskIdPrefix(for: study)).\(component.id)"
+    private func taskId(for schedule: StudyDefinition.ComponentSchedule, in study: StudyDefinition) -> String {
+        "\(taskIdPrefix(for: study)).\(schedule.componentId).\(schedule.id)"
     }
     
     // MARK: Study Enrollment
@@ -320,6 +389,9 @@ extension StudyManager {
         modelContext.insert(enrollment)
         try modelContext.save()
         try registerStudyTasksWithScheduler(CollectionOfOne(enrollment))
+        // intentionally calling this before the background component setup, since that call is async and might take several seconds to return
+        // (bc of the HealthKit permissions)
+        handleStudyLifecycleEvent(.enrollment, for: study)
         try await setupStudyBackgroundComponents(CollectionOfOne(enrollment))
     }
     
@@ -389,3 +461,44 @@ extension StudyManager {
         }
     }
 }
+
+
+// MARK: Event-Based Scheduling
+
+extension StudyManager {
+    func handleStudyLifecycleEvent(_ event: StudyLifecycleEvent, for study: StudyDefinition) {
+        for enrollment in studyEnrollments where enrollment.studyId == study.id {
+            guard let study = enrollment.study else {
+                continue
+            }
+            let schedules = study.componentSchedules.filter { schedule in
+                switch schedule.scheduleDefinition {
+                case .after(let event2, offset: _):
+                    event2 == event
+                case .once, .repeated:
+                    false
+                }
+            }
+            for schedule in schedules {
+                switch schedule.scheduleDefinition {
+                case .once, .repeated:
+                    continue
+                case let .after(_, offset):
+                    do {
+                        _ = try createOrUpdateTask(
+                            componentSchedule: schedule,
+                            enrollment: enrollment,
+                            taskSchedule: .once(at: Date.now.addingTimeInterval(offset.timeInterval))
+                        )
+                    } catch TaskCreationError.unableToFindComponent, TaskCreationError.componentNotEligibleForTaskCreation {
+                        continue
+                    } catch {
+                        logger.error("Error creating task: \(error)")
+                    }
+                }
+            }
+        }
+    }
+}
+
+// swiftlint:disable:this file_length

@@ -21,6 +21,7 @@ struct UITestsApp: App {
             TabView {
                 Tab("Home", systemImage: "house") {
                     HomeTab()
+                        .injectingCustomTaskCategoryAppearances()
                 }
             }
             .spezi(appDelegate)
