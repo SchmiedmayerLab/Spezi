@@ -7,10 +7,7 @@
 //
 
 import RuntimeAssertions
-
-#if canImport(XCTest)
 import XCTest
-#endif
 
 
 /// `XCTRuntimeAssertion` allows you to test assertions of types that use the `assert` and `assertionFailure` functions of the `XCTRuntimeAssertions` target.
@@ -68,8 +65,6 @@ private func assertFulfillmentCount(
     line: UInt
 ) {
     Swift.precondition(expectedFulfillmentCount > 0, "expectedFulfillmentCount has to be non-zero!")
-
-#if canImport(XCTest)
     if fulfillmentCount != expectedFulfillmentCount {
         XCTFail(
              """
@@ -78,5 +73,4 @@ private func assertFulfillmentCount(
              """
         )
     }
-#endif
 }

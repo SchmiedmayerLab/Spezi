@@ -8,9 +8,7 @@
 
 import Foundation
 import RuntimeAssertions
-#if canImport(XCTest)
 import XCTest
-#endif
 
 
 /// `XCTRuntimePrecondition` allows you to test assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
@@ -74,7 +72,6 @@ private func assertFulfillmentCount(
     file: StaticString,
     line: UInt
 ) {
-#if canImport(XCTest)
     if fulfillmentCount <= 0 {
         XCTFail(
             """
@@ -90,5 +87,4 @@ private func assertFulfillmentCount(
             """
         )
     }
-#endif
 }

@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import RuntimeAssertions
 import XCTest
 @testable import XCTRuntimeAssertions
 
