@@ -73,21 +73,25 @@ struct RuntimeAssertionsTests {
     @Test("Assertion not triggered")
     func testRuntimeAssertionNotTriggered() throws {
         struct RuntimeAssertionNotTriggeredError: Error {}
-
         withKnownIssue {
             let result = expectRuntimeAssertion {
                 "Hello Paul 👋"
             }
             #expect(result == "Hello Paul 👋")
         }
-
-
         withKnownIssue {
             #expect(throws: RuntimeAssertionNotTriggeredError.self) {
                 try expectRuntimeAssertion {
                     throw RuntimeAssertionNotTriggeredError()
                 }
             }
+        }
+    }
+    
+    @Test("No assertions")
+    func testNoAssertions() {
+        expectRuntimeAssertion(expectedCount: 0) {
+            // nothing
         }
     }
 

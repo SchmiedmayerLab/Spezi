@@ -18,7 +18,7 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
         
         let number = 42
         
-        XCTRuntimePrecondition(
+        XCTAssertRuntimePrecondition(
             validateRuntimeAssertion: {
                 XCTAssertEqual("preconditionFailure()", $0)
                 expectation.fulfill()
@@ -31,11 +31,11 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
         wait(for: [expectation], timeout: 0.01)
         
         
-        XCTRuntimePrecondition(validateRuntimeAssertion: { XCTAssertEqual($0, "") }) {
+        XCTAssertRuntimePrecondition(validateRuntimeAssertion: { XCTAssertEqual($0, "") }) {
             preconditionFailure()
         }
         
-        XCTRuntimePrecondition {
+        XCTAssertRuntimePrecondition {
             preconditionFailure()
         }
     }
@@ -44,7 +44,7 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "validateRuntimePrecondition")
         expectation.assertForOverFulfill = true
         
-        try XCTRuntimePrecondition(
+        XCTAssertRuntimePrecondition(
             validateRuntimeAssertion: {
                 XCTAssertEqual($0, "preconditionFailure()")
                 expectation.fulfill()
@@ -63,13 +63,13 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
         struct XCTRuntimePreconditionNotTriggeredError: Error {}
 
         XCTExpectFailure {
-            XCTRuntimePrecondition {
+            XCTAssertRuntimePrecondition {
                 print("Hello Paul 👋")
             }
         }
 
         XCTExpectFailure {
-            XCTRuntimePrecondition {
+            XCTAssertRuntimePrecondition {
                 Task {
                     preconditionFailure()
                 }
@@ -98,8 +98,20 @@ final class XCTRuntimePreconditionsTests: XCTestCase {
 
         let test = Test()
 
-        XCTRuntimePrecondition {
+        XCTAssertRuntimePrecondition {
             precondition(test.property != "Hello World", "Failed successfully.")
+        }
+    }
+    
+    func testNoPrecondition() {
+        XCTAssertNoRuntimePrecondition {
+            // nothing going on in here
+        }
+    }
+    
+    func testNoPreconditionAsync() {
+        XCTAssertNoRuntimePrecondition { () async in
+            // nothing going on in here
         }
     }
 }

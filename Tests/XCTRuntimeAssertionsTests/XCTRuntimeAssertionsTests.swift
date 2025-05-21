@@ -24,7 +24,7 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         nonisolated(unsafe) var collectedMessages: [String] = []
         let number = 42
         
-        XCTRuntimeAssertion(
+        XCTAssertRuntimeAssertion(
             validateRuntimeAssertion: {
                 collectedMessages.append($0)
             },
@@ -38,16 +38,16 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         
         XCTAssertEqual(messages, collectedMessages)
         
-        XCTRuntimeAssertion(validateRuntimeAssertion: { XCTAssertEqual($0, "") }) {
+        XCTAssertRuntimeAssertion(validateRuntimeAssertion: { XCTAssertEqual($0, "") }) {
             assertionFailure()
         }
         
-        XCTRuntimeAssertion {
+        XCTAssertRuntimeAssertion {
             assertionFailure()
         }
         
         do {
-            try XCTRuntimeAssertion {
+            try XCTAssertRuntimeAssertion {
                 assertionFailure()
                 throw XCTRuntimeAssertionError()
             }
@@ -60,7 +60,7 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "validateRuntimeAssertion")
         expectation.assertForOverFulfill = true
         
-        try await XCTRuntimeAssertion(
+        try await XCTAssertRuntimeAssertion(
             validateRuntimeAssertion: {
                 XCTAssertEqual($0, "assertionFailure()")
                 expectation.fulfill()
@@ -80,7 +80,7 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
         struct XCTRuntimeAssertionNotTriggeredError: Error {}
 
         XCTExpectFailure {
-            let result = XCTRuntimeAssertion {
+            let result = XCTAssertRuntimeAssertion {
                 "Hello Paul 👋"
             }
             XCTAssertEqual(result, "Hello Paul 👋")
@@ -89,11 +89,17 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
 
         try XCTAssertThrowsError({
             try XCTExpectFailure {
-                try XCTRuntimeAssertion {
+                try XCTAssertRuntimeAssertion {
                     throw XCTRuntimeAssertionNotTriggeredError()
                 }
             }
         }())
+    }
+    
+    func testNoAssertion() {
+        XCTAssertRuntimeAssertion(expectedFulfillmentCount: 0) {
+            // ...
+        }
     }
 
     func testCallHappensWithoutInjection() {
@@ -118,7 +124,7 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
 
         let test = Test()
 
-        XCTRuntimeAssertion {
+        XCTAssertRuntimeAssertion {
             assert(test.property != "Hello World", "Failed successfully")
         }
     }

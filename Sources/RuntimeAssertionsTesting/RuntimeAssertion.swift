@@ -12,7 +12,7 @@ import Testing
 
 /// Test assertions that use `assert` or `assertionFailure` of the `RuntimeAssertions` library.
 /// - Parameters:
-///   - expectedCount: The number of time the expected assertion should occur when the `expression` is invoked. `0` is an invalid input.
+///   - expectedCount: The number of time the expected assertion should occur when the `expression` is invoked. Must be equal to or greater than 0.
 ///   - comment: A comment describing the expectation.
 ///   - sourceLocation: The source location to which recorded expectations and issues should be attributed.
 ///   - expression: The expression to be evaluated.
@@ -32,7 +32,7 @@ public func expectRuntimeAssertion<T, E: Error>(
 
 /// Test assertions that use `assert` or `assertionFailure` of the `RuntimeAssertions` library.
 /// - Parameters:
-///   - expectedCount: The number of time the expected assertion should occur when the `expression` is invoked. `0` is an invalid input.
+///   - expectedCount: The number of time the expected assertion should occur when the `expression` is invoked. Must be equal to or greater than 0.
 ///   - comment: A comment describing the expectation.
 ///   - sourceLocation: The source location to which recorded expectations and issues should be attributed.
 ///   - expression: The expression to be evaluated.
@@ -56,7 +56,7 @@ private func assertFulfillmentCount(
     _ comment: Comment?,
     sourceLocation: SourceLocation
 ) {
-    Swift.precondition(expectedFulfillmentCount > 0, "expectedFulfillmentCount has to be non-zero!")
+    Swift.precondition(expectedFulfillmentCount >= 0, "expectedFulfillmentCount has to be non-zero!")
 
     if fulfillmentCount != expectedFulfillmentCount {
         Issue.record(

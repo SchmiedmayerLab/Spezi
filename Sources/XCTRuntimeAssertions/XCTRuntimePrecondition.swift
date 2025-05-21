@@ -11,7 +11,7 @@ import RuntimeAssertions
 import XCTest
 
 
-/// `XCTRuntimePrecondition` allows you to test assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
+/// `XCTAssertRuntimePrecondition` allows you to test assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
 ///
 /// - Important: The `expression` is executed on a background thread, even though it is not annotated as `@Sendable`. This is by design. Preconditions return `Never` and, therefore,
 /// need to be run on a separate thread that can block forever. Without this workaround, testing preconditions that are isolated to `@MainActor` would be impossible.
@@ -25,7 +25,7 @@ import XCTest
 ///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 ///   - expression: The expression that is evaluated.
-public func XCTRuntimePrecondition(
+public func XCTAssertRuntimePrecondition(
     validateRuntimeAssertion: (@Sendable (String) -> Void)? = nil,
     timeout: TimeInterval = 2,
     _ message: @autoclosure () -> String = "",
@@ -34,11 +34,35 @@ public func XCTRuntimePrecondition(
     _ expression: @escaping () -> Void
 ) {
     withRuntimePrecondition(timeout: timeout, validatePrecondition: validateRuntimeAssertion, expression) { count in
-        assertFulfillmentCount(count, message, file: file, line: line)
+        assertFulfillmentCount(count, expected: 1, message, file: file, line: line)
     }
 }
 
-/// `XCTRuntimePrecondition` allows you to test async assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
+/// `XCTAssertNoRuntimePrecondition` allows you to test the absence of assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
+///
+/// - Important: The `expression` is executed on a background thread, even though it is not annotated as `@Sendable`. This is by design. Preconditions return `Never` and, therefore,
+/// need to be run on a separate thread that can block forever. Without this workaround, testing preconditions that are isolated to `@MainActor` would be impossible.
+/// Make sure to only run isolated parts of your code that don't suffer from concurrency issues in such a scenario.
+///
+/// - Parameters:
+///   - timeout: A timeout defining how long to wait for the precondition to not be triggered.
+///   - message: A message that is posted on failure.
+///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
+///   - line: The line number where the failure occurs. The default is the line number where you call this function.
+///   - expression: The expression that is evaluated.
+public func XCTAssertNoRuntimePrecondition(
+    timeout: TimeInterval = 2,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line,
+    _ expression: @escaping () -> Void
+) {
+    withRuntimePrecondition(timeout: timeout, validatePrecondition: nil, expression) { count in
+        assertFulfillmentCount(count, expected: 0, message, file: file, line: line)
+    }
+}
+
+/// `XCTAssertRuntimePrecondition` allows you to test async assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
 ///
 /// - Important: The `expression` is executed on a background thread, even though it is not annotated as `@Sendable`. This is by design. Preconditions return `Never` and, therefore,
 /// need to be run on a separate thread that can block forever. Without this workaround, testing preconditions that are isolated to `@MainActor` would be impossible.
@@ -52,37 +76,67 @@ public func XCTRuntimePrecondition(
 ///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 ///   - expression: The async expression that is evaluated.
-public func XCTRuntimePrecondition(
+public func XCTAssertRuntimePrecondition(
     validateRuntimeAssertion: (@Sendable (String) -> Void)? = nil,
     timeout: TimeInterval = 2,
     _ message: @autoclosure () -> String = "",
     file: StaticString = #filePath,
     line: UInt = #line,
     _ expression: @escaping () async -> Void
-) throws {
+) {
     withRuntimePrecondition(timeout: timeout, validatePrecondition: validateRuntimeAssertion, expression) { count in
-        assertFulfillmentCount(count, message, file: file, line: line)
+        assertFulfillmentCount(count, expected: 1, message, file: file, line: line)
+    }
+}
+
+/// `XCTAssertNoRuntimePrecondition` allows you to test the absence of async assertions of types that use the `precondition` and `preconditionFailure` functions of the `XCTRuntimeAssertions` target.
+///
+/// - Important: The `expression` is executed on a background thread, even though it is not annotated as `@Sendable`. This is by design. Preconditions return `Never` and, therefore,
+/// need to be run on a separate thread that can block forever. Without this workaround, testing preconditions that are isolated to `@MainActor` would be impossible.
+/// Make sure to only run isolated parts of your code that don't suffer from concurrency issues in such a scenario.
+///
+/// - Parameters:
+///   - timeout: A timeout defining how long to wait for the precondition to not be triggered.
+///   - message: A message that is posted on failure.
+///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
+///   - line: The line number where the failure occurs. The default is the line number where you call this function.
+///   - expression: The async expression that is evaluated.
+public func XCTAssertNoRuntimePrecondition(
+    timeout: TimeInterval = 2,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line,
+    _ expression: @escaping () async -> Void
+) {
+    withRuntimePrecondition(timeout: timeout, validatePrecondition: nil, expression) { count in
+        assertFulfillmentCount(count, expected: 0, message, file: file, line: line)
     }
 }
 
 
+/// - parameter expected: the expected number of `precondition` or `preconditionFailure` calls.
 private func assertFulfillmentCount(
     _ fulfillmentCount: Int,
+    expected: UInt,
     _ message: () -> String,
     file: StaticString,
     line: UInt
 ) {
-    if fulfillmentCount <= 0 {
+    guard fulfillmentCount != expected else {
+        // everything is fine
+        return
+    }
+    if expected > fulfillmentCount {
         XCTFail(
             """
-            The precondition was never called.
+            The precondition was called too many times (expected \(expected); got \(fulfillmentCount)).
             \(message()) at \(file):\(line)
             """
         )
-    } else if fulfillmentCount > 1 {
+    } else {
         XCTFail(
             """
-            The precondition was called multiple times (\(fulfillmentCount)).
+            The precondition was called too few times (expected \(expected); got \(fulfillmentCount)).
             \(message()) at \(file):\(line)
             """
         )

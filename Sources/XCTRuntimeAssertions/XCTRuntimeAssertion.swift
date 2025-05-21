@@ -15,12 +15,12 @@ import XCTest
 ///   - validateRuntimeAssertion: An optional closure that can be used to further validate the messages passed to the
 ///                               `assert` and `assertionFailure` functions of the `XCTRuntimeAssertions` target.
 ///   - expectedFulfillmentCount: The expected fulfillment count on how often the `assert` and `assertionFailure` functions of
-///                               the `XCTRuntimeAssertions` target are called. The default value is 1. The value must be non-zero.
+///                               the `XCTRuntimeAssertions` target are called. The default value is 1. The value must be equal to or greater than zero.
 ///   - message: A message that is posted on failure.
 ///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 ///   - expression: The expression that is evaluated.
-public func XCTRuntimeAssertion<T, E: Error>(
+public func XCTAssertRuntimeAssertion<T, E: Error>(
     validateRuntimeAssertion: (@Sendable (String) -> Void)? = nil,
     expectedFulfillmentCount: UInt = 1,
     _ message: @autoclosure () -> String = "",
@@ -33,17 +33,18 @@ public func XCTRuntimeAssertion<T, E: Error>(
     }
 }
 
+
 /// `XCTRuntimeAssertion` allows you to test async assertions of types that use the `assert` and `assertionFailure` functions of the `XCTRuntimeAssertions` target.
 /// - Parameters:
 ///   - validateRuntimeAssertion: An optional closure that can be used to further validate the messages passed to the
 ///                               `assert` and `assertionFailure` functions of the `XCTRuntimeAssertions` target.
 ///   - expectedFulfillmentCount: The expected fulfillment count on how often the `assert` and `assertionFailure` functions of
-///                               the `XCTRuntimeAssertions` target are called. The default value is 1. The value must be non-zero.
+///                               the `XCTRuntimeAssertions` target are called. The default value is 1. The value must be equal to or greater than zero.
 ///   - message: A message that is posted on failure.
 ///   - file: The file where the failure occurs. The default is the filename of the test case where you call this function.
 ///   - line: The line number where the failure occurs. The default is the line number where you call this function.
 ///   - expression: The async expression that is evaluated.
-public func XCTRuntimeAssertion<T, E: Error>(
+public func XCTAssertRuntimeAssertion<T, E: Error>(
     validateRuntimeAssertion: (@Sendable (String) -> Void)? = nil,
     expectedFulfillmentCount: UInt = 1,
     _ message: @autoclosure () -> String = "",
@@ -64,11 +65,11 @@ private func assertFulfillmentCount(
     file: StaticString,
     line: UInt
 ) {
-    Swift.precondition(expectedFulfillmentCount > 0, "expectedFulfillmentCount has to be non-zero!")
+    Swift.precondition(expectedFulfillmentCount >= 0, "expectedFulfillmentCount has to be >= 0!")
     if fulfillmentCount != expectedFulfillmentCount {
         XCTFail(
              """
-             Measured an fulfillment count of \(fulfillmentCount), expected \(expectedFulfillmentCount).
+             Measured a fulfillment count of \(fulfillmentCount), expected \(expectedFulfillmentCount).
              \(message()) at \(file):\(line)
              """
         )
