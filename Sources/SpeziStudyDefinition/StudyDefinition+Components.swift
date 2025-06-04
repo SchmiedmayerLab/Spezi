@@ -43,6 +43,8 @@ extension StudyDefinition {
         case questionnaire(QuestionnaireComponent)
         /// A component that initiates background Health data collection.
         case healthDataCollection(HealthDataCollectionComponent)
+        /// A component that prompts the participant to perform a Timed Walking Test.
+        case timedWalkingTest(TimedWalkingTestComponent)
         
         /// The components `id`, uniquely identifying it within the ``StudyDefinition``.
         public var id: UUID {
@@ -53,13 +55,15 @@ extension StudyDefinition {
                 component.id
             case .questionnaire(let component):
                 component.id
+            case .timedWalkingTest(let component):
+                component.id
             }
         }
         
         /// The Component's kind
         public var kind: Kind {
             switch self {
-            case .informational, .questionnaire:
+            case .informational, .questionnaire, .timedWalkingTest:
                 .userInteractive
             case .healthDataCollection:
                 .internal

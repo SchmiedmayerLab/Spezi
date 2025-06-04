@@ -33,6 +33,21 @@ struct StudyDefinitionTests {
         let input2 = try #require(#"{"schemaVersion":"1.2.3", "glorb": "florb"}"#.data(using: .utf8))
         #expect(try StudyDefinition.schemaVersion(of: input2, using: JSONDecoder()) == Version(1, 2, 3))
     }
+    
+    
+    @Test
+    func displayTitles() throws {
+        let study = try testStudy
+        var it = study.components.makeIterator() // swiftlint:disable:this identifier_name
+        #expect(it.next()?.displayTitle == "Informational Component #1")
+        #expect(it.next()?.displayTitle == "Informational Component #2")
+        #expect(it.next()?.displayTitle == "Social Support")
+        #expect(it.next()?.displayTitle == nil) // health collection
+        #expect(it.next()?.displayTitle == "Six-Minute Walking Test")
+        #expect(it.next()?.displayTitle == "12-Minute Running Test")
+        #expect(it.next()?.displayTitle == "8.5-Minute Walking Test")
+        #expect(it.next() == nil)
+    }
 }
 
 
@@ -67,6 +82,9 @@ extension StudyDefinitionTests {
             let article2ComponentId = UUID(uuidString: "6BE663DB-912F-4F4E-BD62-D743A9FB8941")!
             let questionnaireComponentId = UUID(uuidString: "7E3CD36F-26CD-418B-9CAD-CFB268070162")!
             let healthDataCollectionComponentId = UUID(uuidString: "A52CBB75-6F9D-4B59-BA86-01532EFE41D2")!
+            let timedWalkingTest1ComponentId = UUID(uuidString: "581E8C1F-C26C-4884-9536-6360712CD50A")!
+            let timedWalkingTest2ComponentId = UUID(uuidString: "CDC1643B-E868-43DE-A091-25CC62DE3F17")!
+            let timedWalkingTest3ComponentId = UUID(uuidString: "37FFF91E-E490-49D4-9A93-0B94D9C3DC02")!
             let schedule1Id = UUID(uuidString: "92E77E46-4135-41B4-BE23-59AD233C4C79")!
             let schedule2Id = UUID(uuidString: "D7263B0D-29BB-42BB-BF92-FE4DBC170281")!
             let schedule3Id = UUID(uuidString: "B73A310D-692A-4C9F-9FA5-897FDAEAC796")!
@@ -103,6 +121,18 @@ extension StudyDefinitionTests {
                         id: healthDataCollectionComponentId,
                         sampleTypes: [SampleType.heartRate, SampleType.stepCount, SampleType.sleepAnalysis],
                         historicalDataCollection: .enabled(.last(DateComponents(year: 7, month: 6)))
+                    )),
+                    .timedWalkingTest(.init(
+                        id: timedWalkingTest1ComponentId,
+                        test: .init(duration: .minutes(6), kind: .walking)
+                    )),
+                    .timedWalkingTest(.init(
+                        id: timedWalkingTest2ComponentId,
+                        test: .init(duration: .minutes(12), kind: .running)
+                    )),
+                    .timedWalkingTest(.init(
+                        id: timedWalkingTest3ComponentId,
+                        test: .init(duration: .seconds(510), kind: .walking)
                     ))
                 ],
                 componentSchedules: [

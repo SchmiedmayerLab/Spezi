@@ -274,6 +274,9 @@ extension StudyManager {
         case .informational(let component):
             category = .informational
             action = .presentInformationalStudyComponent(component)
+        case .timedWalkingTest(let component):
+            category = .activeTask
+            action = .promptTimedWalkingTest(component)
         case .healthDataCollection:
             throw TaskCreationError.componentNotEligibleForTaskCreation
         }

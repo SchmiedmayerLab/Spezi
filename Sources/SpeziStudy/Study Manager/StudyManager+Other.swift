@@ -19,6 +19,7 @@ extension StudyManager {
     public enum ScheduledTaskAction: Hashable, Codable {
         case presentInformationalStudyComponent(StudyDefinition.InformationalComponent)
         case answerQuestionnaire(Questionnaire, enrollmentId: PersistentIdentifier)
+        case promptTimedWalkingTest(StudyDefinition.TimedWalkingTestComponent)
     }
 }
 
@@ -46,6 +47,9 @@ extension Task.Context {
 extension Task.Category {
     /// An informational task, e.g. an article the user should read
     public static let informational = Self.custom("edu.stanford.spezi.SpeziStudy.task.informational")
+    
+    /// An active task, i.e., some action the participant should perform
+    public static let activeTask = Self.custom("edu.stanford.spezi.SpeziStudy.task.activeTask")
 }
 
 

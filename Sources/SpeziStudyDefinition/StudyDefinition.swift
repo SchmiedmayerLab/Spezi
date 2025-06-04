@@ -76,7 +76,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 6, 0)
+    public static let schemaVersion = Version(0, 7, 0)
     
     /// The revision of the study.
     ///
@@ -120,7 +120,7 @@ extension StudyDefinition {
             switch component {
             case .healthDataCollection(let component):
                 component
-            case .informational, .questionnaire:
+            case .informational, .questionnaire, .timedWalkingTest:
                 nil
             }
         }
@@ -141,6 +141,8 @@ extension StudyDefinition.Component {
             component.title
         case .questionnaire(let component):
             component.questionnaire.title?.value?.string
+        case .timedWalkingTest(let component):
+            component.test.displayTitle
         case .healthDataCollection:
             nil
         }
