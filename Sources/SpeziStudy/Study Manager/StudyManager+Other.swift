@@ -18,7 +18,7 @@ extension StudyManager {
     /// The user-facing action that is associated with a study-related `SpeziScheduler.Task`
     public enum ScheduledTaskAction: Hashable, Codable {
         case presentInformationalStudyComponent(StudyDefinition.InformationalComponent)
-        case answerQuestionnaire(Questionnaire, enrollmentId: PersistentIdentifier)
+        case answerQuestionnaire(StudyDefinition.QuestionnaireComponent)
         case promptTimedWalkingTest(StudyDefinition.TimedWalkingTestComponent)
     }
 }
@@ -32,6 +32,8 @@ extension Task.Context {
         public let componentId: StudyDefinition.Component.ID
         /// The identifier of the specific study schedule from which the Task was created
         public let scheduleId: StudyDefinition.ComponentSchedule.ID
+        /// The `PersistentIdentifier` of the ``StudyEnrollment`` this `Task` belongs to.
+        public let enrollmentId: PersistentIdentifier
     }
     
     /// The study to which this Task belongs, and the component for which it was scheduled.

@@ -61,7 +61,7 @@ extension TimedWalkingTestConfiguration {
     }()
     
     /// A textual description of the Timed Walking Test
-    public var displayTitle: String {
+    public var displayTitle: LocalizedStringResource {
         let durationInMin = duration.totalSeconds / 60
         let durationText: String
         if durationInMin.rounded() == durationInMin, durationInMin <= 10 { // whole number of minutes

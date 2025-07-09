@@ -91,7 +91,7 @@ extension StudyDefinition.ParticipationCriterion: ExpressibleByBooleanLiteral {
 // MARK: Criterion Eval
 
 extension StudyDefinition.ParticipationCriterion {
-    /// Context against which the ``StudyDefinition/ParticipationCriteria`` are evaluated.
+    /// Context against which the ``StudyDefinition/ParticipationCriterion`` are evaluated.
     public struct EvaluationEnvironment {
         let age: Int?
         let region: Locale.Region?

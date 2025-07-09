@@ -15,7 +15,10 @@ import SwiftUI
 final class TestAppDelegate: SpeziAppDelegate {
     override var configuration: Configuration {
         Configuration(standard: TestAppStandard()) {
-            StudyManager(persistence: .inMemory)
+            StudyManager(
+                preferredLocale: Locale(identifier: "en_US"),
+                persistence: .inMemory
+            )
         }
     }
 }

@@ -9,6 +9,7 @@
 import Foundation
 import SpeziFoundation
 import SpeziHealthKit
+import SpeziLocalization
 
 
 /// A type that can appear in a ``StudyDefinition``.
@@ -67,7 +68,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// ### Supporting Types
 /// - ``StudyDefinitionElement``
 /// - ``EnrollmentConditions``
-/// - ``ParticipationCriteria``
+/// - ``ParticipationCriterion``
 /// ### Working with a study definition
 /// - ``allCollectedHealthData``
 /// - ``healthDataCollectionComponents``
@@ -76,7 +77,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 7, 0)
+    public static let schemaVersion = Version(0, 8, 0)
     
     /// The revision of the study.
     ///
@@ -132,19 +133,30 @@ extension StudyDefinition {
     }
 }
 
-
-extension StudyDefinition.Component {
-    /// The components display title
-    public var displayTitle: String? {
-        switch self {
+extension StudyBundle {
+    /// The component's display title
+    public func displayTitle(
+        for component: StudyDefinition.Component,
+        in locale: Locale,
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+    ) -> String? {
+        switch component {
         case .informational(let component):
-            component.title
+            guard let url = self.resolve(component.fileRef, in: locale, using: localeMatchingBehaviour),
+                  let text = (try? Data(contentsOf: url)).flatMap({ String(data: $0, encoding: .utf8) }) else {
+                return nil
+            }
+            return (try? MarkdownDocument.Metadata(parsing: text))?.title
         case .questionnaire(let component):
-            component.questionnaire.title?.value?.string
-        case .timedWalkingTest(let component):
-            component.test.displayTitle
+            return questionnaire(
+                for: component.fileRef,
+                in: locale,
+                using: localeMatchingBehaviour
+            )?.title?.value?.string
         case .healthDataCollection:
-            nil
+            return nil
+        case .timedWalkingTest(let component):
+            return String(localized: component.test.displayTitle)
         }
     }
 }

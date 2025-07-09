@@ -25,3 +25,16 @@ extension RangeReplaceableCollection {
         return copy
     }
 }
+
+
+extension Locale {
+    /// Creates a new Locale, with the specified language and region.
+    public init(language: Language, region: Region) {
+        var components = Components(
+            languageCode: language.languageCode,
+            languageRegion: language.region
+        )
+        components.region = region
+        self.init(components: components)
+    }
+}

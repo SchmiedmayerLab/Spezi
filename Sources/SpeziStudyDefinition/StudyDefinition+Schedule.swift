@@ -28,7 +28,7 @@ extension StudyDefinition {
     /// ## Topics
     ///
     /// ### Initializers
-    /// - ``init(componentId:scheduleDefinition:completionPolicy:)``
+    /// - ``init(id:componentId:scheduleDefinition:completionPolicy:notifications:)``
     ///
     /// ### Instance Properties
     /// - ``componentId``
@@ -42,7 +42,7 @@ extension StudyDefinition {
         ///
         /// ## Topics
         /// ### Schedule Kinds
-        /// - ``repeated(_:startOffsetInDays:)``
+        /// - ``repeated(_:offset:)``
         /// ### Supporting Types
         /// - ``RepetitionPattern``
         public enum ScheduleDefinition: StudyDefinitionElement {
@@ -56,7 +56,7 @@ extension StudyDefinition {
             ///
             /// This case defines a schedule which will activate repeatedly, based on a repetition pattern.
             /// - parameter pattern: The pattern based on which the schedule should repeat itself.
-            /// - parameter startOffsetInDays: The number of days between the participants enrollment into the study and the first time the schedule should take effect.
+            /// - parameter offset: The offsetbetween the participant's enrollment into the study and the first time the schedule should take effect.
             case repeated(_ pattern: RepetitionPattern, offset: Duration = .zero)
             
             /// Pattern defining how a repeating ``StudyDefinition/ComponentSchedule/ScheduleDefinition-swift.enum`` should repeat itself.
@@ -108,6 +108,67 @@ extension StudyDefinition {
             self.scheduleDefinition = scheduleDefinition
             self.completionPolicy = completionPolicy
             self.notifications = notifications
+        }
+    }
+}
+
+
+extension StudyDefinition.ComponentSchedule.ScheduleDefinition: CustomStringConvertible {
+    private static let ordinalsFormatter: NumberFormatter = {
+        let fmt = NumberFormatter()
+        fmt.numberStyle = .ordinal
+        return fmt
+    }()
+    
+    public var description: String {
+        switch self {
+        case let .repeated(.daily(interval, hour, minute), offset):
+            let intervalDesc = switch interval {
+            case ...0: ""
+            case 1: "daily"
+            default: "every \(Self.ordinalsFormatter.string(from: .init(value: interval)) ?? "\(interval)th") day"
+            }
+            return "\(intervalDesc) @ \(String(format: "%.2d", hour)):\(String(format: "%.2d", minute))\(Self.offsetDesc(offset))"
+        case let .repeated(.weekly(interval, weekday, hour, minute), offset):
+            let intervalDesc = switch interval {
+            case ...0: ""
+            case 1: "weekly"
+            default: "every \(Self.ordinalsFormatter.string(from: .init(value: interval)) ?? "\(interval)th") week"
+            }
+            return "\(intervalDesc) @ \(weekday.rawValue) \(String(format: "%.2d", hour)):\(String(format: "%.2d", minute))\(Self.offsetDesc(offset))"
+        case let .after(studyLifecycleEvent, offset):
+            return "after \(studyLifecycleEvent)\(Self.offsetDesc(offset))"
+        case .once(let dateComponents):
+            let date = Calendar.current.date(from: dateComponents)
+            return "once; at \(date?.ISO8601Format() ?? dateComponents.description)"
+        }
+    }
+    
+    private static func offsetDesc(_ offset: Duration) -> String {
+        let fmt = Duration.UnitsFormatStyle(
+            allowedUnits: [.minutes, .hours, .days, .weeks],
+            width: .wide
+        )
+        return if offset == .zero {
+            ""
+        } else {
+            "; offset by \(offset.formatted(fmt))"
+        }
+    }
+}
+
+
+extension StudyLifecycleEvent: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .enrollment:
+            "enrollment"
+        case .unenrollment:
+            "unenrollment"
+        case .studyEnd:
+            "studyEnd"
+        case .completedTask(let componentId):
+            "completedTask(\(componentId.uuidString))"
         }
     }
 }

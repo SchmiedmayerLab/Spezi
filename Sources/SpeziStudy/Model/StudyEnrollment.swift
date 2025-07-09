@@ -31,43 +31,41 @@ public final class StudyEnrollment {
     /// This property stores the current revision of the study as last seen by this object.
     public private(set) var studyRevision: UInt
     
-    /// JSON-encoded version of the study.
-    private var encodedStudy: Data
+    var studyBundleUrl: URL {
+        StudyManager.studyBundlesDirectory.appendingPathComponent(self.id.uuidString, conformingTo: .speziStudyBundle)
+    }
     
     /// The study.
     ///
     /// - Note: In some circumstances (e.g., if the `StudyDefinition` schema changes, and this enrollment has yet to be updated),
     ///     this value may initially be `nil` for a bit, until ``StudyManager/informAboutStudies(_:)`` was called.
-    @Transient public private(set) lazy var study: StudyDefinition? = {
-        try? JSONDecoder().decode(
-            StudyDefinition.self,
-            from: encodedStudy,
-            configuration: .init(allowTrivialSchemaMigrations: true)
-        )
+    @Transient public private(set) lazy var studyBundle: StudyBundle? = {
+        try? .init(bundleUrl: studyBundleUrl)
     }()
     
     
     /// Creates a new `StudyEnrollment` object.
-    init(enrollmentDate: Date, study: StudyDefinition) throws {
+    init(enrollmentDate: Date, studyBundle: StudyBundle) throws {
         self.enrollmentDate = enrollmentDate
-        self.studyId = study.id
-        self.studyRevision = study.studyRevision
-        self.encodedStudy = try JSONEncoder().encode(study)
-        self.study = study
+        self.studyId = studyBundle.studyDefinition.id
+        self.studyRevision = studyBundle.studyDefinition.studyRevision
+        try updateStudyBundle(studyBundle, performValidityChecks: false)
     }
-    
     
     /// Updates the enrollment's `StudyDefinition` to a new revision, if necessary.
     ///
     /// - Note: Attempting to update to a different study, or attempting to downgrade to an older revision, will result in the function simply not doing anything.
-    func updateStudyDefinition(_ newStudy: StudyDefinition) throws {
-        guard newStudy.id == studyId, newStudy.studyRevision > studyRevision else {
+    func updateStudyBundle(_ newBundle: StudyBundle) throws {
+        try updateStudyBundle(newBundle, performValidityChecks: true)
+    }
+    
+    
+    private func updateStudyBundle(_ newBundle: StudyBundle, performValidityChecks: Bool) throws {
+        guard !performValidityChecks || (newBundle.id == studyId && newBundle.studyDefinition.studyRevision > studyRevision) else {
             return
         }
-        // do this first so that, in case the encoding fails, we don't have a partially-updated enrollment object.
-        let studyData = try JSONEncoder().encode(newStudy)
-        studyRevision = newStudy.studyRevision
-        encodedStudy = studyData
-        study = newStudy
+        try newBundle.copy(to: studyBundleUrl)
+        self.studyBundle = try .init(bundleUrl: self.studyBundleUrl)
+        studyRevision = newBundle.studyDefinition.studyRevision
     }
 }

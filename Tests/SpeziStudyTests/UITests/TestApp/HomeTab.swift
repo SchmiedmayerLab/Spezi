@@ -27,6 +27,7 @@ struct HomeTab: View {
     private var events
     
     @State private var viewState: ViewState = .idle
+    @State private var toggle = false
     
     var body: some View {
         NavigationStack {
@@ -51,24 +52,30 @@ struct HomeTab: View {
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
             .viewStateAlert(state: $viewState)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Toggle("", isOn: $toggle)
+                        .toggleStyle(.switch)
+                }
+            }
         }
     }
     
     @ViewBuilder private var actions: some View {
-        let mockStudyV1 = mockStudy(revision: .v1)
-        let mockStudyV2 = mockStudy(revision: .v2)
-        let mockStudyV3 = mockStudy(revision: .v3)
-        AsyncButton("Enroll in \(mockStudyV1.metadata.title) (v\(mockStudyV1.studyRevision))", state: $viewState) {
+        let mockStudyV1 = try! mockStudy(revision: .v1) // swiftlint:disable:this force_try
+        let mockStudyV2 = try! mockStudy(revision: .v2) // swiftlint:disable:this force_try
+        let mockStudyV3 = try! mockStudy(revision: .v3) // swiftlint:disable:this force_try
+        AsyncButton("Enroll in \(mockStudyV1.studyDefinition.metadata.title) (v\(mockStudyV1.studyDefinition.studyRevision))", state: $viewState) {
             try await studyManager.enroll(in: mockStudyV1)
         }
         AsyncButton("Update enrollment to study revision 2", state: $viewState) {
             try await studyManager.informAboutStudies([mockStudyV2])
         }
-        .disabled(!enrollments.contains { $0.studyId == mockStudyV1.id && $0.studyRevision < mockStudyV2.studyRevision })
+        .disabled(!enrollments.contains { $0.studyId == mockStudyV1.id && $0.studyRevision < mockStudyV2.studyDefinition.studyRevision })
         AsyncButton("Update enrollment to study revision 3", state: $viewState) {
             try await studyManager.informAboutStudies([mockStudyV3])
         }
-        .disabled(!enrollments.contains { $0.studyId == mockStudyV1.id && $0.studyRevision < mockStudyV3.studyRevision })
+        .disabled(!enrollments.contains { $0.studyId == mockStudyV1.id && $0.studyRevision < mockStudyV3.studyDefinition.studyRevision })
         AsyncButton("Unenroll from Study", state: $viewState) {
             if let enrollment = enrollments.first {
                 try studyManager.unenroll(from: enrollment)
@@ -79,7 +86,7 @@ struct HomeTab: View {
     @ViewBuilder
     private func makeStudyEnrollmentRow(for enrollment: StudyEnrollment) -> some View {
         VStack {
-            if let study = enrollment.study {
+            if let study = enrollment.studyBundle?.studyDefinition {
                 HStack {
                     Text(study.metadata.title)
                         .font(.headline)

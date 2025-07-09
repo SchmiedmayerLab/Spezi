@@ -14,10 +14,17 @@ Definitions for reusable studies
 
 ## Overview
 
-The SpeziStudyDefinition module implements the ``StudyDefinition`` type, which is used to create reusable study definitions.
+The SpeziStudyDefinition module implements the ``StudyBundle`` type, which is used to create reusable study definitions.
 
-See the ``StudyDefinition`` documentation for more info about the type.
+See the ``StudyBundle`` documentation for more information.
 
 ## Topics
+- ``StudyBundle``
 - ``StudyDefinition``
 - <doc:StudyEvolution>
+
+### Supporting Types
+- ``TimedWalkingTestConfiguration``
+
+### Other
+- ``UniformTypeIdentifiers/UTType/speziStudyBundle``

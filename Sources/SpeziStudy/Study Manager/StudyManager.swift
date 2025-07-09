@@ -15,9 +15,13 @@ import SpeziLocalStorage
 @_spi(APISupport)
 import SpeziScheduler
 import SpeziSchedulerUI
+@_documentation(visibility: internal)
 @_exported import SpeziStudyDefinition
 import SwiftData
 import SwiftUI
+#if canImport(UIKit) && !os(watchOS)
+import class UIKit.UIApplication
+#endif
 
 
 /// Manages enrollment and participation in studies.
@@ -29,8 +33,7 @@ import SwiftUI
 /// ## Topics
 ///
 /// ### Initialization
-/// - ``init()``
-/// - ``init(persistence:)``
+/// - ``init(preferredLocale:persistence:)``
 ///
 /// ### Study Enrollment
 /// - ``enroll(in:)``
@@ -38,6 +41,9 @@ import SwiftUI
 /// - ``informAboutStudies(_:)``
 /// - ``StudyEnrollment``
 /// - ``StudyEnrollmentError``
+///
+/// ### Instance Properties
+/// - ``preferredLocale``
 @MainActor
 public final class StudyManager: Module, EnvironmentAccessible, Sendable {
     /// How the ``StudyManager`` should persist its data.
@@ -49,14 +55,31 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
         case inMemory
     }
     
+    // ISSUE: on a mac, this will end up writing to ~/Documents (bad!)
+    nonisolated static let studyBundlesDirectory = URL.documentsDirectory
+        .appending(path: "edu.stanford.SpeziStudy/StudyBundles", directoryHint: .isDirectory)
+    
     /// The prefix used for SpeziScheduler Tasks created for study component schedules.
     private static let speziStudyDomainTaskIdPrefix = "edu.stanford.spezi.SpeziStudy.studyComponentTask."
+    
     
     // swiftlint:disable attributes
     @Dependency(HealthKit.self) var healthKit
     @Dependency(Scheduler.self) var scheduler
     @Application(\.logger) var logger
     // swiftlint:enable attributes
+    
+    /// The `Locale` the study manager should use when loading localized elements from a Study Bundle.
+    ///
+    /// This value affects e.g. the titles used for scheduled tasks and their resulting notifications.
+    public var preferredLocale: Locale {
+        didSet {
+            guard preferredLocale.language != oldValue.language || preferredLocale.region != oldValue.region else {
+                return
+            }
+            handleLocaleUpdate()
+        }
+    }
     
     #if targetEnvironment(simulator)
     private var autosaveTask: _Concurrency.Task<Void, Never>?
@@ -75,14 +98,15 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
         (try? modelContext.fetch(FetchDescriptor<StudyEnrollment>())) ?? []
     }
     
-    /// Creates a new Study Manager.
-    public nonisolated convenience init() {
-        self.init(persistence: .onDisk)
-    }
-    
     /// Creates a new Study Manager, using the specified persistence configuration
-    public nonisolated init(persistence: PersistenceConfiguration) {
-        modelContainer = { () -> ModelContainer in
+    ///
+    /// - parameter preferredLocale: The `Locale` which should be used when
+    public nonisolated init(
+        preferredLocale: Locale = .autoupdatingCurrent,
+        persistence: PersistenceConfiguration = .onDisk
+    ) {
+        self.preferredLocale = preferredLocale
+        self.modelContainer = { () -> ModelContainer in
             let schema = Schema([StudyEnrollment.self], version: Schema.Version(0, 0, 2))
             let config: ModelConfiguration
             switch persistence {
@@ -116,37 +140,62 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
     
     
     @_documentation(visibility: internal)
-    public func configure() {
-        _Concurrency.Task { @MainActor in
+    public func configure() { // swiftlint:disable:this function_body_length
+        typealias Task = _Concurrency.Task
+        Task { @MainActor in
             let enrollments = try modelContext.fetch(FetchDescriptor<StudyEnrollment>())
-            try registerStudyTasksWithScheduler(enrollments)
-            try await setupStudyBackgroundComponents(enrollments)
+            try registerStudyTasksWithScheduler(for: enrollments)
+            try await setupStudyBackgroundComponents(for: enrollments)
             try removeOrphanedTasks()
+            try removeOrphanedStudyBundles()
             #if targetEnvironment(simulator)
             guard autosaveTask == nil else {
                 return
             }
-            autosaveTask = _Concurrency.Task.detached {
+            autosaveTask = Task.detached {
                 while true {
                     await MainActor.run {
                         try? self.modelContext.save()
                     }
-                    try? await _Concurrency.Task.sleep(for: .seconds(0.25))
+                    try? await Task.sleep(for: .seconds(0.25))
                 }
             }
             #endif
             outcomesObserverToken = scheduler.observeNewOutcomes { [weak self] outcome in
                 guard let self,
                       let studyContext = outcome.task.studyContext,
-                      let studyDefinition = self.studyEnrollments.first(where: { $0.studyId == studyContext.studyId })?.study else {
+                      let studyBundle = self.studyEnrollments.first(where: { $0.studyId == studyContext.studyId })?.studyBundle else {
                     return
                 }
                 self.handleStudyLifecycleEvent(
                     .completedTask(componentId: studyContext.componentId),
-                    for: studyDefinition
+                    for: studyBundle
                 )
             }
         }
+        
+        Task { [weak self] in
+            let localeUpdates = NotificationCenter.default.notifications(named: NSLocale.currentLocaleDidChangeNotification)
+            for await _ in localeUpdates {
+                guard let self else {
+                    return
+                }
+                if self.preferredLocale == .autoupdatingCurrent {
+                    self.handleLocaleUpdate()
+                }
+            }
+        }
+        #if canImport(UIKit) && !os(watchOS)
+        Task { [weak self] in
+            let timeUpdates = NotificationCenter.default.notifications(named: UIApplication.significantTimeChangeNotification)
+            for await _ in timeUpdates {
+                guard let self else {
+                    return
+                }
+                self.handleLocaleUpdate()
+            }
+        }
+        #endif
     }
     
     
@@ -190,12 +239,13 @@ extension StudyManager {
     }
     
     
-    @MainActor // swiftlint:disable:next cyclomatic_complexity
-    private func registerStudyTasksWithScheduler(_ enrollments: some Collection<StudyEnrollment>) throws {
+    @MainActor // swiftlint:disable:next cyclomatic_complexity function_body_length
+    private func registerStudyTasksWithScheduler(for enrollments: some Collection<StudyEnrollment>) throws {
         for enrollment in enrollments {
-            guard let study = enrollment.study else {
+            guard let studyBundle = enrollment.studyBundle else {
                 continue
             }
+            let study = studyBundle.studyDefinition
             /// The IDs of all Tasks belonging to this study we consider to be "active" (i.e., we don't want to delete).
             var activeTaskIds = Set<Task.ID>()
             for schedule in study.componentSchedules {
@@ -216,7 +266,7 @@ extension StudyManager {
                 switch schedule.scheduleDefinition {
                 case .after:
                     // study-lifecycle-relative schedules aren't configured here...
-                    activeTaskIds.insert(taskId(for: schedule, in: study))
+                    activeTaskIds.insert(taskId(for: schedule, in: studyBundle))
                     continue
                 case .once(let dateComponents):
                     guard let date = Calendar.current.date(from: dateComponents) else {
@@ -239,7 +289,7 @@ extension StudyManager {
                     throw error
                 }
             }
-            let prefix = taskIdPrefix(for: study)
+            let prefix = taskIdPrefix(for: studyBundle)
             let orphanedTasks = (try? scheduler.queryTasks(for: Date.distantPast...Date.distantFuture, predicate: #Predicate<Task> {
                 // we filter for all tasks that are part of this study (determined based on prefix),
                 // and are not among the tasks we just scheduled.
@@ -262,15 +312,17 @@ extension StudyManager {
         enrollment: StudyEnrollment,
         taskSchedule: SpeziScheduler.Schedule
     ) throws -> Task {
-        guard let study = enrollment.study, let component = study.component(withId: componentSchedule.componentId) else {
+        guard let studyBundle = enrollment.studyBundle,
+              let component = studyBundle.studyDefinition.component(withId: componentSchedule.componentId) else {
             throw TaskCreationError.unableToFindComponent
         }
+        logger.notice("Asked to create Task for \(String(describing: component)) w/ schedule \(String(describing: componentSchedule))")
         let category: Task.Category?
         let action: ScheduledTaskAction?
         switch component {
         case .questionnaire(let component):
             category = .questionnaire
-            action = .answerQuestionnaire(component.questionnaire, enrollmentId: enrollment.persistentModelID)
+            action = .answerQuestionnaire(component)
         case .informational(let component):
             category = .informational
             action = .presentInformationalStudyComponent(component)
@@ -281,8 +333,8 @@ extension StudyManager {
             throw TaskCreationError.componentNotEligibleForTaskCreation
         }
         return try scheduler.createOrUpdateTask(
-            id: taskId(for: componentSchedule, in: study),
-            title: component.displayTitle.map { "\($0)" } ?? "",
+            id: taskId(for: componentSchedule, in: studyBundle),
+            title: studyBundle.displayTitle(for: component, in: preferredLocale).map { "\($0)" } ?? "",
             instructions: "",
             category: category,
             schedule: taskSchedule,
@@ -299,9 +351,10 @@ extension StudyManager {
             shadowedOutcomesHandling: .delete,
             with: { context in
                 context.studyContext = .init(
-                    studyId: study.id,
+                    studyId: studyBundle.studyDefinition.id,
                     componentId: component.id,
-                    scheduleId: componentSchedule.id
+                    scheduleId: componentSchedule.id,
+                    enrollmentId: enrollment.persistentModelID
                 )
                 context.studyScheduledTaskAction = action
             }
@@ -310,9 +363,9 @@ extension StudyManager {
     
     
     @MainActor
-    private func setupStudyBackgroundComponents(_ enrollments: some Collection<StudyEnrollment>) async throws {
+    private func setupStudyBackgroundComponents(for enrollments: some Collection<StudyEnrollment>) async throws {
         for enrollment in enrollments {
-            guard let study = enrollment.study else {
+            guard let studyBundle = enrollment.studyBundle else {
                 continue
             }
             func setupSampleCollection<Sample>(_ sampleType: some AnySampleType<Sample>) async {
@@ -323,7 +376,7 @@ extension StudyManager {
                     continueInBackground: true
                 ))
             }
-            for component in study.healthDataCollectionComponents {
+            for component in studyBundle.studyDefinition.healthDataCollectionComponents {
                 for sampleType in component.sampleTypes {
                     await setupSampleCollection(sampleType)
                 }
@@ -334,16 +387,16 @@ extension StudyManager {
     }
     
     
-    private func taskIdPrefix(for study: StudyDefinition) -> String {
-        taskIdPrefix(forStudyId: study.id)
+    private func taskIdPrefix(for studyBundle: StudyBundle) -> String {
+        taskIdPrefix(forStudyId: studyBundle.id)
     }
     
-    private func taskIdPrefix(forStudyId studyId: StudyDefinition.ID) -> String {
+    private func taskIdPrefix(forStudyId studyId: StudyBundle.ID) -> String {
         Self.speziStudyDomainTaskIdPrefix + studyId.uuidString
     }
     
-    private func taskId(for schedule: StudyDefinition.ComponentSchedule, in study: StudyDefinition) -> String {
-        "\(taskIdPrefix(for: study)).\(schedule.componentId).\(schedule.id)"
+    private func taskId(for schedule: StudyDefinition.ComponentSchedule, in studyBundle: StudyBundle) -> String {
+        "\(taskIdPrefix(for: studyBundle)).\(schedule.componentId).\(schedule.id)"
     }
     
     // MARK: Study Enrollment
@@ -355,12 +408,13 @@ extension StudyManager {
     /// - if `X < Y`: update the study enrollment, as if ``informAboutStudies(_:)`` was called with the new study revision;
     /// - if `X > Y`: throw an error.
     @MainActor
-    public func enroll(in study: StudyDefinition) async throws {
+    public func enroll(in studyBundle: StudyBundle) async throws {
+        let study = studyBundle.studyDefinition
         // big issue in this function is that, if we throw somewhere we kinda need to unroll _all_ the changes we've made so far
         // (which is much easier said than done...)
         let enrollments = try modelContext.fetch(FetchDescriptor<StudyEnrollment>())
         
-        if case let existingEnrollments = enrollments.filter({ $0.studyId == study.id }),
+        if case let existingEnrollments = enrollments.filter({ $0.studyId == studyBundle.id }),
            !existingEnrollments.isEmpty {
             // There exists at least one enrollment for this study
             if let enrollment = existingEnrollments.first, existingEnrollments.count == 1 {
@@ -371,7 +425,7 @@ extension StudyManager {
                 } else if enrollment.studyRevision < study.studyRevision {
                     // if we have only one enrollment, and it is for an older version of the study,
                     // we treat the enroll call as a study definition update
-                    try await informAboutStudies(CollectionOfOne(study))
+                    try await informAboutStudies(CollectionOfOne(studyBundle))
                     return
                 } else {
                     // enrollment.studyRevision > study.studyRevision
@@ -388,14 +442,14 @@ extension StudyManager {
             }
         }
         
-        let enrollment = try StudyEnrollment(enrollmentDate: .now, study: study)
+        let enrollment = try StudyEnrollment(enrollmentDate: .now, studyBundle: studyBundle)
         modelContext.insert(enrollment)
         try modelContext.save()
-        try registerStudyTasksWithScheduler(CollectionOfOne(enrollment))
+        try registerStudyTasksWithScheduler(for: CollectionOfOne(enrollment))
         // intentionally calling this before the background component setup, since that call is async and might take several seconds to return
         // (bc of the HealthKit permissions)
-        handleStudyLifecycleEvent(.enrollment, for: study)
-        try await setupStudyBackgroundComponents(CollectionOfOne(enrollment))
+        handleStudyLifecycleEvent(.enrollment, for: studyBundle)
+        try await setupStudyBackgroundComponents(for: CollectionOfOne(enrollment))
     }
     
     
@@ -414,7 +468,9 @@ extension StudyManager {
                 try scheduler.deleteAllVersions(of: task)
             }
         }
+        let studyBundleUrl = enrollment.studyBundleUrl
         modelContext.delete(enrollment)
+        try? FileManager.default.removeItem(at: studyBundleUrl)
         try modelContext.save()
     }
     
@@ -443,6 +499,31 @@ extension StudyManager {
             try scheduler.deleteAllVersions(of: task)
         }
     }
+    
+    /// Removes all entries in the ``StudyManager/studyBundlesDirectory`` which do not correspond to one of the current study enrollments.
+    @_spi(TestingSupport)
+    public func removeOrphanedStudyBundles() throws {
+        let fm = FileManager.default // swiftlint:disable:this identifier_name
+        let allStudyEnrollments = self.studyEnrollments
+        let allStudyBundleUrls = (try? fm.contents(of: Self.studyBundlesDirectory)) ?? []
+        let orphanedBundleUrls = allStudyBundleUrls.filter { url in
+            !allStudyEnrollments.contains { $0.studyBundleUrl.resolvingSymlinksInPath() == url.resolvingSymlinksInPath() }
+        }
+        guard !orphanedBundleUrls.isEmpty else {
+            return // nothing to do
+        }
+        logger.notice("Found \(orphanedBundleUrls.count) orphaned study bundle(s). Will remove.")
+        for url in orphanedBundleUrls {
+            try fm.removeItem(at: url)
+        }
+    }
+}
+
+
+extension StudyManager {
+    private func handleLocaleUpdate() {
+        try? registerStudyTasksWithScheduler(for: studyEnrollments)
+    }
 }
 
 
@@ -450,16 +531,16 @@ extension StudyManager {
     /// Informs the Study Manager about current study definitions.
     ///
     /// Ths study manager will use these definitions to determine whether it needs to update any of the study participation contexts ic currently manages.
-    public func informAboutStudies(_ studies: some Collection<StudyDefinition>) async throws {
-        for study in studies {
-            let studyId = study.id
-            let studyRevision = study.studyRevision
+    public func informAboutStudies(_ studyBundles: some Collection<StudyBundle>) async throws {
+        for studyBundle in studyBundles {
+            let studyId = studyBundle.studyDefinition.id
+            let studyRevision = studyBundle.studyDefinition.studyRevision
             for enrollment in try modelContext.fetch(FetchDescriptor(predicate: #Predicate<StudyEnrollment> {
                 $0.studyId == studyId && $0.studyRevision < studyRevision
             })) {
-                try enrollment.updateStudyDefinition(study)
-                try registerStudyTasksWithScheduler(CollectionOfOne(enrollment))
-                try await setupStudyBackgroundComponents(CollectionOfOne(enrollment))
+                try enrollment.updateStudyBundle(studyBundle)
+                try registerStudyTasksWithScheduler(for: CollectionOfOne(enrollment))
+                try await setupStudyBackgroundComponents(for: CollectionOfOne(enrollment))
             }
         }
     }
@@ -469,12 +550,12 @@ extension StudyManager {
 // MARK: Event-Based Scheduling
 
 extension StudyManager {
-    func handleStudyLifecycleEvent(_ event: StudyLifecycleEvent, for study: StudyDefinition) {
-        for enrollment in studyEnrollments where enrollment.studyId == study.id {
-            guard let study = enrollment.study else {
+    func handleStudyLifecycleEvent(_ event: StudyLifecycleEvent, for studyBundle: StudyBundle) {
+        for enrollment in studyEnrollments where enrollment.studyId == studyBundle.id {
+            guard let studyBundle = enrollment.studyBundle else {
                 continue
             }
-            let schedules = study.componentSchedules.filter { schedule in
+            let schedules = studyBundle.studyDefinition.componentSchedules.filter { schedule in
                 switch schedule.scheduleDefinition {
                 case .after(let event2, offset: _):
                     event2 == event

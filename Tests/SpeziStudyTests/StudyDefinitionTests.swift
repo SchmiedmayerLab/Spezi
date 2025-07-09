@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+// swiftlint:disable line_length
+
 import Foundation
 import class ModelsR4.Questionnaire
 import SpeziFoundation
@@ -19,40 +21,53 @@ import Testing
 struct StudyDefinitionTests {
     @Test
     func studyEncodingAndDecoding() throws {
-        let data = try JSONEncoder().encode(testStudy)
+        let data = try JSONEncoder().encode(Self.testStudyBundle)
         let decodedStudy = try JSONDecoder().decode(StudyDefinition.self, from: data, configuration: .init(allowTrivialSchemaMigrations: true))
-        #expect(try decodedStudy == testStudy)
+        #expect(try decodedStudy == Self.testStudyBundle)
     }
-    
     
     @Test
     func decodedStudyVersionExtraction() throws {
-        let input1 = try JSONEncoder().encode(testStudy)
+        let input1 = try JSONEncoder().encode(Self.testStudyBundle)
         #expect(try StudyDefinition.schemaVersion(of: input1, using: JSONDecoder()) == StudyDefinition.schemaVersion)
         
         let input2 = try #require(#"{"schemaVersion":"1.2.3", "glorb": "florb"}"#.data(using: .utf8))
         #expect(try StudyDefinition.schemaVersion(of: input2, using: JSONDecoder()) == Version(1, 2, 3))
     }
     
-    
     @Test
-    func displayTitles() throws {
-        let study = try testStudy
-        var it = study.components.makeIterator() // swiftlint:disable:this identifier_name
-        #expect(it.next()?.displayTitle == "Informational Component #1")
-        #expect(it.next()?.displayTitle == "Informational Component #2")
-        #expect(it.next()?.displayTitle == "Social Support")
-        #expect(it.next()?.displayTitle == nil) // health collection
-        #expect(it.next()?.displayTitle == "Six-Minute Walking Test")
-        #expect(it.next()?.displayTitle == "12-Minute Running Test")
-        #expect(it.next()?.displayTitle == "8.5-Minute Walking Test")
-        #expect(it.next() == nil)
+    func componentScheduleDescriptions() {
+        typealias Schedule = StudyDefinition.ComponentSchedule.ScheduleDefinition
+        #expect(Schedule.once(.init(
+            timeZone: .losAngeles, year: 2025, month: 06, day: 27, hour: 13, minute: 37
+        )).description == "once; at 2025-06-27T20:37:00Z")
+        #expect(Schedule.once(.init(
+            timeZone: .berlin, year: 2025, month: 06, day: 27, hour: 13, minute: 37
+        )).description == "once; at 2025-06-27T11:37:00Z")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 12, minute: 00)).description == "daily @ 12:00")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 09, minute: 07)).description == "daily @ 09:07")
+        #expect(Schedule.repeated(.daily(interval: 2, hour: 09, minute: 07)).description == "every 2nd day @ 09:07")
+        #expect(Schedule.repeated(.daily(interval: 3, hour: 09, minute: 07)).description == "every 3rd day @ 09:07")
+        #expect(Schedule.repeated(.daily(interval: 4, hour: 09, minute: 07)).description == "every 4th day @ 09:07")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 12, minute: 00), offset: .days(2)).description == "daily @ 12:00; offset by 2 days")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 12, minute: 00), offset: .days(2.5)).description == "daily @ 12:00; offset by 2 days, 12 hours")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 09, minute: 07), offset: .minutes(12)).description == "daily @ 09:07; offset by 12 minutes")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 09, minute: 07), offset: .minutes(12.21)).description == "daily @ 09:07; offset by 12 minutes")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 09, minute: 07), offset: .minutes(12.5)).description == "daily @ 09:07; offset by 12 minutes")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 09, minute: 07), offset: .minutes(12.7)).description == "daily @ 09:07; offset by 13 minutes")
+        #expect(Schedule.repeated(.daily(interval: 2, hour: 09, minute: 07), offset: .hours(17)).description == "every 2nd day @ 09:07; offset by 17 hours")
+        #expect(Schedule.repeated(.daily(interval: 3, hour: 09, minute: 07), offset: .weeks(1)).description == "every 3rd day @ 09:07; offset by 1 week")
+        #expect(Schedule.repeated(.daily(interval: 4, hour: 09, minute: 07), offset: .weeks(2)).description == "every 4th day @ 09:07; offset by 2 weeks")
+        #expect(Schedule.after(.enrollment, offset: .zero).description == "after enrollment")
+        #expect(Schedule.after(.enrollment, offset: .days(2)).description == "after enrollment; offset by 2 days")
     }
 }
 
 
 extension Locale.Language {
     static let english = Locale.Language(identifier: "en")
+    static let spanish = Locale.Language(identifier: "es")
+    static let german = Locale.Language(identifier: "de")
 }
 
 
@@ -74,91 +89,9 @@ extension Questionnaire {
 // MARK: Test Study
 
 extension StudyDefinitionTests {
-    private var testStudy: StudyDefinition {
+    static var testStudyBundle: StudyDefinition {
         get throws {
-            // swiftlint:disable force_unwrapping
-            let studyId = UUID(uuidString: "1E82CA84-E031-43C1-9CA4-9F68B5F246B8")!
-            let article1ComponentId = UUID(uuidString: "F924B17E-F45C-40D8-8B8A-C694C6D4956D")!
-            let article2ComponentId = UUID(uuidString: "6BE663DB-912F-4F4E-BD62-D743A9FB8941")!
-            let questionnaireComponentId = UUID(uuidString: "7E3CD36F-26CD-418B-9CAD-CFB268070162")!
-            let healthDataCollectionComponentId = UUID(uuidString: "A52CBB75-6F9D-4B59-BA86-01532EFE41D2")!
-            let timedWalkingTest1ComponentId = UUID(uuidString: "581E8C1F-C26C-4884-9536-6360712CD50A")!
-            let timedWalkingTest2ComponentId = UUID(uuidString: "CDC1643B-E868-43DE-A091-25CC62DE3F17")!
-            let timedWalkingTest3ComponentId = UUID(uuidString: "37FFF91E-E490-49D4-9A93-0B94D9C3DC02")!
-            let schedule1Id = UUID(uuidString: "92E77E46-4135-41B4-BE23-59AD233C4C79")!
-            let schedule2Id = UUID(uuidString: "D7263B0D-29BB-42BB-BF92-FE4DBC170281")!
-            let schedule3Id = UUID(uuidString: "B73A310D-692A-4C9F-9FA5-897FDAEAC796")!
-            // swiftlint:enable force_unwrapping
-            return StudyDefinition(
-                studyRevision: 0,
-                metadata: StudyDefinition.Metadata(
-                    id: studyId,
-                    title: "Test Study",
-                    explanationText: "This is our TestStudy",
-                    shortExplanationText: "This is our TestStudy",
-                    participationCriterion: .ageAtLeast(18) && !.ageAtLeast(60) && (.isFromRegion(.unitedStates) || .isFromRegion(.unitedKingdom)) && .speaksLanguage(.english),
-                    // swiftlint:disable:previous line_length
-                    enrollmentConditions: .requiresInvitation(verificationEndpoint: try #require(URL(string: "https://mhc.stanford.edu/api/enroll")))
-                ),
-                components: [
-                    .informational(.init(
-                        id: article1ComponentId,
-                        title: "Informational Component #1",
-                        headerImage: "Header1",
-                        body: "This is the text of the first informational component"
-                    )),
-                    .informational(.init(
-                        id: article2ComponentId,
-                        title: "Informational Component #2",
-                        headerImage: "Header2",
-                        body: "This is the text of the second informational component"
-                    )),
-                    .questionnaire(.init(
-                        id: questionnaireComponentId,
-                        questionnaire: try .named("SocialSupportQuestionnaire")
-                    )),
-                    .healthDataCollection(.init(
-                        id: healthDataCollectionComponentId,
-                        sampleTypes: [SampleType.heartRate, SampleType.stepCount, SampleType.sleepAnalysis],
-                        historicalDataCollection: .enabled(.last(DateComponents(year: 7, month: 6)))
-                    )),
-                    .timedWalkingTest(.init(
-                        id: timedWalkingTest1ComponentId,
-                        test: .init(duration: .minutes(6), kind: .walking)
-                    )),
-                    .timedWalkingTest(.init(
-                        id: timedWalkingTest2ComponentId,
-                        test: .init(duration: .minutes(12), kind: .running)
-                    )),
-                    .timedWalkingTest(.init(
-                        id: timedWalkingTest3ComponentId,
-                        test: .init(duration: .seconds(510), kind: .walking)
-                    ))
-                ],
-                componentSchedules: [
-                    .init(
-                        id: schedule1Id,
-                        componentId: article1ComponentId,
-                        scheduleDefinition: .repeated(.daily(hour: 11, minute: 21), offset: .days(4)),
-                        completionPolicy: .afterStart,
-                        notifications: .enabled(thread: .none)
-                    ),
-                    .init(
-                        id: schedule2Id,
-                        componentId: article2ComponentId,
-                        scheduleDefinition: .repeated(.daily(interval: 2, hour: 17, minute: 41)),
-                        completionPolicy: .anytime,
-                        notifications: .enabled(thread: .global)
-                    ),
-                    .init(
-                        id: schedule3Id,
-                        componentId: questionnaireComponentId,
-                        scheduleDefinition: .repeated(.weekly(weekday: .wednesday, hour: 21, minute: 59), offset: .days(1)),
-                        completionPolicy: .sameDayAfterStart,
-                        notifications: .enabled(thread: .task)
-                    )
-                ]
-            )
+            try StudyBundleTests.testStudyBundle.studyDefinition
         }
     }
 }

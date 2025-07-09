@@ -7,8 +7,10 @@
 //
 
 import Spezi
+import SpeziFoundation
 import SpeziStudy
 import SwiftUI
+import UniformTypeIdentifiers
 
 
 @main
@@ -25,6 +27,14 @@ struct UITestsApp: App {
                 }
             }
             .spezi(appDelegate)
+            .onAppear {
+                let fileManager = FileManager.default
+                let studyBundles = ((try? fileManager.contents(of: .temporaryDirectory)) ?? [])
+                    .filter { $0.pathExtension == UTType.speziStudyBundle.preferredFilenameExtension }
+                for url in studyBundles {
+                    try? fileManager.removeItem(at: url)
+                }
+            }
         }
     }
 }
