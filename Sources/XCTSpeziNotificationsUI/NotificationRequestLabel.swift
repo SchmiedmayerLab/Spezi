@@ -28,8 +28,7 @@ struct NotificationRequestLabel: View {
                 Text(request.content.title)
                     .bold()
 #endif
-                if let trigger = request.trigger,
-                   let nextDate = trigger.nextDate() {
+                if let nextDate = request.nextTriggerDate() {
                     NotificationTriggerLabel(nextDate)
                         .foregroundStyle(.secondary)
                         .onAppear {

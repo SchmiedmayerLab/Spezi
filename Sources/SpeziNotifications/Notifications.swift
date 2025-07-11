@@ -42,6 +42,12 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
     ///
     /// The limit is `64`.
     public static let pendingNotificationsLimit = 64
+    
+    /// The `Date` when the notification request was scheduled.
+    ///
+    /// - Note: This is the `Date` when the request was registered with the notification center, not the `Date` for which the request was scheduled.
+    public static let notificationContentUserInfoKeyScheduledDate = "edu.stanford.SpeziNotifications.notificationScheduledDate"
+    // swiftlint:disable:previous identifier_name
 
     @Application(\.notificationSettings)
     public var notificationSettings
@@ -95,7 +101,16 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
         guard let notificationCenter else {
             return
         }
-        try await notificationCenter.add(request)
+        if let mutableContent = request.content.mutableCopy() as? UNMutableNotificationContent {
+            mutableContent.scheduledDate = .now
+            try await notificationCenter.add(UNNotificationRequest(
+                identifier: request.identifier,
+                content: mutableContent,
+                trigger: request.trigger
+            ))
+        } else {
+            try await notificationCenter.add(request)
+        }
     }
 
     /// Retrieve the amount of notifications that can be scheduled for the app.
@@ -172,5 +187,39 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
             predicate(request) ? request.identifier : nil
         }
         notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
+    }
+}
+
+
+// MARK: Utils
+
+extension UNNotificationContent {
+    @objc package var scheduledDate: Date? {
+        userInfoValue(for: Notifications.notificationContentUserInfoKeyScheduledDate, as: Date.self)
+    }
+    
+    package func userInfoValue<T>(for key: String, as _: T.Type) -> T? {
+        #if !os(tvOS)
+        userInfo[key] as? T
+        #else
+        nil
+        #endif
+    }
+}
+
+extension UNMutableNotificationContent {
+    @objc override package var scheduledDate: Date? { // swiftlint:disable:this override_in_extension
+        get {
+            super.scheduledDate
+        }
+        set {
+            setUserInfoValue(newValue, for: Notifications.notificationContentUserInfoKeyScheduledDate)
+        }
+    }
+    
+    package func setUserInfoValue(_ value: some Any, for key: String) {
+        #if !os(tvOS)
+        userInfo[key] = value
+        #endif
     }
 }

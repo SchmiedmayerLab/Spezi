@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import SpeziNotifications
 import SwiftUI
 import UserNotifications
 
@@ -30,13 +31,32 @@ extension UNNotificationTrigger {
 #endif
         }
     }
+}
 
-    func nextDate() -> Date? {
-        if let calendarTrigger = self as? UNCalendarNotificationTrigger {
-            calendarTrigger.nextTriggerDate()
-        } else if let intervalTrigger = self as? UNTimeIntervalNotificationTrigger {
-            intervalTrigger.nextTriggerDate()
+
+extension UNNotificationRequest {
+    /// The next date at which the notification request will trigger, if available.
+    public func nextTriggerDate() -> Date? {
+        if let trigger = trigger as? UNCalendarNotificationTrigger {
+            // in the case of a calendar trigger, we can safely use `nextTriggerDate()
+            trigger.nextTriggerDate()
+        } else if let trigger = trigger as? UNTimeIntervalNotificationTrigger {
+            // in the case of a time interval trigger, we cannot use `nextTriggerDate()`,
+            // since it won't actually return the next trigger date but simply add the trigger's
+            // time interval to the current date.
+            // this happens because the trigger itself exists completely independent of the
+            // notification request it belongs to. additionally, since there's no way to obtain
+            // the time a notification request was scheduled, we need to keep track of this manually.
+            if let scheduledDate = content.scheduledDate {
+                scheduledDate.addingTimeInterval(trigger.timeInterval)
+            } else {
+                nil
+            }
+        } else if trigger == nil {
+            // if there is no trigger, the notification gets delivered immediately; in this case the trigger date would equal the schedule date
+            content.scheduledDate
         } else {
+            // otherwise, we cannot obtain a trigger date.
             nil
         }
     }

@@ -51,6 +51,9 @@
         }
       }
     },
+    "Date" : {
+
+    },
     "Delivery" : {
       "localizations" : {
         "en" : {
@@ -190,6 +193,9 @@
           }
         }
       }
+    },
+    "Repeats" : {
+
     },
     "Request Notification Authorization" : {
       "localizations" : {

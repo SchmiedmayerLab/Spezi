@@ -127,7 +127,7 @@ public struct NotificationRequestView: View {
                 if let trigger = trigger as? UNCalendarNotificationTrigger {
                     LabeledContent("Date", value: trigger.dateComponents.description)
                 }
-                if let nextDate = trigger.nextDate() {
+                if let nextDate = request.nextTriggerDate() {
                     LabeledContent("Next Trigger") {
                         NotificationTriggerLabel(nextDate)
                     }
