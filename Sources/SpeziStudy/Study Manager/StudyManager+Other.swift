@@ -52,13 +52,22 @@ extension Task.Category {
     
     /// An active task, i.e., some action the participant should perform
     public static let activeTask = Self.custom("edu.stanford.spezi.SpeziStudy.task.activeTask")
+    
+    /// A Timed Walking Test Task
+    public static let timedWalkingTest = Self.custom("edu.stanford.spezi.SpeziStudy.task.timedWalkingTest")
+    
+    /// A Timed Running Test Task
+    public static let timedRunningTest = Self.custom("edu.stanford.spezi.SpeziStudy.task.timedRunningTest")
 }
 
 
 extension View {
     /// Configures the SpeziStudy-specific task category appearances
     public func injectingCustomTaskCategoryAppearances() -> some View {
-        self.taskCategoryAppearance(for: .informational, label: "Informational", image: .system("text.rectangle.page"))
+        self
+            .taskCategoryAppearance(for: .informational, label: "Informational", image: .system("text.rectangle.page"))
+            .taskCategoryAppearance(for: .timedWalkingTest, label: "Active Task", image: .system("figure.walk"))
+            .taskCategoryAppearance(for: .timedRunningTest, label: "Active Task", image: .system("figure.run"))
     }
 }
 
@@ -70,10 +79,11 @@ extension SpeziScheduler.Schedule {
     /// - parameter participationStartDate: the date at which the user started to participate in the study.
     ///
     /// - invariant: `other` MUST be a `.repeated` `ScheduleDefinition`, otherwise the function will abort.
-    static func fromRepeated(_ other: StudyDefinition.ComponentSchedule.ScheduleDefinition, participationStartDate: Date) -> Self {
+    static func fromRepeated(_ other: StudyDefinition.ComponentSchedule.ScheduleDefinition, in cal: Calendar, participationStartDate: Date) -> Self {
         switch other {
         case let .repeated(.daily(interval, hour, minute), offset):
             return .daily(
+                calendar: cal,
                 interval: interval,
                 hour: hour,
                 minute: minute,
@@ -84,8 +94,14 @@ extension SpeziScheduler.Schedule {
             )
         case let .repeated(.weekly(interval, weekday, hour, minute), offset):
             return .weekly(
+                calendar: cal,
                 interval: interval,
-                weekday: weekday,
+                weekday: weekday ?? { () -> Locale.Weekday in
+                    guard let weekday = cal.dateComponents([.weekday], from: participationStartDate).weekday else {
+                        preconditionFailure("Unable to determine study enrollment weekday")
+                    }
+                    return cal.weekday(from: weekday)
+                }(),
                 hour: hour,
                 minute: minute,
                 second: 0,
@@ -93,8 +109,34 @@ extension SpeziScheduler.Schedule {
                 end: .never,
                 duration: .tillEndOfDay
             )
-        case .after, .once:
+        case let .repeated(.monthly(interval, day, hour, minute), offset):
+            return .monthly(
+                calendar: cal,
+                interval: interval,
+                day: day ?? cal.component(.day, from: participationStartDate),
+                hour: hour,
+                minute: minute,
+                second: 0,
+                startingAt: participationStartDate.addingTimeInterval(offset.timeInterval),
+                end: .never,
+                duration: .tillEndOfDay
+            )
+        case .once:
             preconditionFailure("Unexpected input: expected .repeated, got '\(other)'")
         }
+    }
+}
+
+
+extension Calendar {
+    /// Obtains, for a `DateComponents/weekday` value, the corresponding `Locale.Weekday`.
+    func weekday(from rawValue: Int) -> Locale.Weekday {
+        repeatElement([Locale.Weekday.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday], count: .max)
+            .lazy
+            .flatMap(\.self)
+            .dropFirst(self.firstWeekday - 1)
+            .dropFirst(rawValue + self.weekdaySymbols.count - self.firstWeekday)
+            // SAFETY: we operate on what is effectively a neverending sequence; there will always be an element
+            .first! // swiftlint:disable:this force_unwrapping
     }
 }

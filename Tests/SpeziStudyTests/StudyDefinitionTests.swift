@@ -38,12 +38,12 @@ struct StudyDefinitionTests {
     @Test
     func componentScheduleDescriptions() {
         typealias Schedule = StudyDefinition.ComponentSchedule.ScheduleDefinition
-        #expect(Schedule.once(.init(
+        #expect(Schedule.once(.date(.init(
             timeZone: .losAngeles, year: 2025, month: 06, day: 27, hour: 13, minute: 37
-        )).description == "once; at 2025-06-27T20:37:00Z")
-        #expect(Schedule.once(.init(
+        ))).description == "once; at 2025-06-27T20:37:00Z")
+        #expect(Schedule.once(.date(.init(
             timeZone: .berlin, year: 2025, month: 06, day: 27, hour: 13, minute: 37
-        )).description == "once; at 2025-06-27T11:37:00Z")
+        ))).description == "once; at 2025-06-27T11:37:00Z")
         #expect(Schedule.repeated(.daily(interval: 1, hour: 12, minute: 00)).description == "daily @ 12:00")
         #expect(Schedule.repeated(.daily(interval: 1, hour: 09, minute: 07)).description == "daily @ 09:07")
         #expect(Schedule.repeated(.daily(interval: 2, hour: 09, minute: 07)).description == "every 2nd day @ 09:07")
@@ -58,8 +58,9 @@ struct StudyDefinitionTests {
         #expect(Schedule.repeated(.daily(interval: 2, hour: 09, minute: 07), offset: .hours(17)).description == "every 2nd day @ 09:07; offset by 17 hours")
         #expect(Schedule.repeated(.daily(interval: 3, hour: 09, minute: 07), offset: .weeks(1)).description == "every 3rd day @ 09:07; offset by 1 week")
         #expect(Schedule.repeated(.daily(interval: 4, hour: 09, minute: 07), offset: .weeks(2)).description == "every 4th day @ 09:07; offset by 2 weeks")
-        #expect(Schedule.after(.enrollment, offset: .zero).description == "after enrollment")
-        #expect(Schedule.after(.enrollment, offset: .days(2)).description == "after enrollment; offset by 2 days")
+        #expect(Schedule.once(.event(.enrollment)).description == "once; at enrollment")
+        #expect(Schedule.once(.event(.enrollment, offsetInDays: 2)).description == "once; at enrollment + 2 days")
+        #expect(Schedule.once(.event(.enrollment, offsetInDays: 2, time: .init(hour: 9, minute: 41))).description == "once; at enrollment + 2 days; at 09:41")
     }
 }
 

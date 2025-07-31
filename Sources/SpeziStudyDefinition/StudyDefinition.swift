@@ -77,7 +77,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 8, 0)
+    public static let schemaVersion = Version(0, 9, 0)
     
     /// The revision of the study.
     ///
@@ -133,6 +133,7 @@ extension StudyDefinition {
     }
 }
 
+
 extension StudyBundle {
     /// The component's display title
     public func displayTitle(
@@ -158,6 +159,26 @@ extension StudyBundle {
         case .timedWalkingTest(let component):
             return String(localized: component.test.displayTitle)
         }
+    }
+    
+    
+    /// The component's instructions test, if applicable.
+    public func instructions(
+        for component: StudyDefinition.Component,
+        in locale: Locale,
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+    ) -> String? {
+//        switch component {
+//        case .informational(let informationalComponent):
+//            <#code#>
+//        case .questionnaire(let questionnaireComponent):
+//            <#code#>
+//        case .healthDataCollection(let healthDataCollectionComponent):
+//            <#code#>
+//        case .timedWalkingTest(let timedWalkingTestComponent):
+//            <#code#>
+//        }
+        "Please take a look at this :)"
     }
 }
 

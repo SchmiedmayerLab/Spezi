@@ -105,7 +105,7 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
             StudyDefinition.ComponentSchedule(
                 id: .schedule0Id,
                 componentId: .article0ComponentId,
-                scheduleDefinition: .after(.enrollment),
+                scheduleDefinition: .once(.event(.enrollment, time: .midnight)),
                 completionPolicy: .afterStart,
                 notifications: .disabled
             )
@@ -128,7 +128,7 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
                 StudyDefinition.ComponentSchedule(
                     id: .schedule4Id,
                     componentId: .article3ComponentId,
-                    scheduleDefinition: .after(.completedTask(componentId: .questionnaireComponentId)),
+                    scheduleDefinition: .once(.event(.completedTask(componentId: .questionnaireComponentId))),
                     completionPolicy: .anytime,
                     notifications: .enabled(thread: .none)
                 )

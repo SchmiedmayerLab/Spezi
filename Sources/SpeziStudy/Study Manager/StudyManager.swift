@@ -264,17 +264,21 @@ extension StudyManager {
                 }
                 let taskSchedule: SpeziScheduler.Schedule
                 switch schedule.scheduleDefinition {
-                case .after:
+                case .once(.event):
                     // study-lifecycle-relative schedules aren't configured here...
                     activeTaskIds.insert(taskId(for: schedule, in: studyBundle))
                     continue
-                case .once(let dateComponents):
-                    guard let date = Calendar.current.date(from: dateComponents) else {
+                case .once(.date(let dateComponents)):
+                    guard let date = preferredLocale.calendar.date(from: dateComponents) else {
                         continue
                     }
                     taskSchedule = .once(at: date, duration: .tillEndOfDay)
                 case .repeated:
-                    taskSchedule = .fromRepeated(schedule.scheduleDefinition, participationStartDate: enrollment.enrollmentDate)
+                    taskSchedule = .fromRepeated(
+                        schedule.scheduleDefinition,
+                        in: preferredLocale.calendar,
+                        participationStartDate: enrollment.enrollmentDate
+                    )
                 }
                 do {
                     let task = try createOrUpdateTask(
@@ -307,7 +311,7 @@ extension StudyManager {
     
     /// Creates (or updates) a `Task` for a study component, based on a schedule.
     @MainActor
-    private func createOrUpdateTask(
+    private func createOrUpdateTask( // swiftlint:disable:this function_body_length
         componentSchedule: StudyDefinition.ComponentSchedule,
         enrollment: StudyEnrollment,
         taskSchedule: SpeziScheduler.Schedule
@@ -327,7 +331,10 @@ extension StudyManager {
             category = .informational
             action = .presentInformationalStudyComponent(component)
         case .timedWalkingTest(let component):
-            category = .activeTask
+            category = switch component.test.kind {
+            case .walking: .timedWalkingTest
+            case .running: .timedRunningTest
+            }
             action = .promptTimedWalkingTest(component)
         case .healthDataCollection:
             throw TaskCreationError.componentNotEligibleForTaskCreation
@@ -335,7 +342,7 @@ extension StudyManager {
         return try scheduler.createOrUpdateTask(
             id: taskId(for: componentSchedule, in: studyBundle),
             title: studyBundle.displayTitle(for: component, in: preferredLocale).map { "\($0)" } ?? "",
-            instructions: "",
+            instructions: studyBundle.instructions(for: component, in: preferredLocale).map { "\($0)" } ?? "",
             category: category,
             schedule: taskSchedule,
             completionPolicy: componentSchedule.completionPolicy,
@@ -346,6 +353,7 @@ extension StudyManager {
                 }
             }(),
             notificationThread: componentSchedule.notifications.thread,
+            notificationTime: componentSchedule.notifications.time,
             tags: nil,
             effectiveFrom: .now,
             shadowedOutcomesHandling: .delete,
@@ -551,28 +559,34 @@ extension StudyManager {
 
 extension StudyManager {
     func handleStudyLifecycleEvent(_ event: StudyLifecycleEvent, for studyBundle: StudyBundle) {
+        let now = Date.now
+        let cal = preferredLocale.calendar
         for enrollment in studyEnrollments where enrollment.studyId == studyBundle.id {
             guard let studyBundle = enrollment.studyBundle else {
                 continue
             }
-            let schedules = studyBundle.studyDefinition.componentSchedules.filter { schedule in
+            for schedule in studyBundle.studyDefinition.componentSchedules {
                 switch schedule.scheduleDefinition {
-                case .after(let event2, offset: _):
-                    event2 == event
-                case .once, .repeated:
-                    false
-                }
-            }
-            for schedule in schedules {
-                switch schedule.scheduleDefinition {
-                case .once, .repeated:
+                case .repeated, .once(.date):
                     continue
-                case let .after(_, offset):
+                case let .once(.event(lifecycleEvent, offsetInDays, time)):
+                    guard lifecycleEvent == event else {
+                        logger.error("Skipping \(schedule.scheduleDefinition) bc the events don't match up (\(event) vs \(lifecycleEvent))")
+                        continue
+                    }
+                    guard let occurrenceDate = cal
+                        .date(byAdding: .day, value: offsetInDays, to: now)
+                        .flatMap({ date in
+                            time.flatMap { cal.date(bySettingHour: $0.hour, minute: $0.minute, second: $0.second, of: date) } ?? date
+                        }) else {
+                        logger.error("Unable to compute occurrence date. Skipping \(schedule.scheduleDefinition)")
+                        continue
+                    }
                     do {
                         _ = try createOrUpdateTask(
                             componentSchedule: schedule,
                             enrollment: enrollment,
-                            taskSchedule: .once(at: Date.now.addingTimeInterval(offset.timeInterval))
+                            taskSchedule: .once(at: occurrenceDate)
                         )
                     } catch TaskCreationError.unableToFindComponent, TaskCreationError.componentNotEligibleForTaskCreation {
                         continue

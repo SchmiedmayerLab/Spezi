@@ -11,7 +11,7 @@ import Spezi
 import SpeziHealthKit
 import SpeziLocalization
 @_spi(TestingSupport)
-import SpeziScheduler
+@testable import SpeziScheduler
 @_spi(TestingSupport)
 @testable import SpeziStudy
 @testable import SpeziStudyDefinition
@@ -191,6 +191,50 @@ final class StudyManagerTests {
         let locale2 = Locale(language: .spanish, region: .antarctica)
         #expect(locale2.language == .spanish)
         #expect(locale2.region == .antarctica)
+    }
+    
+    
+    @Test
+    func schedules() throws {
+        var cal = Calendar(identifier: .gregorian)
+        cal.locale = Locale(identifier: "en_US")
+        cal.timeZone = .losAngeles
+        let enrollmentDate = try #require(cal.date(from: .init(year: 2025, month: 7, day: 31)))
+        #expect(cal.component(.weekday, from: enrollmentDate) == 5)
+        
+        let schedule1: Schedule = .fromRepeated(
+            .repeated(.daily(hour: 0, minute: 0)),
+            in: cal,
+            participationStartDate: enrollmentDate
+        )
+        let schedule2: Schedule = .fromRepeated(
+            .repeated(.weekly(weekday: nil, hour: 0, minute: 0)),
+            in: cal,
+            participationStartDate: enrollmentDate
+        )
+        let schedule3: Schedule = .fromRepeated(
+            .repeated(.weekly(weekday: .wednesday, hour: 0, minute: 0)),
+            in: cal,
+            participationStartDate: enrollmentDate
+        )
+        let schedule4: Schedule = .fromRepeated(
+            .repeated(.monthly(day: nil, hour: 0, minute: 0)),
+            in: cal,
+            participationStartDate: enrollmentDate
+        )
+        let schedule5: Schedule = .fromRepeated(
+            .repeated(.monthly(day: 2, hour: 0, minute: 0)),
+            in: cal,
+            participationStartDate: enrollmentDate
+        )
+        let nextOccurrence = { (schedule: Schedule) -> Date? in
+            schedule.nextOccurrence(in: enrollmentDate.addingTimeInterval(1)...)?.start
+        }
+        #expect(try #require(nextOccurrence(schedule1)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 1))))
+        #expect(try #require(nextOccurrence(schedule2)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 7))))
+        #expect(try #require(nextOccurrence(schedule3)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 6))))
+        #expect(try #require(nextOccurrence(schedule4)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 31))))
+        #expect(try #require(nextOccurrence(schedule5)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 2))))
     }
     
     

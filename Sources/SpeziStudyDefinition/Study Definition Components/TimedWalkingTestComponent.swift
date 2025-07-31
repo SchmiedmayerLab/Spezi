@@ -32,6 +32,15 @@ public struct TimedWalkingTestConfiguration: Codable, Hashable, Sendable {
 }
 
 
+extension TimedWalkingTestConfiguration {
+    /// The six-minute walk test
+    public static let sixMinuteWalkTest = TimedWalkingTestConfiguration(duration: .minutes(6), kind: .walking)
+    
+    /// The 12-minute run test, also known as the Cooper Test.
+    public static let twelveMinuteRunTest = TimedWalkingTestConfiguration(duration: .minutes(12), kind: .running)
+}
+
+
 extension StudyDefinition {
     /// Study Component which prompts the user to perform a Timed Walking Test
     public struct TimedWalkingTestComponent: Identifiable, StudyDefinitionElement {
