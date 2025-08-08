@@ -13,16 +13,16 @@ import XCTest
 class XCTestExtensionsTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
-
         continueAfterFailure = false
     }
-
+    
+    
     @available(macOS, unavailable)
     @available(watchOS, unavailable)
     func testDeleteAndLaunch() throws {
-#if os(macOS) || os(watchOS)
+        #if os(macOS) || os(watchOS)
         throw XCTSkip("Not supported on this platform")
-#endif
+        #endif
 
         let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
@@ -34,14 +34,15 @@ class XCTestExtensionsTests: XCTestCase {
         XCTAssert(app.staticTexts["No secure text set ..."].exists)
     }
     
+    
     @available(macOS, unavailable)
     @available(watchOS, unavailable)
     @available(visionOS, unavailable)
     @available(tvOS, unavailable)
     func testDeleteAndLaunchWithHealthKitSample() throws {
-#if os(macOS) || os(watchOS) || os(visionOS) || os(tvOS)
+        #if os(macOS) || os(watchOS) || os(visionOS) || os(tvOS)
         throw XCTSkip("Not supported on this platform")
-#endif
+        #endif
 
         let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
@@ -63,18 +64,18 @@ class XCTestExtensionsTests: XCTestCase {
         
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
     }
-
+    
     
     @available(macOS, unavailable)
     @available(watchOS, unavailable)
     func testDeleteAndLaunchFromFirstPage() throws {
-#if os(macOS) || os(watchOS)
+        #if os(macOS) || os(watchOS)
         throw XCTSkip("Not supported on this platform")
-#endif
-#if os(visionOS)
+        #endif
+        #if os(visionOS)
         // currently don't know how to swipe on the Reality Launcher. So not a super big use case for us now.
         throw XCTSkip("VisionOS will typically have apps installed on the first screen anyways.")
-#endif
+        #endif
         let springboard = XCUIApplication(bundleIdentifier: XCUIApplication.homeScreenBundle)
         springboard.activate()
         springboard.swipeRight()
@@ -89,6 +90,7 @@ class XCTestExtensionsTests: XCTestCase {
         XCTAssert(app.staticTexts["No secure text set ..."].exists)
     }
     
+    
     func testTextEntry() throws {
         let app = XCUIApplication()
         app.launch()
@@ -98,6 +100,7 @@ class XCTestExtensionsTests: XCTestCase {
 
         try app.callTextEntryExtensions()
     }
+    
     
     @MainActor
     func testFlakyTextEntry() throws {
@@ -111,7 +114,8 @@ class XCTestExtensionsTests: XCTestCase {
         try app.callTextEntryExtensions()
         simulateFlakySimulatorTextEntry = false
     }
-
+    
+    
     func testLongTextEntries() throws {
         let app = XCUIApplication()
         app.launch()
@@ -125,17 +129,18 @@ class XCTestExtensionsTests: XCTestCase {
         let message = "This is a very long text and some more"
         try textField.enter(value: message, options: .skipTextInputValidation)
         XCTAssert(app.staticTexts[message].waitForExistence(timeout: 5))
-#if os(visionOS)
+        #if os(visionOS)
         try textField.enter(value: " ...", options: [.skipTextInputValidation])
-#else
+        #else
         try textField.enter(value: " ...", options: [.skipTextInputValidation, .tapFromRight])
-#endif
+        #endif
         XCTAssert(app.staticTexts["\(message) ..."].waitForExistence(timeout: 5))
 
         // Test text field deletion with longer text input
         try textField.delete(count: message.count + 4)
     }
-
+    
+    
     func testKeyboardBehavior() throws {
         // make sure you disconnect the hardware keyboard when running this test! Also language must be english.
         let app = XCUIApplication()
@@ -153,14 +158,9 @@ class XCTestExtensionsTests: XCTestCase {
             #endif
 
             app.dismissKeyboard()
-#if !os(visionOS) && !os(macOS)
-#if compiler(<6)
-            sleep(1)
-            XCTAssertFalse(app.keyboards.firstMatch.exists)
-#else // compiler(<6)
+            #if !os(visionOS) && !os(macOS)
             XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 2.0))
-#endif // compiler(<6)
-#endif // !os(visionOS) && !os(macOS)
+            #endif
         }
         
         // this way we know exactly which button failed by line numbers.
@@ -173,6 +173,40 @@ class XCTestExtensionsTests: XCTestCase {
         checkLabel("Route")
         checkLabel("Search")
         checkLabel("Send")
+    }
+    
+    
+    func testToggleStuff() throws {
+        let app = XCUIApplication()
+        app.launch()
+        XCTAssert(app.wait(for: .runningForeground, timeout: 2))
+        app.buttons["Toggles / Switches"].tap()
+        
+        XCTAssert(app.navigationBars["Toggles / Switches"].waitForExistence(timeout: 1))
+        print(app.debugDescription)
+        
+        let toggle = app.switches["Selection"]
+        
+        func assertToggleState(_ expectedState: Bool, line: UInt = #line) {
+            XCTAssert(app.staticTexts["Selection Value, \(expectedState)"].waitForExistence(timeout: 1))
+            XCTAssertEqual(toggle.toggleState, expectedState)
+        }
+        
+        assertToggleState(false)
+        try toggle.flipToggle()
+        assertToggleState(true)
+        try toggle.setToggleState(isOn: true)
+        assertToggleState(true)
+        try toggle.setToggleState(isOn: true)
+        assertToggleState(true)
+        try toggle.setToggleState(isOn: false)
+        assertToggleState(false)
+        try toggle.flipToggle()
+        assertToggleState(true)
+        try toggle.flipToggle()
+        assertToggleState(false)
+        try toggle.setToggleState(isOn: true)
+        assertToggleState(true)
     }
 }
 

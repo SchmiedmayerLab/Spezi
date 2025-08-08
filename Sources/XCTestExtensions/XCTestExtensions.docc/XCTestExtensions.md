@@ -50,18 +50,20 @@ The `enter(value:)` and `delete(count:)` methods provide the `checkIfTextWasEnte
 ## Topics
 
 ### Assertions
-
 - ``XCTAssertThrowsErrorAsync(_:_:file:line:_:)``
 
-### Text Entry
-
-- ``TextInputOptions``
-- ``XCTest/XCUIElement/enter(value:options:)``
-- ``XCTest/XCUIElement/delete(count:options:)``
-
 ### App Interaction
+- ``XCUIAutomation/XCUIApplication/deleteAndLaunch(withSpringboardAppName:)``
+- ``XCUIAutomation/XCUIApplication/delete(app:)``
+- ``XCUIAutomation/XCUIApplication/dismissKeyboard()``
+- ``XCUIAutomation/XCUIApplication/homeScreenBundle``
 
-- ``XCTest/XCUIApplication/deleteAndLaunch(withSpringboardAppName:)``
-- ``XCTest/XCUIApplication/delete(app:)``
-- ``XCTest/XCUIApplication/dismissKeyboard()``
-- ``XCTest/XCUIApplication/homeScreenBundle``
+### Text Entry
+- ``TextInputOptions``
+- ``XCUIAutomation/XCUIElement/enter(value:options:)``
+- ``XCUIAutomation/XCUIElement/delete(count:options:)``
+
+### Interacting with UI Elements
+- ``XCUIAutomation/XCUIElement/toggleState``
+- ``XCUIAutomation/XCUIElement/flipToggle()``
+- ``XCUIAutomation/XCUIElement/setToggleState(isOn:)``
