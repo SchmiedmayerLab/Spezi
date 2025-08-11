@@ -14,9 +14,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "TemplatePackage"
-               BuildableName = "TemplatePackage"
-               BlueprintName = "TemplatePackage"
+               BlueprintIdentifier = "SpeziConsent"
+               BuildableName = "SpeziConsent"
+               BlueprintName = "SpeziConsent"
                ReferencedContainer = "container:../..">
             </BuildableReference>
          </BuildActionEntry>
