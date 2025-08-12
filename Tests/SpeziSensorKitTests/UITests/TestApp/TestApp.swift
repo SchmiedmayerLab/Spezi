@@ -1,21 +1,19 @@
 //
-// This source file is part of the TemplatePackage open-source project
+// This source file is part of the SpeziSensorKit open-source project
 //
-// SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
+// SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
+import SpeziSensorKit
 import SwiftUI
-import TemplatePackage
-
 
 @main
 struct UITestsApp: App {
     var body: some Scene {
         WindowGroup {
-            Text(TemplatePackage().stanford)
-            Text(operatingSystem)
+            Text("Hello Spezi :)")
         }
     }
 }
