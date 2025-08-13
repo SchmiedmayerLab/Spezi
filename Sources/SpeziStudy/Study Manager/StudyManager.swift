@@ -265,8 +265,20 @@ extension StudyManager {
                 let taskSchedule: SpeziScheduler.Schedule
                 switch schedule.scheduleDefinition {
                 case .once(.event):
-                    // study-lifecycle-relative schedules aren't configured here...
-                    activeTaskIds.insert(taskId(for: schedule, in: studyBundle))
+                    let taskId = taskId(for: schedule, in: studyBundle)
+                    activeTaskIds.insert(taskId)
+                    if let task = try scheduler.queryTasks(
+                        for: Date.distantPast..<Date.distantFuture,
+                        predicate: #Predicate<Task> { $0.id == taskId }
+                    ).first?.latestVersion {
+                        // there already exists a Task for this event-based schedule,
+                        // meaning that the event has already occurred at some point in the past.
+                        // since the locale may have changed, we now need to re-register the Task,
+                        // in order to get an updated version that is created using the new locale.
+                        // Note that we intentionally reuse the old task's schedule here, since it
+                        // likely is a Date-based one-time schedule.
+                        _ = try createOrUpdateTask(componentSchedule: schedule, enrollment: enrollment, taskSchedule: task.schedule)
+                    }
                     continue
                 case .once(.date(let dateComponents)):
                     guard let date = preferredLocale.calendar.date(from: dateComponents) else {
@@ -415,8 +427,12 @@ extension StudyManager {
     /// - if `X = Y`: have no effect;
     /// - if `X < Y`: update the study enrollment, as if ``informAboutStudies(_:)`` was called with the new study revision;
     /// - if `X > Y`: throw an error.
+    ///
+    /// - parameter studyBundle: The `StudyBundle` to enroll into.
+    /// - parameter enrollmentDate: The `Date` relative to which the enrollment should be registered.
+    ///     This defaults to the current date, but you can override this to specify a date in the past if you re-enroll a user which was already enrolled before.
     @MainActor
-    public func enroll(in studyBundle: StudyBundle) async throws {
+    public func enroll(in studyBundle: StudyBundle, enrollmentDate: Date = .now) async throws {
         let study = studyBundle.studyDefinition
         // big issue in this function is that, if we throw somewhere we kinda need to unroll _all_ the changes we've made so far
         // (which is much easier said than done...)
@@ -450,13 +466,17 @@ extension StudyManager {
             }
         }
         
-        let enrollment = try StudyEnrollment(enrollmentDate: .now, studyBundle: studyBundle)
+        let enrollment = try StudyEnrollment(enrollmentDate: enrollmentDate, studyBundle: studyBundle)
         modelContext.insert(enrollment)
         try modelContext.save()
         try registerStudyTasksWithScheduler(for: CollectionOfOne(enrollment))
-        // intentionally calling this before the background component setup, since that call is async and might take several seconds to return
+        // intentionally doing this before the background component setup, since that call is async and might take several seconds to return
         // (bc of the HealthKit permissions)
-        handleStudyLifecycleEvent(.enrollment, for: studyBundle)
+        if preferredLocale.calendar.isDateInToday(enrollmentDate) {
+            // if we enrolled for the current day, we trigger the enrollment-event-based component scheduled.
+            // we intentionally skip this if the enrollment is for a different date.
+            handleStudyLifecycleEvent(.enrollment, for: studyBundle)
+        }
         try await setupStudyBackgroundComponents(for: CollectionOfOne(enrollment))
     }
     
@@ -558,7 +578,7 @@ extension StudyManager {
 // MARK: Event-Based Scheduling
 
 extension StudyManager {
-    func handleStudyLifecycleEvent(_ event: StudyLifecycleEvent, for studyBundle: StudyBundle) {
+    private func handleStudyLifecycleEvent(_ event: StudyLifecycleEvent, for studyBundle: StudyBundle) {
         let now = Date.now
         let cal = preferredLocale.calendar
         for enrollment in studyEnrollments where enrollment.studyId == studyBundle.id {

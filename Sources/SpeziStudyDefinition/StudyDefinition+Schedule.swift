@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpeziFoundation
 import enum SpeziScheduler.AllowedCompletionPolicy
 import enum SpeziScheduler.NotificationThread
 import struct SpeziScheduler.NotificationTime
@@ -94,7 +95,7 @@ extension StudyDefinition {
             /// This case defines a schedule which will activate repeatedly, based on a repetition pattern.
             /// - parameter pattern: The pattern based on which the schedule should repeat itself.
             /// - parameter offset: The offsetbetween the participant's enrollment into the study and the first time the schedule should take effect.
-            case repeated(_ pattern: RepetitionPattern, offset: Duration = .zero)
+            case repeated(_ pattern: RepetitionPattern, offset: DateComponents = .init())
             
             public enum OneTimeSchedule: StudyDefinitionElement { // swiftlint:disable:this nesting
                 /// A schedule that should run only once, at a specific date in the user's time zone.
@@ -229,15 +230,11 @@ extension StudyDefinition.ComponentSchedule.ScheduleDefinition: CustomStringConv
         }
     }
     
-    private static func offsetDesc(_ offset: Duration) -> String {
-        let fmt = Duration.UnitsFormatStyle(
-            allowedUnits: [.minutes, .hours, .days, .weeks],
-            width: .wide
-        )
-        return if offset == .zero {
+    private static func offsetDesc(_ offset: DateComponents) -> String {
+        if offset == .init() {
             ""
         } else {
-            "; offset by \(offset.formatted(fmt))"
+            "; offset by \(offset)".trimmingWhitespace()
         }
     }
 }

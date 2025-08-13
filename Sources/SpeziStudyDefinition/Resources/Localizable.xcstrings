@@ -1,22 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@-Minute Running Test" : {
+    "%@-Minute Run Test" : {
       "localizations" : {
-        "de" : {
+        "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@-Minuten Lauf-Test"
+            "value" : "Prueba de carrera de %@ minutos"
           }
         }
       }
     },
-    "%@-Minute Walking Test" : {
+    "%@-Minute Walk Test" : {
       "localizations" : {
-        "de" : {
+        "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@-Minuten Geh-Test"
+            "value" : "Prueba de la marcha de %@ minutos"
           }
         }
       }

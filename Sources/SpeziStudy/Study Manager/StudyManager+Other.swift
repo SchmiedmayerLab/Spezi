@@ -79,7 +79,18 @@ extension SpeziScheduler.Schedule {
     /// - parameter participationStartDate: the date at which the user started to participate in the study.
     ///
     /// - invariant: `other` MUST be a `.repeated` `ScheduleDefinition`, otherwise the function will abort.
-    static func fromRepeated(_ other: StudyDefinition.ComponentSchedule.ScheduleDefinition, in cal: Calendar, participationStartDate: Date) -> Self {
+    static func fromRepeated( // swiftlint:disable:this function_body_length
+        _ other: StudyDefinition.ComponentSchedule.ScheduleDefinition,
+        in cal: Calendar,
+        participationStartDate: Date
+    ) -> Self {
+        let addingOffset = { (date: Date, offset: DateComponents) -> Date in
+            if let date = cal.date(byAdding: offset, to: date) {
+                return date
+            } else {
+                preconditionFailure("Unable to add offset \(offset) to \(date)")
+            }
+        }
         switch other {
         case let .repeated(.daily(interval, hour, minute), offset):
             return .daily(
@@ -88,7 +99,7 @@ extension SpeziScheduler.Schedule {
                 hour: hour,
                 minute: minute,
                 second: 0,
-                startingAt: participationStartDate.addingTimeInterval(offset.timeInterval),
+                startingAt: addingOffset(participationStartDate, offset),
                 end: .never,
                 duration: .tillEndOfDay
             )
@@ -105,7 +116,7 @@ extension SpeziScheduler.Schedule {
                 hour: hour,
                 minute: minute,
                 second: 0,
-                startingAt: participationStartDate.addingTimeInterval(offset.timeInterval),
+                startingAt: addingOffset(participationStartDate, offset),
                 end: .never,
                 duration: .tillEndOfDay
             )
@@ -117,7 +128,7 @@ extension SpeziScheduler.Schedule {
                 hour: hour,
                 minute: minute,
                 second: 0,
-                startingAt: participationStartDate.addingTimeInterval(offset.timeInterval),
+                startingAt: addingOffset(participationStartDate, offset),
                 end: .never,
                 duration: .tillEndOfDay
             )

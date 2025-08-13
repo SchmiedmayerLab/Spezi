@@ -78,11 +78,11 @@ extension TimedWalkingTestConfiguration {
         } else {
             durationText = Self.fractionalNumberFormatter.string(from: NSNumber(value: durationInMin)) ?? String(format: "%.1f", durationInMin)
         }
-        switch kind {
+        return switch kind {
         case .walking:
-            return "\(durationText.localizedCapitalized)-Minute Walking Test"
+            "\(durationText.localizedCapitalized)-Minute Walk Test"
         case .running:
-            return "\(durationText.localizedCapitalized)-Minute Running Test"
+            "\(durationText.localizedCapitalized)-Minute Run Test"
         }
     }
 }

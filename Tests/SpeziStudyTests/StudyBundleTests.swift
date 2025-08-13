@@ -30,9 +30,9 @@ struct StudyBundleTests {
             "Informational Component #2",
             "Social Support",
             nil, // health collection
-            "Six-Minute Walking Test",
-            "12-Minute Running Test",
-            "8.5-Minute Walking Test"
+            "Six-Minute Walk Test",
+            "12-Minute Run Test",
+            "8.5-Minute Walk Test"
         ]
         #expect(components.count == expectedNames.count)
         for (component, expectedName) in zip(components, expectedNames) {
@@ -162,7 +162,7 @@ struct StudyBundleTests {
                 .init(
                     id: schedule1Id,
                     componentId: article1ComponentId,
-                    scheduleDefinition: .repeated(.daily(hour: 11, minute: 21), offset: .days(4)),
+                    scheduleDefinition: .repeated(.daily(hour: 11, minute: 21), offset: .init(day: 4)),
                     completionPolicy: .afterStart,
                     notifications: .enabled(thread: .none)
                 ),
@@ -176,7 +176,7 @@ struct StudyBundleTests {
                 .init(
                     id: schedule3Id,
                     componentId: questionnaireComponentId,
-                    scheduleDefinition: .repeated(.weekly(weekday: .wednesday, hour: 21, minute: 59), offset: .days(1)),
+                    scheduleDefinition: .repeated(.weekly(weekday: .wednesday, hour: 21, minute: 59), offset: .init(day: 1)),
                     completionPolicy: .sameDayAfterStart,
                     notifications: .enabled(thread: .task)
                 )
