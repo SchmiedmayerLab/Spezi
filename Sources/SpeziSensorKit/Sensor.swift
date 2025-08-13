@@ -39,6 +39,7 @@ public protocol AnySensor: Hashable, Sendable {
 /// - ``dataQuarantineDuration``
 ///
 /// ### Supported Sensors
+/// - ``accelerometer``
 /// - ``ambientLight``
 /// - ``ambientPressure``
 /// - ``deviceUsage``
@@ -190,6 +191,19 @@ extension Sensor where Sample == SRDeviceUsageReport {
             displayName: "Device Usage Report",
             dataQuarantineDuration: .hours(24),
             sensorKitFetchReturnType: .object
+        )
+    }
+}
+
+
+extension Sensor where Sample == CMRecordedAccelerometerData {
+    /// A sensor that provides acceleration motion data.
+    @inlinable public static var accelerometer: Sensor<CMRecordedAccelerometerData> {
+        Sensor(
+            srSensor: .accelerometer,
+            displayName: "Accelerometer",
+            dataQuarantineDuration: .hours(24),
+            sensorKitFetchReturnType: .array
         )
     }
 }

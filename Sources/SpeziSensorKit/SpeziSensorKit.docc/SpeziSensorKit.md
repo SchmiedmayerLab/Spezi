@@ -32,6 +32,7 @@ Create an entry for the `com.apple.developer.sensorkit.reader.allow` key, of typ
 
 | Sensor                      | Entitlement            |
 | :-------------------------- | :--------------------- |
+| ``Sensor/accelerometer``    | `motion-accelerometer` |
 | ``Sensor/ambientLight``     | `ambient-light-sensor` |
 | ``Sensor/ambientPressure``  | `ambient-pressure`     |
 | ``Sensor/deviceUsage``      | `device-usage`         |
