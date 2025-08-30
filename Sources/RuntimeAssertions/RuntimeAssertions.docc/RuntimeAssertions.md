@@ -23,7 +23,7 @@ The library overloads Swifts runtime assertions:
 
 Always call this method in your System under Test.
 Only if requested within a unit test, their implementations are swapped to assert a runtime assertion.
-Release builds will completely optimize out this runtime support library and direct calls to the original Swift implementation.
+Release builds will completely optimize out this runtime support library and direct calls to the original Swift implementation, unless the program is running in an XCTest environment.
 
 ### Configure your System under Test
 

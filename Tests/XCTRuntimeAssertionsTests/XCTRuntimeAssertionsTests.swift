@@ -103,14 +103,14 @@ final class XCTRuntimeAssertionsTests: XCTestCase {
     }
 
     func testCallHappensWithoutInjection() {
+        #if DEBUG
         var called = false
-
         assert({
             called = true
             return true
         }(), "This could fail")
-
         XCTAssertTrue(called, "assert was never called!")
+        #endif
     }
 
     @MainActor

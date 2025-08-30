@@ -97,14 +97,14 @@ struct RuntimeAssertionsTests {
 
     @Test("Assertion without injection")
     func testCallHappensWithoutInjection() {
+        #if DEBUG
         var called = false
-
         assert({
             called = true
             return true
         }(), "This could fail")
-
         #expect(called, "assert was never called!")
+        #endif
     }
 
     @MainActor

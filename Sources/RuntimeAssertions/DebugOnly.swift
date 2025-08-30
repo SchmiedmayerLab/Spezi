@@ -6,11 +6,12 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Foundation
 
-/// Execute a block of code only in debug builds.
+/// Execute a block of code only in debug or testing builds.
 /// - Parameters:
-///   - block: The block to execute in debug builds.
-///   - else: The block to execute in release builds.
+///   - block: The block to execute in debug or testing builds.
+///   - else: The block to execute in release or non-testing builds.
 @inlinable
 func debugOnly(_ block: () -> Void, else: () -> Void = {}) {
     // we abuse the power of assert to optimize out our call to `block`
@@ -20,8 +21,13 @@ func debugOnly(_ block: () -> Void, else: () -> Void = {}) {
         called = true
         return true
     }())
-
-    if !called {
+    guard !called else {
+        return
+    }
+    let isRunningInXCTest = NSClassFromString("XCTestCase") != nil
+    if isRunningInXCTest {
+        block()
+    } else {
         `else`()
     }
 }
