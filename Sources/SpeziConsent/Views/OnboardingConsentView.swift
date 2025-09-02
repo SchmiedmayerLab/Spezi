@@ -93,7 +93,7 @@ public struct OnboardingConsentView: View {
     /// - parameter title: The title of the view displayed at the top. Can be `nil`, meaning no title is displayed.
     /// - parameter currentDateInSignature: Whether the current date should be included in the consent form's signature fields.
     /// - parameter viewState: A binding that provides the `ViewState` the view should use.
-    /// - parameter action: The action to perform when the user bas completed the consent form and taps the Onboarding View's "Continue" button.
+    /// - parameter action: The action to perform when the user has completed the consent form and taps the Onboarding View's "Continue" button.
     public init(
         consentDocument: ConsentDocument?,
         title: LocalizedStringResource? = LocalizationDefaults.consentFormTitle,

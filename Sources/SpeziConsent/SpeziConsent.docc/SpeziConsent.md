@@ -35,7 +35,7 @@ SpeziConsent implements consent-flow-related infrastructure, providing both a da
 }
 
 
-You app uses SpeziConsent by creating a ``ConsentDocument`` from a Markdown string or file.
+Your app uses SpeziConsent by creating a ``ConsentDocument`` from a Markdown string or file.
 A consent form consists of Markdown content (e.g.: text, headings, lists, etc), and can also contain custom interactive elements which enable support for simple user data collection directly as part of filling out the consent form.
 For example, your app could define a consent document consisting of markdown text, followed by a toggle (which the user needs to explicitly set to true in order to confirm their willingness to participate in your study), and a signature field where the user needs to sign their signature.
 
@@ -49,6 +49,10 @@ The following example creates a simple, reusable `ConsentStep` view which can be
 The view implements both dynamic consent form loading from a file URL (e.g.: a resource in your app's bundle),
 and also provides a share button in the top-right corner, allowing participants to keep a personal copy of the consent form they signed.
 ```swift
+import SpeziConsent
+import SpeziViews
+import SwiftUI
+
 struct ConsentStep: View {
     let url: URL
     
@@ -56,7 +60,7 @@ struct ConsentStep: View {
     @State private var viewState: ViewState = .idle
     
     var body: some View {
-        OnboardingConsentView(consentDocument: consentDocument) {
+        OnboardingConsentView(consentDocument: consentDocument, viewState: $viewState) {
             // advance your Onboarding flow in response to the user having confirmed a completed consent document
         }
         .viewStateAlert(state: $viewState)
@@ -84,6 +88,8 @@ struct ConsentStep: View {
 
 Your app would then use this `ConsentStep` when building up its Onboarding Stack:
 ```swift
+import SpeziViews
+
 ManagedNavigationStack {
     Welcome()
     EligibilityScreening()
@@ -130,9 +136,13 @@ Please sign to confirm your participation:
 
 ### Model
 - ``ConsentDocument``
+- ``ConsentDocument/ExportConfiguration``
+- ``ConsentDocument/ExportResult``
+- ``ConsentDocument/ConsentCompletionState``
 
 ### Views
 - ``ConsentDocumentView``
 - ``OnboardingConsentView``
 - ``ConsentSignatureForm``
 - ``SignatureView``
+- ``ConsentShareButton``
