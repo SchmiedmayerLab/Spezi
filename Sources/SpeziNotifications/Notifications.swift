@@ -59,7 +59,6 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
 
     /// Configure the local notifications module.
     public init() {
-        #if DEBUG
         if NSClassFromString("XCTest") != nil {
             // When the module exists as part of a Unit Test, we can't access the UNUserNotificationCenter, because no test host exists.
             // Calling `+[UNUserNotificationCenter current]` in such a scenario will lead to a runtime crash.
@@ -70,9 +69,6 @@ public final class Notifications: Module, DefaultInitializable, EnvironmentAcces
         } else {
             notificationCenter = .current()
         }
-        #else
-        notificationCenter = .current()
-        #endif
     }
 
     /// Updates the badge count for your app’s icon.
