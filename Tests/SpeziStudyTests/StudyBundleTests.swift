@@ -86,7 +86,7 @@ struct StudyBundleTests {
     @Test
     func resourceFetching() throws {
         let studyBundle = try Self.testStudyBundle
-        #expect(try studyBundle.consentText(
+        #expect(studyBundle.consentText(
             for: .init(category: .consent, filename: "Consent", fileExtension: "md"),
             in: Self.locale
         ) == "---\ntitle: Study Consent\n---\n\n# Consent")
@@ -186,7 +186,7 @@ struct StudyBundleTests {
         return try StudyBundle.writeToDisk(at: url, definition: definition, files: [
             StudyBundle.FileInput(
                 fileRef: .init(category: .consent, filename: "Consent", fileExtension: "md"),
-                localization: .init(locale: locale),
+                localization: try #require(.init(locale: locale)),
                 contents: """
                     ---
                     title: Study Consent
@@ -197,7 +197,7 @@ struct StudyBundleTests {
             ),
             StudyBundle.FileInput(
                 fileRef: .init(category: .informationalArticle, filename: "Info1", fileExtension: "md"),
-                localization: .init(locale: locale),
+                localization: try #require(.init(locale: locale)),
                 contents: """
                     ---
                     title: Informational Component #1
@@ -209,7 +209,7 @@ struct StudyBundleTests {
             ),
             StudyBundle.FileInput(
                 fileRef: .init(category: .informationalArticle, filename: "Info2", fileExtension: "md"),
-                localization: .init(locale: locale),
+                localization: try #require(.init(locale: locale)),
                 contents: """
                     ---
                     title: Informational Component #2
@@ -221,7 +221,7 @@ struct StudyBundleTests {
             ),
             StudyBundle.FileInput(
                 fileRef: .init(category: .questionnaire, filename: "SocialSupportQuestionnaire", fileExtension: "json"),
-                localization: .init(locale: locale),
+                localization: try #require(.init(locale: locale)),
                 contents: try Questionnaire.named("SocialSupportQuestionnaire")
             )
         ])

@@ -13,7 +13,7 @@ import Spezi
 import SpeziHealthKit
 import SpeziLocalization
 @_spi(TestingSupport)
-@testable import SpeziScheduler
+import SpeziScheduler
 @_spi(TestingSupport)
 @testable import SpeziStudy
 @testable import SpeziStudyDefinition
@@ -337,7 +337,7 @@ final class StudyManagerTests {
             participationStartDate: enrollmentDate
         )
         let nextOccurrence = { (schedule: Schedule) -> Date? in
-            schedule.nextOccurrence(in: enrollmentDate.addingTimeInterval(1)...)?.start
+            schedule.occurrences(in: enrollmentDate.addingTimeInterval(1)..<Date.distantFuture).first { _ in true }?.start
         }
         #expect(try #require(nextOccurrence(schedule1)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 1))))
         #expect(try #require(nextOccurrence(schedule2)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 7))))

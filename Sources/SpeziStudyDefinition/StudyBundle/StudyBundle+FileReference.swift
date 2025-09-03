@@ -159,10 +159,9 @@ extension StudyBundle {
         guard let candidateUrls = try? FileManager.default.contents(of: dirUrl) else {
             return nil
         }
-        return Localization.resolveFile(
-            named: "\(fileRef.filename).\(fileRef.fileExtension)",
+        return LocalizedFileResolution.resolve(
+            LocalizedFileResource("\(fileRef.filename).\(fileRef.fileExtension)", locale: locale),
             from: candidateUrls,
-            locale: locale,
             using: localeMatchingBehaviour,
             fallback: .enUS
         )
