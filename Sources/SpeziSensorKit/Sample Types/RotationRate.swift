@@ -13,14 +13,17 @@ public import Foundation
 extension CMRecordedRotationRateData: SensorKitSampleProtocol {
     public struct SafeRepresentation: SensorKitSampleSafeRepresentation {
         public let timestamp: Date
+        /// The rotation rate measured by the gyroscope.
         public let rotationRate: CMRotationRate
         
+        @inlinable
         init(_ sample: CMRecordedRotationRateData) {
             timestamp = sample.startDate
             rotationRate = sample.rotationRate
         }
     }
     
+    @inlinable
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: CMRecordedRotationRateData)>
     ) -> [SafeRepresentation] {

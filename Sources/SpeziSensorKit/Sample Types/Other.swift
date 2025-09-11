@@ -20,11 +20,14 @@ public struct DefaultSensorKitSampleSafeRepresentation<Sample: Hashable & Sendab
     /// The underlying sample.
     public let sample: Sample
     
+    @inlinable
     init(timestamp: Date, sample: Sample) {
         self.timestamp = timestamp
         self.sample = sample
     }
     
+    /// Access a property on the underlying sample.
+    @inlinable
     public subscript<T>(dynamicMember keyPath: KeyPath<Sample, T>) -> T {
         sample[keyPath: keyPath]
     }

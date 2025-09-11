@@ -25,6 +25,7 @@ extension CMPedometerData: SensorKitSampleProtocol {
             timeRange.lowerBound
         }
         
+        @inlinable
         init(_ data: CMPedometerData) {
             timeRange = data.startDate..<data.endDate
             numberOfSteps = data.numberOfSteps.intValue
@@ -37,6 +38,7 @@ extension CMPedometerData: SensorKitSampleProtocol {
         }
     }
     
+    @inlinable
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: CMPedometerData)>
     ) -> [SafeRepresentation] {

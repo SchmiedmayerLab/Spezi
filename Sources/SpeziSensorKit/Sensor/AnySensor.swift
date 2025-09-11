@@ -36,6 +36,7 @@ public protocol SensorKitSampleProtocol: AnyObject, Hashable {
     associatedtype SafeRepresentationProcessingInput: AnyObject, Hashable = Self
     
     /// Processes a batch of samples into their safe representation.
+    @inlinable
     static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: SafeRepresentationProcessingInput)>
     ) throws -> [SafeRepresentation]
@@ -43,17 +44,19 @@ public protocol SensorKitSampleProtocol: AnyObject, Hashable {
 
 
 extension SensorKitSampleProtocol where SafeRepresentation == SafeRepresentationProcessingInput {
+    @inlinable
     public static func processIntoSafeRepresentation( // swiftlint:disable:this missing_docs
         _ samples: some Sequence<(timestamp: Date, sample: SafeRepresentationProcessingInput)>
-    ) throws -> [SafeRepresentation] {
+    ) -> [SafeRepresentation] {
         samples.map(\.sample)
     }
 }
 
 extension SensorKitSampleProtocol where SafeRepresentation == DefaultSensorKitSampleSafeRepresentation<SafeRepresentationProcessingInput> {
+    @inlinable
     public static func processIntoSafeRepresentation( // swiftlint:disable:this missing_docs
         _ samples: some Sequence<(timestamp: Date, sample: SafeRepresentationProcessingInput)>
-    ) throws -> [SafeRepresentation] {
+    ) -> [SafeRepresentation] {
         samples.map { .init(timestamp: $0, sample: $1) }
     }
 }

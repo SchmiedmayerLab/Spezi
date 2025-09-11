@@ -16,13 +16,15 @@ extension CMHighFrequencyHeartRateData: SensorKitSampleProtocol {
         public let value: Double
         public let confidence: CMHighFrequencyHeartRateDataConfidence
         
-        fileprivate init(timestamp: Date, sample: CMHighFrequencyHeartRateData) {
+        @inlinable
+        init(timestamp: Date, sample: CMHighFrequencyHeartRateData) {
             self.timestamp = sample.date ?? timestamp
             self.value = sample.heartRate
             self.confidence = sample.confidence
         }
     }
     
+    @inlinable
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: CMHighFrequencyHeartRateData)>
     ) -> [SafeRepresentation] {

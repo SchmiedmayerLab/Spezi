@@ -59,7 +59,9 @@ public final class SensorKit: Module, EnvironmentAccessible, @unchecked Sendable
     
     // MARK: Data Exporting
     @available(iOS 18, *)
-    public func fetchAnchored<Sample>(_ sensor: Sensor<Sample>) async throws -> some AsyncSequence<[Sample.SafeRepresentation], any Error> {
+    public func fetchAnchored<Sample>(
+        _ sensor: Sensor<Sample>
+    ) async throws -> some AsyncSequence<[Sample.SafeRepresentation], any Error> {
         let anchor = ManagedQueryAnchor(
             storageKey: queryAnchorKeys.key(for: sensor),
             in: localStorage

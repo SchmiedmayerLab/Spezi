@@ -13,11 +13,16 @@ public import SensorKit
 extension SRAmbientLightSample: SensorKitSampleProtocol {
     public struct SafeRepresentation: SensorKitSampleSafeRepresentation {
         public let timestamp: Date
+        /// The sample’s luminous flux.
         public let lux: Measurement<UnitIlluminance>
+        /// The light’s location relative to the sensor.
         public let placement: SRAmbientLightSample.SensorPlacement
-        /// Chromaticity is only valid on supporting devices. If not supported, the values will be zero.
+        /// A coordinate pair that describes the sample’s light brightness and tint.
+        ///
+        /// - Note: Chromaticity is only valid on supporting devices. If not supported, the values will be zero.
         public let chromacity: SRAmbientLightSample.Chromaticity
         
+        @inlinable
         init(timestamp: Date, sample: SRAmbientLightSample) {
             self.timestamp = timestamp
             self.lux = sample.lux
@@ -26,6 +31,7 @@ extension SRAmbientLightSample: SensorKitSampleProtocol {
         }
     }
     
+    @inlinable
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: SRAmbientLightSample)>
     ) -> [SafeRepresentation] {

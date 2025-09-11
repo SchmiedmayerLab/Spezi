@@ -86,7 +86,6 @@ public struct SensorReader<Sample: SensorKitSampleProtocol>: SensorReaderProtoco
             fetchRequest.from = .fromCFAbsoluteTime(_cf: timeRange.lowerBound.timeIntervalSinceReferenceDate)
             fetchRequest.to = .fromCFAbsoluteTime(_cf: timeRange.upperBound.timeIntervalSinceReferenceDate)
             reader.fetch(fetchRequest)
-            logger.notice("did fire off fetch request")
         }
     }
 }

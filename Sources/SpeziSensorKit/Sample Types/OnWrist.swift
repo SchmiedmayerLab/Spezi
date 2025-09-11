@@ -17,6 +17,7 @@ public import SensorKit
 extension SRWristDetection: SensorKitSampleProtocol {
     public typealias SafeRepresentation = SensorKitOnWristEventSample
     
+    @inlinable
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: SRWristDetection)>
     ) -> [SensorKitOnWristEventSample] {
@@ -27,12 +28,6 @@ extension SRWristDetection: SensorKitSampleProtocol {
 
 /// An On-Wrist Event collected by SensorKit.
 public struct SensorKitOnWristEventSample: SensorKitSampleSafeRepresentation {
-    public static var sensor: Sensor<SRWristDetection> {
-        .onWrist
-    }
-    
-    public let id: UUID
-    
     /// The date when this sample was collected
     public let timestamp: Date
     
@@ -53,8 +48,8 @@ public struct SensorKitOnWristEventSample: SensorKitSampleSafeRepresentation {
     /// When the state changes from on-wrist to off-wrist, ``offWristDate`` would be updated to the current date, and ``onWristDate`` would remain the same.
     public let offWristDate: Date?
     
+    @inlinable
     init(timestamp: Date, sample: SRWristDetection) {
-        self.id = UUID() // ewwww
         self.timestamp = timestamp
         self.onWrist = sample.onWrist
         self.wristLocation = sample.wristLocation

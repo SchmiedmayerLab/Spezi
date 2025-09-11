@@ -35,11 +35,6 @@ public struct SensorKitECGSession: SensorKitSampleSafeRepresentation {
         public let samples: [VoltageSample]
     }
     
-    public static var sensor: Sensor<SRElectrocardiogramSample> {
-        Sensor.ecg
-    }
-    
-    public let id: UUID
     
     /// Start date of the overall ECG.
     public let startDate: Date
@@ -71,7 +66,6 @@ public struct SensorKitECGSession: SensorKitSampleSafeRepresentation {
         batches: [Batch]
     ) {
         assert(batches.isSorted { $0.offset < $1.offset })
-        self.id = UUID()
         self.startDate = startDate
         self.duration = batches.last?.offset ?? 0
         self.frequency = frequency
@@ -88,7 +82,7 @@ public struct SensorKitECGSession: SensorKitSampleSafeRepresentation {
 extension SRElectrocardiogramSample: SensorKitSampleProtocol {
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: SRElectrocardiogramSample)>
-    ) throws -> [SensorKitECGSession] {
+    ) -> [SensorKitECGSession] {
         let samplesBySession = Dictionary(grouping: samples.lazy.map(\.sample), by: \.session)
         guard !samplesBySession.isEmpty || samplesBySession.contains(where: { !$0.value.isEmpty }) else {
             return []
