@@ -13,7 +13,7 @@ import SpeziFoundation
 
 extension SensorKit {
     /// A batch of samples returned by SensorKit
-    public struct FetchResult<Sample: AnyObject & Hashable>: Hashable, @unchecked Sendable {
+    public struct FetchResult<Sample: SensorKitSampleProtocol>: Hashable {
         /// The SensorKit framework's timestamp associated with this batch of samples
         public let sensorKitTimestamp: Date
         /// The samples.

@@ -12,13 +12,19 @@ extension SensorKit {
     ///
     /// ``SensorKit/FetchResult``s returned from SensorKit can, depending on the specific sensor type, contain one or multiple individual samples that are 
     public struct FetchResultsIterator<Sample: AnyObject & Hashable, FetchResults: Collection<FetchResult<Sample>>>: Sequence, IteratorProtocol {
+        public typealias Element = (timestamp: Date, sample: Sample)
+        
         private var state: State
         
         public init(_ fetchResults: FetchResults) {
             state = .init(fetchResults[...])
         }
         
-        public mutating func next() -> (Date, Sample)? {
+        public init(_ fetchResult: FetchResult<Sample>) where FetchResults == CollectionOfOne<FetchResult<Sample>> {
+            self.init(CollectionOfOne(fetchResult))
+        }
+        
+        public mutating func next() -> Element? {
             switch state {
             case .exhausted:
                 return nil
@@ -43,7 +49,7 @@ extension SensorKit {
 extension SensorKit.FetchResultsIterator {
     private enum State {
         case active(
-            current: LazyMapCollection<SensorKit.FetchResult<Sample>, (Date, Sample)>.Iterator,
+            current: LazyMapCollection<SensorKit.FetchResult<Sample>, Element>.Iterator,
             remaining: FetchResults.SubSequence
         )
         /// The iterator has reached its end. There are no more samples to yield.
@@ -53,7 +59,7 @@ extension SensorKit.FetchResultsIterator {
             if let idx = fetchResults.firstIndex(where: { !$0.isEmpty }) {
                 self = .active(
                     current: Self.process(fetchResults[idx]),
-                    remaining: fetchResults.dropFirst(fetchResults.distance(from: fetchResults.startIndex, to: idx))
+                    remaining: fetchResults.dropFirst(fetchResults.distance(from: fetchResults.startIndex, to: fetchResults.index(after: idx)))
                 )
             } else {
                 self = .exhausted
@@ -62,7 +68,7 @@ extension SensorKit.FetchResultsIterator {
         
         private static func process(
             _ fetchResult: SensorKit.FetchResult<Sample>
-        ) -> LazyMapSequence<SensorKit.FetchResult<Sample>, (Date, Sample)>.Iterator {
+        ) -> LazyMapSequence<SensorKit.FetchResult<Sample>, Element>.Iterator {
             fetchResult.lazy
                 .map { [date = fetchResult.sensorKitTimestamp] sample in (date, sample) }
                 .makeIterator()
