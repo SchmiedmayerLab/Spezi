@@ -19,6 +19,8 @@ import SwiftUI
 public struct ContactView: View {
     private let contact: Contact
     
+    @Namespace private var namespace
+    
     @State private var contactGridWidth: CGFloat = 300
     @State private var contentElementWidth: CGFloat = 100
     
@@ -142,8 +144,7 @@ public struct ContactView: View {
         if let address = contact.address {
             Button(action: openMaps) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color(uiColor: .tertiarySystemFill))
+                    background
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Address", bundle: .module, comment: "Contact Button Title")
@@ -158,9 +159,12 @@ public struct ContactView: View {
                             .foregroundColor(.accentColor)
                             .accessibilityHidden(true)
                     }
-                        .padding(15)
+                    .padding(ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 ? 0 : 15)
+                    .padding([.horizontal], ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 ? 32 : 0)
+                    .padding([.vertical], ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 ? 15 : 0)
                 }
                     .fixedSize(horizontal: false, vertical: true)
+                    .contentShape(Rectangle())
             }
                 .accessibilityLabel(Text(
                     "Address: \(Text(verbatim: CNPostalAddressFormatter().string(from: address)))",
@@ -169,6 +173,18 @@ public struct ContactView: View {
                 ))
         } else {
             EmptyView()
+        }
+    }
+    
+    @ViewBuilder private var background: some View {
+        if #available(iOS 26.0, watchOS 26.0, tvOS 26.0, macOS 26.0, macCatalyst 26.0, *) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color(uiColor: .clear))
+                .glassEffect(.regular)
+                .glassEffectUnion(id: "Button", namespace: namespace)
+        } else {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color(uiColor: .tertiarySystemFill))
         }
     }
     
@@ -183,8 +199,7 @@ public struct ContactView: View {
     private func contactButton(_ contactOption: ContactOption) -> some View {
         Button(action: contactOption.action) {
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color(uiColor: .tertiarySystemFill))
+                background
                 VStack(spacing: 8) {
                     contactOption.image
                         .font(.title3)
@@ -195,6 +210,7 @@ public struct ContactView: View {
                     .padding(.vertical, 10)
             }
                 .fixedSize(horizontal: false, vertical: true)
+                .contentShape(Rectangle())
         }
     }
     
