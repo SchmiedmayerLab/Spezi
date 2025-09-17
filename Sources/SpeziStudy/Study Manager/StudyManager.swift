@@ -354,7 +354,7 @@ extension StudyManager {
         return try scheduler.createOrUpdateTask(
             id: taskId(for: componentSchedule, in: studyBundle),
             title: studyBundle.displayTitle(for: component, in: preferredLocale).map { "\($0)" } ?? "",
-            instructions: studyBundle.instructions(for: component, in: preferredLocale).map { "\($0)" } ?? "",
+            instructions: studyBundle.displaySubtitle(for: component, in: preferredLocale).map { "\($0)" } ?? "",
             category: category,
             schedule: taskSchedule,
             completionPolicy: componentSchedule.completionPolicy,

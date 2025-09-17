@@ -698,7 +698,7 @@
 			repositoryURL = "https://github.com/StanfordBDHG/XCTHealthKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.2;
+				minimumVersion = 1.1.5;
 			};
 		};
 		802778102D9BFE1A003D7436 /* XCRemoteSwiftPackageReference "SpeziViews" */ = {
@@ -722,15 +722,15 @@
 			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.1;
+				minimumVersion = 1.2.2;
 			};
 		};
 		8037B4A12D9D2FB90055C018 /* XCRemoteSwiftPackageReference "SpeziFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/StanfordSpezi/SpeziFoundation.git";
 			requirement = {
-				kind = revision;
-				revision = 265d734811f24d88d2589aff1e74d93ee88b3d14;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.1;
 			};
 		};
 		805AF8372DD22598001756DE /* XCRemoteSwiftPackageReference "SpeziScheduler" */ = {

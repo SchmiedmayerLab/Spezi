@@ -135,7 +135,7 @@ extension StudyDefinition {
 
 
 extension StudyBundle {
-    /// The component's display title
+    /// The component's localized display title
     public func displayTitle(
         for component: StudyDefinition.Component,
         in locale: Locale,
@@ -143,42 +143,54 @@ extension StudyBundle {
     ) -> String? {
         switch component {
         case .informational(let component):
-            guard let url = self.resolve(component.fileRef, in: locale, using: localeMatchingBehaviour),
-                  let text = (try? Data(contentsOf: url)).flatMap({ String(data: $0, encoding: .utf8) }) else {
-                return nil
-            }
-            return (try? MarkdownDocument.Metadata(parsing: text))?.title
+            documentMetadata(for: component, in: locale, using: localeMatchingBehaviour)?.title
         case .questionnaire(let component):
-            return questionnaire(
+            questionnaire(
                 for: component.fileRef,
                 in: locale,
                 using: localeMatchingBehaviour
             )?.title?.value?.string
-        case .healthDataCollection:
-            return nil
         case .timedWalkingTest(let component):
-            return String(localized: component.test.displayTitle)
+            String(localized: component.test.displayTitle)
+        case .healthDataCollection:
+            nil
         }
     }
     
-    
-    /// The component's instructions test, if applicable.
-    public func instructions(
+    /// The component's localized subtitle, if applicable.
+    ///
+    /// This function's behaviour depends on `component`'s type:
+    /// - for informational components, the markdown file's `lede` metadata entry is fetched, if it exists;
+    /// - for questionnaire components, the questionnaire's [`purpose`](https://hl7.org/fhir/R4/questionnaire-definitions.html#Questionnaire.purpose) is returned;
+    /// - for timed walking test and health data collection components, nothing is returned.
+    public func displaySubtitle(
         for component: StudyDefinition.Component,
         in locale: Locale,
         using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
     ) -> String? {
-//        switch component {
-//        case .informational(let informationalComponent):
-//            <#code#>
-//        case .questionnaire(let questionnaireComponent):
-//            <#code#>
-//        case .healthDataCollection(let healthDataCollectionComponent):
-//            <#code#>
-//        case .timedWalkingTest(let timedWalkingTestComponent):
-//            <#code#>
-//        }
-        "Please take a look at this :)"
+        switch component {
+        case .informational(let component):
+            documentMetadata(for: component, in: locale, using: localeMatchingBehaviour)?["lede"]
+        case .questionnaire(let component):
+            questionnaire(for: component.fileRef, in: locale, using: localeMatchingBehaviour)?.purpose?.value?.string
+        case .timedWalkingTest:
+            nil
+        case .healthDataCollection:
+            nil
+        }
+    }
+    
+    /// Fetches the ``StudyDefinition/InformationalComponent``'s markdown document metadata.
+    public func documentMetadata(
+        for component: StudyDefinition.InformationalComponent,
+        in locale: Locale,
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+    ) -> MarkdownDocument.Metadata? {
+        guard let url = self.resolve(component.fileRef, in: locale, using: localeMatchingBehaviour),
+              let text = (try? Data(contentsOf: url)).flatMap({ String(data: $0, encoding: .utf8) }) else {
+            return nil
+        }
+        return try? MarkdownDocument.Metadata(parsing: text)
     }
 }
 
