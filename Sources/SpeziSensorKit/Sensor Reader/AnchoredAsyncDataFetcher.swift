@@ -15,7 +15,7 @@ import SensorKit
 ///
 /// - Important: Due to the lazy nature of this type, and the fact that it uses a query anchor internally to keep track of already-fetched time ranges, the sequence should only be iterated once.
 @available(iOS 18, *)
-struct AnchoredAsyncDataFetcher<Sample, SensorReader: SensorReaderProtocol<Sample>>: AsyncSequence, AsyncIteratorProtocol {
+struct AnchoredAsyncDataFetcher<Sample: SensorKitSampleProtocol>: AsyncSequence, AsyncIteratorProtocol {
     typealias Element = [Sample.SafeRepresentation]
     typealias Failure = any Error
     typealias AsyncIterator = Self
@@ -27,21 +27,18 @@ struct AnchoredAsyncDataFetcher<Sample, SensorReader: SensorReaderProtocol<Sampl
         case done
     }
     
-    private let reader: SensorReader
+    private let sensor: Sensor<Sample>
     private let anchor: ManagedQueryAnchor
-    private var sensor: Sensor<Sample> {
-        reader.sensor
-    }
     private let quarantineCutoff: Date
     nonisolated(unsafe) private let devices: [SRDevice]
     
     private var state: State = .initial
     
-    init(reader: SensorReader, anchor: ManagedQueryAnchor) async throws {
-        self.reader = reader
+    init(sensor: some AnySensor<Sample>, anchor: ManagedQueryAnchor) async throws {
+        self.sensor = Sensor(sensor)
         self.anchor = anchor
-        self.quarantineCutoff = reader.sensor.currentQuarantineBegin
-        self.devices = try await reader.fetchDevices()
+        self.quarantineCutoff = sensor.currentQuarantineBegin
+        self.devices = try await sensor.fetchDevices()
     }
     
     consuming func makeAsyncIterator() -> Self {
@@ -96,7 +93,7 @@ struct AnchoredAsyncDataFetcher<Sample, SensorReader: SensorReaderProtocol<Sampl
                 return try await next(isolation: isolation)
             }
             nonisolated(unsafe) let device = _device
-            let results = try await reader.fetch(from: device, timeRange: timeRange)
+            let results = try await sensor.fetch(from: device, timeRange: timeRange)
             try advanceState()
             return results
         }

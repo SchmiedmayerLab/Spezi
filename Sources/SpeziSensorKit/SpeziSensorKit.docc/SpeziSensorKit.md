@@ -46,27 +46,45 @@ Create an entry for the `com.apple.developer.sensorkit.reader.allow` key, of typ
 
 
 ### Example
-You use the ``SensorReader`` type to fetch data from SensorKit.
-First, fetch a list of all devices from which SensorKit has data for the sensor you want to query.
-Then, fetch each device's samples using the ``SensorReader/fetch(from:timeRange:)`` or ``SensorReader/fetch(from:mostRecentAvailable:)`` functions.
+You use the ``Sensor`` type to interact with individual SensorKit sensors.
 
 > Note: SensorKit enforces a quarantine period for each sensor's data; apps can only access data once a certain, sensor-specific time period has passed.
   SpeziSensorKit is aware of each sensor's ``Sensor/dataQuarantineDuration`` and will automatically adjust your fetch requests to not overlap with the quarantine time periods.
 
-#### Fetch Results
-SensorKit returns samples as an Array of `SRFetchResult` objects, each of which contains one or more samples.
-For most sensors, the `SRFetchResult` contains only a single sample
+
+#### SensorKit Sample Safe Representations
+Since most sensors' returned samples aren't thread-safe, SpeziSensorKit provides so-called "safe representations" for most sensors, which are small Swift structs that act as `Sendable` representations of the data returned by a ``Sensor``.
+When you fetch data from a sensor (e.g., using ``Sensor/fetch(from:timeRange:)`` or ``SensorKit-class/fetchAnchored(_:)``), SpeziSensorKit automatically transforms the raw SensorKit samples into their respective safe representations.
+For some sensors this step also performs additional pre-processing; for example, when fetching ECG data, SensorKit returns a bunch of individual [`SRElectrocardiogramSample`](https://developer.apple.com/documentation/sensorkit/srelectrocardiogramsample) objects each of which represents just a small part of the total ECG.
+Fetching ECG data via SpeziSensorKit implicitly processes the raw `SRElectrocardiogramSample`s into ``SensorKitECGSession``s, each of which represents a logical ECG session.
+
+
+#### Fetching Data: Standalone One-Off Queries
+Use ``Sensor/fetch(from:timeRange:)`` and ``Sensor/fetch(from:mostRecentAvailable:)`` to perform one-off queries:
 
 ```swift
 import SpeziSensorKit
 
-let reader = SensorReader(.heartRate)
-let devices = try await reader.fetchDevices()
+let sensor = Sensor.heartRate
+let devices = try await sensor.fetchDevices()
 for device in devices {
-    let results = try await reader.fetch(from: device, mostRecentAvailable: .days(7))
-    for sample in results.lazy.flatMap(\.samples) {
-        print(sample.date, sample.heartRate, sample.confidence)
+    let results = try await sensor.fetch(from: device, mostRecentAvailable: .days(2))
+    for sample in results {
+        print(sample.timestamp, sample.value, sample.confidence)
     }
+}
+```
+
+
+#### Fetching Data: Anchored Queries
+You can implement continuous SensorKit data fetching using the Anchored Fetching API (e.g., ``SensorKit-class/fetchAnchored(_:)``).
+The ``SensorKit-class/fetchAnchored(_:)`` function returns an `AsyncSequence` which fetches batches of SensorKit data on-demand (as the sequence is being iterated), and keeps track of the most recent already-fetched timestamp.
+
+```swift
+import SpeziSensorKit
+
+for try await batch in try await sensorKit.fetchAnchored(.ecg) {
+    // do smth with a batch of `
 }
 ```
 
@@ -80,14 +98,14 @@ Additionally, SpeziSensorKit offers the ``SensorKit/FetchResultsIterator`` to ef
 
 
 ### Threading Considerations
-Avoid accessing the same ``Sensor`` from multiple threads at the same time, even if using different ``SensorReader`` instances.
+When performing multiple queries on a single ``Sensor`` at the same time, ensure that the individual fetches have non-overlapping time periods.
 
 
 
 ## Topics
 
 ### The SensorKit Module
-- ``SensorKit``
+- ``SensorKit-class``
 
 ### Permission Handling
 - ``SensorKit/authorizationStatus(for:)``
@@ -95,7 +113,9 @@ Avoid accessing the same ``Sensor`` from multiple threads at the same time, even
 
 ### Working with Sensors 
 - ``Sensor``
-- ``SensorReader``
+- ``AnySensor``
 
-### Supporting Types
-- ``SensorKitActor``
+### Sensor Data
+- ``SensorKitSampleProtocol``
+- ``SensorKitECGSession``
+- ``SensorKitOnWristEventSample``

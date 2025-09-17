@@ -10,7 +10,10 @@
 extension SensorKit {
     /// A utility iterator that can be used to efficiently work with ``SensorKit/FetchResult`` arrays.
     ///
-    /// ``SensorKit/FetchResult``s returned from SensorKit can, depending on the specific sensor type, contain one or multiple individual samples that are 
+    /// ``SensorKit/FetchResult``s returned from SensorKit can, depending on the specific sensor type, contain one or multiple individual samples that are all associated with the same ``SensorKit-class/FetchResult/sensorKitTimestamp``.
+    /// This iterator enables efficient iteration over `(timestamp: Date, sample: Sample)` tuples for the elements from one or more ``SensorKit-class/FetchResult``s,
+    /// without the need to perform unnecessary intermediate allocations.
+    /// Since some sensors can result in very large amounts of data, this can have a significant impact.
     public struct FetchResultsIterator<Sample: AnyObject & Hashable, FetchResults: Collection<FetchResult<Sample>>>: Sequence, IteratorProtocol {
         public typealias Element = (timestamp: Date, sample: Sample)
         

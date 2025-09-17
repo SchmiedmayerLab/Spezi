@@ -12,19 +12,28 @@ import SpeziFoundation
 
 /// A Sensor that can be used with SensorKit.
 ///
-/// The `Sensor` type models a sensor that can be used with SensorKit.
-/// It is a thin wrapper around SensorKit's `SRSensor` type, adding sensor-specific information such as a user-displayable name for the sensor and its iOS-enforced data quarantine period.
-///
-/// Additionally, `Sensor`'s generic parameter is used to associate each sensor with its specific sample type used by SensorKit.
-///
-/// You use the ``SensorReader`` to fetch a sensor's data from SensorKit.
-///
 /// ## Topics
+///
+/// ### Associated types
+/// - ``Sample``
+///
+/// ### Initializers
+/// - ``init(_:)``
 ///
 /// ### Instance Properties
 /// - ``srSensor``
+/// - ``id``
 /// - ``displayName``
+/// - ``authorizationStatus``
 /// - ``dataQuarantineDuration``
+/// - ``suggestedBatchSize``
+///
+/// ### Instance Methods
+/// - ``startRecording()``
+/// - ``stopRecording()``
+/// - ``fetchDevices()``
+/// - ``fetch(from:timeRange:)``
+/// - ``fetch(from:mostRecentAvailable:)``
 ///
 /// ### Supported Sensors
 /// - ``accelerometer``
@@ -32,17 +41,29 @@ import SpeziFoundation
 /// - ``ambientPressure``
 /// - ``deviceUsage``
 /// - ``ecg``
+/// - ``faceMetrics``
 /// - ``heartRate``
+/// - ``keyboardMetrics``
+/// - ``mediaEvents``
+/// - ``messagesUsage``
+/// - ``odometer``
 /// - ``onWrist``
 /// - ``pedometer``
+/// - ``phoneUsage``
 /// - ``ppg``
+/// - ``rotationRate``
+/// - ``siriSpeechMetrics``
+/// - ``telephonySpeechMetrics``
 /// - ``visits``
 /// - ``wristTemperature``
 ///
-/// ### Supporting Types
-/// - ``AnySensor``
+/// ### Other
+/// - ``~=(_:_:)``
+/// - ``==(_:_:)-(Sensor<Any>,AnySensor)``
+/// - ``==(_:_:)-(AnySensor,Sensor<Any>)``
 public struct Sensor<Sample: SensorKitSampleProtocol>: AnySensor {
     public typealias Sample = Sample
+    
     @usableFromInline
     enum SensorKitFetchReturnType: Sendable {
         case object, array

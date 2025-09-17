@@ -11,6 +11,7 @@ public import Observation
 public import Spezi
 import SpeziFoundation
 import SpeziLocalStorage
+import SwiftUI
 
 
 /// Interact with SensorKit in your Spezi application
@@ -23,6 +24,10 @@ import SpeziLocalStorage
 /// ### Authorization Handling
 /// - ``authorizationStatus(for:)``
 /// - ``requestAccess(to:)``
+///
+/// ## Anchored Querying
+/// - ``fetchAnchored(_:)``
+/// - ``resetQueryAnchor(for:)``
 @Observable
 public final class SensorKit: Module, EnvironmentAccessible, @unchecked Sendable {
     @ObservationIgnored @Dependency(LocalStorage.self) private var localStorage
@@ -58,6 +63,13 @@ public final class SensorKit: Module, EnvironmentAccessible, @unchecked Sendable
     
     
     // MARK: Data Exporting
+    
+    /// Performs an anchored fetch.
+    ///
+    /// The SensorKit module internally keep track of the last time an anchored fetch was performed for a specific ``Sensor``;
+    /// a fetch using this function will return only those samples that have been added to SensorKit since the last fetch for the sensor.
+    ///
+    /// - Note: In order to fetch data from a sensor, you first need to request permission and call ``Sensor/startRecording()``
     @available(iOS 18, *)
     public func fetchAnchored<Sample>(
         _ sensor: Sensor<Sample>
@@ -66,9 +78,7 @@ public final class SensorKit: Module, EnvironmentAccessible, @unchecked Sendable
             storageKey: queryAnchorKeys.key(for: sensor),
             in: localStorage
         )
-        let reader = SensorReader(sensor)
-        let batched = try await reader.fetchBatched(anchor: anchor)
-        return batched
+        return try await sensor.fetchBatched(anchor: anchor)
     }
     
     /// Resets the query anchor for the specified sensor.
