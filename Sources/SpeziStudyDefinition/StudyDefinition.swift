@@ -77,7 +77,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 10, 0)
+    public static let schemaVersion = Version(0, 11, 0)
     
     /// The revision of the study.
     ///
@@ -121,7 +121,7 @@ extension StudyDefinition {
             switch component {
             case .healthDataCollection(let component):
                 component
-            case .informational, .questionnaire, .timedWalkingTest:
+            case .informational, .questionnaire, .timedWalkingTest, .customActiveTask:
                 nil
             }
         }
@@ -152,6 +152,8 @@ extension StudyBundle {
             )?.title?.value?.string
         case .timedWalkingTest(let component):
             String(localized: component.test.displayTitle)
+        case .customActiveTask(let component):
+            String(localized: component.activeTask.title)
         case .healthDataCollection:
             nil
         }
@@ -177,6 +179,8 @@ extension StudyBundle {
             nil
         case .healthDataCollection:
             nil
+        case .customActiveTask(let component):
+            component.activeTask.subtitle.map { String(localized: $0) }
         }
     }
     

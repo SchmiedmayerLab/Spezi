@@ -229,9 +229,9 @@ final class StudyManagerTests {
     
     @Test
     func localeMatching() throws {
-        #expect(LocalizationKey(language: .english, region: .unitedStates).score(against: .init(identifier: "en_US"), using: .default) == 1)
-        #expect(LocalizationKey(language: .spanish, region: .unitedStates).score(against: .init(identifier: "es_US"), using: .default) == 1)
-        #expect(LocalizationKey(language: .german, region: .unitedStates).score(against: .init(identifier: "es_US"), using: .default) == 0.75)
+        #expect(LocalizationKey(language: .english, region: .unitedStates).score(against: Locale(identifier: "en_US"), using: .default) == 1)
+        #expect(LocalizationKey(language: .spanish, region: .unitedStates).score(against: Locale(identifier: "es_US"), using: .default) == 1)
+        #expect(LocalizationKey(language: .german, region: .unitedStates).score(against: Locale(identifier: "es_US"), using: .default) == 0.75)
     }
     
     

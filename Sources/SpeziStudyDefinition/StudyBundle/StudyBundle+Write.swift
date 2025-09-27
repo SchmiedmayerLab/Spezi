@@ -99,7 +99,7 @@ extension StudyDefinition {
                 fileRefs.insert(component.fileRef)
             case .questionnaire(let component):
                 fileRefs.insert(component.fileRef)
-            case .healthDataCollection, .timedWalkingTest:
+            case .healthDataCollection, .timedWalkingTest, .customActiveTask:
                 break
             }
         }
