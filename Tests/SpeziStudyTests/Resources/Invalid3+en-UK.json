@@ -1,0 +1,62 @@
+{
+  "title": "Valid",
+  "resourceType": "Questionnaire",
+  "language": "en-US",
+  "status": "draft",
+  "meta": {
+    "profile": [
+      "http://spezi.health/fhir/StructureDefinition/sdf-Questionnaire"
+    ],
+    "tag": [
+      {
+        "system": "urn:ietf:bcp:47",
+        "code": "en-GB",
+        "display": "English"
+      }
+    ]
+  },
+  "useContext": [
+    {
+      "code": {
+        "system": "http://hl7.org/fhir/ValueSet/usage-context-type",
+        "code": "focus",
+        "display": "Clinical Focus"
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.8655",
+            "display": "Valid"
+          }
+        ]
+      }
+    }
+  ],
+  "contact": [
+    {}
+  ],
+  "subjectType": [
+    "Patient"
+  ],
+  "id": "0C0D66EB-DF6E-43CA-B8E6-8653DB5D1610",
+  "item": [
+    {
+      "linkId": "8491465f-6ae7-483a-9a91-a027a1ac41bb",
+      "type": "display",
+      "text": "Instruction Component (UK)",
+      "required": false
+    },
+    {
+      "linkId": "a2bd0f8e-3a0c-49ca-df27-814c87e99054",
+      "type": "boolean",
+      "text": "Boolean Question (UK)",
+      "required": false
+    },
+    {
+      "linkId": "2813e49e-452f-4039-86f0-becb90c82d30",
+      "type": "date",
+      "text": "Date Question (UK)",
+      "required": false
+    }
+  ]
+}

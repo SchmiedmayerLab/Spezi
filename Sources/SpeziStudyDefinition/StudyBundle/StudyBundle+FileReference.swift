@@ -75,7 +75,8 @@ extension StudyBundle {
 
 extension StudyBundle {
     /// A localized file reference is the combination of a ``FileReference`` and a ``LocalizationKey``
-    struct LocalizedFileReference: Hashable, Sendable {
+    @_spi(APISupport)
+    public struct LocalizedFileReference: Hashable, Sendable {
         let fileRef: FileReference
         let localization: LocalizationKey
         

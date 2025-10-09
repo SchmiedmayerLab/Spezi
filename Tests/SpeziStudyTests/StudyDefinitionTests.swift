@@ -66,6 +66,7 @@ extension Locale.Language {
     static let english = Locale.Language(identifier: "en")
     static let spanish = Locale.Language(identifier: "es")
     static let german = Locale.Language(identifier: "de")
+    static let french = Locale.Language(identifier: "fr")
 }
 
 

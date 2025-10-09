@@ -13,6 +13,7 @@ import class ModelsR4.Questionnaire
 import SpeziFoundation
 import SpeziHealthKit
 import SpeziHealthKitBulkExport
+@_spi(APISupport)
 @testable import SpeziStudyDefinition
 import Testing
 
@@ -55,30 +56,37 @@ struct StudyBundleTests {
     @Test
     func filenameLocalizationParsing() throws {
         typealias LocalizedFileRef = StudyBundle.LocalizedFileReference
-        #expect(StudyBundle.parse(filename: "Welcome+en-US.md", in: .consent) == LocalizedFileRef(
-            fileRef: .init(category: .consent, filename: "Welcome", fileExtension: "md"),
+        #expect(StudyBundle.parse(filename: "Welcome+en-US.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
             localization: .init(language: .english, region: .unitedStates)
         ))
-        #expect(StudyBundle.parse(filename: "Welcome+es-US.md", in: .consent) == LocalizedFileRef(
-            fileRef: .init(category: .consent, filename: "Welcome", fileExtension: "md"),
+        #expect(StudyBundle.parse(filename: "Welcome+es-US.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
             localization: .init(language: .spanish, region: .unitedStates)
         ))
-        #expect(StudyBundle.parse(filename: "Welcome+en_US.md", in: .consent) == nil)
-        #expect(StudyBundle.parse(filename: "Welcome.md", in: .consent) == nil)
-        #expect(StudyBundle.parse(filename: "Welcome+de-US.md", in: .consent) == LocalizedFileRef(
-            fileRef: .init(category: .consent, filename: "Welcome", fileExtension: "md"),
+        #expect(StudyBundle.parse(filename: "Welcome+en_US.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
+            localization: .init(language: .english, region: .unitedStates)
+        ))
+        #expect(StudyBundle.parse(filename: "Welcome+fr_FR.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
+            localization: .init(language: .french, region: .france)
+        ))
+        #expect(StudyBundle.parse(filename: "Welcome.md", in: .informationalArticle) == nil)
+        #expect(StudyBundle.parse(filename: "Welcome+de-US.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
             localization: .init(language: .german, region: .unitedStates)
         ))
-        #expect(StudyBundle.parse(filename: "Welcome+en-DE.md", in: .consent) == LocalizedFileRef(
-            fileRef: .init(category: .consent, filename: "Welcome", fileExtension: "md"),
+        #expect(StudyBundle.parse(filename: "Welcome+en-DE.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
             localization: .init(language: .english, region: .germany)
         ))
-        #expect(StudyBundle.parse(filename: "Welcome+de-DE.md", in: .consent) == LocalizedFileRef(
-            fileRef: .init(category: .consent, filename: "Welcome", fileExtension: "md"),
+        #expect(StudyBundle.parse(filename: "Welcome+de-DE.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
             localization: .init(language: .german, region: .germany)
         ))
-        #expect(StudyBundle.parse(filename: "Welcome+en-GB.md", in: .consent) == LocalizedFileRef(
-            fileRef: .init(category: .consent, filename: "Welcome", fileExtension: "md"),
+        #expect(StudyBundle.parse(filename: "Welcome+en-GB.md", in: .informationalArticle) == LocalizedFileRef(
+            fileRef: .init(category: .informationalArticle, filename: "Welcome", fileExtension: "md"),
             localization: .init(language: .english, region: .unitedKingdom)
         ))
     }
@@ -202,6 +210,7 @@ struct StudyBundleTests {
                     ---
                     title: Informational Component #1
                     headerImage: "Header1"
+                    id: 38EBCAD2-4C75-4EBD-B415-E1BBC5DE41D4
                     ---
                     
                     This is the text of the first informational component
@@ -214,6 +223,7 @@ struct StudyBundleTests {
                     ---
                     title: Informational Component #2
                     headerImage: "Header2"
+                    id: 709134E5-0249-4171-9787-38CB5D08C6B6
                     ---
                     
                     This is the text of the second informational component

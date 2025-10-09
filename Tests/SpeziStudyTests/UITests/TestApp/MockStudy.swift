@@ -156,6 +156,7 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
                 contents: """
                     ---
                     title: Article1 Title
+                    id: 3734D98A-9477-486B-8116-42C81E4365B2
                     ---
                     """
             )
@@ -165,6 +166,7 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
                 contents: """
                     ---
                     title: Welcome to the Study!
+                    id: BA2435AF-1D12-42E1-9E30-D7C14F2544FF
                     ---
                     
                     # Welcome
@@ -177,6 +179,7 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
                 contents: """
                     ---
                     title: SSQAnswered
+                    id: B50A769C-2417-47CA-96E4-044124DB68FE
                     ---
                     SSQAnswered
                     """
@@ -202,6 +205,7 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
                     contents: """
                         ---
                         title: Article2 Title
+                        id: D9ED4D99-4A31-444B-8058-96D9908F9ECC
                         ---
                         
                         # Article 2

@@ -101,6 +101,7 @@ final class StudyManagerTests {
                     contents: """
                         ---
                         title: Welcome to our Study!
+                        id: 4A6A052E-5FE6-4FFA-92D5-DA605E12E97E
                         ---
                         """
                 ),
@@ -110,6 +111,7 @@ final class StudyManagerTests {
                     contents: """
                         ---
                         title: Bienvenido a nuestro estudio!
+                        id: 4A6A052E-5FE6-4FFA-92D5-DA605E12E97E
                         ---
                         """
                 )
