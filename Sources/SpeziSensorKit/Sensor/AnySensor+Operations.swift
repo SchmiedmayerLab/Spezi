@@ -21,7 +21,7 @@ extension AnySensor {
     /// Tells SensorKit to start data collection for this sensor.
     public func startRecording() async throws {
         let reader = SRSensorReader(self)
-        let delegate = StartStopRecordingDelegate()
+        let delegate = StartStopRecordingDelegate(sensor: self)
         reader.delegate = delegate
         try await withCheckedThrowingContinuation { continuation in
             delegate.continuation = continuation
@@ -32,7 +32,7 @@ extension AnySensor {
     /// Tells SensorKit to stop data collection for this sensor.
     public func stopRecording() async throws {
         let reader = SRSensorReader(self)
-        let delegate = StartStopRecordingDelegate()
+        let delegate = StartStopRecordingDelegate(sensor: self)
         reader.delegate = delegate
         try await withCheckedThrowingContinuation { continuation in
             delegate.continuation = continuation
@@ -43,7 +43,7 @@ extension AnySensor {
     /// Fetches a list of all devices that collect data for this sensor.
     public func fetchDevices() async throws -> sending [SRDevice] {
         let reader = SRSensorReader(self)
-        let delegate = DevicesFetcherDelegate()
+        let delegate = DevicesFetcherDelegate(sensor: self)
         reader.delegate = delegate
         return try await withCheckedThrowingContinuation { continuation in
             delegate.continuation = continuation
@@ -96,7 +96,12 @@ extension AnySensor {
 // MARK: SRSensorReader Delegates
 
 private final class StartStopRecordingDelegate: NSObject, SRSensorReaderDelegate {
+    let sensor: any AnySensor
     var continuation: CheckedContinuation<Void, any Error>?
+    
+    init(sensor: any AnySensor) {
+        self.sensor = sensor
+    }
     
     func sensorReaderWillStartRecording(_ reader: SRSensorReader) {
         continuation?.resume()
@@ -109,19 +114,24 @@ private final class StartStopRecordingDelegate: NSObject, SRSensorReaderDelegate
     }
     
     func sensorReader(_ reader: SRSensorReader, startRecordingFailedWithError error: any Error) {
-        continuation?.resume(throwing: error)
+        continuation?.resume(throwing: SensorKit.SensorKitError(error, sensor: sensor))
         continuation = nil
     }
     
     func sensorReader(_ reader: SRSensorReader, stopRecordingFailedWithError error: any Error) {
-        continuation?.resume(throwing: error)
+        continuation?.resume(throwing: SensorKit.SensorKitError(error, sensor: sensor))
         continuation = nil
     }
 }
 
 
 private final class DevicesFetcherDelegate: NSObject, SRSensorReaderDelegate {
+    let sensor: any AnySensor
     var continuation: CheckedContinuation<[SRDevice], any Error>?
+    
+    init(sensor: any AnySensor) {
+        self.sensor = sensor
+    }
     
     func sensorReader(_ reader: SRSensorReader, didFetch devices: [SRDevice]) {
         nonisolated(unsafe) let devices = devices
@@ -130,7 +140,7 @@ private final class DevicesFetcherDelegate: NSObject, SRSensorReaderDelegate {
     }
     
     func sensorReader(_ reader: SRSensorReader, fetchDevicesDidFailWithError error: any Error) {
-        continuation?.resume(throwing: error)
+        continuation?.resume(throwing: SensorKit.SensorKitError(error, sensor: sensor))
         continuation = nil
     }
 }

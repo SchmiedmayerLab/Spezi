@@ -38,8 +38,24 @@ public final class SensorKit: Module, EnvironmentAccessible, @unchecked Sendable
     
     /// Creates a new instance of the `SensorKit` module.
     public nonisolated init() {}
-    
-    // MARK: Authorization
+}
+
+
+// MARK: Authorization
+
+extension SensorKit {
+    /// The resulting state of a SensorKit sensor access request.
+    public struct AuthorizationResult {
+        /// The sensors to which the user has granted access.
+        public let authorized: [any AnySensor]
+        /// The sensors to which the user has denied access.
+        public let denied: [any AnySensor]
+        
+        init(_ sensors: some Collection<any AnySensor>) {
+            authorized = sensors.filter { $0.authorizationStatus == .authorized }
+            denied = sensors.filter { $0.authorizationStatus == .denied }
+        }
+    }
     
     /// Checks the  current authorization status of the specified sensor.
     public nonisolated func authorizationStatus(for sensor: Sensor<some Any>) -> SRAuthorizationStatus {
@@ -47,23 +63,26 @@ public final class SensorKit: Module, EnvironmentAccessible, @unchecked Sendable
     }
     
     /// Requests access to read data from the specified ``Sensor``s.
-    public nonisolated func requestAccess(to sensors: [any AnySensor]) async throws {
-        do {
-            try await SRSensorReader.requestAuthorization(sensors: sensors.mapIntoSet(\.srSensor))
-        } catch {
-            if (error as? SRError)?.code == .promptDeclined,
-               (error as NSError).underlyingErrors.contains(where: { ($0 as NSError).code == 8201 }) {
-                // the request failed bc we're already authenticated.
-                return
-            } else {
-                throw error
-            }
+    ///
+    /// - Note: It is not possible to re-request access for a sensor after the user has already denied it.
+    ///
+    /// - Important: This function returning without throwing an error does not mean that the user actuallt granted access to all requested sensors. Always check the return value.
+    ///
+    /// - parameter sensors: The sensors for which we want to request access.
+    /// - returns: A summary which of the `sensors` passed to the function are now authorized and which are denied.
+    public nonisolated func requestAccess(to sensors: [any AnySensor]) async throws -> AuthorizationResult {
+        let sensorsToActuallyRequest = sensors.compactMapIntoSet {
+            $0.authorizationStatus == .notDetermined ? $0.srSensor : nil
         }
+        try await SRSensorReader.requestAuthorization(sensors: sensorsToActuallyRequest)
+        return AuthorizationResult(sensors)
     }
-    
-    
-    // MARK: Data Exporting
-    
+}
+
+
+// MARK: Data Exporting
+
+extension SensorKit {
     /// Performs an anchored fetch.
     ///
     /// The SensorKit module internally keep track of the last time an anchored fetch was performed for a specific ``Sensor``;
@@ -86,5 +105,67 @@ public final class SensorKit: Module, EnvironmentAccessible, @unchecked Sendable
     /// This will cause subsequent calls to ``fetchAnchored(_:)`` to potentially re-fetch already-processed samples.
     public func resetQueryAnchor(for sensor: Sensor<some Any>) throws {
         try localStorage.delete(queryAnchorKeys.key(for: sensor))
+    }
+}
+
+
+// MARK: Other
+
+extension SensorKit {
+    /// An (intentionally not public) wrapper error type to give errors originating from SensorKit more useful error messages.
+    enum SensorKitError: LocalizedError {
+        /// An operation on the sensor failed because the user has denied the app authorization to access the sensor.
+        case deniedAuthorization(any AnySensor)
+        /// Some other, unknown error has happened.
+        case other(any Error)
+        
+        var errorDescription: String? {
+            switch self {
+            case .deniedAuthorization(let sensor):
+                String(localized: "The operation failed because the user has denied access to the \(sensor.displayName) sensor.")
+            case .other(let error):
+                (error as? any LocalizedError)?.errorDescription ?? error.localizedDescription
+            }
+        }
+        
+        var failureReason: String? {
+            switch self {
+            case .deniedAuthorization:
+                nil
+            case .other(let error):
+                (error as? any LocalizedError)?.failureReason
+            }
+        }
+        
+        var helpAnchor: String? {
+            switch self {
+            case .deniedAuthorization:
+                nil
+            case .other(let error):
+                (error as? any LocalizedError)?.helpAnchor
+            }
+        }
+        
+        var recoverySuggestion: String? {
+            switch self {
+            case .deniedAuthorization:
+                nil
+            case .other(let error):
+                (error as? any LocalizedError)?.recoverySuggestion
+            }
+        }
+        
+        init(_ error: any Error, sensor: any AnySensor) {
+            if sensor.authorizationStatus == .denied {
+                // in some cases (eg: startRecording()), SensorKit will actually set a proper
+                // errorCode 1 (no authorization) when attempting to operate on a denied sensor,
+                // but in some other cases (eg: fetchDevices()) it does not.
+                // so to make things a little easier, we simply assume that any errors raised on sensors
+                // for which the user has denied access are happening because the user denied access.
+                self = .deniedAuthorization(sensor)
+            } else {
+                self = .other(error)
+            }
+        }
     }
 }

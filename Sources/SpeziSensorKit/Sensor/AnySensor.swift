@@ -38,7 +38,7 @@ import SpeziFoundation
 /// - ``~=(_:_:)``
 /// - ``==(_:_:)-(Sensor<Any>,AnySensor)``
 /// - ``==(_:_:)-(AnySensor,Sensor<Any>)``
-public protocol AnySensor<Sample>: Hashable, Identifiable, Sendable {
+public protocol AnySensor<Sample>: Hashable, Identifiable, Sendable, CustomStringConvertible {
     /// The type of the sensor's resulting samples.
     associatedtype Sample: SensorKitSampleProtocol
     

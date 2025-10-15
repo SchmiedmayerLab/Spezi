@@ -74,6 +74,10 @@ public struct Sensor<Sample: SensorKitSampleProtocol>: AnySensor {
     public let dataQuarantineDuration: Duration
     @usableFromInline let sensorKitFetchReturnType: SensorKitFetchReturnType
     
+    public var description: String {
+        "Sensor<\(Sample.SafeRepresentation.self)>(\(displayName))"
+    }
+    
     @inlinable
     init(srSensor: SRSensor, displayName: String, dataQuarantineDuration: Duration, sensorKitFetchReturnType: SensorKitFetchReturnType) {
         self.srSensor = srSensor
