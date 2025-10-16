@@ -95,7 +95,7 @@ final class StudyManagerTests {
             at: tmpUrl,
             definition: testStudy,
             files: [
-                StudyBundle.FileInput(
+                StudyBundle.FileResourceInput(
                     fileRef: .init(category: .informationalArticle, filename: "a1", fileExtension: "md"),
                     localization: .init(language: .english, region: .unitedStates),
                     contents: """
@@ -105,7 +105,7 @@ final class StudyManagerTests {
                         ---
                         """
                 ),
-                StudyBundle.FileInput(
+                StudyBundle.FileResourceInput(
                     fileRef: .init(category: .informationalArticle, filename: "a1", fileExtension: "md"),
                     localization: .init(language: .spanish, region: .unitedStates),
                     contents: """

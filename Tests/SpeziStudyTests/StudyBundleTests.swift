@@ -100,6 +100,17 @@ struct StudyBundleTests {
         ) == "---\ntitle: Study Consent\n---\n\n# Consent")
     }
     
+    @Test
+    func wholeFolderBundling() throws {
+        let studyBundle = try Self.testStudyBundle
+        for filename in ["PM5544.png", "jellybeans_USC-SIPI.tiff"] {
+            let url = URL(filePath: filename, relativeTo: studyBundle.bundleUrl.appending(path: "assets/"))
+            let data1 = try Data(contentsOf: #require(Bundle.module.url(forResource: filename, withExtension: nil, subdirectory: "assets")))
+            let data2 = try Data(contentsOf: url)
+            #expect(data1 == data2)
+        }
+    }
+    
     
 // MARK: Test Study
     
@@ -192,7 +203,7 @@ struct StudyBundleTests {
         )
         let url = URL.temporaryDirectory.appendingPathComponent(UUID().uuidString, conformingTo: .speziStudyBundle)
         return try StudyBundle.writeToDisk(at: url, definition: definition, files: [
-            StudyBundle.FileInput(
+            StudyBundle.FileResourceInput(
                 fileRef: .init(category: .consent, filename: "Consent", fileExtension: "md"),
                 localization: try #require(.init(locale: locale)),
                 contents: """
@@ -203,7 +214,7 @@ struct StudyBundleTests {
                     # Consent
                     """
             ),
-            StudyBundle.FileInput(
+            StudyBundle.FileResourceInput(
                 fileRef: .init(category: .informationalArticle, filename: "Info1", fileExtension: "md"),
                 localization: try #require(.init(locale: locale)),
                 contents: """
@@ -216,7 +227,7 @@ struct StudyBundleTests {
                     This is the text of the first informational component
                     """
             ),
-            StudyBundle.FileInput(
+            StudyBundle.FileResourceInput(
                 fileRef: .init(category: .informationalArticle, filename: "Info2", fileExtension: "md"),
                 localization: try #require(.init(locale: locale)),
                 contents: """
@@ -229,10 +240,14 @@ struct StudyBundleTests {
                     This is the text of the second informational component
                     """
             ),
-            StudyBundle.FileInput(
+            StudyBundle.FileResourceInput(
                 fileRef: .init(category: .questionnaire, filename: "SocialSupportQuestionnaire", fileExtension: "json"),
                 localization: try #require(.init(locale: locale)),
-                contents: try Questionnaire.named("SocialSupportQuestionnaire")
+                contents: try JSONEncoder().encode(Questionnaire.named("SocialSupportQuestionnaire"))
+            ),
+            StudyBundle.FileResourceInput(
+                pathInBundle: "assets",
+                contentsOf: try #require(Bundle.module.resourceURL).appending(component: "assets")
             )
         ])
     }

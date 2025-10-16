@@ -46,29 +46,36 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// SpeziStudy provides facilities for gracefully dealing with these kinds of changes; see <doc:StudyEvolution> for more information on this.
 ///
 /// ## Topics
+///
 /// ### Initializers
 /// - ``init(studyRevision:metadata:components:componentSchedules:)``
-/// - ``init(from:configuration:)
+/// - ``init(from:configuration:)``
+///
 /// ### Instance Properties
 /// - ``studyRevision``
 /// - ``metadata-swift.property``
 /// - ``components``
 /// - ``componentSchedules``
 /// - ``id``
+///
 /// ### Study Metadata
 /// - ``Metadata-swift.struct``
+///
 /// ### Study Components
 /// - ``Component``
 /// - ``InformationalComponent``
 /// - ``QuestionnaireComponent``
 /// - ``HealthDataCollectionComponent``
+///
 /// ### Study Schedule
 /// - ``ComponentSchedule``
 /// - ``ComponentSchedule/ScheduleDefinition-swift.enum``
+///
 /// ### Supporting Types
 /// - ``StudyDefinitionElement``
 /// - ``EnrollmentConditions``
 /// - ``ParticipationCriterion``
+///
 /// ### Working with a study definition
 /// - ``allCollectedHealthData``
 /// - ``healthDataCollectionComponents``

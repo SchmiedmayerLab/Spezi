@@ -51,12 +51,10 @@ extension UTType {
 /// ### Creating Study Bundles
 /// - ``writeToDisk(at:definition:files:)``
 /// - ``FileInput``
-/// - ``CreateBundleError``
 ///
 /// ### Other
 /// - ``fileExtension``
 /// - ``FileReference``
-/// - ``LocalizationKey``
 public struct StudyBundle: Identifiable, Sendable {
     public enum StudyBundleError: Error {
         /// The URL passed to an operation does not point to a study bundle package.

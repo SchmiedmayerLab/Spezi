@@ -57,6 +57,38 @@
       "type": "date",
       "text": "Date Question (US)",
       "required": false
+    },
+    {
+      "linkId": "815926e8-ef8e-47a3-c03d-4008167845c8",
+      "type": "choice",
+      "text": "Select a Letter",
+      "required": false,
+      "answerOption": [
+        {
+          "valueCoding": {
+            "id": "61520da1-dd7a-4608-ba65-65708d70094f",
+            "code": "a",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "A"
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "18f3620d-203c-4cc7-f553-169f27b97d76",
+            "code": "b",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "B"
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "97a671ee-8364-4915-86fe-9fa91fa0cb28",
+            "code": "c",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "C"
+          }
+        }
+      ]
     }
   ]
 }

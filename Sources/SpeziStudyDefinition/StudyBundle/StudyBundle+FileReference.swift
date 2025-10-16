@@ -60,7 +60,11 @@ extension StudyBundle {
         public let fileExtension: String
         
         public var description: String {
-            "\(category.rawValue)/\(filename).\(fileExtension)"
+            if fileExtension.isEmpty {
+                "\(category.rawValue)/\(filename)"
+            } else {
+                "\(category.rawValue)/\(filename).\(fileExtension)"
+            }
         }
         
         /// Creates a new file reference.

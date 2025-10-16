@@ -36,7 +36,7 @@ import class UIKit.UIApplication
 /// - ``init(preferredLocale:persistence:)``
 ///
 /// ### Study Enrollment
-/// - ``enroll(in:)``
+/// - ``enroll(in:enrollmentDate:)``
 /// - ``unenroll(from:)``
 /// - ``informAboutStudies(_:)``
 /// - ``StudyEnrollment``
@@ -100,7 +100,8 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
     
     /// Creates a new Study Manager, using the specified persistence configuration
     ///
-    /// - parameter preferredLocale: The `Locale` which should be used when
+    /// - parameter preferredLocale: The study manager's preferred locale.
+    /// - parameter persistence: How the study manager should persist its data, such as enrollments. Defaults to using an on-disk Swift Data store.
     public nonisolated init(
         preferredLocale: Locale = .autoupdatingCurrent,
         persistence: PersistenceConfiguration = .onDisk
@@ -426,7 +427,7 @@ extension StudyManager {
     
     /// Enroll in a study.
     ///
-    /// Once the device is enrolled into a study at revision `X`, subsequent ``enroll(in:)`` calls for the same study, with revision `Y`, will:
+    /// Once the device is enrolled into a study at revision `X`, subsequent ``enroll(in:enrollmentDate:)`` calls for the same study, with revision `Y`, will:
     /// - if `X = Y`: have no effect;
     /// - if `X < Y`: update the study enrollment, as if ``informAboutStudies(_:)`` was called with the new study revision;
     /// - if `X > Y`: throw an error.

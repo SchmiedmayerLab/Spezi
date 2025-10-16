@@ -18,41 +18,53 @@ extension StudyBundle {
         case nonUTF8Input
         /// The Study Bundle failed to pass the validation checks.
         case failedValidation([BundleValidationIssue])
+        /// A `URL` pointing to a directory was passed to a
+        case isDirectory
     }
     
     
-    /// A file which should be included when creating a ``StudyBundle``.
-    public struct FileInput {
-        /// The file's name, extension, and localization info.
-        let localizedFileRef: LocalizedFileReference
-        /// The raw contents of the file
-        let contents: Data
+    /// A file resource which should be included when creating a ``StudyBundle``.
+    public struct FileResourceInput {
+        enum Source {
+            case data(Data)
+            case url(URL)
+        }
+        enum Target {
+            case localized(LocalizedFileReference)
+            case absolute(pathInBundle: String)
+        }
+        
+        let source: Source
+        let target: Target
         
         /// Creates a new `FileInput`, from raw `Data`.
         public init(fileRef: FileReference, localization: LocalizationKey, contents: Data) {
-            self.localizedFileRef = .init(fileRef: fileRef, localization: localization)
-            self.contents = contents
+            source = .data(contents)
+            target = .localized(.init(fileRef: fileRef, localization: localization))
         }
         
         /// Creates a new `FileInput`, from UTF8-encoded text.
         public init(fileRef: FileReference, localization: LocalizationKey, contents: String) throws {
-            self.localizedFileRef = .init(fileRef: fileRef, localization: localization)
             guard let contents = contents.data(using: .utf8) else {
                 throw CreateBundleError.nonUTF8Input
             }
-            self.contents = contents
-        }
-        
-        /// Creates a new `FileInput`, from an `Encodable` value.
-        public init(fileRef: FileReference, localization: LocalizationKey, contents: some Encodable) throws {
-            self.localizedFileRef = .init(fileRef: fileRef, localization: localization)
-            self.contents = try JSONEncoder().encode(contents)
+            self.init(fileRef: fileRef, localization: localization, contents: contents)
         }
         
         /// Creates a new `FileInput`, with the file contents at the specified URL.
-        public init(fileRef: FileReference, localization: LocalizationKey, contentsOf url: URL) throws {
-            self.localizedFileRef = .init(fileRef: fileRef, localization: localization)
-            self.contents = try Data(contentsOf: url)
+        public init(fileRef: FileReference, localization: LocalizationKey, contentsOf url: URL) {
+            source = .url(url)
+            target = .localized(.init(fileRef: fileRef, localization: localization))
+        }
+        
+        /// Creates a `FileResourceInput` that copies the contents of a file or directory into the study bundle.
+        ///
+        /// - parameter pathInBundle: The path, relative to the root of the study bundle, where the file or directory referenced by `url` should be placed.
+        ///     If `url` is a file, `pathInBundle` must also contain the desired in-bundle filename.
+        /// - parameter url: A URL to a file or directory that should be included in the bundle.
+        public init(pathInBundle: String, contentsOf url: URL) {
+            source = .url(url)
+            target = .absolute(pathInBundle: pathInBundle)
         }
     }
     
@@ -60,20 +72,34 @@ extension StudyBundle {
     public static func writeToDisk(
         at bundleUrl: URL,
         definition: StudyDefinition,
-        files: [FileInput]
+        files: [FileResourceInput]
     ) throws -> StudyBundle {
         try Self.assertIsStudyBundleUrl(bundleUrl)
         let fileManager = FileManager.default
-        try? fileManager.removeItem(at: bundleUrl)
+        if fileManager.itemExists(at: bundleUrl) {
+            try fileManager.removeItem(at: bundleUrl)
+        }
         try fileManager.createDirectory(at: bundleUrl, withIntermediateDirectories: true)
         do {
             let data = try JSONEncoder().encode(definition)
             try data.write(to: bundleUrl.appendingPathComponent("definition", conformingTo: .json))
         }
-        for file in files {
-            let fileUrl = Self.fileUrl(for: file.localizedFileRef, relativeTo: bundleUrl)
-            try fileManager.prepareForWriting(to: fileUrl)
-            try file.contents.write(to: fileUrl)
+        for input in files {
+            let url: URL
+            switch input.target {
+            case .localized(let fileRef):
+                url = Self.fileUrl(for: fileRef, relativeTo: bundleUrl)
+            case .absolute(let pathInBundle):
+                url = bundleUrl.appending(path: pathInBundle)
+            }
+            switch input.source {
+            case .data(let data):
+                try fileManager.prepareForWriting(to: url)
+                try data.write(to: url)
+            case .url(let srcUrl):
+                try fileManager.prepareForWriting(to: url)
+                try fileManager.copyItem(at: srcUrl, to: url)
+            }
         }
         let bundle = try Self(bundleUrl: bundleUrl)
         if case let issues = try bundle.validate(), !issues.isEmpty {

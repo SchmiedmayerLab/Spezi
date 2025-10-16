@@ -81,9 +81,11 @@ extension StudyDefinition {
         /// A schedule, defining when a ``Component`` should be activated.
         ///
         /// ## Topics
+        ///
         /// ### Schedule Kinds
         /// - ``once(_:)``
         /// - ``repeated(_:offset:)``
+        ///
         /// ### Supporting Types
         /// - ``RepetitionPattern``
         public enum ScheduleDefinition: StudyDefinitionElement {
