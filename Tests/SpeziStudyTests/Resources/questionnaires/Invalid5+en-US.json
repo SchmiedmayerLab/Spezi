@@ -1,0 +1,76 @@
+{
+  "title": "test survey with non-matching question input bounds",
+  "resourceType": "Questionnaire",
+  "language": "en-US",
+  "status": "draft",
+  "id": "423EFEF6-7FC4-41B2-8211-668E90150E13",
+  "meta": {
+    "profile": [
+      "http://spezi.health/fhir/StructureDefinition/sdf-Questionnaire"
+    ],
+    "tag": [
+      {
+        "system": "urn:ietf:bcp:47",
+        "code": "en-US",
+        "display": "English"
+      }
+    ]
+  },
+  "useContext": [
+    {
+      "code": {
+        "system": "http://hl7.org/fhir/ValueSet/usage-context-type",
+        "code": "focus",
+        "display": "Clinical Focus"
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.8655",
+            "display": "test survey with non-matching question input bounds"
+          }
+        ]
+      }
+    }
+  ],
+  "contact": [
+    {}
+  ],
+  "subjectType": [
+    "Patient"
+  ],
+  "item": [
+    {
+      "linkId": "d83bec14-22d7-4709-acaf-f777422045ee",
+      "type": "integer",
+      "text": "please enter a number",
+      "required": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/minValue",
+          "valueInteger": 7
+        },
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/maxValue",
+          "valueInteger": 12
+        }
+      ]
+    },
+    {
+      "linkId": "0c98aa3b-bc77-4230-dfbc-6fe06906ed45",
+      "type": "integer",
+      "text": "please enter another number",
+      "required": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/minValue",
+          "valueInteger": 1
+        },
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/maxValue",
+          "valueInteger": 10
+        }
+      ]
+    }
+  ]
+}
