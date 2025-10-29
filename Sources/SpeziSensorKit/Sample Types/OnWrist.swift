@@ -31,6 +31,10 @@ public struct SensorKitOnWristEventSample: SensorKitSampleSafeRepresentation {
     /// The date when this sample was collected
     public let timestamp: Date
     
+    @inlinable public var timeRange: Range<Date> {
+        timestamp..<timestamp
+    }
+    
     /// Whether the watch was on the user's wrist.
     public let onWrist: Bool
     public let wristLocation: SRWristDetection.WristLocation

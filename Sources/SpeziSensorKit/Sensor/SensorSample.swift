@@ -12,10 +12,12 @@ import SpeziFoundation
 
 /// A `Sendable` representation of a data sample obtained from SensorKit.
 public protocol SensorKitSampleSafeRepresentation: Hashable, Sendable {
-    /// The sample's timestamp.
+    /// The sample's time range.
+    ///
+    /// If the sample represents a single point in time, the range will be empty.
     ///
     /// Depending on the specific sensor this sample originates from, the timestamp represents either the actual time the sample was recorded, or the time it was added to SensorKit.
-    var timestamp: Date { get }
+    var timeRange: Range<Date> { get }
 }
 
 

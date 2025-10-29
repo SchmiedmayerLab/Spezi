@@ -12,9 +12,14 @@ public import Foundation
 
 extension CMHighFrequencyHeartRateData: SensorKitSampleProtocol {
     public struct SafeRepresentation: SensorKitSampleSafeRepresentation {
+        /// The point in time when the sample was recorded
         public let timestamp: Date
         public let value: Double
         public let confidence: CMHighFrequencyHeartRateDataConfidence
+        
+        @inlinable public var timeRange: Range<Date> {
+            timestamp..<timestamp
+        }
         
         @inlinable
         init(timestamp: Date, sample: CMHighFrequencyHeartRateData) {

@@ -12,16 +12,6 @@
 // We use the @preconcurrency import to make it work anyway, for the time being.
 
 
-extension SRVisit: SensorKitSampleProtocol {
-    public typealias SafeRepresentation = DefaultSensorKitSampleSafeRepresentation<SRVisit>
-}
-
-
-extension SRDeviceUsageReport: SensorKitSampleProtocol {
-    public typealias SafeRepresentation = DefaultSensorKitSampleSafeRepresentation<SRDeviceUsageReport>
-}
-
-
 extension SRMessagesUsageReport: SensorKitSampleProtocol {
     public typealias SafeRepresentation = DefaultSensorKitSampleSafeRepresentation<SRMessagesUsageReport>
 }

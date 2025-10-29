@@ -21,10 +21,6 @@ extension CMPedometerData: SensorKitSampleProtocol {
         public let currentCadence: Double? // steps/s
         public let averageActivePace: Double? // s/m
         
-        public var timestamp: Date {
-            timeRange.lowerBound
-        }
-        
         @inlinable
         init(_ data: CMPedometerData) {
             timeRange = data.startDate..<data.endDate

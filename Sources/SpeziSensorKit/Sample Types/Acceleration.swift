@@ -11,6 +11,7 @@ public import CoreMotion
 
 extension CMRecordedAccelerometerData: SensorKitSampleProtocol {
     public struct SafeRepresentation: SensorKitSampleSafeRepresentation {
+        /// The point in time when the sample was recorded.
         public let timestamp: Date
         /// The unique identifier for the accelerometer data.
         ///
@@ -18,6 +19,10 @@ extension CMRecordedAccelerometerData: SensorKitSampleProtocol {
         public let identifier: UInt64
         /// The acceleration measured by the accelerometer.
         public let acceleration: CMAcceleration
+        
+        @inlinable public var timeRange: Range<Date> {
+            timestamp..<timestamp
+        }
         
         @inlinable
         init(_ data: CMRecordedAccelerometerData) {

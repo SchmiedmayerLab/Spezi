@@ -16,9 +16,14 @@ public import SensorKit
 /// A default ``SensorKitSampleSafeRepresentation``, intended for sensors whose types are already `Sendable` and not confined to the SensorKit thread.
 @dynamicMemberLookup
 public struct DefaultSensorKitSampleSafeRepresentation<Sample: Hashable & Sendable>: SensorKitSampleSafeRepresentation {
+    /// The point in time when the system recorded the measurement.
     public let timestamp: Date
     /// The underlying sample.
     public let sample: Sample
+    
+    @inlinable public var timeRange: Range<Date> {
+        timestamp..<timestamp
+    }
     
     @inlinable
     init(timestamp: Date, sample: Sample) {
@@ -30,6 +35,12 @@ public struct DefaultSensorKitSampleSafeRepresentation<Sample: Hashable & Sendab
     @inlinable
     public subscript<T>(dynamicMember keyPath: KeyPath<Sample, T>) -> T {
         sample[keyPath: keyPath]
+    }
+}
+
+extension DefaultSensorKitSampleSafeRepresentation: Identifiable where Sample: Identifiable {
+    public var id: Sample.ID {
+        sample.id
     }
 }
 

@@ -65,13 +65,13 @@ extension AnySensor {
     /// The recommended batch size for fetching data from this sensor.
     public var suggestedBatchSize: Duration {
         switch self {
-        case Sensor.onWrist, Sensor.visits:
+        case Sensor.onWrist, Sensor.visits, Sensor.wristTemperature:
             .days(1)
         default:
             if #available(iOS 17.4, *), self == Sensor.ecg {
                 .days(1)
             } else {
-                .hours(2)
+                .hours(1)
             }
         }
     }

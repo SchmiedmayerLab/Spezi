@@ -12,13 +12,18 @@ public import Foundation
 
 extension CMRecordedPressureData: SensorKitSampleProtocol {
     public struct SafeRepresentation: SensorKitSampleSafeRepresentation {
-        public var timestamp: Date
+        /// The point in time when the system recorded the measurement.
+        public let timestamp: Date
         /// A value that uniquely identifies this measurement.
         public let identifier: UInt64
         /// The ambient pressure, in kPa (kilopascals).
         public let pressure: Measurement<UnitPressure>
         /// The ambient temperature, in C (degrees centrigrade).
         public let temperature: Measurement<UnitTemperature>
+        
+        @inlinable public var timeRange: Range<Date> {
+            timestamp..<timestamp
+        }
         
         @inlinable
         init(_ data: CMRecordedPressureData) {

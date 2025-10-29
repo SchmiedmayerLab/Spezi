@@ -87,7 +87,7 @@ extension AnySensor {
     
     /// Performs a batched fetch, using a managed query anchor.
     @available(iOS 18, *)
-    func fetchBatched(anchor: ManagedQueryAnchor) async throws -> some AsyncSequence<[Sample.SafeRepresentation], any Error> {
+    func fetchBatched(anchor: ManagedQueryAnchor) async throws -> some AsyncSequence<AnchoredAsyncDataFetcher<Self.Sample>.Element, any Error> {
         try await AnchoredAsyncDataFetcher(sensor: self, anchor: anchor)
     }
 }

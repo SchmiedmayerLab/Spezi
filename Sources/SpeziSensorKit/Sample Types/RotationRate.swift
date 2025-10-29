@@ -12,9 +12,14 @@ public import Foundation
 
 extension CMRecordedRotationRateData: SensorKitSampleProtocol {
     public struct SafeRepresentation: SensorKitSampleSafeRepresentation {
+        /// The point in time when the sample was recorded
         public let timestamp: Date
         /// The rotation rate measured by the gyroscope.
         public let rotationRate: CMRotationRate
+        
+        @inlinable public var timeRange: Range<Date> {
+            timestamp..<timestamp
+        }
         
         @inlinable
         init(_ sample: CMRecordedRotationRateData) {
