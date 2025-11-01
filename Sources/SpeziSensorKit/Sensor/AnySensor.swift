@@ -65,8 +65,9 @@ extension AnySensor {
     /// The recommended batch size for fetching data from this sensor.
     public var suggestedBatchSize: Duration {
         switch self {
-        case Sensor.onWrist, Sensor.visits, Sensor.wristTemperature:
-            .days(1)
+        case Sensor.onWrist, Sensor.visits, Sensor.wristTemperature, Sensor.deviceUsage:
+            // for the low-frequency sensors, it's fine (and in many cases in fact prefereble) to simply fetch everything at once.
+            .weeks(1)
         default:
             if #available(iOS 17.4, *), self == Sensor.ecg {
                 .days(1)
