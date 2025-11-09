@@ -289,7 +289,7 @@ final class StudyManagerTests {
             #expect(welcomeEvents.count { $0.isCompleted } == 1)
             #expect(welcomeEvents.count { !$0.isCompleted } == 0)
         }
-        try studyManager.unenroll(from: enrollment)
+        try await studyManager.unenroll(from: enrollment)
     }
     
     

@@ -78,7 +78,7 @@ struct HomeTab: View {
         .disabled(!enrollments.contains { $0.studyId == mockStudyV1.id && $0.studyRevision < mockStudyV3.studyDefinition.studyRevision })
         AsyncButton("Unenroll from Study", state: $viewState) {
             if let enrollment = enrollments.first {
-                try studyManager.unenroll(from: enrollment)
+                try await studyManager.unenroll(from: enrollment)
             }
         }.disabled(enrollments.isEmpty)
     }
