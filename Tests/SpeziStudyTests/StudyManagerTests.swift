@@ -338,6 +338,11 @@ final class StudyManagerTests {
             in: cal,
             participationStartDate: enrollmentDate
         )
+        let schedule6: Schedule = .fromRepeated(
+            .repeated(.monthly(day: nil, hour: 0, minute: 0), offset: .init(day: 5)),
+            in: cal,
+            participationStartDate: enrollmentDate
+        )
         let nextOccurrence = { (schedule: Schedule) -> Date? in
             schedule.occurrences(in: enrollmentDate.addingTimeInterval(1)..<Date.distantFuture).first { _ in true }?.start
         }
@@ -346,6 +351,7 @@ final class StudyManagerTests {
         #expect(try #require(nextOccurrence(schedule3)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 6))))
         #expect(try #require(nextOccurrence(schedule4)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 31))))
         #expect(try #require(nextOccurrence(schedule5)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 2))))
+        #expect(try #require(nextOccurrence(schedule6)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 5))))
     }
     
     

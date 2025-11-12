@@ -110,7 +110,7 @@ extension SpeziScheduler.Schedule {
                 calendar: cal,
                 interval: interval,
                 weekday: weekday ?? { () -> Locale.Weekday in
-                    guard let weekday = cal.dateComponents([.weekday], from: participationStartDate).weekday else {
+                    guard let weekday = cal.dateComponents([.weekday], from: addingOffset(participationStartDate, offset)).weekday else {
                         preconditionFailure("Unable to determine study enrollment weekday")
                     }
                     return cal.weekday(from: weekday)
@@ -126,7 +126,7 @@ extension SpeziScheduler.Schedule {
             return .monthly(
                 calendar: cal,
                 interval: interval,
-                day: day ?? cal.component(.day, from: participationStartDate),
+                day: day ?? cal.component(.day, from: addingOffset(participationStartDate, offset)),
                 hour: hour,
                 minute: minute,
                 second: 0,
