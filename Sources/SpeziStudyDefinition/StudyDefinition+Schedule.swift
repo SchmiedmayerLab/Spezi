@@ -121,16 +121,18 @@ extension StudyDefinition {
             
             /// Pattern defining how a repeating ``StudyDefinition/ComponentSchedule/ScheduleDefinition-swift.enum`` should repeat itself.
             public enum RepetitionPattern: StudyDefinitionElement { // swiftlint:disable:this nesting
-                /// A repetition pattern that will take effect daily, at the specified `hour` and `minute`.
-                case daily(interval: Int = 1, hour: Int, minute: Int = 0)
-                /// A repetition pattern that will take effect weekly, at the specified `weekday`, `hour`, and `minute`.
+                /// A repetition pattern that will take effect daily, at the specified time.
+                case daily(interval: Int = 1, hour: Int, minute: Int = 0, second: Int = 0)
+                /// A repetition pattern that will take effect weekly, at the specified `weekday` and time.
                 /// - parameter weekday: the day of the week at which the schedule should repeat.
                 ///     specifying `nil` causes the schedule to repeat weekly relative to the study enrollment date.
-                case weekly(interval: Int = 1, weekday: Locale.Weekday?, hour: Int, minute: Int = 0)
-                /// A repetition pattern that will take effect monthly, at the specified `day`, `hour`, and `minute`.
+                case weekly(interval: Int = 1, weekday: Locale.Weekday?, hour: Int, minute: Int = 0, second: Int = 0)
+                // swiftlint:disable:previous enum_case_associated_values_count
+                /// A repetition pattern that will take effect monthly, at the specified `day` and time.
                 /// - parameter day: the day of the month at which the schedule should repeat.
                 ///     specifying `nil` causes the schedule to repeat monthly relative to the study enrollment date.
-                case monthly(interval: Int = 1, day: Int?, hour: Int, minute: Int = 0)
+                case monthly(interval: Int = 1, day: Int?, hour: Int, minute: Int = 0, second: Int = 0)
+                // swiftlint:disable:previous enum_case_associated_values_count
             }
         }
         
@@ -195,29 +197,36 @@ extension StudyDefinition.ComponentSchedule.ScheduleDefinition: CustomStringConv
     }()
     
     public var description: String {
+        func fmtTime(hour: Int, minute: Int, second: Int, omitSecondsIfZero: Bool = true) -> String {
+            if omitSecondsIfZero && second == 0 {
+                String(format: "%.2d:%.2d", hour, minute)
+            } else {
+                String(format: "%.2d:%.2d:%.2d", hour, minute, second)
+            }
+        }
         switch self {
-        case let .repeated(.daily(interval, hour, minute), offset):
+        case let .repeated(.daily(interval, hour, minute, second), offset):
             let intervalDesc = switch interval {
             case ...0: ""
             case 1: "daily"
             default: "every \(Self.ordinalsFormatter.string(from: .init(value: interval)) ?? "\(interval)th") day"
             }
-            return "\(intervalDesc) @ \(String(format: "%.2d", hour)):\(String(format: "%.2d", minute))\(Self.offsetDesc(offset))"
-        case let .repeated(.weekly(interval, weekday, hour, minute), offset):
+            return "\(intervalDesc) @ \(fmtTime(hour: hour, minute: minute, second: second))\(Self.offsetDesc(offset))"
+        case let .repeated(.weekly(interval, weekday, hour, minute, second), offset):
             let intervalDesc = switch interval {
             case ...0: ""
             case 1: "weekly"
             default: "every \(Self.ordinalsFormatter.string(from: .init(value: interval)) ?? "\(interval)th") week"
             }
-            let timeDesc = "\(String(format: "%.2d", hour)):\(String(format: "%.2d", minute))\(Self.offsetDesc(offset))"
+            let timeDesc = "\(fmtTime(hour: hour, minute: minute, second: second))\(Self.offsetDesc(offset))"
             return "\(intervalDesc) @ \(weekday?.rawValue ?? "(study enrollment weekday)") \(timeDesc)"
-        case let .repeated(.monthly(interval, day, hour, minute), offset):
+        case let .repeated(.monthly(interval, day, hour, minute, second), offset):
             let intervalDesc = switch interval {
             case ...0: ""
             case 1: "monthly"
             default: "every \(Self.ordinalsFormatter.string(from: .init(value: interval)) ?? "\(interval)th") month"
             }
-            let timeDesc = "\(String(format: "%.2d", hour)):\(String(format: "%.2d", minute))\(Self.offsetDesc(offset))"
+            let timeDesc = "\(fmtTime(hour: hour, minute: minute, second: second))\(Self.offsetDesc(offset))"
             let dayDesc = day.map { "\(Self.ordinalsFormatter.string(from: .init(value: $0)) ?? "\($0)th") day" } ?? "(study enrollment day)"
             return "\(intervalDesc) @ \(dayDesc) \(timeDesc)"
         case let .once(.date(dateComponents)):

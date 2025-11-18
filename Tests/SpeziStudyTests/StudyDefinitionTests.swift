@@ -45,6 +45,7 @@ struct StudyDefinitionTests {
             timeZone: .berlin, year: 2025, month: 06, day: 27, hour: 13, minute: 37
         ))).description == "once; at 2025-06-27T11:37:00Z")
         #expect(Schedule.repeated(.daily(interval: 1, hour: 12, minute: 00)).description == "daily @ 12:00")
+        #expect(Schedule.repeated(.daily(interval: 1, hour: 12, minute: 00, second: 9)).description == "daily @ 12:00:09")
         #expect(Schedule.repeated(.daily(interval: 1, hour: 09, minute: 07)).description == "daily @ 09:07")
         #expect(Schedule.repeated(.daily(interval: 2, hour: 09, minute: 07)).description == "every 2nd day @ 09:07")
         #expect(Schedule.repeated(.daily(interval: 3, hour: 09, minute: 07)).description == "every 3rd day @ 09:07")

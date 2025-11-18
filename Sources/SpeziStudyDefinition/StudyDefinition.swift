@@ -84,7 +84,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 11, 0)
+    public static let schemaVersion = Version(0, 12, 0)
     
     /// The revision of the study.
     ///

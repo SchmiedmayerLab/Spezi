@@ -94,18 +94,18 @@ extension SpeziScheduler.Schedule {
             }
         }
         switch other {
-        case let .repeated(.daily(interval, hour, minute), offset):
+        case let .repeated(.daily(interval, hour, minute, second), offset):
             return .daily(
                 calendar: cal,
                 interval: interval,
                 hour: hour,
                 minute: minute,
-                second: 0,
+                second: second,
                 startingAt: addingOffset(participationStartDate, offset),
                 end: .never,
                 duration: .tillEndOfDay
             )
-        case let .repeated(.weekly(interval, weekday, hour, minute), offset):
+        case let .repeated(.weekly(interval, weekday, hour, minute, second), offset):
             return .weekly(
                 calendar: cal,
                 interval: interval,
@@ -117,19 +117,19 @@ extension SpeziScheduler.Schedule {
                 }(),
                 hour: hour,
                 minute: minute,
-                second: 0,
+                second: second,
                 startingAt: addingOffset(participationStartDate, offset),
                 end: .never,
                 duration: .tillEndOfDay
             )
-        case let .repeated(.monthly(interval, day, hour, minute), offset):
+        case let .repeated(.monthly(interval, day, hour, minute, second), offset):
             return .monthly(
                 calendar: cal,
                 interval: interval,
                 day: day ?? cal.component(.day, from: addingOffset(participationStartDate, offset)),
                 hour: hour,
                 minute: minute,
-                second: 0,
+                second: second,
                 startingAt: addingOffset(participationStartDate, offset),
                 end: .never,
                 duration: .tillEndOfDay
