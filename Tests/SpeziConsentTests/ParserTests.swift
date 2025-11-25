@@ -8,7 +8,7 @@
 
 import PDFKit
 @testable import SpeziConsent
-import SpeziFoundation
+@testable import SpeziFoundation
 import SwiftUI
 import Testing
 
@@ -86,13 +86,28 @@ struct ConsentParserTests {
         #expect(document.metadata.isEmpty)
         #expect(document.sections == [
             .markdown("Hello *there* :)"),
-            .toggle(.init(id: "toggle1", prompt: "Prompt1", initialValue: true, expectedValue: false)),
-            .toggle(.init(id: "toggle2", prompt: "Prompt2", initialValue: false, expectedValue: true)),
-            .toggle(.init(id: "toggle3", prompt: "Prompt3", initialValue: false, expectedValue: true)),
+            .toggle(.init(
+                id: "toggle1",
+                text: MarkdownDocument(metadata: [:], blocks: [.markdown(id: nil, rawContents: "Prompt1")]),
+                initialValue: true,
+                expectedValue: false
+            )),
+            .toggle(.init(
+                id: "toggle2",
+                text: MarkdownDocument(metadata: [:], blocks: [.markdown(id: nil, rawContents: "Prompt2")]),
+                initialValue: false,
+                expectedValue: true
+            )),
+            .toggle(.init(
+                id: "toggle3",
+                text: MarkdownDocument(metadata: [:], blocks: [.markdown(id: nil, rawContents: "Prompt3")]),
+                initialValue: false,
+                expectedValue: true
+            )),
             .markdown("some more markdown"),
             .select(.init(
                 id: "select1",
-                prompt: "Please select your preference",
+                text: MarkdownDocument(metadata: [:], blocks: [.markdown(id: nil, rawContents: "Please select your preference")]),
                 options: [
                     .init(id: "option1", title: "Option1"),
                     .init(id: "option2", title: "Option2")
@@ -131,7 +146,7 @@ struct ConsentParserTests {
         #expect(document.sections == [
             .select(.init(
                 id: "select1",
-                prompt: "",
+                text: MarkdownDocument(metadata: [:], blocks: []),
                 options: [.init(id: "option1", title: "Text")],
                 initialValue: "option1",
                 expectedSelection: .anything(allowEmptySelection: true)
@@ -154,7 +169,41 @@ struct ConsentParserTests {
         #expect(document.sections == [
             .select(.init(
                 id: "select1",
-                prompt: "Please select your preferred option",
+                text: MarkdownDocument(metadata: [:], blocks: [
+                    .markdown(id: nil, rawContents: "Please select"),
+                    .markdown(id: nil, rawContents: "your preferred option")
+                ]),
+                options: [.init(id: "o1", title: "T1"), .init(id: "o2", title: "T2")],
+                initialValue: "",
+                expectedSelection: .anything(allowEmptySelection: false)
+            ))
+        ])
+    }
+    
+    @Test
+    @MainActor
+    func select2() throws {
+        let input = """
+            <select id=select1 expected-value="*">
+                Please select your preferred option
+                <footnote>You can change this later in Settings...</footnote>
+                <option id=o1>T1</>
+                <option id=o2>T2</>
+            </select>
+            """
+        let document = try ConsentDocument(markdown: input)
+        #expect(document.sections == [
+            .select(.init(
+                id: "select1",
+                text: MarkdownDocument(metadata: [:], blocks: [
+                    .markdown(id: nil, rawContents: "Please select your preferred option"),
+                    .customElement(.init(
+                        name: "footnote",
+                        attributes: [],
+                        content: [.text("You can change this later in Settings...")],
+                        raw: "<footnote>You can change this later in Settings...</footnote>"
+                    ))
+                ]),
                 options: [.init(id: "o1", title: "T1"), .init(id: "o2", title: "T2")],
                 initialValue: "",
                 expectedSelection: .anything(allowEmptySelection: false)

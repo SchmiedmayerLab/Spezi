@@ -17,44 +17,57 @@ extension ConsentDocument.Section {
         case other(String)
     }
     
-    static func toggle(_ element: MarkdownDocument.CustomElement) throws(ConstructSectionError) -> Self {
+    /// The HTML tag names that are allowed to appear in a `toggle` or `select` element's children that should be used to build up the element's text content.
+    private static let allowedNestedTextContentTagNames: Set = ["footnote"]
+    
+    static func toggle(_ element: MarkdownDocument.CustomElement, in document: MarkdownDocument) throws(ConstructSectionError) -> Self {
         guard let id = element[attribute: "id"], !id.isEmpty else {
             throw .missingAttribute("id")
         }
-        guard case .text(let prompt) = element.content.first else {
+        guard !element.content.isEmpty else {
             throw .missingField("prompt")
         }
         let defaultValue = element[attribute: "initial-value"].flatMap { Bool($0) } ?? false
         let expectedValue = element[attribute: "expected-value"].flatMap { Bool($0) }
-        return .toggle(.init(id: id, prompt: prompt, initialValue: defaultValue, expectedValue: expectedValue))
+        return .toggle(.init(
+            id: id,
+            text: MarkdownDocument(
+                blocks: element.content,
+                allowedNestedCustomElements: allowedNestedTextContentTagNames,
+                baseUrl: document.baseUrl
+            ),
+            initialValue: defaultValue,
+            expectedValue: expectedValue
+        ))
     }
     
     // swiftlint:disable:next function_body_length cyclomatic_complexity
-    static func select(_ element: MarkdownDocument.CustomElement) throws(ConstructSectionError) -> Self {
+    static func select(_ element: MarkdownDocument.CustomElement, in document: MarkdownDocument) throws(ConstructSectionError) -> Self {
         guard let id = element[attribute: "id"], !id.isEmpty else {
             throw .missingAttribute("id")
         }
-        var prompt = ""
         var options: [ConsentDocument.SelectionOption] = []
         for thing in element.content {
             switch thing {
-            case .text(let text):
-                if prompt.isEmpty {
-                    prompt = text
-                } else {
-                    prompt.append(" " + text)
-                }
+            case .text:
+                break
             case .element(let element):
-                guard element.name == "option" else {
-                    throw .unexpectedElement(element.name)
+                switch element.name {
+                case "option":
+                    guard let optionId = element[attribute: "id"], !id.isEmpty else {
+                        throw .missingAttribute("option.id")
+                    }
+                    guard case .text(let prompt) = element.content.first else {
+                        throw .missingField("option.content")
+                    }
+                    options.append(.init(id: optionId, title: prompt))
+                default:
+                    if allowedNestedTextContentTagNames.contains(element.name) {
+                        break
+                    } else {
+                        throw .unexpectedElement(element.name)
+                    }
                 }
-                guard let optionId = element[attribute: "id"], !id.isEmpty else {
-                    throw .missingAttribute("option.id")
-                }
-                guard case .text(let prompt) = element.content.first else {
-                    throw .missingField("option.content")
-                }
-                options.append(.init(id: optionId, title: prompt))
             }
         }
         let initialValue = element[attribute: "initial-value"] ?? ConsentDocument.SelectConfig.emptySelection
@@ -79,7 +92,11 @@ extension ConsentDocument.Section {
         }()
         return .select(.init(
             id: id,
-            prompt: prompt,
+            text: MarkdownDocument(
+                blocks: element.content,
+                allowedNestedCustomElements: allowedNestedTextContentTagNames,
+                baseUrl: document.baseUrl
+            ),
             options: options,
             initialValue: initialValue,
             expectedSelection: expectedSelection
@@ -91,5 +108,37 @@ extension ConsentDocument.Section {
             throw .missingField("id")
         }
         return .signature(.init(id: id))
+    }
+}
+
+
+extension MarkdownDocument {
+    /// Creates a `MarkdownDocument` from the children of a `CustomElement`.
+    ///
+    /// - parameter children: The `MarkdownDocument.CustomElement.Content` children of the custom element
+    /// - parameter allowedNestedCustomElements: The HTML tag names that are allowed to appear in `children`.
+    ///     Any children whose tag names are not explicitly allowed will be skipped.
+    /// - parameter baseUrl: The base URL of the resulting document.
+    init(
+        blocks children: some Sequence<MarkdownDocument.CustomElement.Content>,
+        allowedNestedCustomElements: Set<String>,
+        baseUrl: URL?
+    ) {
+        self.init(
+            metadata: [:],
+            blocks: children.compactMap { content in
+                switch content {
+                case .text(let text):
+                    .markdown(id: nil, rawContents: text)
+                case .element(let element):
+                    if allowedNestedCustomElements.contains(element.name) {
+                        .customElement(element)
+                    } else {
+                        nil
+                    }
+                }
+            },
+            baseUrl: baseUrl
+        )
     }
 }

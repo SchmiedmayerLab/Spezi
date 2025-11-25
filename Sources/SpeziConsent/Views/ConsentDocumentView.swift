@@ -6,12 +6,13 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
-import MarkdownUI
-import PencilKit
-import SpeziPersonalInfo
-import SpeziViews
-import SwiftUI
+public import Foundation
+private import MarkdownUI
+private import PencilKit
+private import SpeziFoundation
+private import SpeziPersonalInfo
+private import SpeziViews
+public import SwiftUI
 
 /// Display a markdown-based ``ConsentDocument`` that can be filled out, signed, and exported.
 ///
@@ -32,25 +33,22 @@ public struct ConsentDocumentView: View {
     private let signatureDateFormat: Date.FormatStyle
     
     public var body: some View {
-//        GeometryReader { geometry in
-            MarkdownView(
-                markdownDocument: consentDocument.markdownDocument,
-                dividerRule: .init { blockIdx, _ -> Bool in
-                    let section = consentDocument.sections[blockIdx]
-                    let nextSection = consentDocument.sections[blockIdx + 1]
-                    return (section.isMarkdown && !nextSection.isMarkdown || !section.isMarkdown) && !nextSection.isSignature
-                }
-            ) { blockIdx, _ in
+        MarkdownView(
+            document: consentDocument.markdownDocument,
+            dividerRule: .init { blockIdx, _ -> Bool in
                 let section = consentDocument.sections[blockIdx]
-                if section.isSignature && blockIdx == consentDocument.sections.endIndex - 1 {
-                    // if the last section is a signature, we add a spacer.
-                    // this means that, if the consent is short, we push the signature field down all the way to the bottom of the screen.
-                    Spacer()
-                }
-                view(for: section)
+                let nextSection = consentDocument.sections[blockIdx + 1]
+                return (section.isMarkdown && !nextSection.isMarkdown || !section.isMarkdown) && !nextSection.isSignature
             }
-//            .frame(minHeight: geometry.size.height)
-//        }
+        ) { blockIdx, _ in
+            let section = consentDocument.sections[blockIdx]
+            if section.isSignature && blockIdx == consentDocument.sections.endIndex - 1 {
+                // if the last section is a signature, we add a spacer.
+                // this means that, if the consent is short, we push the signature field down all the way to the bottom of the screen.
+                Spacer()
+            }
+            view(for: section)
+        }
     }
     
     /// Creates a `ConsentDocumentView`, which renders a consent document with a markdown view.
@@ -80,10 +78,9 @@ public struct ConsentDocumentView: View {
             let _ = preconditionFailure("unreachable") // swiftlint:disable:this redundant_discardable_let
         case .toggle(let config):
             let valueBinding = consentDocument.binding(for: config)
-            Toggle(
-                config.prompt,
-                isOn: valueBinding
-            )
+            Toggle(isOn: valueBinding) {
+                InteractiveElementLabel(text: config.text)
+            }
             .accessibilityIdentifier(for: config)
             // Goal: we want a Toggle that can be toggled by tapping anywhere in its frame.
             // Issue: using only `.onTapGesture` doesn't quite work, since that'll only trigger for touches that are in the
@@ -130,7 +127,7 @@ extension ConsentDocumentView {
         
         var body: some View {
             HStack {
-                Text(config.prompt)
+                InteractiveElementLabel(text: config.text)
                 Spacer()
                 Picker("", selection: $selection) {
                     Text(ConsentDocument.SelectConfig.emptySelectionDefaultTitle)
@@ -153,6 +150,37 @@ extension ConsentDocumentView {
                 nil
             case .option, .anything(allowEmptySelection: false):
                 selection == ConsentDocument.SelectConfig.emptySelection ? .red : nil
+            }
+        }
+    }
+}
+
+
+extension ConsentDocumentView {
+    private struct InteractiveElementLabel: View {
+        let text: MarkdownDocument
+        
+        var body: some View {
+            MarkdownView(document: text, dividerRule: .never) { _, element in
+                switch element.name {
+                case "footnote":
+                    let plainText = String(element.content.plainTextContents.trimmingWhitespaceInLines())
+                    HStack {
+                        if let attrString = try? AttributedString(
+                            markdown: plainText,
+                            options: .init(interpretedSyntax: .inlineOnly, failurePolicy: .returnPartiallyParsedIfPossible)
+                        ) {
+                            Text(attrString)
+                        } else {
+                            Text(plainText)
+                        }
+                        Spacer()
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                default:
+                    EmptyView()
+                }
             }
         }
     }

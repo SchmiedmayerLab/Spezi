@@ -6,10 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-import PencilKit
-import SpeziFoundation
-import SpeziViews
-import SwiftUI
+private import PencilKit
+private import SpeziFoundation
+public import SpeziViews
+public import SwiftUI
 
 
 /// Share a PDF representation of a ``ConsentDocument``.

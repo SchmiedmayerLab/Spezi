@@ -6,11 +6,11 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
-import PencilKit
-import SpeziPersonalInfo
-import SpeziViews
-import SwiftUI
+private import Foundation
+private import PencilKit
+private import SpeziPersonalInfo
+private import SpeziViews
+public import SwiftUI
 
 
 /// A Signature Form consisting of text fields for name entry, and a canvas for drawing a signature.

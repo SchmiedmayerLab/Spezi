@@ -41,10 +41,13 @@ extension ConsentDocument {
     }
     
     private static func load(nameInBundle: String) -> ConsentDocument {
-        guard let url = Bundle.main.url(forResource: nameInBundle, withExtension: "md"),
-              let doc = try? ConsentDocument(contentsOf: url) else {
-            preconditionFailure("Unable to load ConsentDocument '\(nameInBundle)'")
+        guard let url = Bundle.main.url(forResource: nameInBundle, withExtension: "md") else {
+            preconditionFailure("Unable to find URL for '\(nameInBundle)'")
         }
-        return doc
+        do {
+            return try ConsentDocument(contentsOf: url)
+        } catch {
+            fatalError("Unable to load ConsentDocument '\(nameInBundle)': \(error)")
+        }
     }
 }

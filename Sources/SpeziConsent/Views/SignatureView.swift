@@ -6,10 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-import PencilKit
-import SpeziFoundation
-import SpeziViews
-import SwiftUI
+public import PencilKit
+private import SpeziFoundation
+private import SpeziViews
+public import SwiftUI
 
 
 /// Input freeform signatures using a finger or the Apple Pencil.

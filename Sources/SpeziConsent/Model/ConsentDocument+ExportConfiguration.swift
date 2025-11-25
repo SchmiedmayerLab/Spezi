@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import SpeziViews
-import SwiftUI
+public import SwiftUI
 import TPPDF
 
 

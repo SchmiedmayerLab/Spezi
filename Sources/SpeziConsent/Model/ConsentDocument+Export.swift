@@ -7,9 +7,9 @@
 //
 
 import PDFKit
-import PencilKit
-import SwiftUI
-import TPPDF
+private import PencilKit
+import SpeziFoundation
+private import TPPDF
 
 
 @MainActor
@@ -115,7 +115,7 @@ extension PDFRenderer {
         table.widths = [0.8, 0.2] // sadly can't make this dynamic :/
         table.style.outline = .none
         table[0, 0] = PDFTableCell(
-            content: try .init(content: toggleConfig.prompt),
+            content: try .init(content: toggleConfig.text.plainTextContents),
             alignment: .left,
             style: cellStyle
         )
@@ -139,7 +139,7 @@ extension PDFRenderer {
         table.widths = [0.75, 0.25] // sadly can't make this dynamic :/
         table.style.outline = .none
         table[0, 0] = PDFTableCell(
-            content: try .init(content: selectConfig.prompt),
+            content: try .init(content: selectConfig.text.plainTextContents),
             alignment: .left,
             style: cellStyle
         )
@@ -227,4 +227,38 @@ extension ConsentDocument.SignatureStorage {
             .withTintColor(.black)
     }
     #endif
+}
+
+
+extension MarkdownDocument {
+    /// The markdown document's contents, as a plain-text representation.
+    ///
+    /// - Note: The String returned here is not guaranteed to retain all content from the markdown document.
+    ///     Elements which cannot be represented will be omitted.
+    ///     Additionally, the markdown syntax will not necessarily be stripped from the text.
+    fileprivate var plainTextContents: String {
+        blocks.reduce(into: "") { plainText, block in
+            switch block {
+            case .markdown(id: _, let rawContents):
+                plainText.append("\n\n\(rawContents)")
+            case .customElement(let element):
+                plainText.append("\n\n\(element.content.plainTextContents)")
+            }
+        }
+    }
+}
+
+
+extension Sequence where Element == MarkdownDocument.CustomElement.Content {
+    var plainTextContents: String {
+        reduce(into: "") { result, element in
+            switch element {
+            case .text(let string):
+                result.append("\n\(string)")
+            case .element(let customElement):
+                result.append("\n\(customElement.content.plainTextContents)")
+            }
+        }
+        .trimmingWhitespace()
+    }
 }

@@ -6,11 +6,12 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
-import PencilKit
-import SpeziFoundation
+private import Foundation
+public import Observation
+public import class PDFKit.PDFDocument
+public import PencilKit
+public import SpeziFoundation
 import SwiftUI
-import class PDFKit.PDFDocument
 
 
 /// Represents and manages a Markdown-based (potentially interactive) Consent Document.
@@ -250,14 +251,16 @@ public final class ConsentDocument: Sendable {
     /// - parameter markdown: The Markdown input
     /// - parameter initialName: The default name that should be used for signature forms embedded in the Document
     public init(markdown: String, initialName: PersonNameComponents? = nil) throws(LoadError) {
+        let doc: MarkdownDocument
         do {
-            markdownDocument = try MarkdownDocument(
+            doc = try MarkdownDocument(
                 processing: markdown,
-                customElementNames: ["toggle", "select", "signature", "option"]
+                customElementNames: ["toggle", "select", "signature", "option", "footnote"]
             )
         } catch {
             throw LoadError.failedToParse(error)
         }
+        markdownDocument = doc
         sections = try markdownDocument.blocks.map { block throws(LoadError) -> Section in
             switch block {
             case .markdown(id: _, let rawContents):
@@ -266,9 +269,9 @@ public final class ConsentDocument: Sendable {
                 do {
                     switch parsedElement.name {
                     case "toggle":
-                        return try Section.toggle(parsedElement)
+                        return try Section.toggle(parsedElement, in: doc)
                     case "select":
-                        return try Section.select(parsedElement)
+                        return try Section.select(parsedElement, in: doc)
                     case "signature":
                         return try Section.signature(parsedElement)
                     default:
@@ -414,5 +417,16 @@ extension ConsentDocument: Identifiable, Hashable {
     
     nonisolated public func hash(into hasher: inout Hasher) {
         hasher.combine(ObjectIdentifier(self))
+    }
+}
+
+
+extension StringProtocol {
+    func trimmingWhitespaceInLines() -> some Sequence<Character> {
+        self
+            .lazy
+            .split(separator: "\n")
+            .map { $0.trimmingWhitespace() }
+            .joined(by: "\n")
     }
 }

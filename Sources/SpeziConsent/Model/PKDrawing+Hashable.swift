@@ -6,8 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
-import PencilKit
+private import Foundation
+public import PencilKit
 
 
 extension PKDrawing: @retroactive Hashable {

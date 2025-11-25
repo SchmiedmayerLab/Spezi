@@ -6,10 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
-import SpeziOnboarding
-import SpeziViews
-import SwiftUI
+public import Foundation
+private import SpeziOnboarding
+public import SpeziViews
+public import SwiftUI
 
 
 /// Onboarding view to display markdown-based consent documents that can be signed and exported.

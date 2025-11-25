@@ -38,18 +38,21 @@ struct StandaloneConsent: View {
         .scrollIndicators(.visible)
         .navigationTitle(consentDocument?.metadata.title ?? "")
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                AsyncButton("Done", state: $viewState) {
+            ToolbarItem(placement: .topBarLeading) {
+                AsyncButton(state: $viewState) {
                     guard let consentDocument else {
                         return
                     }
                     consentStorage.exportResults[docId] = try consentDocument.export(using: .init())
                     dismiss()
+                } label: {
+                    Image(systemName: "checkmark")
+                        .accessibilityLabel("Done")
                 }
-                .bold()
+                .buttonStyleGlassProminent()
                 .disabled(consentDocument?.completionState != .complete)
             }
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .topBarTrailing) {
                 ConsentShareButton(
                     consentDocument: consentDocument,
                     viewState: $viewState
