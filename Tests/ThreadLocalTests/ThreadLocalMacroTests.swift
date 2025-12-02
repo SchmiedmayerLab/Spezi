@@ -8,12 +8,12 @@
 
 #if os(macOS) // macro tests can only be run on the host machine
 import Foundation
-import ThreadLocal
-import ThreadLocalMacros
 import SwiftSyntaxMacroExpansion
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosGenericTestSupport
 import Testing
+import ThreadLocal
+import ThreadLocalMacros
 
 let testMacrosSpecs: [String: MacroSpec] = [
     "ThreadLocal": MacroSpec(type: ThreadLocalMacro.self)
@@ -40,6 +40,30 @@ struct ThreadLocalMacroTests {
             }
             
             private static let _counter = ThreadLocal<Int>()
+            """,
+            macroSpecs: testMacrosSpecs,
+            failureHandler: { Issue.record("\($0.message)") }
+        )
+    }
+    
+    @Test
+    func inlinable() {
+        assertMacroExpansion(
+            """
+            @ThreadLocal @inlinable static var counter: Int = 0
+            """,
+            expandedSource:
+            """
+            @inlinable static var counter: Int {
+                get {
+                    _counter._get(default: 0)
+                }
+                set {
+                    _counter._set(newValue)
+                }
+            }
+            
+            @usableFromInline internal static let _counter = ThreadLocal<Int>()
             """,
             macroSpecs: testMacrosSpecs,
             failureHandler: { Issue.record("\($0.message)") }

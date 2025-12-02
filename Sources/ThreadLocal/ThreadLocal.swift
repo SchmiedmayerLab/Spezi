@@ -6,8 +6,14 @@
 // SPDX-License-Identifier: MIT
 //
 
+// swiftlint:disable type_name identifier_name
+
 import Foundation
-import pthread
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
 
 
 /// Manages a thread-local defined via the ``ThreadLocal()`` macro.
@@ -17,22 +23,30 @@ public final class ThreadLocal<Value>: Sendable {
     nonisolated(unsafe) public private(set) var _key: pthread_key_t
     public let _deallocator: Deallocator
     
-    @_unavailableFromAsync
-    public init(_deallocator deallocator: Deallocator = .default) {
-        _key = pthread_key_t()
-        pthread_key_create(&_key) { (ptr: UnsafeMutableRawPointer) in
-            unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
-        }
-        self._deallocator = deallocator
-    }
-    
-    @inlinable
-    var _box: _Box? {
+    @inlinable var _box: _Box? {
         guard let ptr = pthread_getspecific(_key) else {
             return nil
         }
         let unmanaged = Unmanaged<_Box>.fromOpaque(ptr)
         return unmanaged.takeUnretainedValue()
+    }
+    
+    @_unavailableFromAsync
+    public init(_deallocator deallocator: Deallocator = .default) {
+        _key = pthread_key_t()
+        _deallocator = deallocator
+        #if os(Linux)
+        let destroyFn: @convention(c) (UnsafeMutableRawPointer?) -> Void = { ptr in
+            if let ptr {
+                unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
+            }
+        }
+        #else
+        let destroyFn: @convention(c) (UnsafeMutableRawPointer) -> Void = { ptr in
+            unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
+        }
+        #endif
+        pthread_key_create(&_key, destroyFn)
     }
     
     @inlinable

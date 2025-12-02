@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import ThreadLocal
 import Testing
+import ThreadLocal
 
 
 @Suite
@@ -39,6 +39,5 @@ struct ThreadLocalTests {
             thread.cancel()
         }
         sleep(1)
-        fatalError()
     }
 }

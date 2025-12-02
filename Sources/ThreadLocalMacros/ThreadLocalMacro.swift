@@ -65,12 +65,6 @@ extension ThreadLocalMacro: AccessorMacro {
 }
 
 
-extension VariableDeclSyntax {
-    var isStatic: Bool {
-        modifiers.contains(where: { $0.name.trimmed.text == "static" })
-    }
-}
-
 extension ThreadLocalMacro: PeerMacro {
     public static func expansion( // swiftlint:disable:this function_body_length cyclomatic_complexity
         of node: AttributeSyntax,
@@ -130,8 +124,34 @@ extension ThreadLocalMacro: PeerMacro {
             throw SimpleError("unexpected")
         }
         
+        let attrs: AttributeSyntax? = variableDeclaration.isInlinable ? "@usableFromInline" : nil
+        let modifiers = DeclModifierSyntax(name: variableDeclaration.isInlinable ? "internal" : "private")
+        
         return [
-            "private static let _\(identifier) = ThreadLocal<\(valueTypeInitializer.trimmed)>(\(args))"
+            "\(attrs) \(modifiers) static let _\(identifier) = ThreadLocal<\(valueTypeInitializer.trimmed)>(\(args))"
         ]
+    }
+}
+
+
+// MARK: Utils
+
+extension VariableDeclSyntax {
+    var isStatic: Bool {
+        modifiers.contains { $0.name.trimmed.text == "static" }
+    }
+    var isInlinable: Bool {
+        attributes.contains { $0.attribute?.attributeName.trimmed.as(IdentifierTypeSyntax.self)?.name.text == "inlinable" }
+    }
+}
+
+extension AttributeListSyntax.Element {
+    var attribute: AttributeSyntax? {
+        switch self {
+        case .attribute(let attr):
+            attr
+        case .ifConfigDecl:
+            nil
+        }
     }
 }
