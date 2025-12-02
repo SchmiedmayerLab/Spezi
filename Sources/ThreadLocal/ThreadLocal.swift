@@ -7,9 +7,6 @@
 //
 
 import Foundation
-//#if canImport(pthread)
-//import pthread
-//#else
 #if os(Linux)
 import Glibc
 #else
@@ -27,10 +24,18 @@ public final class ThreadLocal<Value>: Sendable {
     @_unavailableFromAsync
     public init(_deallocator deallocator: Deallocator = .default) {
         _key = pthread_key_t()
-//        let destroyFn: @convention(c)
-        pthread_key_create(&_key) { (ptr: UnsafeMutableRawPointer) in
+        #if os(Linux)
+        let destroyFn: @convention(c) (UnsafeMutableRawPointer?) -> Void = { ptr in
+            if let ptr {
+                unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
+            }
+        }
+        #else
+        let destroyFn: @convention(c) (UnsafeMutableRawPointer) -> Void = { ptr in
             unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
         }
+        #endif
+        pthread_key_create(&_key, destroyFn)
         self._deallocator = deallocator
     }
     
