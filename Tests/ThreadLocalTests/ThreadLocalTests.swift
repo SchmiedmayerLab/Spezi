@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import ThreadLocal
 import Testing
+import ThreadLocal
 
 
 @Suite

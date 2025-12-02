@@ -8,12 +8,12 @@
 
 #if os(macOS) // macro tests can only be run on the host machine
 import Foundation
-import ThreadLocal
-import ThreadLocalMacros
 import SwiftSyntaxMacroExpansion
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosGenericTestSupport
 import Testing
+import ThreadLocal
+import ThreadLocalMacros
 
 let testMacrosSpecs: [String: MacroSpec] = [
     "ThreadLocal": MacroSpec(type: ThreadLocalMacro.self)

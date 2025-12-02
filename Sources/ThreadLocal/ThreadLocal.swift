@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+// swiftlint:disable type_name identifier_name
+
 import Foundation
 #if os(Linux)
 import Glibc
@@ -20,6 +22,14 @@ import Darwin.C
 public final class ThreadLocal<Value>: Sendable {
     nonisolated(unsafe) public private(set) var _key: pthread_key_t
     public let _deallocator: Deallocator
+    
+    @inlinable var _box: _Box? {
+        guard let ptr = pthread_getspecific(_key) else {
+            return nil
+        }
+        let unmanaged = Unmanaged<_Box>.fromOpaque(ptr)
+        return unmanaged.takeUnretainedValue()
+    }
     
     @_unavailableFromAsync
     public init(_deallocator deallocator: Deallocator = .default) {
@@ -37,15 +47,6 @@ public final class ThreadLocal<Value>: Sendable {
         }
         #endif
         pthread_key_create(&_key, destroyFn)
-    }
-    
-    @inlinable
-    var _box: _Box? {
-        guard let ptr = pthread_getspecific(_key) else {
-            return nil
-        }
-        let unmanaged = Unmanaged<_Box>.fromOpaque(ptr)
-        return unmanaged.takeUnretainedValue()
     }
     
     @inlinable
