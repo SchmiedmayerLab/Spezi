@@ -7,12 +7,14 @@
 //
 
 import Foundation
-//#if os(Linux)
-//import Glibc
-//#else
-//import Darwin.C
-//#endif
+//#if canImport(pthread)
 //import pthread
+//#else
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
 
 
 /// Manages a thread-local defined via the ``ThreadLocal()`` macro.
@@ -25,6 +27,7 @@ public final class ThreadLocal<Value>: Sendable {
     @_unavailableFromAsync
     public init(_deallocator deallocator: Deallocator = .default) {
         _key = pthread_key_t()
+//        let destroyFn: @convention(c)
         pthread_key_create(&_key) { (ptr: UnsafeMutableRawPointer) in
             unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
         }
