@@ -39,6 +39,5 @@ struct ThreadLocalTests {
             thread.cancel()
         }
         sleep(1)
-        fatalError()
     }
 }

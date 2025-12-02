@@ -24,6 +24,7 @@ public final class ThreadLocal<Value>: Sendable {
     @_unavailableFromAsync
     public init(_deallocator deallocator: Deallocator = .default) {
         _key = pthread_key_t()
+        _deallocator = deallocator
         #if os(Linux)
         let destroyFn: @convention(c) (UnsafeMutableRawPointer?) -> Void = { ptr in
             if let ptr {
@@ -36,7 +37,6 @@ public final class ThreadLocal<Value>: Sendable {
         }
         #endif
         pthread_key_create(&_key, destroyFn)
-        self._deallocator = deallocator
     }
     
     @inlinable
