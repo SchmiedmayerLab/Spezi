@@ -7,7 +7,12 @@
 //
 
 import Foundation
-import pthread
+//#if os(Linux)
+//import Glibc
+//#else
+//import Darwin.C
+//#endif
+//import pthread
 
 
 /// Manages a thread-local defined via the ``ThreadLocal()`` macro.
