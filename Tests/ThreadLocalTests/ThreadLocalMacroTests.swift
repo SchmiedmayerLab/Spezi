@@ -47,6 +47,30 @@ struct ThreadLocalMacroTests {
     }
     
     @Test
+    func inlinable() {
+        assertMacroExpansion(
+            """
+            @ThreadLocal @inlinable static var counter: Int = 0
+            """,
+            expandedSource:
+            """
+            @inlinable static var counter: Int {
+                get {
+                    _counter._get(default: 0)
+                }
+                set {
+                    _counter._set(newValue)
+                }
+            }
+            
+            @usableFromInline internal static let _counter = ThreadLocal<Int>()
+            """,
+            macroSpecs: testMacrosSpecs,
+            failureHandler: { Issue.record("\($0.message)") }
+        )
+    }
+    
+    @Test
     func customDeallocator() {
         assertMacroExpansion(
             """
