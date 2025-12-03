@@ -1,5 +1,15 @@
 # ``ThreadLocal``
 
+<!--
+#
+# This source file is part of the ThreadLocal open source project
+#
+# SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#       
+-->
+
 Thread-local variables for Swift.
 
 ## Overview
