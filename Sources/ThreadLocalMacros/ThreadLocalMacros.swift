@@ -11,6 +11,6 @@ import SwiftSyntaxMacros
 
 
 @main
-struct SpeziSchedulerMacros: CompilerPlugin {
+struct ThreadLocalMacros: CompilerPlugin {
     var providingMacros: [any Macro.Type] = [ThreadLocalMacro.self]
 }

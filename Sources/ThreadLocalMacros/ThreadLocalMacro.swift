@@ -72,7 +72,7 @@ extension ThreadLocalMacro: PeerMacro {
         in context: some MacroExpansionContext
     ) throws -> [DeclSyntax] {
         guard let variableDeclaration = declaration.as(VariableDeclSyntax.self) else {
-            throw DiagnosticsError(syntax: declaration, message: "'@Property' can only be applied to a 'var' declaration", id: .invalidSyntax)
+            throw DiagnosticsError(syntax: declaration, message: "'@ThreadLocal' can only be applied to a 'var' declaration", id: .invalidSyntax)
         }
         guard variableDeclaration.isStatic else {
             // not reporting an error here bc the other function above is already taking care of that.
@@ -82,14 +82,14 @@ extension ThreadLocalMacro: PeerMacro {
               variableDeclaration.bindings.count == 1 else {
             throw DiagnosticsError(
                 syntax: declaration,
-                message: "'@Property' can only be applied to a 'var' declaration with a single binding",
+                message: "'@ThreadLocal' can only be applied to a 'var' declaration with a single binding",
                 id: .invalidSyntax
             )
         }
         guard let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier else {
             throw DiagnosticsError(
                 syntax: declaration,
-                message: "'@Property' can only be applied to a 'var' declaration with a simple name",
+                message: "'@ThreadLocal' can only be applied to a 'var' declaration with a simple name",
                 id: .invalidSyntax
             )
         }

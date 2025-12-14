@@ -18,7 +18,8 @@ import Darwin.C
 
 /// Manages a thread-local defined via the ``ThreadLocal()`` macro.
 ///
-/// You do not use this type directly. Instead, your code interacts with thread-local variables by simply directly accessing them via their getter and setter.
+/// You do not use this type directly.
+/// Instead, your code interacts with thread-local variables by simply directly accessing them via their getter and setter.
 public final class ThreadLocal<Value>: Sendable {
     nonisolated(unsafe) public private(set) var _key: pthread_key_t
     public let _deallocator: Deallocator
@@ -38,15 +39,16 @@ public final class ThreadLocal<Value>: Sendable {
         #if os(Linux)
         let destroyFn: @convention(c) (UnsafeMutableRawPointer?) -> Void = { ptr in
             if let ptr {
-                unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
+                Unmanaged<AnyObject>.fromOpaque(ptr).release()
             }
         }
         #else
         let destroyFn: @convention(c) (UnsafeMutableRawPointer) -> Void = { ptr in
-            unsafeBitCast(ptr, to: Unmanaged<AnyObject>.self).release()
+            Unmanaged<AnyObject>.fromOpaque(ptr).release()
         }
         #endif
-        pthread_key_create(&_key, destroyFn)
+        let status = pthread_key_create(&_key, destroyFn)
+        precondition(status == 0, "pthread_key_create failed with status code \(status)")
     }
     
     @inlinable
@@ -84,6 +86,10 @@ public final class ThreadLocal<Value>: Sendable {
             let unmanaged = Unmanaged.passRetained(_makeBox(newValue))
             pthread_setspecific(_key, unmanaged.toOpaque())
         }
+    }
+    
+    deinit {
+        pthread_key_delete(_key)
     }
 }
 
