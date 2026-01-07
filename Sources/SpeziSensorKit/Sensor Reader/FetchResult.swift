@@ -19,8 +19,9 @@ extension SensorKit {
         /// The samples.
         public let samples: [Sample]
         
+        @inlinable
         init(_ fetchResult: SRFetchResult<AnyObject>, for sensor: Sensor<Sample>) {
-            sensorKitTimestamp = Date(timeIntervalSinceReferenceDate: fetchResult.timestamp.toCFAbsoluteTime())
+            sensorKitTimestamp = Date(fetchResult.timestamp)
             samples = switch sensor.sensorKitFetchReturnType {
             case .object:
                 [unsafeDowncast(fetchResult.sample, to: Sample.self)]
@@ -33,14 +34,30 @@ extension SensorKit {
 
 
 extension SensorKit.FetchResult: RandomAccessCollection {
-    public var startIndex: Int {
+    @inlinable public var startIndex: Int {
         samples.startIndex
     }
     
-    public var endIndex: Int {
+    @inlinable public var endIndex: Int {
         samples.endIndex
     }
     
+    @inlinable
+    public func index(after idx: Int) -> Int {
+        samples.index(after: idx)
+    }
+    
+    @inlinable
+    public func index(before idx: Int) -> Int {
+        samples.index(before: idx)
+    }
+    
+    @inlinable
+    public func makeIterator() -> [Sample].Iterator {
+        samples.makeIterator()
+    }
+    
+    @inlinable
     public subscript(position: Int) -> Sample {
         samples[position]
     }

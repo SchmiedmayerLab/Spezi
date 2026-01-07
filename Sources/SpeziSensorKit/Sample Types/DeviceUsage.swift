@@ -61,6 +61,7 @@ extension SRDeviceUsageReport: SensorKitSampleProtocol {
         }
     }
     
+    @inlinable
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: SRDeviceUsageReport)>
     ) throws -> [SafeRepresentation] {

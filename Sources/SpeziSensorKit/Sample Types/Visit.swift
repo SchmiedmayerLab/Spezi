@@ -42,6 +42,7 @@ extension SRVisit: SensorKitSampleProtocol {
         }
     }
     
+    @inlinable
     public static func processIntoSafeRepresentation(
         _ samples: some Sequence<(timestamp: Date, sample: SRVisit)>
     ) throws -> [SafeRepresentation] {

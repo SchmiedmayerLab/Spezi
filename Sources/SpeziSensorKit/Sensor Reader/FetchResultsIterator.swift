@@ -17,30 +17,33 @@ extension SensorKit {
     public struct FetchResultsIterator<Sample: AnyObject & Hashable, FetchResults: Collection<FetchResult<Sample>>>: Sequence, IteratorProtocol {
         public typealias Element = (timestamp: Date, sample: Sample)
         
-        private var state: State
+        @usableFromInline var _state: State // swiftlint:disable:this identifier_name
         
+        @inlinable
         public init(_ fetchResults: FetchResults) {
-            state = .init(fetchResults[...])
+            _state = .init(fetchResults[...])
         }
         
+        @inlinable
         public init(_ fetchResult: FetchResult<Sample>) where FetchResults == CollectionOfOne<FetchResult<Sample>> {
             self.init(CollectionOfOne(fetchResult))
         }
         
+        @inlinable
         public mutating func next() -> Element? {
-            switch state {
+            switch _state {
             case .exhausted:
                 return nil
             case .active(var current, let remaining):
                 if let next = current.next() {
-                    state = .active(current: current, remaining: remaining)
+                    _state = .active(current: current, remaining: remaining)
                     return next
                 } else {
                     // the FetchResult's iterator is empty, meaning that there are no more samples in the fetch result.
                     // we need to move on to the next batch.
                     // we do this by re-initializing the state with the remaining FetchResults,
                     // and then simply calling next() again.
-                    state = .init(remaining)
+                    _state = .init(remaining)
                     return next()
                 }
             }
@@ -50,7 +53,8 @@ extension SensorKit {
 
 
 extension SensorKit.FetchResultsIterator {
-    private enum State {
+    @usableFromInline
+    enum State {
         case active(
             current: LazyMapCollection<SensorKit.FetchResult<Sample>, Element>.Iterator,
             remaining: FetchResults.SubSequence
@@ -58,6 +62,7 @@ extension SensorKit.FetchResultsIterator {
         /// The iterator has reached its end. There are no more samples to yield.
         case exhausted
         
+        @inlinable
         init(_ fetchResults: FetchResults.SubSequence) {
             if let idx = fetchResults.firstIndex(where: { !$0.isEmpty }) {
                 self = .active(
@@ -69,7 +74,8 @@ extension SensorKit.FetchResultsIterator {
             }
         }
         
-        private static func process(
+        @inlinable
+        static func process(
             _ fetchResult: SensorKit.FetchResult<Sample>
         ) -> LazyMapSequence<SensorKit.FetchResult<Sample>, Element>.Iterator {
             fetchResult.lazy

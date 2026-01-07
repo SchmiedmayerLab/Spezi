@@ -8,7 +8,8 @@
 
 // swiftlint:disable file_types_order
 
-import Foundation
+private import Foundation
+private import SpeziFoundation
 import SpeziLocalStorage
 
 
@@ -42,7 +43,7 @@ struct QueryAnchor: Hashable, Codable, Sendable {
 
 
 /// A `QueryAnchor` that is backed using Spezi LocalStorage.
-final class ManagedQueryAnchor: Sendable {
+public final class ManagedQueryAnchor: Sendable {
     private let get: @Sendable () throws -> QueryAnchor
     private let set: @Sendable (QueryAnchor) throws -> Void
     
@@ -52,9 +53,20 @@ final class ManagedQueryAnchor: Sendable {
         }
     }
     
-    init(storageKey: LocalStorageKey<QueryAnchor>, in localStorage: LocalStorage) {
-        get = { try localStorage.load(storageKey) ?? QueryAnchor() }
-        set = { try localStorage.store($0, for: storageKey) }
+    private init(
+        get: @escaping @Sendable () throws -> QueryAnchor,
+        set: @escaping @Sendable (QueryAnchor) throws -> Void
+    ) {
+        self.get = get
+        self.set = set
+    }
+    
+    convenience init(storageKey: LocalStorageKey<QueryAnchor>, in localStorage: LocalStorage) {
+        self.init {
+            try localStorage.load(storageKey) ?? QueryAnchor()
+        } set: {
+            try localStorage.store($0, for: storageKey)
+        }
     }
     
     func update(_ newValue: QueryAnchor) throws {
@@ -62,5 +74,33 @@ final class ManagedQueryAnchor: Sendable {
             return
         }
         try set(newValue)
+    }
+}
+
+
+extension ManagedQueryAnchor {
+    /// Creates an ephemeral Managed Query Anchor, that does not persist itself to disk.
+    ///
+    /// Intended primarily for testing purposes, but also useful for performing one-off batched fetches.
+    public static func ephemeral(startDate: Date? = nil) -> Self {
+        final class EphemeralStorage: Sendable {
+            nonisolated(unsafe) var anchor: QueryAnchor
+            let lock = RWLock()
+            init(anchor: QueryAnchor) {
+                self.anchor = anchor
+            }
+        }
+        let storage = EphemeralStorage(
+            anchor: startDate.map { QueryAnchor(timestamp: $0) } ?? QueryAnchor()
+        )
+        return Self {
+            storage.lock.withReadLock {
+                storage.anchor
+            }
+        } set: { newAnchor in
+            storage.lock.withWriteLock {
+                storage.anchor = newAnchor
+            }
+        }
     }
 }

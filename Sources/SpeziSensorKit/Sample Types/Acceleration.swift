@@ -7,6 +7,7 @@
 //
 
 public import CoreMotion
+public import Foundation
 
 
 extension CMRecordedAccelerometerData: SensorKitSampleProtocol {

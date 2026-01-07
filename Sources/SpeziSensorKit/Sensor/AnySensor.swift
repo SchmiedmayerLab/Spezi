@@ -7,7 +7,7 @@
 //
 
 public import SensorKit
-import SpeziFoundation
+public import SpeziFoundation
 
 
 /// A type-erased ``Sensor``
@@ -44,12 +44,18 @@ public protocol AnySensor<Sample>: Hashable, Identifiable, Sendable, CustomStrin
     
     /// The underlying SensorKit `SRSensor`.
     var srSensor: SRSensor { get }
-    /// The recommended display name.
-    var displayName: String { get }
-    /// How long the system hold data in quarantine before it can be queried by applications.
-    var dataQuarantineDuration: Duration { get }
+    
     /// The sensor's unique identifier.
     var id: String { get }
+    
+    /// The recommended display name.
+    var displayName: String { get }
+    
+    /// How long the system hold data in quarantine before it can be queried by applications.
+    var dataQuarantineDuration: Duration { get }
+    
+    /// The sensor's suggested batch size.
+    var suggestedBatchSize: BatchSize { get }
 }
 
 
@@ -58,23 +64,8 @@ extension AnySensor {
         srSensor.rawValue
     }
     
-    var currentQuarantineBegin: Date {
+    @inlinable var currentQuarantineBegin: Date {
         .now.addingTimeInterval(-dataQuarantineDuration.timeInterval)
-    }
-    
-    /// The recommended batch size for fetching data from this sensor.
-    public var suggestedBatchSize: Duration {
-        switch self {
-        case Sensor.onWrist, Sensor.visits, Sensor.wristTemperature, Sensor.deviceUsage:
-            // for the low-frequency sensors, it's fine (and in many cases in fact prefereble) to simply fetch everything at once.
-            .weeks(1)
-        default:
-            if #available(iOS 17.4, *), self == Sensor.ecg {
-                .days(1)
-            } else {
-                .hours(1)
-            }
-        }
     }
 }
 

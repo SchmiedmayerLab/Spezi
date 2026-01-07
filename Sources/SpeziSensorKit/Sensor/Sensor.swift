@@ -72,6 +72,7 @@ public struct Sensor<Sample: SensorKitSampleProtocol>: AnySensor {
     public let srSensor: SRSensor
     public let displayName: String
     public let dataQuarantineDuration: Duration
+    public let suggestedBatchSize: BatchSize
     @usableFromInline let sensorKitFetchReturnType: SensorKitFetchReturnType
     
     public var description: String {
@@ -79,11 +80,18 @@ public struct Sensor<Sample: SensorKitSampleProtocol>: AnySensor {
     }
     
     @inlinable
-    init(srSensor: SRSensor, displayName: String, dataQuarantineDuration: Duration, sensorKitFetchReturnType: SensorKitFetchReturnType) {
+    init(
+        srSensor: SRSensor,
+        displayName: String,
+        dataQuarantineDuration: Duration,
+        sensorKitFetchReturnType: SensorKitFetchReturnType,
+        suggestedBatchSize: BatchSize = .default
+    ) {
         self.srSensor = srSensor
         self.displayName = displayName
         self.dataQuarantineDuration = dataQuarantineDuration
         self.sensorKitFetchReturnType = sensorKitFetchReturnType
+        self.suggestedBatchSize = suggestedBatchSize
     }
     
     /// Creates a ``Sensor`` from a type-erased ``AnySensor``.
