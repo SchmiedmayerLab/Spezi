@@ -189,6 +189,7 @@ private final class FetchDelegate<Sample: SensorKitSampleProtocol>: NSObject, SR
     func sensorReader(_ reader: SRSensorReader, fetching fetchRequest: SRFetchRequest, failedWithError error: any Error) {
         isActive = false
         nextBatchContinuation?.resume(throwing: error)
+        nextBatchContinuation = nil
         stop()
     }
     
