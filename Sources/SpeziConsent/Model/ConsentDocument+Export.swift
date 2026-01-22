@@ -54,9 +54,8 @@ struct PDFRenderer {
     
     
     private func renderedExportTimestamp() -> PDFAttributedText {
-        var text = String(localized: "EXPORTED_TAG", bundle: .module)
-        text += ": "
-        text += DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
+        let date = DateFormatter.localizedString(from: .now, dateStyle: .medium, timeStyle: .short)
+        var text = String(localized: "Exported: \(date)", bundle: .module)
         text += "\n\n\n\n"
         let attributedTitle = NSMutableAttributedString(
             string: text,

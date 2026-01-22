@@ -129,7 +129,7 @@ extension ConsentDocumentView {
             HStack {
                 InteractiveElementLabel(text: config.text)
                 Spacer()
-                Picker("", selection: $selection) {
+                Picker("" as String, selection: $selection) {
                     Text(ConsentDocument.SelectConfig.emptySelectionDefaultTitle)
                         .tag(ConsentDocument.SelectConfig.emptySelection)
                     ForEach(config.options, id: \.self) { option in

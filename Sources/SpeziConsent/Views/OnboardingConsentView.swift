@@ -20,7 +20,7 @@ public struct OnboardingConsentView: View {
     public enum LocalizationDefaults {
         /// Default localized value for the title of the consent form.
         public static var consentFormTitle: LocalizedStringResource {
-            LocalizedStringResource("CONSENT_VIEW_TITLE", bundle: .atURL(from: .module))
+            LocalizedStringResource("CONSENT_VIEW_TITLE", bundle: .module)
         }
     }
     
@@ -47,7 +47,7 @@ public struct OnboardingConsentView: View {
                     #endif
                     .disabled(viewState == .processing)
                 } else {
-                    ProgressView("Loading Consent Form")
+                    ProgressView(LocalizedStringResource("Loading…", bundle: .module))
                 }
             }
             .padding(.bottom)

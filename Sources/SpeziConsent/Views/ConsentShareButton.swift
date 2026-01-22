@@ -36,7 +36,7 @@ public struct ConsentShareButton: View {
                 }
             } else {
                 Label {
-                    Text("Share Consent Form")
+                    Text("Share Consent Form", bundle: .module)
                 } icon: {
                     Image(systemName: "square.and.arrow.up")
                         .accessibilityHidden(true)

@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "CONSENT_ACTION" : {
       "localizations" : {
         "de" : {
@@ -16,6 +13,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I Consent"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acepto"
           }
         },
         "sv" : {
@@ -32,6 +35,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "(No selection)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Sin selección)"
           }
         }
       }
@@ -50,6 +59,12 @@
             "value" : "Consent"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consentimiento"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -58,48 +73,55 @@
         }
       }
     },
-    "EXPORTED_TAG" : {
+    "Exported: %@" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exportiert"
+            "value" : "Exportiert: %@"
           }
         },
-        "en" : {
+        "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exported"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exporterad"
+            "value" : "Exportado el %@"
           }
         }
       }
     },
-    "Loading Consent Form" : {
-
+    "Loading…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando…"
+          }
+        }
+      }
     },
     "MARKDOWN_LOADING_ERROR" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Das Dokument konnte nicht geladen werden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Could not load and parse the document."
+            "value" : "Failed to load the document."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al cargar el documento."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Det gick inte att ladda och tolka dokumentet."
           }
         }
@@ -117,6 +139,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter your last name…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresa tu apellido…"
           }
         },
         "sv" : {
@@ -141,6 +169,12 @@
             "value" : "Last Name"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apellido"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161,6 +195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter your first name…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresa tu nombre…"
           }
         },
         "sv" : {
@@ -185,6 +225,12 @@
             "value" : "First Name"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -194,7 +240,14 @@
       }
     },
     "Share Consent Form" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir formulario de consentimiento"
+          }
+        }
+      }
     },
     "SIGNATURE_DATE %@" : {
       "localizations" : {
@@ -202,6 +255,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha: %@"
           }
         }
       }
@@ -220,6 +279,12 @@
             "value" : "Signature Field"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Campo de firma"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -235,6 +300,12 @@
             "state" : "translated",
             "value" : "Name: %@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre: %@"
+          }
         }
       }
     },
@@ -245,11 +316,14 @@
             "state" : "translated",
             "value" : "Clear"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar"
+          }
         }
       }
-    },
-    "X" : {
-
     }
   },
   "version" : "1.0"
