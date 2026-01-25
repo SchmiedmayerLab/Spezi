@@ -43,20 +43,20 @@ extension ThreadLocalMacro: AccessorMacro {
         }
         let getAccessor: AccessorDeclSyntax = if let initializer = binding.initializer {
             """
-            get {
+            @available(*, noasync) get {
                 _\(identifier)._get(default: \(initializer.value))
             }
             """
         } else {
             """
-            get {
+            @available(*, noasync) get {
                 _\(identifier)._get(default: nil)
             }
             """
         }
         let setAccessor: AccessorDeclSyntax =
         """
-        set {
+        @available(*, noasync) set {
             _\(identifier)._set(newValue)
         }
         """

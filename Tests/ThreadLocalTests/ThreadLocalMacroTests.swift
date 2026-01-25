@@ -31,10 +31,10 @@ struct ThreadLocalMacroTests {
             expandedSource:
             """
             static var counter: Int {
-                get {
+                @available(*, noasync) get {
                     _counter._get(default: 0)
                 }
-                set {
+                @available(*, noasync) set {
                     _counter._set(newValue)
                 }
             }
@@ -55,10 +55,10 @@ struct ThreadLocalMacroTests {
             expandedSource:
             """
             @inlinable static var counter: Int {
-                get {
+                @available(*, noasync) get {
                     _counter._get(default: 0)
                 }
-                set {
+                @available(*, noasync) set {
                     _counter._set(newValue)
                 }
             }
@@ -79,10 +79,10 @@ struct ThreadLocalMacroTests {
             expandedSource:
             """
             static var ctx: OpaquePointer {
-                get {
+                @available(*, noasync) get {
                     _ctx._get(default: ZSTD_createCCtx())
                 }
-                set {
+                @available(*, noasync) set {
                     _ctx._set(newValue)
                 }
             }
@@ -104,10 +104,10 @@ struct ThreadLocalMacroTests {
             expandedSource:
             """
             public static var counter: Int {
-                get {
+                @available(*, noasync) get {
                     _counter._get(default: 0)
                 }
-                set {
+                @available(*, noasync) set {
                     _counter._set(newValue)
                 }
             }
@@ -148,10 +148,10 @@ struct ThreadLocalMacroTests {
             expandedSource:
             """
             static var counter: Int {
-                get {
+                @available(*, noasync) get {
                     _counter._get(default: 0)
                 }
-                set {
+                @available(*, noasync) set {
                     _counter._set(newValue)
                 }
             }

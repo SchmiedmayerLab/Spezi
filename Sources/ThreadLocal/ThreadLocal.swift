@@ -32,7 +32,7 @@ public final class ThreadLocal<Value>: Sendable {
         return unmanaged.takeUnretainedValue()
     }
     
-    @_unavailableFromAsync
+    @available(*, noasync)
     public init(_deallocator deallocator: Deallocator = .default) {
         _key = pthread_key_t()
         _deallocator = deallocator
@@ -51,14 +51,14 @@ public final class ThreadLocal<Value>: Sendable {
         precondition(status == 0, "pthread_key_create failed with status code \(status)")
     }
     
+    @available(*, noasync)
     @inlinable
-    @_unavailableFromAsync
     func _makeBox(_ value: Value) -> _Box {
         _Box(_value: value, deallocator: _deallocator)
     }
     
+    @available(*, noasync)
     @inlinable
-    @_unavailableFromAsync
     public func _get(default: @autoclosure () -> Value) -> Value {
         if let value = _box?._value {
             return value
@@ -69,8 +69,8 @@ public final class ThreadLocal<Value>: Sendable {
         }
     }
     
+    @available(*, noasync)
     @inlinable
-    @_unavailableFromAsync
     public func _set(_ newValue: Value?) {
         let unmanaged = pthread_getspecific(_key).map {
             Unmanaged<_Box>.fromOpaque($0)
