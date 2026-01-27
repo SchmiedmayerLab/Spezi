@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Algorithms
 import Combine
 import Foundation
 import Spezi
@@ -531,6 +532,15 @@ extension StudyManager {
 
 
 extension StudyManager {
+    private struct StudyCollectedSampleTypes {
+        var required: [any AnySampleType] = []
+        var optional: [any AnySampleType] = []
+        
+        var combined: some Sequence<any AnySampleType> {
+            chain(required, optional)
+        }
+    }
+    
     @MainActor
     private func setupStudyBackgroundComponents(for enrollments: some Collection<StudyEnrollment>) async throws {
         try await startBackgroundHealthDataCollection(for: enrollments)
@@ -542,13 +552,14 @@ extension StudyManager {
     }
     
     
-    private func allCollectedSampleTypes(in enrollments: some Collection<StudyEnrollment>) -> [any AnySampleType] {
-        enrollments.reduce(into: []) { sampleTypes, enrollment in
+    private func allCollectedSampleTypes(in enrollments: some Collection<StudyEnrollment>) -> StudyCollectedSampleTypes {
+        enrollments.reduce(into: .init()) { sampleTypes, enrollment in
             guard let healthCollectionComponents = enrollment.studyBundle?.studyDefinition.healthDataCollectionComponents else {
                 return
             }
             for component in healthCollectionComponents {
-                sampleTypes.append(contentsOf: component.sampleTypes)
+                sampleTypes.required.append(contentsOf: component.sampleTypes)
+                sampleTypes.optional.append(contentsOf: component.optionalSampleTypes)
             }
         }
     }
@@ -557,14 +568,21 @@ extension StudyManager {
     private func startBackgroundHealthDataCollection(for enrollments: some Collection<StudyEnrollment>) async throws {
         func imp<Sample>(_ sampleType: some AnySampleType<Sample>) async {
             let sampleType = SampleType(sampleType)
-            await healthKit.addHealthDataCollector(CollectSample(
+            await healthKit.addHealthDataCollector(CollectSamples(
                 sampleType,
                 start: .automatic,
                 continueInBackground: true
             ))
         }
-        for sampleType in allCollectedSampleTypes(in: enrollments) {
+        let collectedSampleTypes = allCollectedSampleTypes(in: enrollments)
+        for sampleType in collectedSampleTypes.required {
             await imp(sampleType)
+        }
+        for sampleType in collectedSampleTypes.optional {
+            // optional types only get registered for collection if they are already authorized.
+            if await healthKit.didAskForAuthorization(toRead: [sampleType]) { // swiftlint:disable:this for_where
+                await imp(sampleType)
+            }
         }
         // we want to request HealthKit auth once, at the end, for everything we just registered.
         try await healthKit.askForAuthorization()
@@ -576,9 +594,20 @@ extension StudyManager {
             let sampleType = SampleType(sampleType)
             await healthKit.resetSampleCollection(for: sampleType)
         }
-        for sampleType in allCollectedSampleTypes(in: enrollments) {
+        for sampleType in allCollectedSampleTypes(in: enrollments).combined {
             await imp(sampleType)
         }
+    }
+    
+    /// Updates the health data collection for all currently enrolled studies.
+    ///
+    /// For required sample types within a study, this does nothing if the sample types are already being collected.
+    /// For optional sample types within a study, this will start collection if the sample type currently is authorized.
+    ///
+    /// If your study does not define any optional health data collection, this function need not be called by your app.
+    @MainActor
+    public func updateHealthDataCollection() async throws {
+        try await startBackgroundHealthDataCollection(for: studyEnrollments)
     }
 }
 

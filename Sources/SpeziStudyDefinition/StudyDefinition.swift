@@ -77,14 +77,14 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``ParticipationCriterion``
 ///
 /// ### Working with a study definition
-/// - ``allCollectedHealthData``
 /// - ``healthDataCollectionComponents``
+/// - ``allCollectedHealthData(includingOptionalSampleTypes:)``
 /// - ``component(withId:)``
 /// - ``removeComponent(at:)``
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 12, 0)
+    public static let schemaVersion = Version(0, 12, 1)
     
     /// The revision of the study.
     ///
@@ -115,13 +115,6 @@ public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, Deco
 // MARK: Accessing stuff in a study, etc
 
 extension StudyDefinition {
-    /// The combined, effective HealthKit data collection of the entire study.
-    public var allCollectedHealthData: SampleTypesCollection {
-        healthDataCollectionComponents.reduce(into: SampleTypesCollection()) { acc, component in
-            acc.insert(contentsOf: component.sampleTypes)
-        }
-    }
-    
     /// All ``HealthDataCollectionComponent``s
     public var healthDataCollectionComponents: [HealthDataCollectionComponent] {
         components.compactMap { component in
@@ -130,6 +123,19 @@ extension StudyDefinition {
                 component
             case .informational, .questionnaire, .timedWalkingTest, .customActiveTask:
                 nil
+            }
+        }
+    }
+    
+    /// The combined, effective HealthKit data collection of the entire study.
+    ///
+    /// - parameter includingOptionalSampleTypes Whether optional sample types should be included in the result.
+    ///     (See ``StudyDefinition/HealthDataCollectionComponent/optionalSampleTypes``.)
+    public func allCollectedHealthData(includingOptionalSampleTypes: Bool) -> SampleTypesCollection {
+        healthDataCollectionComponents.reduce(into: SampleTypesCollection()) { acc, component in
+            acc.insert(contentsOf: component.sampleTypes)
+            if includingOptionalSampleTypes {
+                acc.insert(contentsOf: component.optionalSampleTypes)
             }
         }
     }

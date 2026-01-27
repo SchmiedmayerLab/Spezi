@@ -162,6 +162,7 @@ struct StudyBundleTests {
                 .healthDataCollection(.init(
                     id: healthDataCollectionComponentId,
                     sampleTypes: [SampleType.heartRate, SampleType.stepCount, SampleType.sleepAnalysis],
+                    optionalSampleTypes: [],
                     historicalDataCollection: .enabled(.last(DateComponents(year: 7, month: 6)))
                 )),
                 .timedWalkingTest(.init(

@@ -80,9 +80,9 @@ extension TimedWalkingTestConfiguration {
         }
         return switch kind {
         case .walking:
-            "\(durationText.localizedCapitalized)-Minute Walk Test"
+            LocalizedStringResource("\(durationText.localizedCapitalized)-Minute Walk Test", bundle: .module)
         case .running:
-            "\(durationText.localizedCapitalized)-Minute Run Test"
+            LocalizedStringResource("\(durationText.localizedCapitalized)-Minute Run Test", bundle: .module)
         }
     }
 }

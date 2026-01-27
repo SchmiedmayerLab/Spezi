@@ -76,6 +76,7 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
                     correlation: [.bloodPressure],
                     category: [.sleepAnalysis]
                 ),
+                optionalSampleTypes: [],
                 historicalDataCollection: .disabled
             ))
             StudyDefinition.Component.informational(.init(

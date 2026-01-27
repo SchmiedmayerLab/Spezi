@@ -1081,10 +1081,6 @@ extension QuestionnaireValidator {
 
 // MARK: Helpers
 
-extension QuestionnaireItemType: @retroactive @unchecked Sendable {}
-extension EnableWhenBehavior: @retroactive @unchecked Sendable {}
-extension QuestionnaireItemOperator: @retroactive @unchecked Sendable {}
-
 extension QuestionnaireItemAnswerOption.ValueX {
     fileprivate var coding: Coding? {
         switch self {

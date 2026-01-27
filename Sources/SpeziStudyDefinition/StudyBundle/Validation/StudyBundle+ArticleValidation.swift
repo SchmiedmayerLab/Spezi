@@ -38,7 +38,7 @@ extension StudyBundle {
                 continue
             }
             let documents = try candidates.map {
-                (document: try MarkdownDocument(processingContentsOf: $0.url), fileRef: $0)
+                (document: try MarkdownDocument(contentsOf: $0.url), fileRef: $0)
             }
             let baseDocument = documents.first { $0.fileRef.localization == .enUS }
                 ?? documents.first { $0.fileRef.localization.language.isEquivalent(to: .init(identifier: "en")) }

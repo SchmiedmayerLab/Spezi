@@ -32,7 +32,7 @@ private actor TestStandard: Standard, HealthKitConstraint {
 }
 
 
-@Suite
+@Suite(.serialized)
 @MainActor
 final class StudyManagerTests {
     private static let welcomeArticleComponentId = UUID()
