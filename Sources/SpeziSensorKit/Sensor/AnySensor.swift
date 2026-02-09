@@ -46,6 +46,8 @@ public protocol AnySensor<Sample>: Hashable, Identifiable, Sendable, CustomStrin
     var srSensor: SRSensor { get }
     
     /// The sensor's unique identifier.
+    ///
+    /// - Important: This value is not guaranteed to be stable, and might vary based on platform and/or OS version.
     var id: String { get }
     
     /// The recommended display name.

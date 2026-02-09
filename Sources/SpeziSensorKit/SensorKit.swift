@@ -89,6 +89,10 @@ extension SensorKit {
     /// - parameter sensors: The sensors for which we want to request access.
     /// - returns: A summary which of the `sensors` passed to the function are now authorized and which are denied.
     nonisolated public func requestAccess(to sensors: [any AnySensor]) async throws -> AuthorizationResult {
+        guard !sensors.isEmpty else {
+            return AuthorizationResult(EmptyCollection())
+        }
+        try SensorKit.assertIsAvailable()
         let sensorsToActuallyRequest = sensors.compactMapIntoSet {
             $0.authorizationStatus == .notDetermined ? $0.srSensor : nil
         }

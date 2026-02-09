@@ -118,7 +118,7 @@ private final class FetchDelegate<Sample: SensorKitSampleProtocol>: NSObject, SR
         isActive = false
         samples.removeAll()
         lastSeenTimestamp = nil
-        precondition(nextBatchContinuation == nil)
+        assert(nextBatchContinuation == nil)
         nextBatchContinuation = nil
         semaphore.signal() // in case the process function is currently waiting on the semaphore...
     }
@@ -132,17 +132,27 @@ private final class FetchDelegate<Sample: SensorKitSampleProtocol>: NSObject, SR
         guard let nextBatchContinuation else {
             return
         }
-        if let first = samples.first, let last = samples.last {
+        if let first = samples.first {
             // samples is not empty
             self.nextBatchContinuation = nil
+            // NOTE: most of the time, SensorKit queries return their samples in ascending chronological order,
+            // which, were it guaranteed behaviour, would allow us to simply do `first.timeRange.lowerBound..<last.timeRange.lowerBound`.
+            // but, it is not guaranteed, and sometimes the samples are not ordered, and as a result we need to do this ugly O(n) here...
+            let timeRange = { () -> Range<Date> in
+                // note that we intentionally use the lower bound of the last sample's time range,
+                // in order to make the batch's time range match the fetched time range, as opposed to the represented time range.
+                // (otherwise, using the batch's time ranges to perform follow up fetches could lead to missed samples...)
+                var start = first.timeRange.lowerBound
+                var end = start
+                for sample in samples.dropFirst() {
+                    let sampleDate = sample.timeRange.lowerBound
+                    start = min(start, sampleDate)
+                    end = max(end, sampleDate)
+                }
+                return start..<end
+            }()
             nextBatchContinuation.resume(returning: (
-                SensorKit.BatchInfo(
-                    // note that we intentionally use the lower bound of the last sample's time range,
-                    // in order to make the batch's time range match the fetched time range, as opposed to the represented time range.
-                    // (otherwise, using the batch's time ranges to perform follow up fetches could lead to missed samples...)
-                    timeRange: first.timeRange.lowerBound..<last.timeRange.lowerBound,
-                    device: deviceInfo
-                ),
+                SensorKit.BatchInfo(timeRange: timeRange, device: deviceInfo),
                 samples
             ))
         } else {
