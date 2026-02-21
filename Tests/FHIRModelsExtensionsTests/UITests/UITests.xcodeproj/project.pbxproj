@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F68C3C8292EA52000B3E12C /* TemplatePackage in Frameworks */ = {isa = PBXBuildFile; productRef = 2F68C3C7292EA52000B3E12C /* TemplatePackage */; };
+		2F68C3C8292EA52000B3E12C /* FHIRModelsExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 2F68C3C7292EA52000B3E12C /* FHIRModelsExtensions */; };
 		2F9CBEC92A76C412009818FF /* TestApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2F9CBEA62A76C40E009818FF /* TestApp Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		2F9CBEDA2A76C795009818FF /* TemplatePackage in Frameworks */ = {isa = PBXBuildFile; productRef = 2F9CBED92A76C795009818FF /* TemplatePackage */; };
+		2F9CBEDA2A76C795009818FF /* FHIRModelsExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 2F9CBED92A76C795009818FF /* FHIRModelsExtensions */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +58,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* TemplatePackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TemplatePackage; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* FHIRModelsExtensions */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FHIRModelsExtensions; path = ../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F9CBEA62A76C40E009818FF /* TestApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TestApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F68C3C8292EA52000B3E12C /* TemplatePackage in Frameworks */,
+				2F68C3C8292EA52000B3E12C /* FHIRModelsExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,7 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F9CBEDA2A76C795009818FF /* TemplatePackage in Frameworks */,
+				2F9CBEDA2A76C795009818FF /* FHIRModelsExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +140,7 @@
 			children = (
 				2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */,
 				2FF8922E2A770D4200903A5A /* TestAppWatchApp.xctestplan */,
-				2F68C3C6292E9F8F00B3E12C /* TemplatePackage */,
+				2F68C3C6292E9F8F00B3E12C /* FHIRModelsExtensions */,
 				80B77CF62E422FB70089C6B4 /* TestApp */,
 				80B77D022E422FBB0089C6B4 /* TestAppUITests */,
 				2F6D139328F5F384007C25D6 /* Products */,
@@ -188,7 +188,7 @@
 			);
 			name = TestApp;
 			packageProductDependencies = (
-				2F68C3C7292EA52000B3E12C /* TemplatePackage */,
+				2F68C3C7292EA52000B3E12C /* FHIRModelsExtensions */,
 			);
 			productName = Example;
 			productReference = 2F6D139228F5F384007C25D6 /* TestApp.app */;
@@ -232,7 +232,7 @@
 			);
 			name = TestAppWatchApp;
 			packageProductDependencies = (
-				2F9CBED92A76C795009818FF /* TemplatePackage */,
+				2F9CBED92A76C795009818FF /* FHIRModelsExtensions */,
 			);
 			productName = "TestAppWatchOS Watch App";
 			productReference = 2F9CBEA62A76C40E009818FF /* TestApp Watch App.app */;
@@ -542,7 +542,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -576,7 +576,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -596,7 +596,7 @@
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
@@ -617,7 +617,7 @@
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
@@ -644,7 +644,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = edu.stanford.templatepackage.testapp;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = edu.stanford.FHIRModelsExtensions.testapp;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -652,7 +652,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp.watchkitapp;
 				PRODUCT_NAME = "TestApp Watch App";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -676,7 +676,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = edu.stanford.templatepackage.testapp;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = edu.stanford.FHIRModelsExtensions.testapp;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -684,7 +684,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp.watchkitapp;
 				PRODUCT_NAME = "TestApp Watch App";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -705,7 +705,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.watchkitapp.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp.watchkitapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -727,7 +727,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.watchkitapp.uitests;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.FHIRModelsExtensions.testapp.watchkitapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -787,13 +787,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2F68C3C7292EA52000B3E12C /* TemplatePackage */ = {
+		2F68C3C7292EA52000B3E12C /* FHIRModelsExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = TemplatePackage;
+			productName = FHIRModelsExtensions;
 		};
-		2F9CBED92A76C795009818FF /* TemplatePackage */ = {
+		2F9CBED92A76C795009818FF /* FHIRModelsExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = TemplatePackage;
+			productName = FHIRModelsExtensions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
