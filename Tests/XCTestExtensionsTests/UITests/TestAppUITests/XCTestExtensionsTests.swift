@@ -56,7 +56,7 @@ class XCTestExtensionsTests: XCTestCase {
         if app.staticTexts["Has access"].waitForNonExistence(timeout: 2) {
             // if the view isn't telling us that it has access, it's currently requesting access
             app.tables.staticTexts["Turn On All"].tap()
-            app.navigationBars["Health Access"].buttons["Allow"].tap()
+            app.buttons["UIA.Health.Allow.Button"].tap()
         }
         
         XCTAssert(app.staticTexts["Did add sample!"].waitForExistence(timeout: 5))
