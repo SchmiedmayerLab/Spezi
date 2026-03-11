@@ -100,9 +100,10 @@ public struct StudyBundle: Identifiable, Sendable {
     public func questionnaire(
         for fileRef: FileReference,
         in locale: Locale,
-        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default,
+        fallback fallbackLocale: LocalizationKey? = .enUS
     ) -> Questionnaire? {
-        _decodeResource(for: fileRef, locale: locale, using: localeMatchingBehaviour) {
+        _decodeResource(for: fileRef, locale: locale, using: localeMatchingBehaviour, fallback: fallbackLocale) {
             try JSONDecoder().decode(Questionnaire.self, from: $0)
         }
     }
@@ -111,12 +112,14 @@ public struct StudyBundle: Identifiable, Sendable {
     public func questionnaire(
         named questionnaireName: String,
         in locale: Locale,
-        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default,
+        fallback fallbackLocale: LocalizationKey? = .enUS
     ) -> Questionnaire? {
         questionnaire(
             for: .init(category: .questionnaire, filename: questionnaireName, fileExtension: "json"),
             in: locale,
-            using: localeMatchingBehaviour
+            using: localeMatchingBehaviour,
+            fallback: fallbackLocale
         )
     }
     
@@ -124,9 +127,10 @@ public struct StudyBundle: Identifiable, Sendable {
     public func consentText(
         for fileRef: FileReference,
         in locale: Locale,
-        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default, // swiftlint:disable:this function_default_parameter_at_end
+        fallbackLocale: LocalizationKey?
     ) -> String? {
-        _decodeResource(for: fileRef, locale: locale, using: localeMatchingBehaviour) {
+        _decodeResource(for: fileRef, locale: locale, using: localeMatchingBehaviour, fallback: fallbackLocale) {
             String(data: $0, encoding: .utf8)
         }
     }
@@ -136,9 +140,15 @@ public struct StudyBundle: Identifiable, Sendable {
         for fileRef: FileReference,
         locale: Locale,
         using localeMatchingBehaviour: LocaleMatchingBehaviour,
+        fallback fallbackLocale: LocalizationKey?,
         decode: (Data) throws -> T?
     ) -> T? {
-        guard let url = resolve(fileRef: fileRef, locale: locale, localeMatchingBehaviour: localeMatchingBehaviour)?.url else {
+        guard let url = resolve(
+            fileRef: fileRef,
+            locale: locale,
+            localeMatchingBehaviour: localeMatchingBehaviour,
+            fallback: fallbackLocale
+        )?.url else {
             return nil
         }
         guard let data = try? Data(contentsOf: url) else {

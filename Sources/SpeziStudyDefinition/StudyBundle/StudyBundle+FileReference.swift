@@ -146,19 +146,22 @@ extension StudyBundle {
     public func resolve(
         _ fileRef: FileReference,
         in locale: Locale,
-        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default,
+        fallback fallbackLocale: LocalizationKey? = .enUS
     ) -> URL? {
         resolve(
             fileRef: fileRef,
             locale: locale,
-            localeMatchingBehaviour: localeMatchingBehaviour
+            localeMatchingBehaviour: localeMatchingBehaviour,
+            fallback: fallbackLocale
         )?.url
     }
     
     func resolve(
         fileRef: FileReference,
         locale: Locale,
-        localeMatchingBehaviour: LocaleMatchingBehaviour
+        localeMatchingBehaviour: LocaleMatchingBehaviour,
+        fallback fallbackLocale: LocalizationKey?
     ) -> (url: URL, localizedFileRef: LocalizedFileReference)? {
         let dirUrl = Self.folderUrl(for: fileRef.category, relativeTo: bundleUrl)
         guard let candidateUrls = try? FileManager.default.contents(of: dirUrl) else {
@@ -168,7 +171,7 @@ extension StudyBundle {
             LocalizedFileResource("\(fileRef.filename).\(fileRef.fileExtension)", locale: locale),
             from: candidateUrls,
             using: localeMatchingBehaviour,
-            fallback: .enUS
+            fallback: fallbackLocale
         )
         .map { ($0.url, .init(fileRef: fileRef, localization: $0.localization)) }
     }

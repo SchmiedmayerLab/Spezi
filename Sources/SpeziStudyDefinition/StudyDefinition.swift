@@ -201,9 +201,10 @@ extension StudyBundle {
     public func documentMetadata(
         for component: StudyDefinition.InformationalComponent,
         in locale: Locale,
-        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default,
+        fallback fallbackLocale: LocalizationKey? = .enUS
     ) -> MarkdownDocument.Metadata? {
-        guard let url = self.resolve(component.fileRef, in: locale, using: localeMatchingBehaviour),
+        guard let url = self.resolve(component.fileRef, in: locale, using: localeMatchingBehaviour, fallback: fallbackLocale),
               let text = (try? Data(contentsOf: url)).flatMap({ String(data: $0, encoding: .utf8) }) else {
             return nil
         }

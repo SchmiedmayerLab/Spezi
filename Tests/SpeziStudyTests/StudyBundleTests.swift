@@ -96,7 +96,8 @@ struct StudyBundleTests {
         let studyBundle = try Self.testStudyBundle
         #expect(studyBundle.consentText(
             for: .init(category: .consent, filename: "Consent", fileExtension: "md"),
-            in: Self.locale
+            in: Self.locale,
+            fallbackLocale: nil
         ) == "---\ntitle: Study Consent\n---\n\n# Consent")
     }
     
