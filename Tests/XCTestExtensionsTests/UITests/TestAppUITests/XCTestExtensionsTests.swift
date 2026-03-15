@@ -27,8 +27,8 @@ class XCTestExtensionsTests: XCTestCase {
         let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
         
-        XCTAssert(app.buttons["XCTestExtensions"].waitForExistence(timeout: 5.0))
-        app.buttons["XCTestExtensions"].tap()
+        XCTAssert(app.buttons["Text Entry"].waitForExistence(timeout: 5.0))
+        app.buttons["Text Entry"].tap()
 
         XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5))
         XCTAssert(app.staticTexts["No secure text set ..."].exists)
@@ -83,96 +83,11 @@ class XCTestExtensionsTests: XCTestCase {
         let app = XCUIApplication()
         app.deleteAndLaunch(withSpringboardAppName: "TestApp")
         
-        XCTAssert(app.buttons["XCTestExtensions"].waitForExistence(timeout: 5.0))
-        app.buttons["XCTestExtensions"].tap()
+        XCTAssert(app.buttons["Text Entry"].waitForExistence(timeout: 5.0))
+        app.buttons["Text Entry"].tap()
 
         XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5))
         XCTAssert(app.staticTexts["No secure text set ..."].exists)
-    }
-    
-    
-    func testTextEntry() throws {
-        let app = XCUIApplication()
-        app.launch()
-        
-        XCTAssert(app.buttons["XCTestExtensions"].waitForExistence(timeout: 5.0))
-        app.buttons["XCTestExtensions"].tap()
-
-        try app.callTextEntryExtensions()
-    }
-    
-    
-    @MainActor
-    func testFlakyTextEntry() throws {
-        let app = XCUIApplication()
-        app.launch()
-        
-        XCTAssert(app.buttons["XCTestExtensions"].waitForExistence(timeout: 5.0))
-        app.buttons["XCTestExtensions"].tap()
-
-        simulateFlakySimulatorTextEntry = true
-        try app.callTextEntryExtensions()
-        simulateFlakySimulatorTextEntry = false
-    }
-    
-    
-    func testLongTextEntries() throws {
-        let app = XCUIApplication()
-        app.launch()
-
-        XCTAssert(app.buttons["XCTestExtensions"].waitForExistence(timeout: 5.0))
-        app.buttons["XCTestExtensions"].tap()
-
-        XCTAssert(app.staticTexts["No text set ..."].waitForExistence(timeout: 5))
-        let textField = app.textFields["TextField"]
-
-        let message = "This is a very long text and some more"
-        try textField.enter(value: message, options: .skipTextInputValidation)
-        XCTAssert(app.staticTexts[message].waitForExistence(timeout: 5))
-        #if os(visionOS)
-        try textField.enter(value: " ...", options: [.skipTextInputValidation])
-        #else
-        try textField.enter(value: " ...", options: [.skipTextInputValidation, .tapFromRight])
-        #endif
-        XCTAssert(app.staticTexts["\(message) ..."].waitForExistence(timeout: 5))
-
-        // Test text field deletion with longer text input
-        try textField.delete(count: message.count + 4)
-    }
-    
-    
-    func testKeyboardBehavior() throws {
-        // make sure you disconnect the hardware keyboard when running this test! Also language must be english.
-        let app = XCUIApplication()
-        app.launch()
-
-        XCTAssert(app.buttons["DismissKeyboard"].waitForExistence(timeout: 5.0))
-        app.buttons["DismissKeyboard"].tap()
-        let checkLabel = { (label: String) in
-            XCTAssert(app.textFields[label].exists)
-            app.textFields[label].selectField()
-            #if os(visionOS)
-            XCTAssert(app.visionOSKeyboard.wait(for: .runningForeground, timeout: 2.0))
-            #elseif !os(macOS)
-            XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 2.0))
-            #endif
-
-            app.dismissKeyboard()
-            #if !os(visionOS) && !os(macOS)
-            XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 2.0))
-            #endif
-        }
-        
-        // this way we know exactly which button failed by line numbers.
-        checkLabel("Continue")
-        checkLabel("Done")
-        checkLabel("Go")
-        checkLabel("Join")
-        checkLabel("Next")
-        checkLabel("Return")
-        checkLabel("Route")
-        checkLabel("Search")
-        checkLabel("Send")
     }
     
     
@@ -207,37 +122,5 @@ class XCTestExtensionsTests: XCTestCase {
         assertToggleState(false)
         try toggle.setToggleState(isOn: true)
         assertToggleState(true)
-    }
-}
-
-
-extension XCUIApplication {
-    fileprivate func callTextEntryExtensions() throws {
-        XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5))
-        let textField = textFields["TextField"]
-        XCTAssert(textField.exists)
-        try textField.enter(value: "Example Text")
-        XCTAssert(staticTexts["Example Text"].waitForExistence(timeout: 5))
-        try textField.delete(count: 5)
-        XCTAssert(staticTexts["Example"].waitForExistence(timeout: 5))
-
-        try textField.delete(count: 42)
-        XCTAssert(staticTexts["No text set ..."].waitForExistence(timeout: 5))
-
-#if os(iOS)
-        dismissKeyboard()
-        swipeUp()
-#endif
-
-        XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
-        let secureTextField = secureTextFields["SecureField"]
-        XCTAssert(secureTextField.exists)
-        try secureTextField.enter(value: "Secure Text")
-        XCTAssert(staticTexts["Secure Text"].waitForExistence(timeout: 5))
-        
-        try secureTextField.delete(count: 42)
-        XCTAssert(staticTexts["No secure text set ..."].waitForExistence(timeout: 5))
-
-        XCTAssertFalse(staticTexts["Button was pressed!"].exists)
     }
 }

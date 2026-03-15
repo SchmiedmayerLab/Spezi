@@ -9,7 +9,7 @@
 import SwiftUI
 
 
-struct XCTestExtensionsTest: View {
+struct TextEntryTestView: View {
     @State var text = ""
     @State var secureText = ""
     @State var accidentalPress = false
@@ -30,7 +30,7 @@ struct XCTestExtensionsTest: View {
                 TextField("TextField", text: $text, prompt: Text("TextField"))
                 Text(text.isEmpty ? "No text set ..." : text)
             }
-                .submitLabel(.continue)
+            .submitLabel(.continue)
             Section {
                 SecureField("SecureField", text: $secureText, prompt: Text("SecureField"))
                 Text(secureText.isEmpty ? "No secure text set ..." : secureText)

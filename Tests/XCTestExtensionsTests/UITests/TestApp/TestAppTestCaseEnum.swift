@@ -12,7 +12,7 @@ import XCTestApp
 
 enum TestAppTestCaseEnum: String, TestAppTests {
     case xcTestApp = "XCTestApp"
-    case xcTestExtensions = "XCTestExtensions"
+    case textEntry = "Text Entry"
     case dismissKeyboard = "DismissKeyboard"
     case healthKitDataEntry = "HealthKitDataEntry"
     case togglesAndSwitches = "Toggles / Switches"
@@ -21,8 +21,8 @@ enum TestAppTestCaseEnum: String, TestAppTests {
         switch self {
         case .xcTestApp:
             TestAppView(testCase: XCTestAppTestCaseTest())
-        case .xcTestExtensions:
-            XCTestExtensionsTest()
+        case .textEntry:
+            TextEntryTestView()
         case .dismissKeyboard:
             DismissKeyboardTest()
         case .healthKitDataEntry:

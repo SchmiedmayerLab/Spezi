@@ -38,12 +38,14 @@ public struct TextInputOptions: OptionSet, Sendable {
     @available(visionOS, unavailable, message: "Tapping from the far right is unsupported on visionOS")
     @available(macOS, unavailable, message: "Tapping from the far right is unsupported on macOS")
     public static let tapFromRight = TextInputOptions(rawValue: 1 << 1)
+    
     /// Do not verify if text was enter correctly.
     ///
     /// Unfortunately, the iOS simulator sometimes has flaky behavior when entering text in a simulator with low computation resources.
     /// By default, it will be verified if the characteristic were enter/deleted correctly.
     /// Use this option to disable this behavior.
     public static let skipTextInputValidation = TextInputOptions(rawValue: 1 << 2)
+    
     /// Do not automatically select the text field before typing.
     ///
     /// By default the text field is automatically selected before typing text. Use this option to disable this behavior, if you
@@ -62,10 +64,18 @@ public struct TextInputOptions: OptionSet, Sendable {
 
 
 extension XCUIElement {
+    /// The current string contents of the text field.
+    ///
+    /// The difference between this property and accessing `value` directly is that `value` will, if the text field is empty, return the placeholder value, whereas this property will return an empty string.
     /// Get the current value so we can assert if the text entry was correct.
-    private var currentValue: String {
+    public var textFieldValue: String {
+        guard elementType == .textField || elementType == .secureTextField else {
+            XCTFail("Not a text field")
+            return ""
+        }
         if value as? String == placeholderValue {
             // If the value is the placeholderValue we assume that the text field has no value entered.
+            // Q: what if the user manually entered the placeholder value?
             return ""
         } else {
             return value as? String ?? ""
@@ -85,13 +95,36 @@ extension XCUIElement {
     /// - Throws: Throws an `XCTestError`, if the number of characters could not be deleted.
     public func delete(count: Int, options: TextInputOptions = []) throws {
         if !options.contains(.skipTextFieldSelection) {
-            selectField(options: options)
+            try selectTextField(options: options)
         }
-
-        try performDelete(count: count, options: options, recursiveDepth: 0)
-
+        try performDelete(count: count, options: options)
         if !options.contains(.disableKeyboardDismiss) {
-            XCUIApplication().dismissKeyboard()
+            try self.app.dismissKeyboard()
+        }
+    }
+    
+    /// Deletes all characters in the text field or secure text field
+    ///
+    /// ```swift
+    /// try app.textFields["enter first name"].clear()
+    /// ```
+    ///
+    /// - parameter options: Control additional behavior how text deletion should be performed.
+    /// - throws: Throws an `XCTestError`, if the text could not be cleared.
+    public func clear(options: TextInputOptions = []) throws {
+        if !options.contains(.skipTextFieldSelection) {
+            try selectTextField(options: options)
+        }
+        #if !os(watchOS)
+        // we want to delete everything, so move the cursor all the way to the right
+        typeKey(XCUIKeyboardKey.rightArrow, modifierFlags: .command)
+        #endif
+        try performDelete(count: textFieldValue.count, options: options)
+        if !options.contains(.skipTextInputValidation) {
+            XCTAssertEqual(textFieldValue, "", "Somehow failed to delete all text in \(self.debugDescription)")
+        }
+        if !options.contains(.disableKeyboardDismiss) {
+            try self.app.dismissKeyboard()
         }
     }
     
@@ -107,41 +140,38 @@ extension XCUIElement {
     /// - Throws: Throws an `XCTestError`, if the text could not be entered in the text field.
     public func enter(value newValue: String, options: TextInputOptions = []) throws {
         if !options.contains(.skipTextFieldSelection) {
-            selectField(options: options)
+            try selectTextField(options: options)
         }
-
         try performEnter(value: newValue, options: options, recursiveDepth: 0)
-
         if !options.contains(.disableKeyboardDismiss) {
-            XCUIApplication().dismissKeyboard()
+            try self.app.dismissKeyboard()
         }
     }
 
 
-    private func performDelete(count: Int, options: TextInputOptions, recursiveDepth: Int) throws {
-        guard recursiveDepth <= 2 else {
-            os_log("Could not successfully delete \(count) characters in the textfield \(self.debugDescription)")
-            throw XCTestError(.failureWhileWaiting)
+    /// Deletes `count` characters from the text field
+    ///
+    /// - Important: It isn't actually guaranteed that this function will delete `count` characters.
+    ///     Sometimes, the selection will place the cursor in a way that selects a whole word, in which case a single tap of the `delete` key will erase the whole word.
+    private func performDelete(count: Int, options: TextInputOptions) throws {
+        var count = count
+        if simulateFlakySimulatorTextEntry {
+            count -= 1
         }
-
-        // Get the current value so we can assert if the text deleted was correct.
-        let currentValueCount = currentValue.count
-
-        // Delete the text
-        if simulateFlakySimulatorTextEntry && recursiveDepth < 2 {
-            typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: max(0, count - 1)))
-        } else {
+        while count > 0, !textFieldValue.isEmpty {
+            let lengthBeforeDelete = textFieldValue.count
             typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: count))
-        }
-
-        // Check of the text was deleted correctly:
-        if !options.contains(.skipTextInputValidation) {
-            let countAfterDeletion = currentValue.count
-
-            if max(currentValueCount - count, 0) < countAfterDeletion {
-                tap() // cursor might not be placed at the rightmost position of the text field
-                try performDelete(count: countAfterDeletion - ( currentValueCount - count), options: options, recursiveDepth: recursiveDepth + 1)
+            if options.contains(.skipTextInputValidation) {
+                // supporting this here is a bad idea, bc it'll essentially always result in an invalid state after deletion
+                // if the text field's contents are longer than where the cursor was placed.
+                return
             }
+            let numDeletedChars = lengthBeforeDelete - textFieldValue.count
+            guard numDeletedChars > 0 else {
+                throw XCTestError(.failureWhileWaiting)
+            }
+            count -= numDeletedChars
+            try selectTextField(options: options)
         }
     }
 
@@ -152,7 +182,7 @@ extension XCUIElement {
         }
         
         // Get the current value so we can assert if the text entry was correct.
-        let previousValue = currentValue
+        let previousValue = textFieldValue
 
         // Enter the value
         if simulateFlakySimulatorTextEntry && recursiveDepth < 2 {
@@ -163,14 +193,12 @@ extension XCUIElement {
         
         // Check if the text was entered correctly
         if !options.contains(.skipTextInputValidation) {
-            let valueAfterTextEntry = currentValue
-            
+            let valueAfterTextEntry = textFieldValue
             if self.elementType == .secureTextField {
                 if previousValue.isEmpty && textToEnter.count != valueAfterTextEntry.count {
-                    try performDelete(count: valueAfterTextEntry.count, options: [], recursiveDepth: 0)
+                    try performDelete(count: valueAfterTextEntry.count, options: [])
                     tap() // cursor might not be placed at the rightmost position of the text field
-                    try performDelete(count: valueAfterTextEntry.count, options: [], recursiveDepth: 0)
-
+                    try performDelete(count: valueAfterTextEntry.count, options: [])
                     try performEnter(value: previousValue + textToEnter, options: options, recursiveDepth: recursiveDepth + 1)
                 } else if previousValue.count + textToEnter.count != valueAfterTextEntry.count {
                     os_log(
@@ -183,9 +211,9 @@ extension XCUIElement {
                 }
             } else {
                 if previousValue + textToEnter != valueAfterTextEntry {
-                    try performDelete(count: valueAfterTextEntry.count, options: [], recursiveDepth: 0)
+                    try performDelete(count: valueAfterTextEntry.count, options: [])
                     tap() // cursor might not be placed at the rightmost position of the text field
-                    try performDelete(count: valueAfterTextEntry.count, options: [], recursiveDepth: 0)
+                    try performDelete(count: valueAfterTextEntry.count, options: [])
 
                     try performEnter(value: previousValue + textToEnter, options: options, recursiveDepth: recursiveDepth + 1)
                 }
@@ -199,31 +227,29 @@ extension XCUIElement {
     /// - Note: This will not necessarily bring up the keyboard in the simulator. Don't expect buttons to show there.
     ///     If the user interacted with the Simulator (e.g. Mouse clicks) the keyboard won't show as the simulator expects input via the Mac Keyboard.
     ///     This is controlled via I/O -> Keyboard -> Connect Hardware Keyboard / Toggle Software Keyboard
-    func selectField(options: TextInputOptions = []) {
-        let app = XCUIApplication()
-
+    func selectTextField(options: TextInputOptions = []) throws {
+        let app = try self.app
         if options.contains(._tapFromRight) {
             // Select the text field, see https://stackoverflow.com/questions/38523125/place-cursor-at-the-end-of-uitextview-under-uitest
-
             XCTAssertFalse(app.keyboards.firstMatch.exists, "Keyboard must not exist when selecting text field from the right.")
-
             var offset = 0.99
             repeat {
                 coordinate(withNormalizedOffset: CGVector(dx: offset, dy: 0.5)).tap()
                 offset -= 0.05
             } while offset >= 0 && !app.keyboards.firstMatch.waitForExistence(timeout: 2.0)
-
             XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 2.0), "Keyboard does not exist.")
+            #if !os(watchOS)
+            // move the cursor all the way to the right
+            typeKey(XCUIKeyboardKey.rightArrow, modifierFlags: .command)
+            #endif
         } else {
             tap()
-
             #if os(visionOS)
             XCTAssertTrue(app.visionOSKeyboard.wait(for: .runningForeground, timeout: 2.0))
             #elseif !os(macOS) && !targetEnvironment(macCatalyst)
             XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 2.0))
             #endif
         }
-
         // With latest simulator releases it seems like the "swift to type" tutorial isn't popping up anymore.
         // For more information see https://developer.apple.com/forums/thread/650826.
     }
