@@ -55,6 +55,7 @@ extension StudyDefinition {
 }
 
 
+#if canImport(Darwin)
 extension TimedWalkingTestConfiguration {
     private static let spellOutNumberFormatter: NumberFormatter = {
         let fmt = NumberFormatter()
@@ -86,3 +87,4 @@ extension TimedWalkingTestConfiguration {
         }
     }
 }
+#endif

@@ -38,24 +38,57 @@
   "subjectType": [
     "Patient"
   ],
+  "id": "0C0D66EB-DF6E-43CA-B8E6-8653DB5D1610",
   "item": [
     {
       "linkId": "8491465f-6ae7-483a-9a91-a027a1ac41bb",
       "type": "display",
-      "text": "Instruction Component (UK)",
+      "text": "Instruction Component (GB)",
       "required": false
     },
     {
       "linkId": "a2bd0f8e-3a0c-49ca-df27-814c87e99054",
       "type": "boolean",
-      "text": "Boolean Question (UK)",
+      "text": "Boolean Question (GB)",
       "required": false
     },
     {
       "linkId": "2813e49e-452f-4039-86f0-becb90c82d30",
       "type": "date",
-      "text": "Date Question (UK)",
+      "text": "Date Question (GB)",
       "required": false
+    },
+    {
+      "linkId": "815926e8-ef8e-47a3-c03d-4008167845c8",
+      "type": "choice",
+      "text": "Select a Letter",
+      "required": false,
+      "answerOption": [
+        {
+          "valueCoding": {
+            "id": "61520da1-dd7a-4608-ba65-65708d70094f",
+            "code": "a",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "A"
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "18f3620d-203c-4cc7-f553-169f27b97d76",
+            "code": "b",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "B"
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "97a671ee-8364-4915-86fe-9fa91fa0cb28",
+            "code": "c",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "C"
+          }
+        }
+      ]
     }
   ]
 }

@@ -73,7 +73,6 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 ///
 /// ### Supporting Types
 /// - ``StudyDefinitionElement``
-/// - ``EnrollmentConditions``
 /// - ``ParticipationCriterion``
 ///
 /// ### Working with a study definition
@@ -84,7 +83,7 @@ public typealias StudyDefinitionElement = Hashable & Codable & Sendable
 /// - ``validate()``
 public struct StudyDefinition: Identifiable, Hashable, Sendable, Encodable, DecodableWithConfiguration {
     /// The ``StudyDefinition`` type's current schema version.
-    public static let schemaVersion = Version(0, 12, 1)
+    public static let schemaVersion = Version(0, 13, 0)
     
     /// The revision of the study.
     ///
@@ -121,8 +120,12 @@ extension StudyDefinition {
             switch component {
             case .healthDataCollection(let component):
                 component
-            case .informational, .questionnaire, .timedWalkingTest, .customActiveTask:
+            case .informational, .questionnaire, .timedWalkingTest:
                 nil
+            #if canImport(Darwin)
+            case .customActiveTask:
+                nil
+            #endif
             }
         }
     }
@@ -164,9 +167,15 @@ extension StudyBundle {
                 using: localeMatchingBehaviour
             )?.title?.value?.string
         case .timedWalkingTest(let component):
+            #if canImport(Darwin)
             String(localized: component.test.displayTitle)
+            #else
+            nil
+            #endif
+        #if canImport(Darwin)
         case .customActiveTask(let component):
             String(localized: component.activeTask.title)
+        #endif
         case .healthDataCollection:
             nil
         }
@@ -192,8 +201,10 @@ extension StudyBundle {
             nil
         case .healthDataCollection:
             nil
+        #if canImport(Darwin)
         case .customActiveTask(let component):
             component.activeTask.subtitle.map { String(localized: $0) }
+        #endif
         }
     }
     

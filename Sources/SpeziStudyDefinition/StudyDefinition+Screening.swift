@@ -56,23 +56,6 @@ extension StudyDefinition {
     }
 }
 
-
-extension StudyDefinition {
-    /// Defines how enrollment into a study works
-    public enum EnrollmentConditions: StudyDefinitionElement {
-        /// The are no conditions w.r.t. the enrollment into the study
-        case none
-        /// Enrollment into the study is controlled based on invitation codes.
-        /// - parameter verificationEndpoint: URL to which a user-entered verification code is sent,
-        ///     to determine whether the user should be allowed to enroll into the study.
-        ///
-        /// Example: you could have `https://my-heart-counts.stanford.edu/api/invite` as the endpoint here,
-        /// and the app would then send a GET request to `/api/invite?code=${CODE}` to verify a user-entered invitation code
-        case requiresInvitation(verificationEndpoint: URL)
-    }
-}
-
-
 extension StudyDefinition.ParticipationCriterion: ExpressibleByBooleanLiteral {
     /// Creates a `Criterion` that always evaluates to a specified Boolean value.
     ///

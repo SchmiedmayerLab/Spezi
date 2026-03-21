@@ -1,7 +1,7 @@
 {
   "title": "test survey with non-matching question input bounds",
   "resourceType": "Questionnaire",
-  "language": "en-UK",
+  "language": "en-GB",
   "status": "draft",
   "id": "423EFEF6-7FC4-41B2-8211-668E90150E13",
   "meta": {
@@ -11,7 +11,7 @@
     "tag": [
       {
         "system": "urn:ietf:bcp:47",
-        "code": "en-UK",
+        "code": "en-GB",
         "display": "English (United Kingdom)"
       }
     ]

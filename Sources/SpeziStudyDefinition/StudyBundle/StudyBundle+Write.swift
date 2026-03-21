@@ -82,7 +82,8 @@ extension StudyBundle {
         try fileManager.createDirectory(at: bundleUrl, withIntermediateDirectories: true)
         do {
             let data = try JSONEncoder().encode(definition)
-            try data.write(to: bundleUrl.appendingPathComponent("definition", conformingTo: .json))
+            let definitionUrl = bundleUrl.appendingPathComponent("definition.json")
+            try data.write(to: definitionUrl)
         }
         for input in files {
             let url: URL

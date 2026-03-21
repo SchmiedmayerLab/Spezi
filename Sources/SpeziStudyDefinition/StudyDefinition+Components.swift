@@ -45,8 +45,10 @@ extension StudyDefinition {
         case healthDataCollection(HealthDataCollectionComponent)
         /// A component that prompts the participant to perform a Timed Walking Test.
         case timedWalkingTest(TimedWalkingTestComponent)
+        #if canImport(Darwin)
         /// A component that prompts the participant to perform a custom Active Task.
         case customActiveTask(CustomActiveTaskComponent)
+        #endif
         
         /// The components `id`, uniquely identifying it within the ``StudyDefinition``.
         public var id: UUID {
@@ -59,16 +61,22 @@ extension StudyDefinition {
                 component.id
             case .timedWalkingTest(let component):
                 component.id
+            #if canImport(Darwin)
             case .customActiveTask(let component):
                 component.id
+            #endif
             }
         }
         
         /// The Component's kind
         public var kind: Kind {
             switch self {
-            case .informational, .questionnaire, .timedWalkingTest, .customActiveTask:
+            case .informational, .questionnaire, .timedWalkingTest:
                 .userInteractive
+            #if canImport(Darwin)
+            case .customActiveTask:
+                .userInteractive
+            #endif
             case .healthDataCollection:
                 .internal
             }

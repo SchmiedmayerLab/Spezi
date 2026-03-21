@@ -26,15 +26,19 @@ struct StudyBundleTests {
     func displayTitles() throws {
         let bundle = try Self.testStudyBundle
         let components = bundle.studyDefinition.components
-        let expectedNames: [String?] = [
-            "Informational Component #1",
-            "Informational Component #2",
-            "Social Support",
-            nil, // health collection
-            "Six-Minute Walk Test",
-            "12-Minute Run Test",
+        let expectedNames: [String?] = Array {
+            "Informational Component #1"
+            "Informational Component #2"
+            "Social Support"
+            nil // health collection
+            #if canImport(Darwin)
+            "Six-Minute Walk Test"
+            "12-Minute Run Test"
             "8.5-Minute Walk Test"
-        ]
+            #else
+            [nil, nil, nil]
+            #endif
+        }
         #expect(components.count == expectedNames.count)
         for (component, expectedName) in zip(components, expectedNames) {
             #expect(bundle.displayTitle(for: component, in: Self.locale) == expectedName)
@@ -46,7 +50,7 @@ struct StudyBundleTests {
         let bundle1 = try Self.testStudyBundle
         let bundle2 = try Self.testStudyBundle
         #expect(bundle1 == bundle2)
-        let bundle3Url = URL.temporaryDirectory.appendingPathComponent(UUID().uuidString, conformingTo: .speziStudyBundle)
+        let bundle3Url = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).\(StudyBundle.fileExtension)", directoryHint: .isDirectory)
         try bundle1.copy(to: bundle3Url)
         let bundle3 = try StudyBundle(bundleUrl: bundle3Url)
         #expect(bundle3 != bundle1)
@@ -139,12 +143,11 @@ struct StudyBundleTests {
             studyRevision: 0,
             metadata: StudyDefinition.Metadata(
                 id: studyId,
-                title: "Test Study",
-                explanationText: "This is our TestStudy",
-                shortExplanationText: "This is our TestStudy",
+                title: .init([.enUS: "Test Study"]),
+                explanationText: .init([.enUS: "This is our TestStudy"]),
+                shortExplanationText: .init([.enUS: "This is our TestStudy"]),
                 participationCriterion: .ageAtLeast(18) && !.ageAtLeast(60) && (.isFromRegion(.unitedStates) || .isFromRegion(.unitedKingdom)) && .speaksLanguage(.english),
                 // swiftlint:disable:previous line_length
-                enrollmentConditions: .requiresInvitation(verificationEndpoint: try #require(URL(string: "https://mhc.stanford.edu/api/enroll"))),
                 consentFileRef: .init(category: .consent, filename: "Consent", fileExtension: "md")
             ),
             components: [
@@ -203,7 +206,7 @@ struct StudyBundleTests {
                 )
             ]
         )
-        let url = URL.temporaryDirectory.appendingPathComponent(UUID().uuidString, conformingTo: .speziStudyBundle)
+        let url = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).\(StudyBundle.fileExtension)", directoryHint: .isDirectory)
         return try StudyBundle.writeToDisk(at: url, definition: definition, files: [
             StudyBundle.FileResourceInput(
                 fileRef: .init(category: .consent, filename: "Consent", fileExtension: "md"),

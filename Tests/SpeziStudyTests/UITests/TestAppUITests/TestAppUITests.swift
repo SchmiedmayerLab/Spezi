@@ -39,6 +39,7 @@ class TestAppUITests: XCTestCase {
         let enrollmentDateText = DateFormatter.localizedString(from: .now, dateStyle: .short, timeStyle: .none)
         XCTAssert(app.staticTexts["Enrollment Date, \(enrollmentDateText)"].waitForExistence(timeout: 1))
         
+        app.swipeUp()
         XCTAssert(app.staticTexts["Article1 Title"].waitForExistence(timeout: 1))
         XCTAssert(app.staticTexts["Social Support"].waitForExistence(timeout: 1))
         
@@ -52,6 +53,7 @@ class TestAppUITests: XCTestCase {
         // update the study to a newer version.
         // going from 1 to 2 will remove the questionnaire component.
         // since the informational component remains, and has already been completed, we expect it to stay completed.
+        app.swipeDown()
         app.buttons["Update enrollment to study revision 2"].tap()
         XCTAssert(app.staticTexts["Study Revision, 2"].waitForExistence(timeout: 1))
         XCTAssert(completeWelcomeArticleButton.waitForNonExistence(timeout: 1))

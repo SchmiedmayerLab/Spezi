@@ -10,9 +10,14 @@
 
 import Foundation
 import class ModelsR4.Questionnaire
+#if canImport(OSLog)
 import OSLog
+#else
+import Logging
+#endif
 import SpeziFoundation
 import SpeziLocalization
+#if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
 
 
@@ -21,6 +26,7 @@ extension UTType {
     public static let speziStudyBundle = UTType(filenameExtension: "spezistudybundle", conformingTo: .package)!
     // swiftlint:disable:previous force_unwrapping
 }
+#endif
 
 
 /// A handle for working with a Study Definition bundle.
@@ -77,7 +83,8 @@ public struct StudyBundle: Identifiable, Sendable {
         try Self.assertIsStudyBundleUrl(bundleUrl)
         self.bundleUrl = bundleUrl
         do {
-            let data = try Data(contentsOf: bundleUrl.appendingPathComponent("definition", conformingTo: .json))
+            let definitionUrl = bundleUrl.appendingPathComponent("definition.json")
+            let data = try Data(contentsOf: definitionUrl)
             self.studyDefinition = try JSONDecoder().decode(
                 StudyDefinition.self,
                 from: data,

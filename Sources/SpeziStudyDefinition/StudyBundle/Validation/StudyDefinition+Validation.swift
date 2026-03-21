@@ -107,8 +107,12 @@ extension StudyDefinition {
                 fileRefToCheck = component.fileRef
             case .questionnaire(let component):
                 fileRefToCheck = component.fileRef
-            case .healthDataCollection, .timedWalkingTest, .customActiveTask:
+            case .healthDataCollection, .timedWalkingTest:
                 fileRefToCheck = nil
+            #if canImport(Darwin)
+            case .customActiveTask:
+                fileRefToCheck = nil
+            #endif
             }
             if let fileRefToCheck, studyBundle.resolve(fileRefToCheck, in: Locale(identifier: "en_US")) == nil {
                 result.issues.insert(.unableToFindFileRef(fileRefToCheck, component))

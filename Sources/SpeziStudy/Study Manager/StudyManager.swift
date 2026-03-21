@@ -316,7 +316,7 @@ extension StudyManager {
                 $0.id.starts(with: prefix) && !activeTaskIds.contains($0.id)
             })) ?? []
             for orphanedTask in orphanedTasks {
-                logger.notice("Deleting orphaned Task for study '\(study.metadata.title)' (\(study.id)): \(orphanedTask)")
+                logger.notice("Deleting orphaned Task for study '\(study.metadata.title[.enUS] ?? "")' (\(study.id)): \(orphanedTask)")
                 try scheduler.deleteAllVersions(of: orphanedTask)
             }
         }
@@ -464,7 +464,7 @@ extension StudyManager {
     
     /// Unenroll from a study.
     public func unenroll(from enrollment: StudyEnrollment) async throws {
-        logger.notice("Unenrolling from study '\(enrollment.studyId)' (\(enrollment.studyBundle?.studyDefinition.metadata.title ?? "n/a"))")
+        logger.notice("Unenrolling from study '\(enrollment.studyId)' (\(enrollment.studyBundle?.studyDefinition.metadata.title[.enUS] ?? ""))")
         do {
             // Delete all Tasks associated with this study.
             // Note that we do this by simply fetching & deleting all Tasks with a matching prefix,
@@ -644,7 +644,7 @@ extension StudyManager {
 extension StudyManager {
     private func handleStudyLifecycleEvent(_ event: StudyLifecycleEvent, for studyBundle: StudyBundle, at date: Date) {
         logger.notice(
-            "Handling study lifecycle event '\(String(describing: event))' for study \(studyBundle.id) (\(studyBundle.studyDefinition.metadata.title))"
+            "Handling study lifecycle event '\(String(describing: event))' for study \(studyBundle.id) (\(studyBundle.studyDefinition.metadata.title[.enUS] ?? ""))"
         )
         let cal = preferredLocale.calendar
         for enrollment in studyEnrollments where enrollment.studyId == studyBundle.id {

@@ -57,12 +57,10 @@ func mockStudy(revision: MockStudyRevision) throws -> StudyBundle { // swiftlint
         studyRevision: revision.rawValue,
         metadata: StudyDefinition.Metadata(
             id: .studyId,
-            title: "TestStudy",
-            explanationText: "This is a fake study, intended for testing the SpeziStudy package.",
-            shortExplanationText: "SpeziStudy fake test study",
-            participationCriterion: .ageAtLeast(18) && !.ageAtLeast(60) && (.isFromRegion(.unitedStates) || .isFromRegion(.unitedKingdom)) && .speaksLanguage(.english),
-            // swiftlint:disable:previous line_length
-            enrollmentConditions: .none
+            title: .init([.enUS: "TestStudy"]),
+            explanationText: .init([.enUS: "This is a fake study, intended for testing the SpeziStudy package."]),
+            shortExplanationText: .init([.enUS: "SpeziStudy fake test study"]),
+            participationCriterion: .ageAtLeast(18) && !.ageAtLeast(60) && (.isFromRegion(.unitedStates) || .isFromRegion(.unitedKingdom)) && .speaksLanguage(.english) // swiftlint:disable:this line_length
         ),
         components: Array {
             StudyDefinition.Component.informational(.init(

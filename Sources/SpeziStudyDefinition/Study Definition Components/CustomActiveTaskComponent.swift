@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+#if canImport(Darwin)
 import Foundation
 
 
@@ -42,3 +43,4 @@ extension StudyDefinition.CustomActiveTaskComponent {
         }
     }
 }
+#endif

@@ -65,7 +65,7 @@ struct HomeTab: View {
         let mockStudyV1 = try! mockStudy(revision: .v1) // swiftlint:disable:this force_try
         let mockStudyV2 = try! mockStudy(revision: .v2) // swiftlint:disable:this force_try
         let mockStudyV3 = try! mockStudy(revision: .v3) // swiftlint:disable:this force_try
-        AsyncButton("Enroll in \(mockStudyV1.studyDefinition.metadata.title) (v\(mockStudyV1.studyDefinition.studyRevision))", state: $viewState) {
+        AsyncButton("Enroll in \(mockStudyV1.studyDefinition.metadata.title[.enUS] ?? "") (v\(mockStudyV1.studyDefinition.studyRevision))", state: $viewState) {
             try await studyManager.enroll(in: mockStudyV1)
         }
         AsyncButton("Update enrollment to study revision 2", state: $viewState) {
@@ -88,7 +88,7 @@ struct HomeTab: View {
         VStack {
             if let study = enrollment.studyBundle?.studyDefinition {
                 HStack {
-                    Text(study.metadata.title)
+                    Text(study.metadata.title[.enUS] ?? "")
                         .font(.headline)
                 }
             }

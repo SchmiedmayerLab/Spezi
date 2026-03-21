@@ -1,7 +1,7 @@
 {
   "title": "TestSurvey",
   "resourceType": "Questionnaire",
-  "language": "en-UK",
+  "language": "en-GB",
   "status": "draft",
   "id": "66D6F5E6-242A-43CA-996C-D8907CFA9F16",
   "meta": {
@@ -11,7 +11,7 @@
     "tag": [
       {
         "system": "urn:ietf:bcp:47",
-        "code": "en-UK",
+        "code": "en-GB",
         "display": "English (Great Britain)"
       }
     ]
