@@ -24,7 +24,10 @@ Reusable utilies when working with the [apple/FHIRModels](https://github.com/app
 - ``ModelsR4``
 - ``FHIRTypeWithExtensions``
 
+### FHIRDecimal Utilities
+- ``Swift/Double/asFHIRDecimalPrimitiveSafe()``
+- ``Foundation/Decimal/asFHIRPrimitive()``
+
 ### Foundation Utilities
 - ``Foundation/Decimal/intValue``
 - ``Foundation/Decimal/doubleValue``
-- ``Foundation/Decimal/asFHIRPrimitive()``

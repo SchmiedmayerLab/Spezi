@@ -26,6 +26,7 @@ struct FHIRExtensionsTests {
         #expect(dateTime1 == dateTime2)
     }
     
+    
     @Test
     func fhirDateUtils() throws {
         let timeZone = try #require(TimeZone(identifier: "Europe/Berlin"))
@@ -38,5 +39,23 @@ struct FHIRExtensionsTests {
         let fhirDate3 = FHIRDate(year: 2025, month: 07, day: 09)
         #expect(fhirDate1 == fhirDate2)
         #expect(fhirDate1 == fhirDate3)
+    }
+    
+    
+    @Test
+    func decimalHandling() {
+        #expect(Decimal(Double.nan).doubleValue.isNaN)
+        #expect(Decimal(Double.signalingNaN).doubleValue.isNaN)
+        
+        #expect(throws: FHIRDecimal.ConversionError.infinityInput) {
+            try (+Double.infinity).asFHIRDecimalPrimitiveSafe()
+        }
+        #expect(throws: FHIRDecimal.ConversionError.infinityInput) {
+            try (-Double.infinity).asFHIRDecimalPrimitiveSafe()
+        }
+        #expect(throws: Never.self) {
+            _ = try Double.nan.asFHIRDecimalPrimitiveSafe()
+            _ = try Double.signalingNaN.asFHIRDecimalPrimitiveSafe()
+        }
     }
 }

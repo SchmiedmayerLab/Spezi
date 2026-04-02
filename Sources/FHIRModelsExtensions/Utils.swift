@@ -10,19 +10,6 @@ public import Foundation
 public import ModelsR4
 
 
-extension Decimal {
-    /// Converts the `Decimal` into a `Double`
-    @inlinable public var doubleValue: Double {
-        NSDecimalNumber(decimal: self).doubleValue
-    }
-    
-    /// Converts the `Decimal` into an `Int`, possibly rounding if necessary
-    @inlinable public var intValue: Int {
-        NSDecimalNumber(decimal: self).intValue
-    }
-}
-
-
 extension FHIRDate {
     /// Creates a `DateComponents` instance with the `year`, `month`, and `day` components populated.
     ///
