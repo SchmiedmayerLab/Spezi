@@ -110,6 +110,29 @@ extension SensorKit {
 }
 
 
+extension SensorKit.DeviceInfo: Hashable {
+    public static func == (lhs: SensorKit.DeviceInfo, rhs: SensorKit.DeviceInfo) -> Bool {
+        if ObjectIdentifier(lhs) == ObjectIdentifier(rhs) {
+            return true
+        } else {
+            return lhs.model == rhs.model
+                && lhs.name == rhs.name
+                && lhs.systemName == rhs.systemName
+                && lhs.systemVersion == rhs.systemVersion
+                && lhs.productType == rhs.productType
+        }
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(model)
+        hasher.combine(name)
+        hasher.combine(systemName)
+        hasher.combine(systemVersion)
+        hasher.combine(productType)
+    }
+}
+
+
 extension SensorKit {
     public struct BatchInfo: Sendable {
         /// The time range queried for when SensorKit returned this batch's samples.

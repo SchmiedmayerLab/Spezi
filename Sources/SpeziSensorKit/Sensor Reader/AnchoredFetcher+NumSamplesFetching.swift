@@ -124,11 +124,14 @@ private final class FetchDelegate<Sample: SensorKitSampleProtocol>: NSObject, SR
     }
     
     private func processCurrentSamples() {
+        // IMPORTANT: the semaphore wait must happen OUTSIDE the lock, otherwise we'd deadlock
+        // with `stop()`: it acquires the lock and then signals the semaphore, but if we held
+        // the lock here it could never acquire it to signal us.
+        semaphore.wait() // wait for continuation to be ready
         lock.lock()
         defer {
             lock.unlock()
         }
-        semaphore.wait() // wait for continuation to be ready
         guard let nextBatchContinuation else {
             return
         }

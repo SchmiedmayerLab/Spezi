@@ -62,3 +62,30 @@ public struct SensorKitOnWristEventSample: SensorKitSampleSafeRepresentation {
         self.offWristDate = sample.offWristDate
     }
 }
+
+
+extension SRWristDetection.WristLocation: @retroactive CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .left:
+            "left"
+        case .right:
+            "right"
+        @unknown default:
+            "unknown<\(rawValue)>"
+        }
+    }
+}
+
+extension SRWristDetection.CrownOrientation: @retroactive CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .left:
+            "left"
+        case .right:
+            "right"
+        @unknown default:
+            "unknown<\(rawValue)>"
+        }
+    }
+}
