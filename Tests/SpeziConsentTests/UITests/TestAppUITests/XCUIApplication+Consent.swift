@@ -10,27 +10,18 @@ import XCTest
 import XCTestExtensions
 
 extension XCUIApplication {
-//    func hitConsentButton() {
-//        if staticTexts["This is the first markdown example"].isHittable {
-//            staticTexts["This is the first markdown example"].swipeUp()
-//        } else if staticTexts["This is the second markdown example"].isHittable {
-//            staticTexts["This is the second markdown example"].swipeUp()
-//        } else {
-//            print("Can not scroll down.")
-//        }
-//        XCTAssert(buttons["I Consent"].waitForExistence(timeout: 2))
-//        buttons["I Consent"].tap()
-//    }
-    
-    
     func fillOutSimpleConsent(
         consentTitle: String,
         consentText: String,
         continueButton: XCUIElement
     ) throws {
+        func assertContinueButtonEnabledState(_ isEnabled: Bool) {
+            XCTAssert(continueButton.wait(for: \.isEnabled, toEqual: isEnabled, timeout: 2))
+        }
+        
         XCTAssert(staticTexts[consentTitle].waitForExistence(timeout: 2))
         XCTAssert(staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", consentText)).element.waitForExistence(timeout: 1))
-        XCTAssertFalse(continueButton.isEnabled)
+        assertContinueButtonEnabledState(false)
 
         #if targetEnvironment(simulator) && (arch(i386) || arch(x86_64))
         throw XCTSkip("PKCanvas view-related tests are currently skipped on Intel-based iOS simulators due to a metal bug on the simulator.")
@@ -38,10 +29,10 @@ extension XCUIApplication {
 
         XCTAssert(staticTexts["First Name"].waitForExistence(timeout: 2))
         try textFields["Enter your first name…"].enter(value: "Leland")
-        XCTAssertFalse(continueButton.isEnabled)
+        assertContinueButtonEnabledState(false)
         XCTAssert(staticTexts["Last Name"].waitForExistence(timeout: 2))
         try textFields["Enter your last name…"].enter(value: "Stanford")
-        XCTAssertFalse(continueButton.isEnabled)
+        assertContinueButtonEnabledState(false)
         
         XCTAssert(staticTexts["Name: Leland Stanford"].waitForExistence(timeout: 2))
 
@@ -49,31 +40,31 @@ extension XCUIApplication {
         XCTAssert(buttons["Clear"].waitForExistence(timeout: 2.0))
         XCTAssertFalse(buttons["Clear"].isEnabled)
         
-        XCTAssertFalse(continueButton.isEnabled)
+        assertContinueButtonEnabledState(false)
         staticTexts["Name: Leland Stanford"].swipeRight()
-        XCTAssert(continueButton.isEnabled)
+        assertContinueButtonEnabledState(true)
         
         XCTAssert(buttons["Clear"].waitForExistence(timeout: 2.0))
         XCTAssert(buttons["Clear"].isEnabled)
         buttons["Clear"].tap()
-        XCTAssertFalse(continueButton.isEnabled)
+        assertContinueButtonEnabledState(false)
         
         XCTAssert(buttons["Clear"].waitForExistence(timeout: 2.0))
         XCTAssertFalse(buttons["Clear"].isEnabled)
         
         XCTAssert(scrollViews["Signature Field"].waitForExistence(timeout: 2))
         scrollViews["Signature Field"].swipeRight()
-        XCTAssert(continueButton.isEnabled)
+        assertContinueButtonEnabledState(true)
         
         XCTAssert(buttons["Clear"].waitForExistence(timeout: 2.0))
         XCTAssert(buttons["Clear"].isEnabled)
-        XCTAssert(continueButton.isEnabled)
+        assertContinueButtonEnabledState(true)
         #else
         XCTAssert(textFields["Signature Field"].waitForExistence(timeout: 2))
         try textFields["Signature Field"].enter(value: "Leland Stanford")
         #endif
         
-        XCTAssert(continueButton.isEnabled)
+        assertContinueButtonEnabledState(true)
         continueButton.tap()
     }
     

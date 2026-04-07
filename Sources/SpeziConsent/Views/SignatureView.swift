@@ -93,8 +93,7 @@ public struct SignatureView: View {
     private var signatureCanvas: some View {
         CanvasView(
             drawing: $signature,
-            isDrawing: $isSigning,
-            showToolPicker: .constant(false)
+            isDrawing: $isSigning
         )
         .accessibilityLabel(Text("SIGNATURE_FIELD", bundle: .module))
         .accessibilityAddTraits(.allowsDirectInteraction)

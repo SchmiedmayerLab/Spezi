@@ -41,12 +41,6 @@ public struct ConsentSignatureForm: View {
                 }
                 #endif
             }
-            .onChange(of: storage.name) {
-                if !storage.didEnterNames {
-                    // Reset all strokes if name fields are not complete anymore
-                    self.storage.clearSignature()
-                }
-            }
             Divider()
                 .id(dividerId)
         }
