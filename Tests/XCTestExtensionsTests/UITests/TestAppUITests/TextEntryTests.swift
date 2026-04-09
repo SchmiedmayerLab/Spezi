@@ -68,7 +68,7 @@ final class TextEntryTests: XCTestCase {
         XCTAssertFalse(app.staticTexts["Button was pressed!"].exists)
     }
     
-    
+    @MainActor
     func testLongTextEntries() throws {
         app.buttons["Text Entry"].tap()
         
@@ -90,6 +90,7 @@ final class TextEntryTests: XCTestCase {
     }
     
     
+    @MainActor
     func testClearTextField() throws {
         app.buttons["Text Entry"].tap()
         let text = repeatElement("Hello There", count: 5).joined()
@@ -103,6 +104,7 @@ final class TextEntryTests: XCTestCase {
     }
     
     
+    @MainActor
     func testDeleteLongTextField() throws {
         app.buttons["Text Entry"].tap()
         let text = repeatElement("Hello There", count: 5).joined()
@@ -115,6 +117,7 @@ final class TextEntryTests: XCTestCase {
     }
     
     
+    @MainActor
     func testKeyboardBehavior() throws {
         // make sure you disconnect the hardware keyboard when running this test! Also language must be english.
         app.buttons["DismissKeyboard"].tap()
@@ -143,5 +146,23 @@ final class TextEntryTests: XCTestCase {
         try checkLabel("Route")
         try checkLabel("Search")
         try checkLabel("Send")
+    }
+    
+    @MainActor
+    func testNumberPadDismissal() throws {
+        guard UIDevice.current.userInterfaceIdiom == .pad else {
+            // iPhoneOS number pads don't have a universal dismissal mechanism, bc there is no submit/return button.
+            // depending on the specific configuration of the view being presented, there might be some kind of
+            // ScrollView-based (interactive) dismissal situation going on, but nothing that can be relied upon reliably.
+            throw XCTSkip("Not applicable")
+        }
+        app.buttons["DismissKeyboard"].tap()
+        let textField = app.textFields["Number Entry"]
+        XCTAssert(textField.waitForExistence(timeout: 2))
+        XCTAssertFalse(app.keyboards.element.exists)
+        try textField.enter(value: "12", options: [.disableKeyboardDismiss])
+        XCTAssert(app.keyboards.element.exists)
+        app.dismissKeyboard()
+        XCTAssert(app.keyboards.element.waitForNonExistence(timeout: 2))
     }
 }

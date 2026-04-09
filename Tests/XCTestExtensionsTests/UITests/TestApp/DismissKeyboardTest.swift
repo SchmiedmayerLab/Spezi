@@ -8,25 +8,8 @@
 
 import SwiftUI
 
+
 struct DismissKeyboardTest: View {
-    struct SubView: View {
-        @State var text = ""
-        var submitLabel: SubmitLabel
-        var label: String
-
-        var body: some View {
-            TextField(text: $text, prompt: Text(label)) {
-                Text(label)
-            }
-                .submitLabel(submitLabel)
-        }
-
-        init(_ label: String, label submitLabel: SubmitLabel) {
-            self.submitLabel = submitLabel
-            self.label = label
-        }
-    }
-
     var body: some View {
         Form {
             SubView("Continue", label: .continue)
@@ -38,12 +21,50 @@ struct DismissKeyboardTest: View {
             SubView("Route", label: .route)
             SubView("Search", label: .search)
             SubView("Send", label: .send)
+            NumberEntry()
+                .accessibilityLabel("Number Entry")
         }
     }
 }
 
-struct DismissKeyboardTest_Previews: PreviewProvider {
-    static var previews: some View {
-        DismissKeyboardTest()
+
+extension DismissKeyboardTest {
+    private struct SubView: View {
+        @State var text = ""
+        var submitLabel: SubmitLabel
+        var label: String
+
+        var body: some View {
+            TextField(text: $text, prompt: Text(label)) {
+                Text(label)
+            }
+            .submitLabel(submitLabel)
+        }
+
+        init(_ label: String, label submitLabel: SubmitLabel) {
+            self.submitLabel = submitLabel
+            self.label = label
+        }
+    }
+    
+    
+    private struct NumberEntry: View {
+        // Note: using a NumberFormatter() instead of the new `FloatingPointFormatStyle<Double>.number` API,
+        // because of https://github.com/swiftlang/swift-foundation/issues/135
+        @State private var formatter = NumberFormatter()
+        
+        @State private var value: Double?
+        
+        var body: some View {
+            TextField("Number Entry", value: $value, formatter: formatter, prompt: Text(verbatim: "0"))
+                .keyboardType(.numberPad)
+        }
     }
 }
+
+
+#if DEBUG
+#Preview {
+    DismissKeyboardTest()
+}
+#endif
