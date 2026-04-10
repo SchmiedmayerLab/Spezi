@@ -237,7 +237,7 @@ extension XCUIElement {
                 coordinate(withNormalizedOffset: CGVector(dx: offset, dy: 0.5)).tap()
                 offset -= 0.05
             } while offset >= 0 && !app.keyboards.firstMatch.waitForExistence(timeout: 2.0)
-            XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 2.0), "Keyboard does not exist.")
+            XCTAssert(app.keyboards.firstMatch.waitForExistence(timeout: 2.0), "Keyboard does not exist.")
             #if !os(watchOS)
             // move the cursor all the way to the right
             typeKey(XCUIKeyboardKey.rightArrow, modifierFlags: .command)
@@ -245,9 +245,9 @@ extension XCUIElement {
         } else {
             tap()
             #if os(visionOS)
-            XCTAssertTrue(app.visionOSKeyboard.wait(for: .runningForeground, timeout: 2.0))
+            XCTAssert(app.visionOSKeyboard.wait(for: .runningForeground, timeout: 2.0))
             #elseif !os(macOS) && !targetEnvironment(macCatalyst)
-            XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 2.0))
+            XCTAssert(app.keyboards.firstMatch.waitForExistence(timeout: 2.0))
             #endif
         }
         // With latest simulator releases it seems like the "swift to type" tutorial isn't popping up anymore.

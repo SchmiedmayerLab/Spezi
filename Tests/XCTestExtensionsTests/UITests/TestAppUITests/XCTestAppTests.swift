@@ -9,6 +9,7 @@
 import XCTest
 
 
+@MainActor
 class XCTestAppTests: XCTestCase {
     func testTestAppTestCaseTest() throws {
         let app = XCUIApplication()
