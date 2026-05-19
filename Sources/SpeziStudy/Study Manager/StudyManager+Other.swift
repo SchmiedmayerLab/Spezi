@@ -25,8 +25,15 @@ extension StudyManager {
 }
 
 extension Task.Context {
+    typealias StudyContextOld = StudyContextImpl<PersistentIdentifier>
     /// The study-related context of a Task
-    public struct StudyContext: Codable, Hashable, Sendable {
+    public typealias StudyContext = StudyContextImpl<StudyEnrollment.ID>
+    
+    
+    /// The study-related context of a Task
+    ///
+    /// - Note: Always use ``StudyContext`` instead of directly referring to this type. It will be removed in a future update.
+    public struct StudyContextImpl<EnrollmentId: Codable & Hashable & Sendable>: Codable, Hashable, Sendable {
         /// The identifier of the study to which the Task belongs
         public let studyId: StudyDefinition.ID
         /// The identifier of the study component for which the Task was created
@@ -34,12 +41,15 @@ extension Task.Context {
         /// The identifier of the specific study schedule from which the Task was created
         public let scheduleId: StudyDefinition.ComponentSchedule.ID
         /// The `PersistentIdentifier` of the ``StudyEnrollment`` this `Task` belongs to.
-        public let enrollmentId: PersistentIdentifier
+        public let enrollmentId: EnrollmentId
     }
     
     /// The study to which this Task belongs, and the component for which it was scheduled.
-    @Property(coding: .json)
+    @Property(coding: .json, storageIdentifier: "studyContext")
     public var studyContext: StudyContext?
+    
+    @Property(coding: .json, storageIdentifier: "studyContext")
+    var studyContextOld: StudyContextOld?
     
     /// The ``StudyManager/ScheduledTaskAction`` associated with the task.
     @Property(coding: .json)
