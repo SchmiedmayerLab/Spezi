@@ -221,6 +221,15 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
                 }
             }
     }
+}
+
+
+extension StudyManager {
+    private struct MigrationError: Error {
+        let message: String
+        let file: StaticString
+        let line: UInt
+    }
     
     
     /// Applies task fixes and deduplicates them where needed.
@@ -228,7 +237,34 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
     /// This function does the following:
     /// - Updates all SpeziStudy-managed Scheduler Tasks to use `UUID`s instead of `PersistentIdentifier`s
     /// - Merges successive task versions where possible.
-    private func fixTaskContextAndDuplicateVersions() throws { // swiftlint:disable:this function_body_length cyclomatic_complexity
+    @MainActor
+    private func fixTaskContextAndDuplicateVersions() throws {
+        let context = try scheduler.context
+        // we first save the scheduler's context, to ensure that we are operating on a clean slate.
+        try context.save()
+        do {
+            try _fixTaskContextAndDuplicateVersions()
+            try context.save()
+        } catch {
+            // if something goes wrong, we roll back the whole thing
+            context.rollback()
+            throw error
+        }
+    }
+    
+    // NOTE: it's important that this function remain isolated to the MainActor, and not be made async,
+    // since that would break the atomicity we currently have in the migration!
+    @MainActor
+    private func _fixTaskContextAndDuplicateVersions() throws { // swiftlint:disable:this function_body_length cyclomatic_complexity
+        func check(_ condition: Bool, _ message: @autoclosure () -> String, file: StaticString = #file, line: UInt = #line) throws {
+            if !condition {
+                throw StudyManager.MigrationError(
+                    message: message(),
+                    file: file,
+                    line: line
+                )
+            }
+        }
         /// Determines if `fstVersion` subsumes `sndVersion`, i.e., if `sndVersion` can be "merged" into `fstVersion`.
         func subsumes(_ fstVersion: Task, _ sndVersion: Task) -> Bool {
             guard fstVersion.nextVersion == sndVersion,
@@ -258,6 +294,7 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
                 return true
             }
             if nonEqualKeyPaths.contains(\.userInfo) {
+                /// Checks if `fstVersion` and `sndVersion` have equal task context entries, at the specified key paths.
                 func equalContext<each Value: Equatable>(_ keyPath: repeat KeyPath<Task, each Value>) -> Bool {
                     for keyPath in repeat each keyPath {
                         let val0 = fstVersion[keyPath: keyPath]
@@ -290,12 +327,12 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
             }
             // Step 1: update all tasks to use the correct, UUID-based context
             for task in try allStudyTasks {
-                task.unsafelyUpdateContext { context in
+                try task.unsafelyUpdateContext { context in
                     switch (context.studyContextOld, context.studyContext) {
                     case (.none, .none), (.none, .some), (.some, .some):
                         break
                     case (.some(let oldStudyContext), .none):
-                        assert(self.enrollment(withId: oldStudyContext.enrollmentId) == enrollment)
+                        try check(self.enrollment(withId: oldStudyContext.enrollmentId) == enrollment, "invalid enrollment")
                         context.studyContextOld = nil // clear it from the cache
                         context.studyContext = .init(
                             studyId: oldStudyContext.studyId,
@@ -303,19 +340,18 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
                             scheduleId: oldStudyContext.scheduleId,
                             enrollmentId: enrollment.id
                         )
-                        assert(context.studyContext != nil)
-                        assert(context.studyContextOld == nil)
+                        try check(context.studyContext != nil, "new context is nil?")
+                        try check(context.studyContextOld == nil, "old context not nil?")
                     }
                 }
-                assert(task.studyContext != nil)
-                assert(task.studyContextOld == nil)
+                try check(task.studyContext != nil, "new context is nil?")
+                try check(task.studyContextOld == nil, "old context not nil?")
             }
             
             // Step 2: Delete all unnecessary task versions.
             for var currentVersion in try allStudyTasks.mapIntoSet(\.firstVersion) {
                 // walk over the chain of task versions
                 loop: while let nextVersion = currentVersion.nextVersion {
-                    precondition(currentVersion.studyContext != nil)
                     guard subsumes(currentVersion, nextVersion) else {
                         currentVersion = nextVersion
                         continue loop
@@ -331,16 +367,16 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
                     let newNextVersion = nextVersion.nextVersion
                     currentVersion.unsafelyUpdateNextVersion(to: nextVersion.nextVersion)
                     nextVersion.unsafelyUpdateNextVersion(to: nil) // technically not required, but we add it to make this explicit.
-                    precondition(nextVersion.previousVersion == nil)
-                    precondition(nextVersion.nextVersion == nil)
-                    precondition(nextVersion.outcomes.isEmpty)
-                    precondition(currentVersion.nextVersion != nextVersion)
-                    precondition(currentVersion.nextVersion == newNextVersion)
+                    try check(nextVersion.previousVersion == nil, "invalid previousVersion")
+                    try check(nextVersion.nextVersion == nil, "invalid nextVersion")
+                    try check(nextVersion.outcomes.isEmpty, "still has outcomes")
+                    try check(currentVersion.nextVersion != nextVersion, "invalid nextVersion")
+                    try check(currentVersion.nextVersion == newNextVersion, "invalid nextVersion")
                     if let newNextVersion {
-                        precondition(newNextVersion.previousVersion == currentVersion)
+                        try check(newNextVersion.previousVersion == currentVersion, "invalid previousVersion")
                     }
                     if let newNextVersion = currentVersion.nextVersion {
-                        precondition(newNextVersion.previousVersion == currentVersion)
+                        try check(newNextVersion.previousVersion == currentVersion, "invalid previousVersion")
                     }
                     try scheduler.context.delete(nextVersion)
                     // we just subsumed `nextVersion` into `currentVersion`.
@@ -349,14 +385,6 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
                 }
             }
         }
-        try scheduler.context.save()
-    }
-}
-
-
-extension ClosedRange where Bound == Date {
-    static var ever: Self {
-        .distantPast...(.distantFuture)
     }
 }
 
