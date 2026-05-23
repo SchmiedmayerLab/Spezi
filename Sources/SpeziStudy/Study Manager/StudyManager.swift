@@ -238,7 +238,8 @@ extension StudyManager {
     /// - Updates all SpeziStudy-managed Scheduler Tasks to use `UUID`s instead of `PersistentIdentifier`s
     /// - Merges successive task versions where possible.
     @MainActor
-    private func fixTaskContextAndDuplicateVersions() throws {
+    @_spi(TestingSupport)
+    public func fixTaskContextAndDuplicateVersions() throws {
         let context = try scheduler.context
         // we first save the scheduler's context, to ensure that we are operating on a clean slate.
         try context.save()

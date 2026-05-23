@@ -25,15 +25,15 @@ extension StudyManager {
 }
 
 extension Task.Context {
-    typealias StudyContextOld = StudyContextImpl<PersistentIdentifier>
+    typealias StudyContextOld = _StudyContextImpl<PersistentIdentifier>
     /// The study-related context of a Task
-    public typealias StudyContext = StudyContextImpl<StudyEnrollment.ID>
+    public typealias StudyContext = _StudyContextImpl<StudyEnrollment.ID>
     
     
     /// The study-related context of a Task
     ///
     /// - Note: Always use ``StudyContext`` instead of directly referring to this type. It will be removed in a future update.
-    public struct StudyContextImpl<EnrollmentId: Codable & Hashable & Sendable>: Codable, Hashable, Sendable {
+    public struct _StudyContextImpl<EnrollmentId: Codable & Hashable & Sendable>: Codable, Hashable, Sendable { // swiftlint:disable:this type_name
         /// The identifier of the study to which the Task belongs
         public let studyId: StudyDefinition.ID
         /// The identifier of the study component for which the Task was created

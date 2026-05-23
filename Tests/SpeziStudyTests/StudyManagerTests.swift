@@ -6,13 +6,14 @@
 // SPDX-License-Identifier: MIT
 //
 
-// swiftlint:disable type_body_length multiline_function_chains
+// swiftlint:disable type_body_length multiline_function_chains file_types_order file_length
 
 #if canImport(Darwin)
 import Foundation
 import Spezi
 import SpeziHealthKit
 import SpeziLocalization
+@_spi(APISupport)
 @_spi(TestingSupport)
 import SpeziScheduler
 @_spi(TestingSupport)
@@ -26,10 +27,15 @@ private actor TestStandard: Standard, HealthKitConstraint {
     func handleNewSamples<Sample>(_ addedSamples: some Collection<Sample>, ofType sampleType: SampleType<Sample>) async {
         // ...
     }
-    
+
     func handleDeletedObjects<Sample>(_ deletedObjects: some Collection<HKDeletedObject>, ofType sampleType: SampleType<Sample>) async {
         // ...
     }
+}
+
+
+extension Task.Context {
+    @Property var dedupeTestMarker: String?
 }
 
 
@@ -352,6 +358,161 @@ final class StudyManagerTests {
         #expect(try #require(nextOccurrence(schedule4)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 31))))
         #expect(try #require(nextOccurrence(schedule5)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 2))))
         #expect(try #require(nextOccurrence(schedule6)) == #require(cal.date(from: .init(year: 2025, month: 8, day: 5))))
+    }
+    
+    
+    // swiftlint:disable identifier_name
+    @Test
+    func taskVersionDeduplication() async throws { // swiftlint:disable:this function_body_length
+        let cal = Calendar.current
+        let scheduler = Scheduler(persistence: .inMemory)
+        let studyManager = StudyManager(persistence: .inMemory)
+        withDependencyResolution(standard: TestStandard()) {
+            scheduler
+            studyManager
+        }
+        try await studyManager.enroll(in: studyBundle)
+        let initialTasks = try scheduler.queryAllTasks()
+        #expect(initialTasks.count == 3)
+        #expect(initialTasks.allSatisfy { $0.previousVersion == nil && $0.nextVersion == nil })
+        
+        // pick the 12-min run, which has its first occurrence tomorrow (per the test study bundle's `offset: 1 day`).
+        // this lets us complete an event in a time window that any of V1/V2/V3 can be responsible for, as long as
+        // their `effectiveFrom` dates are still today.
+        let v1 = try #require(initialTasks.first { $0.studyContext?.componentId == Self.twelveMinuteRunTestComponentId })
+        let originalStudyContext = try #require(v1.studyContext)
+        let originalAction = try #require(v1.studyScheduledTaskAction)
+        #expect(v1.outcomes.isEmpty)
+        
+        // we manufacture duplicates by mutating each version's userInfo to add a marker that the next
+        // -createOrUpdateTask call won't reproduce. that forces a new version (userInfo differs) while keeping
+        // `studyContext` and `studyScheduledTaskAction` equal across versions -- which is exactly the shape that
+        // the dedup logic is supposed to merge.
+        func createDuplicateVersion(of latest: Task, marker: String, effectiveFrom: Date) throws -> Task {
+            latest.unsafelyUpdateContext { context in
+                context.dedupeTestMarker = marker
+            }
+            try scheduler.context.save()
+            return try scheduler.createOrUpdateTask(
+                id: latest.id,
+                title: latest.title,
+                instructions: latest.instructions,
+                category: latest.category,
+                schedule: latest.schedule,
+                completionPolicy: latest.completionPolicy,
+                scheduleNotifications: latest.scheduleNotifications,
+                notificationThread: latest.notificationThread,
+                notificationTime: latest.notificationTime,
+                tags: latest.tags,
+                effectiveFrom: effectiveFrom,
+                shadowedOutcomesHandling: .delete,
+                with: { context in
+                    context.studyContext = originalStudyContext
+                    context.studyScheduledTaskAction = originalAction
+                }
+            ).task
+        }
+        let v2 = try createDuplicateVersion(of: v1, marker: "marker-v1", effectiveFrom: v1.effectiveFrom.addingTimeInterval(1))
+        #expect(v2 != v1)
+        #expect(v1.nextVersion == v2)
+        #expect(v2.previousVersion == v1)
+        let v3 = try createDuplicateVersion(of: v2, marker: "marker-v2", effectiveFrom: v1.effectiveFrom.addingTimeInterval(2))
+        #expect(v3 != v2)
+        #expect(v2.nextVersion == v3)
+        #expect(v3.previousVersion == v2)
+        #expect(v3.firstVersion == v1)
+        #expect(v1.latestVersion == v3)
+        #expect(try scheduler.queryAllTasks().count == 5) // 2 untouched tasks + the 3 versions of the 12-min run
+        
+        // complete an event on V3 so we have an outcome that the dedup logic must reassign to V1.
+        let nextDayRange = cal.rangeOfDay(for: cal.startOfNextDay(for: .now))
+        let v3Events = try scheduler.queryEvents(for: v3, in: nextDayRange)
+        #expect(v3Events.count == 1)
+        let outcome = try #require(v3Events.first).complete(ignoreCompletionPolicy: true)
+        let outcomeId = outcome.id
+        try scheduler.context.save()
+        #expect(v3.outcomes.contains { $0.id == outcomeId })
+        #expect(v1.outcomes.isEmpty)
+        #expect(v2.outcomes.isEmpty)
+        
+        try studyManager.fixTaskContextAndDuplicateVersions()
+        
+        // after the migration: only the 3 original tasks remain (V2 and V3 of the run task got merged into V1),
+        // V1's chain is collapsed, and the outcome we created on V3 was reassigned to V1.
+        let postTasks = try scheduler.queryAllTasks()
+        #expect(postTasks.count == 3)
+        let surviving = try #require(postTasks.first { $0.id == v1.id })
+        #expect(surviving == v1)
+        #expect(surviving.previousVersion == nil)
+        #expect(surviving.nextVersion == nil)
+        #expect(surviving.outcomes.contains { $0.id == outcomeId })
+        #expect(surviving.studyContext == originalStudyContext)
+        #expect(surviving.studyScheduledTaskAction == originalAction)
+        // the other 2 untouched tasks should still be there in their original single-version state.
+        for task in postTasks where task.id != v1.id {
+            #expect(task.previousVersion == nil)
+            #expect(task.nextVersion == nil)
+        }
+    }
+    // swiftlint:enable identifier_name
+    
+    
+    @Test
+    func taskContextMigration() async throws {
+        let scheduler = Scheduler(persistence: .inMemory)
+        let studyManager = StudyManager(persistence: .inMemory)
+        withDependencyResolution(standard: TestStandard()) {
+            scheduler
+            studyManager
+        }
+        try await studyManager.enroll(in: studyBundle)
+        let enrollment = try #require(studyManager.studyEnrollments.first)
+        let allTasks = try scheduler.queryAllTasks()
+        #expect(allTasks.count == 3)
+        
+        // capture the original UUID-based study contexts so we can verify the migration restores them.
+        let originalContexts: [Task.ID: Task.Context.StudyContext] = allTasks.reduce(into: [:]) { dict, task in
+            dict[task.id] = task.studyContext
+        }
+        #expect(originalContexts.count == 3)
+        
+        // simulate the legacy on-disk state: rewrite each task so the shared "studyContext" storage slot holds
+        // the old `PersistentIdentifier`-keyed encoding rather than the new UUID-keyed one.
+        // both @Property declarations target the same storage identifier, so the latter write wins, but the
+        // in-memory cache is keyed by property *type*, not storage identifier -- so we explicitly clear the
+        // new-format value first to evict it from the cache before populating the old-format one.
+        for task in allTasks {
+            let originalContext = try #require(originalContexts[task.id])
+            task.unsafelyUpdateContext { context in
+                context.studyContext = nil
+                context.studyContextOld = Task.Context.StudyContextOld(
+                    studyId: originalContext.studyId,
+                    componentId: originalContext.componentId,
+                    scheduleId: originalContext.scheduleId,
+                    enrollmentId: enrollment.persistentModelID
+                )
+            }
+            #expect(task.studyContext == nil)
+            #expect(task.studyContextOld != nil)
+        }
+        try scheduler.context.save()
+        
+        try studyManager.fixTaskContextAndDuplicateVersions()
+        
+        // after the migration: every task has its UUID-based studyContext set (matching the pre-simulation values),
+        // with the legacy enrollment id (PersistentIdentifier) swapped out for the enrollment's UUID id,
+        // and the legacy studyContextOld cleared.
+        let postTasks = try scheduler.queryAllTasks()
+        #expect(postTasks.count == 3)
+        for task in postTasks {
+            let originalContext = try #require(originalContexts[task.id])
+            let newContext = try #require(task.studyContext)
+            #expect(task.studyContextOld == nil)
+            #expect(newContext.studyId == originalContext.studyId)
+            #expect(newContext.componentId == originalContext.componentId)
+            #expect(newContext.scheduleId == originalContext.scheduleId)
+            #expect(newContext.enrollmentId == enrollment.id)
+        }
     }
     
     
