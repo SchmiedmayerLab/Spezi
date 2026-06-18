@@ -1,0 +1,66 @@
+#
+# This source file is part of the Stanford Spezi open-source project
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  detect:
+    name: Detect affected packages
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.compute.outputs.matrix }}
+      has_jobs: ${{ steps.compute.outputs.has_jobs }}
+      affected: ${{ steps.compute.outputs.affected }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # need history to diff against the base / previous commit
+      - name: Determine changed files
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+            git diff --name-only "origin/${{ github.base_ref }}...HEAD" > changed.txt
+          elif [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" > changed.txt
+          else
+            echo "__ALL__" > changed.txt   # first push / unknown base -> test everything
+          fi
+          echo "Changed files:"; cat changed.txt
+      - name: Compute test matrix
+        id: compute
+        run: python3 Scripts/affected-test-matrix.py changed.txt >> "$GITHUB_OUTPUT"
+      - name: Summary
+        run: |
+          echo "Affected packages: ${{ steps.compute.outputs.affected }}"
+
+  test:
+    name: ${{ matrix.package }} (${{ matrix.platform }})
+    needs: detect
+    if: needs.detect.outputs.has_jobs == 'true'
+    # The platform destinations (e.g. "iPhone 17 Pro") assume an Xcode-26 self-hosted macOS runner,
+    # matching the upstream Spezi CI. Swap to a GitHub-hosted `macos-*` label if your Xcode/sims match.
+    runs-on: [self-hosted, macOS]
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test ${{ matrix.package }} on ${{ matrix.platform }}
+        run: Scripts/run-package-tests.sh "${{ matrix.package }}" "${{ matrix.platform }}"
