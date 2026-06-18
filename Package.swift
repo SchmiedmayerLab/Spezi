@@ -2171,7 +2171,12 @@ let package = Package(
         // ChartContentBuilder.buildBlock) resolve. .v15 matches the highest macOS floor among the
         // merged packages (SpeziScheduler). iOS remains the only platform we currently target;
         // full multi-platform support will be revisited later.
-        .macOS(.v15)
+        .macOS(.v15),
+        // watchOS is supported by a subset of the merged packages. .v11 matches the iOS-18 / macOS-15
+        // release wave and the highest watchOS floor among them (SpeziScheduler / SpeziStudy). Modules
+        // backed by frameworks without watchOS support (ResearchKit, TPPDF, Firebase, MLX, …) are not
+        // built for watchOS.
+        .watchOS(.v11)
     ],
     products: products,
     dependencies: [
