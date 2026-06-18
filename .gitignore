@@ -9,7 +9,13 @@
 # Swift Package Manager
 Package.resolved
 *.xcodeproj
-.swiftpm
+# Ignore .swiftpm, but keep shared schemes (e.g. the Spezi-Tests test-plan host scheme) tracked.
+.swiftpm/*
+!.swiftpm/xcode
+.swiftpm/xcode/*
+!.swiftpm/xcode/xcshareddata
+.swiftpm/xcode/xcshareddata/*
+!.swiftpm/xcode/xcshareddata/xcschemes
 .build
 .xcodebuild
 .derivedData

@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "00000000-0000-0000-0000-000000000034",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+      {
+        "containerPath" : "container:",
+        "identifier" : "XCTestApp",
+        "name" : "XCTestApp"
+      },
+      {
+        "containerPath" : "container:",
+        "identifier" : "XCTestExtensions",
+        "name" : "XCTestExtensions"
+      }
+    ]
+    }
+  },
+  "testTargets" : [
+      {
+        "target" : {
+          "containerPath" : "container:",
+          "identifier" : "XCTestExtensionsTests",
+          "name" : "XCTestExtensionsTests"
+        }
+      }
+  ],
+  "version" : 1
+}

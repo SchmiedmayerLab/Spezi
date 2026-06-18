@@ -1,0 +1,49 @@
+{
+  "configurations" : [
+    {
+      "id" : "00000000-0000-0000-0000-000000000000",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+      {
+        "containerPath" : "container:",
+        "identifier" : "FHIRModelsExtensions",
+        "name" : "FHIRModelsExtensions"
+      },
+      {
+        "containerPath" : "container:",
+        "identifier" : "FHIRPathParser",
+        "name" : "FHIRPathParser"
+      },
+      {
+        "containerPath" : "container:",
+        "identifier" : "FHIRQuestionnaires",
+        "name" : "FHIRQuestionnaires"
+      }
+    ]
+    }
+  },
+  "testTargets" : [
+      {
+        "target" : {
+          "containerPath" : "container:",
+          "identifier" : "FHIRModelsExtensionsTests",
+          "name" : "FHIRModelsExtensionsTests"
+        }
+      },
+      {
+        "target" : {
+          "containerPath" : "container:",
+          "identifier" : "FHIRPathParserTests",
+          "name" : "FHIRPathParserTests"
+        }
+      }
+  ],
+  "version" : 1
+}

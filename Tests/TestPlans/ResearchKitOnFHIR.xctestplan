@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "00000000-0000-0000-0000-000000000002",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+      {
+        "containerPath" : "container:",
+        "identifier" : "ResearchKitOnFHIR",
+        "name" : "ResearchKitOnFHIR"
+      }
+    ]
+    }
+  },
+  "testTargets" : [
+      {
+        "target" : {
+          "containerPath" : "container:",
+          "identifier" : "ResearchKitOnFHIRTests",
+          "name" : "ResearchKitOnFHIRTests"
+        }
+      }
+  ],
+  "version" : 1
+}

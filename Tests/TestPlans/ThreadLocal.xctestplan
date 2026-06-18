@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "00000000-0000-0000-0000-000000000031",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+      {
+        "containerPath" : "container:",
+        "identifier" : "ThreadLocalMacros",
+        "name" : "ThreadLocalMacros"
+      },
+      {
+        "containerPath" : "container:",
+        "identifier" : "ThreadLocal",
+        "name" : "ThreadLocal"
+      }
+    ]
+    }
+  },
+  "testTargets" : [
+      {
+        "target" : {
+          "containerPath" : "container:",
+          "identifier" : "ThreadLocalTests",
+          "name" : "ThreadLocalTests"
+        }
+      }
+  ],
+  "version" : 1
+}
