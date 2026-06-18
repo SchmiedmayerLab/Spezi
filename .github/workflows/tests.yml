@@ -79,7 +79,7 @@ jobs:
     if: needs.detect.outputs.has_jobs == 'true'
     # The platform destinations (e.g. "iPhone 17 Pro") assume an Xcode-26 self-hosted macOS runner,
     # matching the upstream Spezi CI. Swap to a GitHub-hosted `macos-*` label if your Xcode/sims match.
-    runs-on: '["macOS", "self-hosted"]'
+    runs-on: [self-hosted, macOS]
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
