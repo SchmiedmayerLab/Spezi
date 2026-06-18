@@ -46,9 +46,32 @@ jobs:
       - name: Compute test matrix
         id: compute
         run: python3 Scripts/affected-test-matrix.py changed.txt >> "$GITHUB_OUTPUT"
-      - name: Summary
+      - name: Dump matrix (debug)
+        env:
+          AFFECTED: ${{ steps.compute.outputs.affected }}
+          HAS_JOBS: ${{ steps.compute.outputs.has_jobs }}
+          MATRIX: ${{ steps.compute.outputs.matrix }}
         run: |
-          echo "Affected packages: ${{ steps.compute.outputs.affected }}"
+          echo "has_jobs = $HAS_JOBS"
+          echo "affected = $AFFECTED"
+          JOBS=$(printf '%s' "$MATRIX" | python3 -c 'import json,sys; print(len(json.load(sys.stdin).get("include",[])))' 2>/dev/null || echo "?")
+          echo "scheduled jobs = $JOBS"
+          echo "----- generated matrix (pretty) -----"
+          printf '%s' "$MATRIX" | python3 -m json.tool || printf '%s\n' "$MATRIX"
+          {
+            echo "## Test selection"
+            echo "**has_jobs:** \`$HAS_JOBS\`  •  **scheduled jobs:** \`$JOBS\`"
+            echo ""
+            echo "**Affected packages:** $AFFECTED"
+            echo ""
+            echo "<details><summary>Generated matrix JSON ($JOBS jobs)</summary>"
+            echo ""
+            echo '```json'
+            printf '%s' "$MATRIX" | python3 -m json.tool || printf '%s\n' "$MATRIX"
+            echo '```'
+            echo ""
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   test:
     name: ${{ matrix.package }} (${{ matrix.platform }})
@@ -56,7 +79,7 @@ jobs:
     if: needs.detect.outputs.has_jobs == 'true'
     # The platform destinations (e.g. "iPhone 17 Pro") assume an Xcode-26 self-hosted macOS runner,
     # matching the upstream Spezi CI. Swap to a GitHub-hosted `macos-*` label if your Xcode/sims match.
-    runs-on: [self-hosted, macOS]
+    runs-on: '["macOS", "self-hosted"]'
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
