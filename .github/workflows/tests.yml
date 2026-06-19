@@ -79,9 +79,10 @@ jobs:
     name: ${{ matrix.package }} (${{ matrix.platform }})
     needs: detect
     if: needs.detect.outputs.has_jobs == 'true'
-    # The platform destinations (e.g. "iPhone 17 Pro") assume an Xcode-26 self-hosted macOS runner,
-    # matching the upstream Spezi CI. Swap to a GitHub-hosted `macos-*` label if your Xcode/sims match.
-    runs-on: [self-hosted, macOS]
+    # TEMPORARY: GitHub-hosted macos-26 (ships Xcode 26, so the "iPhone 17 Pro" etc. simulator
+    # destinations in Scripts/run-package-tests.sh resolve without changes). Revert to
+    # `runs-on: [self-hosted, macOS]` once the Xcode-26 self-hosted Spezi runners are available.
+    runs-on: macos-26
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
