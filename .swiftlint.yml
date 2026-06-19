@@ -376,6 +376,7 @@ deployment_target: # Availability checks or attributes shouldn’t be using olde
   iOS_deployment_target: 16.0
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - .incoming # temporary during monorepo construction
   - .build
   - .swiftpm
   - .derivedData
@@ -385,6 +386,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   # The monorepo's Package.swift is a ~2,200-line generated manifest (vs the small per-package manifests
   # upstream); file_length/style linting isn't meaningful for it, so the generated manifest is excluded.
   - Package.swift
+  - Tests/*/UITests/*
 
 closure_body_length: # Closure bodies should not span too many lines.
   - 35 # warning - default: 20

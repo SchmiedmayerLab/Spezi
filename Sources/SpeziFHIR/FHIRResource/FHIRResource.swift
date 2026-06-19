@@ -29,7 +29,6 @@ public struct FHIRResource: Identifiable, Hashable {
     }
     
     public static let fhirExtensionUrlHKSampleId = URL(string: "https://bdh.stanford.edu/fhir/defs/HealthKitSampleID")!
-    // swiftlint:disable:previous force_unwrapping
     
     
     /// The version-specific FHIR resource.

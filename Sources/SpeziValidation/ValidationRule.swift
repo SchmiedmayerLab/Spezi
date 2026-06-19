@@ -74,7 +74,7 @@ public struct ValidationRule: Identifiable, Sendable, Equatable {
 
 
     init(
-        id: UUID = UUID(), 
+        id: UUID = UUID(),
         ruleClosure: @escaping @Sendable (String) -> Bool,
         message: LocalizedStringResource,
         effect: CascadingValidationEffect = .continue

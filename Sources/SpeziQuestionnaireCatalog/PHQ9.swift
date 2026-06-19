@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-// swiftlint:disable line_length force_unwrapping
+// swiftlint:disable line_length
 
 private import Foundation
 public import SpeziQuestionnaire
