@@ -51,7 +51,7 @@ extension DiagnosticMessage {
         let title: String
         let value: Any
         let omitIfNil: Bool
-        init(_ title: String, omitIfNil: Bool = false, value: some Any) { // swiftlint:disable:this function_default_parameter_at_end
+        init(_ title: String, omitIfNil: Bool = false, value: some Any) {
             self.title = title
             self.value = value
             self.omitIfNil = omitIfNil

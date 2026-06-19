@@ -105,7 +105,6 @@ extension SignalLabel {
     ///   - dimension: The angle dimension
     /// - Returns: The signal label.
     public static func angle(location: String? = nil, prefix: DimensionPrefix = .none, dimension: AngleDimension) -> SignalLabel {
-        // swiftlint:disable:previous function_default_parameter_at_end
         SignalLabel(type: .angle, location: location, prefix: prefix, dimension: dimension.rawValue)
     }
 
@@ -125,7 +124,6 @@ extension SignalLabel {
     ///     Refer to [EDF Currencies](https://www.edfplus.info/specs/edftexts.html#prefixes_electrodenames) for more information.
     /// - Returns: The signal label.
     public static func money(location: String? = nil, dimension: String) -> SignalLabel {
-        // swiftlint:disable:previous function_default_parameter_at_end
         SignalLabel(type: .money, location: location, dimension: dimension)
     }
 }
@@ -215,7 +213,6 @@ extension SignalLabel {
     ///   - dimension: The dimension of the measurement.
     /// - Returns: The signal label.
     public static func temperature(location: String? = nil, dimension: TemperatureDimension) -> SignalLabel {
-        // swiftlint:disable:previous function_default_parameter_at_end
         SignalLabel(type: .temperature, location: location, dimension: dimension.rawValue)
     }
 

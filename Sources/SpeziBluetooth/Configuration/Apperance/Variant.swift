@@ -33,7 +33,6 @@ public struct Variant {
     ///   - criteria: The criteria that identify a device variant and distinguish the variant from other device variants.
     /// - Precondition: You have to provide at least one device variant criteria: `!criteria.isEmpty`
     public init(id: String, name: String, icon: ImageReference = .system("sensor"), criteria: DeviceVariantCriteria...) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         precondition(!criteria.isEmpty, "At least one device variant criteria must be provided")
 
         self.id = id

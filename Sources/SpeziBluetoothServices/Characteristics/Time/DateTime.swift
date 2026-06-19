@@ -93,7 +93,6 @@ public struct DateTime {
     ///   - minutes: The minutes.
     ///   - seconds: The seconds.
     public init(year: UInt16 = 0, month: Month = .unknown, day: UInt8 = 0, hours: UInt8, minutes: UInt8, seconds: UInt8) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.year = year
         self.month = month
         self.day = day

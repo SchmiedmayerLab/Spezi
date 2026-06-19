@@ -191,7 +191,6 @@ private final class DeprecatedDeclarations: Module {
 
 
 func getModule<M: Module>(_ module: M.Type = M.self, in modules: [any Module]) throws -> M {
-    // swiftlint:disable:previous function_default_parameter_at_end
     try #require(modules.first(where: { $0 is M }) as? M, "Could not find module \(M.self) loaded. Available: \(modules)")
 }
 

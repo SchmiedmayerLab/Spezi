@@ -14,7 +14,7 @@ extension XCTestCase {
     /// Launches the Health app and adds the specified sample to the database.
     @MainActor
     public func launchAndAddSample(
-        healthApp: XCUIApplication = .healthApp, // swiftlint:disable:this function_default_parameter_at_end
+        healthApp: XCUIApplication = .healthApp,
         _ sample: NewHealthSampleInput
     ) throws {
         try launchAndAddSamples(healthApp: healthApp, CollectionOfOne(sample))
@@ -23,7 +23,7 @@ extension XCTestCase {
     /// Launches the Health app and adds the specified samples to the database.
     @MainActor
     public func launchAndAddSamples(
-        healthApp: XCUIApplication = .healthApp, // swiftlint:disable:this function_default_parameter_at_end
+        healthApp: XCUIApplication = .healthApp,
         _ samples: some Collection<NewHealthSampleInput>
     ) throws {
         try healthApp.assertIsHealthApp()

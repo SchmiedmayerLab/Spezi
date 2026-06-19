@@ -38,7 +38,7 @@ extension Diagnostic {
     init<S: SyntaxProtocol>(
         syntax: S,
         message: String,
-        domain: String = "SpeziAccount", // swiftlint:disable:this function_default_parameter_at_end
+        domain: String = "SpeziAccount",
         id: SpeziAccountDiagnostic.ID,
         severity: SwiftDiagnostics.DiagnosticSeverity = .error
     ) {
@@ -51,7 +51,7 @@ extension DiagnosticsError {
     init<S: SyntaxProtocol>(
         syntax: S,
         message: String,
-        domain: String = "SpeziAccount", // swiftlint:disable:this function_default_parameter_at_end
+        domain: String = "SpeziAccount",
         id: SpeziAccountDiagnostic.ID,
         severity: SwiftDiagnostics.DiagnosticSeverity = .error
     ) {

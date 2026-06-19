@@ -64,7 +64,7 @@ public struct Signal {
     public init(
         label: SignalLabel,
         transducerType: String? = nil,
-        prefiltering: String? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        prefiltering: String? = nil,
         sampleCount: Int,
         physicalMinimum: Int,
         physicalMaximum: Int,

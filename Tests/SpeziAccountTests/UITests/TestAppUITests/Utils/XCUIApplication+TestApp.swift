@@ -39,7 +39,7 @@ extension XCUIApplication {
         credentials: DefaultCredentials? = nil,
         accountRequired: Bool = false,
         noName: Bool = false,
-        includeInvitationCode: Bool = false, // swiftlint:disable:this function_default_parameter_at_end
+        includeInvitationCode: Bool = false,
         flags: String...
     ) {
         launchArguments = ["--service-type", serviceType.rawValue, "--configuration-type", config.rawValue]

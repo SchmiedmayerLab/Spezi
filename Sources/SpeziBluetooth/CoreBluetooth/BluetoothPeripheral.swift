@@ -579,7 +579,6 @@ public class BluetoothPeripheral { // swiftlint:disable:this type_body_length
     ///   - serviceId: The service the characteristic lives on.
     ///   - characteristicId: The characteristic to notify about.
     public func enableNotifications(_ enabled: Bool = true, serviceId: BTUUID, characteristicId: BTUUID) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         let id = CharacteristicLocator(serviceId: serviceId, characteristicId: characteristicId)
 
         if enabled {

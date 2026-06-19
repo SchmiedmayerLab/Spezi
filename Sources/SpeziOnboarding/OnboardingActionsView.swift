@@ -161,7 +161,7 @@ extension OnboardingActionsView {
     ///   - secondaryAction: The action that should be performed when pressing the secondary button
     public init(
         primaryTitle: LocalizedStringResource,
-        primaryViewState: Binding<ViewState>? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        primaryViewState: Binding<ViewState>? = nil,
         primaryAction: @escaping @MainActor () async throws -> Void,
         secondaryTitle: LocalizedStringResource,
         secondaryViewState: Binding<ViewState>? = nil,
@@ -184,7 +184,7 @@ extension OnboardingActionsView {
     @_disfavoredOverload
     public init(
         primaryTitle: some StringProtocol,
-        primaryViewState: Binding<ViewState>? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        primaryViewState: Binding<ViewState>? = nil,
         primaryAction: @escaping @MainActor () async throws -> Void,
         secondaryTitle: some StringProtocol,
         secondaryViewState: Binding<ViewState>? = nil,

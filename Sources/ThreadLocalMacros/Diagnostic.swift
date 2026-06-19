@@ -38,7 +38,7 @@ extension Diagnostic {
     init<S: SyntaxProtocol>(
         syntax: S,
         message: String,
-        domain: String = "ThreadLocal", // swiftlint:disable:this function_default_parameter_at_end
+        domain: String = "ThreadLocal",
         id: ThreadLocalDiagnostic.ID,
         severity: SwiftDiagnostics.DiagnosticSeverity = .error
     ) {
@@ -51,7 +51,7 @@ extension DiagnosticsError {
     init<S: SyntaxProtocol>(
         syntax: S,
         message: String,
-        domain: String = "ThreadLocal", // swiftlint:disable:this function_default_parameter_at_end
+        domain: String = "ThreadLocal",
         id: ThreadLocalDiagnostic.ID,
         severity: SwiftDiagnostics.DiagnosticSeverity = .error
     ) {

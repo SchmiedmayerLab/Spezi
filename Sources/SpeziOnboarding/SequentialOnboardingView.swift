@@ -52,7 +52,7 @@ public struct SequentialOnboardingView<Header: View>: View {
         ///   - title: The step's localized title.
         ///   - description: The step's localized description.
         public init(
-            title: LocalizedStringResource? = nil, // swiftlint:disable:this function_default_parameter_at_end
+            title: LocalizedStringResource? = nil,
             description: LocalizedStringResource
         ) {
             self.title = title.map { Text($0) }
@@ -65,7 +65,7 @@ public struct SequentialOnboardingView<Header: View>: View {
         ///   - description: The step's description.
         @_disfavoredOverload
         public init(
-            title: (some StringProtocol)? = String?.none, // swiftlint:disable:this function_default_parameter_at_end
+            title: (some StringProtocol)? = String?.none,
             description: some StringProtocol
         ) {
             self.title = title.map { Text($0) }
@@ -183,7 +183,7 @@ extension SequentialOnboardingView {
     ///   - action: The close that is called then the primary button is pressed.
     public init(
         title: LocalizedStringResource,
-        subtitle: LocalizedStringResource? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        subtitle: LocalizedStringResource? = nil,
         steps: [Step],
         actionText: LocalizedStringResource,
         action: @escaping @MainActor () async throws -> Void
@@ -208,7 +208,7 @@ extension SequentialOnboardingView {
     @_disfavoredOverload
     public init(
         title: some StringProtocol,
-        subtitle: (some StringProtocol)? = String?.none, // swiftlint:disable:this function_default_parameter_at_end
+        subtitle: (some StringProtocol)? = String?.none,
         steps: [Step],
         actionText: some StringProtocol,
         action: @escaping @MainActor () async throws -> Void

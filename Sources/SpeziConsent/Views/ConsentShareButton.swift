@@ -54,7 +54,7 @@ public struct ConsentShareButton: View {
     /// - parameter viewState: The `ViewState` to bind to. If the export fails, the error will be propagated to this view state.
     public init(
         consentDocument: ConsentDocument?,
-        exportConfiguration: ConsentDocument.ExportConfiguration = .init(), // swiftlint:disable:this function_default_parameter_at_end
+        exportConfiguration: ConsentDocument.ExportConfiguration = .init(),
         viewState: Binding<ViewState>
     ) {
         self.consentDocument = consentDocument

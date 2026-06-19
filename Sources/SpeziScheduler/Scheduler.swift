@@ -290,7 +290,6 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
     /// - parameter forceSave: Flag to always schedule an immediate save, regardless of whether `context.hasChanges` is actually true. Required to work around FB17583572.
     /// - parameter rescheduleNotifications: whether the scheduler should reschedule notifications for all ``Task``s.
     private func scheduleSave(for context: ModelContext, forceSave: Bool = false, rescheduleNotifications: Bool) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         if saveTask != nil {
             // as we run on the MainActor in the task, if the saveTask is not nil,
             // we know that the Task isn't executed yet but will on the "next" tick.
@@ -336,7 +335,7 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
         id: String,
         title: String.LocalizationValue,
         instructions: String.LocalizationValue,
-        category: Task.Category? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        category: Task.Category? = nil,
         schedule: Schedule,
         completionPolicy: AllowedCompletionPolicy = .sameDay,
         scheduleNotifications: Bool = false,
@@ -902,7 +901,7 @@ extension Scheduler {
         with basePredicate: Predicate<Task>,
         combineWith userPredicate: Predicate<Task>,
         sortBy sortDescriptors: [SortDescriptor<Task>],
-        fetchLimit: Int? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        fetchLimit: Int? = nil,
         prefetchOutcomes: Bool
     ) throws -> [Task] {
         var descriptor = FetchDescriptor<Task>(

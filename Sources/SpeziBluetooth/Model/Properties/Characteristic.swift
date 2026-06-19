@@ -300,7 +300,6 @@ public struct Characteristic<Value: Sendable>: Sendable {
     }
 
     fileprivate init(wrappedValue: Value? = nil, characteristic: BTUUID, notify: Bool, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.storage = Storage(id: characteristic, defaultNotify: notify, autoRead: autoRead, initialValue: wrappedValue)
     }
 
@@ -350,7 +349,6 @@ extension Characteristic where Value: ByteEncodable {
     ///   - id: The characteristic id.
     ///   - autoRead: Flag indicating if  the initial value should be automatically read from the peripheral.
     public init(wrappedValue: Value? = nil, id: BTUUID, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.init(wrappedValue: wrappedValue, characteristic: id, notify: false, autoRead: autoRead)
     }
 }
@@ -364,7 +362,6 @@ extension Characteristic where Value: ByteDecodable {
     ///   - notify: Automatically subscribe to characteristic notifications if supported.
     ///   - autoRead: Flag indicating if  the initial value should be automatically read from the peripheral.
     public init(wrappedValue: Value? = nil, id: BTUUID, notify: Bool = false, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.init(wrappedValue: wrappedValue, characteristic: id, notify: notify, autoRead: autoRead)
     }
 }
@@ -378,7 +375,6 @@ extension Characteristic where Value: ByteCodable { // reduce ambiguity
     ///   - notify: Automatically subscribe to characteristic notifications if supported.
     ///   - autoRead: Flag indicating if  the initial value should be automatically read from the peripheral.
     public init(wrappedValue: Value? = nil, id: BTUUID, notify: Bool = false, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.init(wrappedValue: wrappedValue, characteristic: id, notify: notify, autoRead: autoRead)
     }
 }

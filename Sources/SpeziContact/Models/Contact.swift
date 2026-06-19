@@ -91,7 +91,7 @@ public struct Contact {
     ///   - contactOptions: The contact options of the individual.
     public init(
         // We want the id to be the first parameter even though it has a default value as it is the primary element identifying a `Contact`.
-        id: UUID = UUID(), // swiftlint:disable:this function_default_parameter_at_end
+        id: UUID = UUID(),
         name: PersonNameComponents,
         image: Image? = nil,
         title: String? = nil,

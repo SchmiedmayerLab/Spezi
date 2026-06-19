@@ -30,7 +30,7 @@ extension View {
     /// - Returns: The modified view.
     @MainActor
     public func autoConnect(
-        enabled: Bool = true, // swiftlint:disable:this function_default_parameter_at_end
+        enabled: Bool = true,
         with bluetooth: Bluetooth,
         minimumRSSI: Int? = nil,
         advertisementStaleInterval: TimeInterval? = nil
@@ -61,7 +61,7 @@ extension View {
     /// - Returns: The modified view.
     @MainActor
     public func autoConnect(
-        enabled: Bool = true, // swiftlint:disable:this function_default_parameter_at_end
+        enabled: Bool = true,
         with bluetoothManager: BluetoothManager,
         discovery: Set<DiscoveryDescription>,
         minimumRSSI: Int? = nil,

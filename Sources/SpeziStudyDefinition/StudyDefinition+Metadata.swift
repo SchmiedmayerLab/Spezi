@@ -52,10 +52,10 @@ extension StudyDefinition {
             id: UUID,
             title: LocalizationsDictionary<String>,
             shortTitle: LocalizationsDictionary<String> = .init([.enUS: ""]),
-            icon: Icon? = nil, // swiftlint:disable:this function_default_parameter_at_end
+            icon: Icon? = nil,
             explanationText: LocalizationsDictionary<String>,
             shortExplanationText: LocalizationsDictionary<String>,
-            studyDependency: StudyDefinition.ID? = nil, // swiftlint:disable:this function_default_parameter_at_end
+            studyDependency: StudyDefinition.ID? = nil,
             participationCriterion: ParticipationCriterion,
             consentFileRef: StudyBundle.FileReference? = nil
         ) {

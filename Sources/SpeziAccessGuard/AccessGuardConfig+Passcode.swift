@@ -167,7 +167,7 @@ extension CodeAccessGuard {
     public init(
         _ id: AccessGuardIdentifier<Self>,
         timeout: Duration = .minutes(5),
-        message: LocalizedStringResource? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        message: LocalizedStringResource? = nil,
         format: PasscodeFormat,
         validate: @escaping @Sendable (String) async -> ValidationResult
     ) {

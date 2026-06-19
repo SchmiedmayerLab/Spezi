@@ -103,7 +103,7 @@ extension Questionnaire {
     /// Finds the top-level task with the specified id.
     func find(taskId: Task.ID) -> (section: Section, task: Task)? {
         for section in sections {
-            for task in section.tasks {
+            for task in section.tasks { // swiftlint:disable:this for_where
                 if task.id == taskId {
                     return (section, task)
                 }

@@ -35,7 +35,7 @@ public struct CryptographicKeyTag: Hashable, Sendable {
     /// Creates a new Key Tag
     public init(
         _ tagValue: String,
-        size: Int = 256, // swiftlint:disable:this function_default_parameter_at_end
+        size: Int = 256,
         storage: KeychainItemStorageOption,
         label: String? = nil
     ) {
