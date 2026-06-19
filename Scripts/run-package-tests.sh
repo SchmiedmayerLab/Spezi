@@ -70,10 +70,13 @@ dest() { case "$1" in
   *) echo "unknown platform: $1" >&2; exit 2 ;;
 esac; }
 
+# Pretty-print xcodebuild output via xcbeautify; emit GitHub annotations when running in CI.
+beautify() { if [ -n "${GITHUB_ACTIONS:-}" ]; then xcbeautify --renderer github-actions; else xcbeautify; fi; }
+
 run() { # <testplan> <platform>
   echo "==> $1 on $2"
   xcodebuild test -scheme Spezi-Tests -testPlan "$1" -destination "$(dest "$2")" \
-    -skipMacroValidation -skipPackagePluginValidation
+    -skipMacroValidation -skipPackagePluginValidation | beautify
 }
 
 case "${1:-}" in
@@ -82,7 +85,7 @@ case "${1:-}" in
   --all-ios)
     echo "==> entire package on iOS Simulator"
     xcodebuild test -scheme Spezi-Package -destination "$(dest iOS)" \
-      -skipMacroValidation -skipPackagePluginValidation ;;
+      -skipMacroValidation -skipPackagePluginValidation | beautify ;;
   "")
     echo "usage: $0 <Package> [Platform] | --all-ios | --list" >&2; exit 1 ;;
   *)
