@@ -17,7 +17,7 @@ final class ChangeSubscriptions<Value: Sendable>: Sendable {
         let id: UUID
     }
 
-    private nonisolated(unsafe) var continuations: OrderedDictionary<UUID, AsyncStream<Value>.Continuation> = [:]
+    nonisolated(unsafe) private var continuations: OrderedDictionary<UUID, AsyncStream<Value>.Continuation> = [:]
     private let lock = RWLock()
 
     nonisolated init() {}
@@ -36,7 +36,7 @@ final class ChangeSubscriptions<Value: Sendable>: Sendable {
         }
     }
 
-    private nonisolated  func _newSubscription() -> Registration {
+    nonisolated private func _newSubscription() -> Registration {
         let id = UUID()
         let stream = AsyncStream { continuation in
             lock.withWriteLock {

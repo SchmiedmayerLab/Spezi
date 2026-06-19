@@ -117,12 +117,12 @@ public class BluetoothManager: Observable, Sendable, Identifiable { // swiftlint
     /// The list of nearby bluetooth devices.
     ///
     /// This array contains all discovered bluetooth peripherals and those with which we are currently connected.
-    public nonisolated var nearbyPeripherals: [BluetoothPeripheral] {
+    nonisolated public var nearbyPeripherals: [BluetoothPeripheral] {
         Array(storage.readOnlyDiscoveredPeripherals.values)
     }
 
     /// Represents the current state of the Bluetooth Manager.
-    public nonisolated var state: BluetoothState {
+    nonisolated public var state: BluetoothState {
         storage.readOnlyState
     }
 
@@ -131,12 +131,12 @@ public class BluetoothManager: Observable, Sendable, Identifiable { // swiftlint
     /// Creates an `AsyncStream` that yields all **future** changes to the ``state`` property.
     ///
     /// - Note: If you need to instantly react to state changes, you can use the ``registerStateHandler(_:)`` method.
-    public nonisolated var stateSubscription: AsyncStream<BluetoothState> {
+    nonisolated public var stateSubscription: AsyncStream<BluetoothState> {
         storage.stateSubscription
     }
 
     /// Whether or not we are currently scanning for nearby devices.
-    public nonisolated var isScanning: Bool {
+    nonisolated public var isScanning: Bool {
         storage.readOnlyIsScanning
     }
 
@@ -171,7 +171,7 @@ public class BluetoothManager: Observable, Sendable, Identifiable { // swiftlint
 
     
     /// Initialize a new Bluetooth Manager with provided device description and optional configuration options.
-    public nonisolated init() {}
+    nonisolated public init() {}
 
     func supplyCBCentral() -> CBCentralManager {
         // The Bluetooth permission alert shows every time when a CBCentralManager is initialized.
@@ -560,7 +560,7 @@ public class BluetoothManager: Observable, Sendable, Identifiable { // swiftlint
 @_spi(APISupport)
 extension BluetoothManager: BluetoothScanner {
     /// Default id based on `ObjectIdentifier`.
-    public nonisolated var id: ObjectIdentifier {
+    nonisolated public var id: ObjectIdentifier {
         ObjectIdentifier(self)
     }
 

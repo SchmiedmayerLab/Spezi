@@ -245,7 +245,7 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
     /// The Bluetooth device configuration.
     ///
     /// Set of configured ``BluetoothDevice`` with their corresponding ``DiscoveryCriteria``.
-    public nonisolated let configuration: Set<DeviceDiscoveryDescriptor>
+    nonisolated public let configuration: Set<DeviceDiscoveryDescriptor>
 
     // sadly Swifts "lazy var" won't work here with strict concurrency as it doesn't isolate the underlying lazy storage
     @SpeziBluetooth private var _lazy_discoveryConfiguration: Set<DiscoveryDescription>?
@@ -263,12 +263,12 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
 
 
     /// Represents the current state of Bluetooth.
-    public nonisolated var state: BluetoothState {
+    nonisolated public var state: BluetoothState {
         bluetoothManager.state
     }
 
     /// Whether or not we are currently scanning for nearby devices.
-    public nonisolated var isScanning: Bool {
+    nonisolated public var isScanning: Bool {
         bluetoothManager.isScanning
     }
 
@@ -285,7 +285,7 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
     /// Subscribe to changes of the `state` property.
     ///
     /// Creates an `AsyncStream` that yields all **future** changes to the ``state`` property.
-    public nonisolated var stateSubscription: AsyncStream<BluetoothState> {
+    nonisolated public var stateSubscription: AsyncStream<BluetoothState> {
         bluetoothManager.stateSubscription
     }
 
@@ -299,7 +299,7 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
     @Application(\.spezi)
     private var spezi
 
-    private nonisolated var logger: Logger {
+    nonisolated private var logger: Logger {
         Self.logger
     }
 

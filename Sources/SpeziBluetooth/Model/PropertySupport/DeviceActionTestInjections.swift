@@ -10,7 +10,7 @@ import Foundation
 
 
 final class DeviceActionTestInjections<ClosureType: Sendable>: Sendable {
-    private nonisolated(unsafe) var _injectedClosure: ClosureType?
+    nonisolated(unsafe) private var _injectedClosure: ClosureType?
     private let lock = NSLock() // protects property above
 
     var injectedClosure: ClosureType? {

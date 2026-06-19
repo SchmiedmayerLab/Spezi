@@ -11,7 +11,7 @@ import Foundation
 
 @Observable
 final class DeviceStateTestInjections<Value: Sendable>: Sendable {
-    @ObservationIgnored private nonisolated(unsafe) var _subscriptions: ChangeSubscriptions<Value>?
+    @ObservationIgnored nonisolated(unsafe) private var _subscriptions: ChangeSubscriptions<Value>?
     private let _injectedValue: MainActorBuffered<Value?> = .init(nil)
     private let lock = NSLock() // protects both properties above
 

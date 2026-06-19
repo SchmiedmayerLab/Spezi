@@ -212,7 +212,7 @@ extension CharacteristicPeripheralInjection: DecodableCharacteristic where Value
 
 
 extension CharacteristicPeripheralInjection: PrimitiveDecodableCharacteristic where Value: PrimitiveByteDecodable {
-    fileprivate nonisolated func decodePrimitiveValue<ValueType>(from data: Data, as value: ValueType.Type) -> ValueType? {
+    nonisolated fileprivate func decodePrimitiveValue<ValueType>(from data: Data, as value: ValueType.Type) -> ValueType? {
         guard let value = Value(data: data, endianness: .little) as? ValueType else {
             preconditionFailure("Type \(Value.self) doesn't match requested \(ValueType.self).")
         }

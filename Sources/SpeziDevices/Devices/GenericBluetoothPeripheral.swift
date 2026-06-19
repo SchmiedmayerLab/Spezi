@@ -47,7 +47,7 @@ extension GenericBluetoothPeripheral {
 
 
 extension BluetoothPeripheral: GenericBluetoothPeripheral {
-    public nonisolated var label: String {
+    nonisolated public var label: String {
         name ?? "Generic Peripheral"
     }
 }

@@ -150,19 +150,21 @@ isPresented?.wrappedValue = false
     }
     
     
+    // We disable the default parameter order here to ensure that the action can be a trailing closure but only needs to be optionally provided.
+    // swiftlint:disable function_default_parameter_at_end
     /// Initializes a new ``MedicationSettings`` view.
     /// - Parameters:
     ///   - isPresented: An optional binding to allow the ``MedicationSettings`` view to control the presentation of itself, should be used in combination with e.g. a `.sheet(isPresented:)` modifier.
     ///   - allowEmptySave: Flag to determine if saving without any medication instances is allowed.
     ///   - medicationSettingsViewModel: The ``MedicationSettingsViewModel`` to manage the medication settings.
     ///   - action: An optional closure to be executed after persisting medications and performing custom logic.
-    public init( // swiftlint:disable:this function_default_parameter_at_end
-        // We disable the default parameter order here to ensure that the action can be a trailing closure but only needs to be optionally provided.
+    public init(
         isPresented: Binding<Bool>? = nil,
         allowEmptySave: Bool = false,
         medicationSettingsViewModel: any MedicationSettingsViewModel<MI>,
         action: @escaping () -> Void = {}
     ) {
+        // swiftlint:enable function_default_parameter_at_end
         self.isPresented = isPresented
         self.allowEmptySave = allowEmptySave
         self.medicationSettingsViewModel = medicationSettingsViewModel

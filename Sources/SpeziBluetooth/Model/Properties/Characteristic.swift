@@ -216,7 +216,7 @@ public struct Characteristic<Value: Sendable>: Sendable {
     @Observable
     final class State: Sendable {
         struct CharacteristicCaptureRetrieval: Sendable { // workaround to make the retrieval of the `capture` property Sendable
-            private nonisolated(unsafe) let characteristic: GATTCharacteristic
+            nonisolated(unsafe) private let characteristic: GATTCharacteristic
 
             var capture: CharacteristicAccessorCapture {
                 characteristic.captured
@@ -228,7 +228,7 @@ public struct Characteristic<Value: Sendable>: Sendable {
         }
 
         private let _value: MainActorBuffered<Value?>
-        @ObservationIgnored private nonisolated(unsafe) var _capture: CharacteristicCaptureRetrieval?
+        @ObservationIgnored nonisolated(unsafe) private var _capture: CharacteristicCaptureRetrieval?
         // protects both properties above
         private let lock = RWLock()
 

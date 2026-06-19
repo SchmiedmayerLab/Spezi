@@ -31,7 +31,7 @@ final class TestService: Sendable {
         Logger(subsystem: "edu.stanford.spezi.bluetooth", category: "TestService")
     }
 
-    private nonisolated(unsafe) weak var peripheral: TestPeripheral?
+    nonisolated(unsafe) private weak var peripheral: TestPeripheral?
     let service: CBMutableService
 
     let eventLog: CBMutableCharacteristic

@@ -18,7 +18,7 @@ import CoreBluetooth
 /// of `CBUUID`.
 public struct BTUUID {
     /// The CoreBluetooth UUID.
-    public nonisolated(unsafe) let cbuuid: CBUUID
+    nonisolated(unsafe) public let cbuuid: CBUUID
 
     /// The UUID represented as a string.
     public var uuidString: String {

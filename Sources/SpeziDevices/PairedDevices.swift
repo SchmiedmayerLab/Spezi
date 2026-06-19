@@ -168,7 +168,7 @@ public final class PairedDevices: ServiceModule {
     }
 
 
-    private nonisolated(unsafe) var _pairedDevices: OrderedDictionary<UUID, PairedDevice> = [:]
+    nonisolated(unsafe) private var _pairedDevices: OrderedDictionary<UUID, PairedDevice> = [:]
     private let devicesLock = NSLock()
     /// The collection of paired devices that are persisted on disk.
     @MainActor public var pairedDevices: [PairedDeviceInfo]? { // swiftlint:disable:this discouraged_optional_collection
@@ -1183,7 +1183,7 @@ extension Bluetooth {
         }
     }
 
-    fileprivate nonisolated func pairableDevice(identifier deviceTypeIdentifier: String) -> (any PairableDevice.Type)? {
+    nonisolated fileprivate func pairableDevice(identifier deviceTypeIdentifier: String) -> (any PairableDevice.Type)? {
         for descriptor in self.configuration {
             guard let pairableDevice = descriptor.deviceType as? any PairableDevice.Type,
                   pairableDevice.deviceTypeIdentifier == deviceTypeIdentifier else {
@@ -1198,7 +1198,7 @@ extension Bluetooth {
 
 #if canImport(AccessorySetupKit) && !os(macOS) && !targetEnvironment(macCatalyst)
     @available(iOS 18, *)
-    fileprivate nonisolated func pairableDevice(matches discoveryDescriptor: ASDiscoveryDescriptor) -> (any PairableDevice.Type)? {
+    nonisolated fileprivate func pairableDevice(matches discoveryDescriptor: ASDiscoveryDescriptor) -> (any PairableDevice.Type)? {
         for descriptor in self.configuration {
             guard let pairableDevice = descriptor.deviceType as? any PairableDevice.Type,
                   descriptor.discoveryCriteria.matches(descriptor: discoveryDescriptor) else {

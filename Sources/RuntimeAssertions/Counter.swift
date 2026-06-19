@@ -10,7 +10,7 @@ import Foundation
 
 
 package final class Counter: Sendable {
-    private nonisolated(unsafe) var counter: Int
+    nonisolated(unsafe) private var counter: Int
     private let lock = NSLock()
 
     package var count: Int {

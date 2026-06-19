@@ -11,7 +11,7 @@ import SpeziFoundation
 
 
 final class MainActorBuffered<Value: Sendable>: Sendable {
-    private nonisolated(unsafe) var unsafeValue: Value
+    nonisolated(unsafe) private var unsafeValue: Value
     @MainActor private(set) var mainActorValue: Value?
 
     init(_ value: Value) {

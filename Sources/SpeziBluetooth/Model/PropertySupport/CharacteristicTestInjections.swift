@@ -10,11 +10,11 @@ import Foundation
 
 
 final class CharacteristicTestInjections<Value: Sendable>: Sendable {
-    private nonisolated(unsafe) var _writeClosure: ((Value, WriteType) async throws -> Void)?
-    private nonisolated(unsafe) var _readClosure: (() async throws -> Value)?
-    private nonisolated(unsafe) var _requestClosure: ((Value) async throws -> Value)?
-    private nonisolated(unsafe) var _subscriptions: ChangeSubscriptions<Value>?
-    private nonisolated(unsafe) var _simulatePeripheral = false
+    nonisolated(unsafe) private var _writeClosure: ((Value, WriteType) async throws -> Void)?
+    nonisolated(unsafe) private var _readClosure: (() async throws -> Value)?
+    nonisolated(unsafe) private var _requestClosure: ((Value) async throws -> Value)?
+    nonisolated(unsafe) private var _subscriptions: ChangeSubscriptions<Value>?
+    nonisolated(unsafe) private var _simulatePeripheral = false
     private let lock = NSLock()
 
     var writeClosure: ((Value, WriteType) async throws -> Void)? {
