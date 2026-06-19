@@ -123,8 +123,6 @@ var products: [Product] = [
     .library(name: "SpeziViews", targets: ["SpeziViews"]),
     .library(name: "SpeziPersonalInfo", targets: ["SpeziPersonalInfo"]),
     .library(name: "SpeziValidation", targets: ["SpeziValidation"]),
-    // MARK: SwiftPackageTemplate
-    .library(name: "TemplatePackage", targets: ["TemplatePackage"]),
     // MARK: ThreadLocal
     .library(name: "ThreadLocal", targets: ["ThreadLocal"]),
     // MARK: XCTHealthKit
@@ -1867,28 +1865,6 @@ var targets: [Target] = [
             .target(name: "SpeziViews"),
             .target(name: "SpeziValidation"),
             .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
-        ],
-        exclude: [
-            "UITests"
-        ],
-        plugins: [] + swiftLintPlugin
-    ),
-    // MARK: SwiftPackageTemplate
-    .target(
-        name: "TemplatePackage",
-        exclude: [
-            "CITATION.cff",
-            "CONTRIBUTORS.md",
-            "LICENSE.md",
-            "LICENSES",
-            "README.md"
-        ],
-        plugins: [] + swiftLintPlugin
-    ),
-    .testTarget(
-        name: "TemplatePackageTests",
-        dependencies: [
-            .target(name: "TemplatePackage")
         ],
         exclude: [
             "UITests"

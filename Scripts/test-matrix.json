@@ -119,8 +119,6 @@
     "SpeziValidation": "SpeziViews",
     "SpeziViews": "SpeziViews",
     "SpeziViewsTests": "SpeziViews",
-    "TemplatePackage": "SwiftPackageTemplate",
-    "TemplatePackageTests": "SwiftPackageTemplate",
     "TestPeripheral": "SpeziBluetooth",
     "ThreadLocal": "ThreadLocal",
     "ThreadLocalMacros": "ThreadLocal",
@@ -416,18 +414,6 @@
       ],
       "linux": false,
       "testPlan": "SpeziViews"
-    },
-    "SwiftPackageTemplate": {
-      "platforms": [
-        "iOS",
-        "macOS",
-        "macCatalyst",
-        "watchOS",
-        "visionOS",
-        "tvOS"
-      ],
-      "linux": true,
-      "testPlan": "SwiftPackageTemplate"
     },
     "ThreadLocal": {
       "platforms": [

@@ -20,7 +20,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-PACKAGES="FHIRModelsExtensions HealthKitOnFHIR ResearchKitOnFHIR Spezi SpeziAccessGuard SpeziAccount SpeziBluetooth SpeziChat SpeziConsent SpeziContact SpeziDevices SpeziFHIR SpeziFileFormats SpeziFirebase SpeziFoundation SpeziHealthKit SpeziLLM SpeziLicense SpeziLocation SpeziMedication SpeziNetworking SpeziNotifications SpeziOnboarding SpeziQuestionnaire SpeziScheduler SpeziSensorKit SpeziSpeech SpeziStorage SpeziStudy SpeziViews SwiftPackageTemplate ThreadLocal XCTHealthKit XCTRuntimeAssertions XCTestExtensions"
+PACKAGES="FHIRModelsExtensions HealthKitOnFHIR ResearchKitOnFHIR Spezi SpeziAccessGuard SpeziAccount SpeziBluetooth SpeziChat SpeziConsent SpeziContact SpeziDevices SpeziFHIR SpeziFileFormats SpeziFirebase SpeziFoundation SpeziHealthKit SpeziLLM SpeziLicense SpeziLocation SpeziMedication SpeziNetworking SpeziNotifications SpeziOnboarding SpeziQuestionnaire SpeziScheduler SpeziSensorKit SpeziSpeech SpeziStorage SpeziStudy SpeziViews ThreadLocal XCTHealthKit XCTRuntimeAssertions XCTestExtensions"
 
 # package -> the platforms it was tested on upstream (the union CI matrix)
 platforms_for() { case "$1" in
@@ -54,7 +54,6 @@ platforms_for() { case "$1" in
     SpeziStorage) echo "iOS macOS macCatalyst watchOS visionOS" ;;
     SpeziStudy) echo "iOS macOS macCatalyst watchOS visionOS" ;;
     SpeziViews) echo "iOS visionOS tvOS watchOS macOS" ;;
-    SwiftPackageTemplate) echo "iOS macOS macCatalyst watchOS visionOS tvOS" ;;
     ThreadLocal) echo "macOS iOS macCatalyst watchOS visionOS tvOS" ;;
     XCTHealthKit) echo "iOS" ;;
     XCTRuntimeAssertions) echo "iOS macOS macCatalyst watchOS visionOS tvOS" ;;

@@ -31,6 +31,11 @@ GLOBAL_PREFIXES = (
     ".swiftlint.yml", ".github/", "Scripts/", "Tests/TestPlans/", ".swiftpm/",
 )
 
+# TEMPORARY: limit CI test scheduling to these platforms. A package is scheduled on a platform only
+# if it both supports that platform (per test-matrix.json) and the platform is listed here. Remove
+# this filter (and its use below) to restore macCatalyst / visionOS / tvOS scheduling.
+CI_PLATFORMS = ("iOS", "macOS", "watchOS")
+
 def read_changed():
     src = open(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] != "-" else sys.stdin
     return [ln.strip() for ln in src if ln.strip()]
@@ -56,6 +61,8 @@ def main():
     include = []
     for pkg in sorted(affected):
         for platform in PKGS[pkg]["platforms"]:
+            if platform not in CI_PLATFORMS:  # TEMPORARY platform limit (see CI_PLATFORMS above)
+                continue
             include.append({"package": pkg, "platform": platform})
 
     out = os.environ.get("GITHUB_OUTPUT")
