@@ -2,6 +2,8 @@
 #
 # This source file is part of the Stanford Spezi open-source project
 #
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
 # SPDX-License-Identifier: MIT
 #
 # Reproduces the union CI testing matrix of the original input packages using Xcode test plans.

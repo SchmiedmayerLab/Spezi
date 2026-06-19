@@ -361,6 +361,16 @@ only_rules:
   # The variable should be placed on the left, the constant on the right of a comparison operator.
   - yoda_condition
 
+  # --- Rules merged in from other packages' SwiftLint configs (union across the monorepo) ---
+  # Operators should be surrounded by a single whitespace when defining them.
+  - function_name_whitespace
+  # Initializing an optional variable with nil is redundant.
+  - implicit_optional_initialization
+  # NOTE: three further union rules are intentionally NOT enabled — applied repo-wide they would flag ~950
+  # violations in code from packages that never opted into them: `attributes` (648 violations; 26/35 configs),
+  # SpeziLLM's `custom_rules` blank-line rules (234; 1/35), and `legacy_objc_type` (68; 2/35).
+  # (operator_whitespace / redundant_optional_initialization were renamed to the two rules above in current SwiftLint.)
+
 deployment_target: # Availability checks or attributes shouldn’t be using older versions that are satisfied by the deployment target.
   iOSApplicationExtension_deployment_target: 16.0
   iOS_deployment_target: 16.0
@@ -370,6 +380,11 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - .swiftpm
   - .derivedData
   - Tests/UITests/.derivedData
+  # Generated parser sources (ANTLR) — excluded upstream by the FHIRModelsExtensions / ResearchKitOnFHIR configs.
+  - Sources/FHIRPathParser/Generated
+  # The monorepo's Package.swift is a ~2,200-line generated manifest (vs the small per-package manifests
+  # upstream); file_length/style linting isn't meaningful for it, so the generated manifest is excluded.
+  - Package.swift
 
 closure_body_length: # Closure bodies should not span too many lines.
   - 35 # warning - default: 20
@@ -402,6 +417,7 @@ identifier_name:
     - at
     - to
     - in
+    - as
 
 large_tuple: # Tuples shouldn't have too many members. Create a custom type instead.
   - 2 # warning - default: 2
