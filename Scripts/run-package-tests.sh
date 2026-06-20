@@ -76,8 +76,14 @@ beautify() { if [ -n "${GITHUB_ACTIONS:-}" ]; then xcbeautify --renderer github-
 
 run() { # <testplan> <platform>
   echo "==> $1 on $2"
-  xcodebuild test -scheme Spezi-Tests -testPlan "$1" -destination "$(dest "$2")" \
-    -skipMacroValidation -skipPackagePluginValidation | beautify
+  xcodebuild test \
+    -scheme Spezi-Tests \
+    -testPlan "$1" \
+    -destination "$(dest "$2")" \
+    -skipMacroValidation \
+    -skipPackagePluginValidation \
+    -derivedDataPath ".derivedData" \
+  | beautify
 }
 
 case "${1:-}" in
