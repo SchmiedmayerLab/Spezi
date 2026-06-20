@@ -16,6 +16,9 @@ Package.resolved
 !.swiftpm/xcode/xcshareddata
 .swiftpm/xcode/xcshareddata/*
 !.swiftpm/xcode/xcshareddata/xcschemes
+# Track only the Spezi-Tests host scheme; ignore the per-target schemes Xcode auto-generates.
+.swiftpm/xcode/xcshareddata/xcschemes/*
+!.swiftpm/xcode/xcshareddata/xcschemes/Spezi-Tests.xcscheme
 .build
 .xcodebuild
 .derivedData
