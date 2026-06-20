@@ -100,11 +100,10 @@ public struct HealthChart: View {
         }
         var content = AnyChartContent(erasing: ChartContentBuilder.buildBlock())
         for block in blocks {
-            if #available(iOS 18, macOS 15, watchOS 11, visionOS 2, *) {
-                content = AnyChartContent(erasing: ChartContentBuilder.buildBlock(content, block))
-            } else {
-                content = AnyChartContent(erasing: ChartContentBuilder.buildPartialBlock(accumulated: content, next: block))
-            }
+            // The Spezi monorepo targets iOS 18+, where `ChartContentBuilder.buildPartialBlock(accumulated:next:)`
+            // is obsoleted. `buildBlock(_:_:)` is always available at this deployment target, so the original
+            // pre-iOS-18 fallback (which referenced the now-obsoleted API) has been removed.
+            content = AnyChartContent(erasing: ChartContentBuilder.buildBlock(content, block))
         }
         return content
     }

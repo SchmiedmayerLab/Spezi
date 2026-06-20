@@ -1,0 +1,23 @@
+#
+# This source file is part of the Stanford Spezi open source project
+#
+# SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+# 
+
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Schmiedmayer"
+  given-names: "Paul"
+  orcid: "https://orcid.org/0000-0002-8607-9148"
+- family-names: "Philipp"
+  given-names: "Zagar"
+  orcid: "https://orcid.org/0009-0001-5934-2078"
+- family-names: "Adrit"
+  given-names: "Rao"
+  orcid: "https://orcid.org/0000-0002-0780-033X"
+title: "SpeziChat"
+doi: 10.5281/zenodo.10161087
+url: "https://github.com/StanfordSpezi/SpeziChat"

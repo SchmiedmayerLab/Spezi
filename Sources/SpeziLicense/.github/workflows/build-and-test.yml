@@ -1,0 +1,51 @@
+#
+# This source file is part of the TemplatePackage open source project
+#
+# SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  packageios:
+    name: Build and Test Swift Package iOS
+    uses: StanfordSpezi/.github/.github/workflows/xcodebuild-or-fastlane.yml@v2
+    with:
+      runsonlabels: '["macOS", "self-hosted"]'
+      scheme: SpeziLicense
+      artifactname: SpeziLicense.xcresult
+  ios:
+    name: Build and Test iOS
+    uses: StanfordSpezi/.github/.github/workflows/xcodebuild-or-fastlane.yml@v2
+    with:
+      runsonlabels: '["macOS", "self-hosted"]'
+      path: 'Tests/UITests'
+      scheme: TestApp
+      artifactname: TestApp.xcresult
+  ipados:
+    name: Build and Test iPadOS
+    uses: StanfordSpezi/.github/.github/workflows/xcodebuild-or-fastlane.yml@v2
+    with:
+      runsonlabels: '["macOS", "self-hosted"]'
+      path: 'Tests/UITests'
+      scheme: TestApp
+      resultBundle: TestAppiPadOS.xcresult
+      destination: 'platform=iOS Simulator,name=iPad mini (A17 Pro)'
+      artifactname: TestAppiPadOS.xcresult
+  uploadcoveragereport:
+    name: Upload Coverage Report
+    needs: [packageios, ios, ipados]
+    uses: StanfordBDHG/.github/.github/workflows/create-and-upload-coverage-report.yml@v2
+    with:
+      coveragereports: SpeziLicense.xcresult TestApp.xcresult TestAppiPadOS.xcresult
+    secrets:
+      token: ${{ secrets.CODECOV_TOKEN }}
