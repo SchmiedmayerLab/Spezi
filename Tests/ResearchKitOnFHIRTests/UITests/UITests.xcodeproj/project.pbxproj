@@ -37,7 +37,7 @@
 /* Begin PBXFileReference section */
 		27E00A5728C13ABE00AF17BC /* QuestionnaireView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireView.swift; sourceTree = "<group>"; };
 		27E00A5928C13AF100AF17BC /* QuestionnaireListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireListView.swift; sourceTree = "<group>"; };
-		2F2EE4D32BF9CDFC0022CDA8 /* ResearchKitOnFHIR */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ResearchKitOnFHIR; path = ../..; sourceTree = "<group>"; };
+		2F2EE4D32BF9CDFC0022CDA8 /* ResearchKitOnFHIR */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ResearchKitOnFHIR; path = ../../..; sourceTree = "<group>"; };
 		654BD47828BEBA8200B012D2 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		654BD47F28BEBA8400B012D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65545D0428BEBC57000C70E4 /* ExampleApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
@@ -230,7 +230,7 @@
 			);
 			mainGroup = 654BD46F28BEBA8200B012D2;
 			packageReferences = (
-				2F0A1B492BF9CB85009A390A /* XCLocalSwiftPackageReference "../../" */,
+				2F0A1B492BF9CB85009A390A /* XCLocalSwiftPackageReference ".." */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 654BD47928BEBA8200B012D2 /* Products */;
@@ -349,7 +349,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -407,7 +407,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -565,9 +565,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		2F0A1B492BF9CB85009A390A /* XCLocalSwiftPackageReference "../../" */ = {
+		2F0A1B492BF9CB85009A390A /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../;
+			relativePath = ../../../;
 		};
 /* End XCLocalSwiftPackageReference section */
 

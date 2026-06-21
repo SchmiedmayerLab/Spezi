@@ -44,7 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* SpeziStudy */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziStudy; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* SpeziStudy */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziStudy; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
@@ -53,11 +53,15 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		802777FB2D9BF825003D7436 /* TestApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = TestApp;
 			sourceTree = "<group>";
 		};
 		802778182D9C1E74003D7436 /* TestAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = TestAppUITests;
 			sourceTree = "<group>";
 		};
@@ -204,13 +208,7 @@
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
 			packageReferences = (
-				8027780D2D9BFE03003D7436 /* XCRemoteSwiftPackageReference "XCTHealthKit" */,
-				802778102D9BFE1A003D7436 /* XCRemoteSwiftPackageReference "SpeziViews" */,
-				802778132D9BFE2B003D7436 /* XCRemoteSwiftPackageReference "Spezi" */,
-				8027781A2D9C1E92003D7436 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
 				80F47E842D9D2B9900DA4F62 /* XCRemoteSwiftPackageReference "swift-numerics" */,
-				8037B4A12D9D2FB90055C018 /* XCRemoteSwiftPackageReference "SpeziFoundation" */,
-				805AF8372DD22598001756DE /* XCRemoteSwiftPackageReference "SpeziScheduler" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
@@ -318,8 +316,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -328,7 +326,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
@@ -379,8 +377,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -389,7 +387,7 @@
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
@@ -577,8 +575,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -587,7 +585,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Test;
@@ -693,54 +691,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8027780D2D9BFE03003D7436 /* XCRemoteSwiftPackageReference "XCTHealthKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTHealthKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.5;
-			};
-		};
-		802778102D9BFE1A003D7436 /* XCRemoteSwiftPackageReference "SpeziViews" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziViews.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.9.2;
-			};
-		};
-		802778132D9BFE2B003D7436 /* XCRemoteSwiftPackageReference "Spezi" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/Spezi.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.1;
-			};
-		};
-		8027781A2D9C1E92003D7436 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.2;
-			};
-		};
-		8037B4A12D9D2FB90055C018 /* XCRemoteSwiftPackageReference "SpeziFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziFoundation.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.4.1;
-			};
-		};
-		805AF8372DD22598001756DE /* XCRemoteSwiftPackageReference "SpeziScheduler" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziScheduler.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.7;
-			};
-		};
 		80F47E842D9D2B9900DA4F62 /* XCRemoteSwiftPackageReference "swift-numerics" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-numerics.git";
@@ -762,32 +712,26 @@
 		};
 		8027780E2D9BFE03003D7436 /* XCTHealthKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8027780D2D9BFE03003D7436 /* XCRemoteSwiftPackageReference "XCTHealthKit" */;
 			productName = XCTHealthKit;
 		};
 		802778112D9BFE1A003D7436 /* SpeziViews */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 802778102D9BFE1A003D7436 /* XCRemoteSwiftPackageReference "SpeziViews" */;
 			productName = SpeziViews;
 		};
 		802778142D9BFE2B003D7436 /* Spezi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 802778132D9BFE2B003D7436 /* XCRemoteSwiftPackageReference "Spezi" */;
 			productName = Spezi;
 		};
 		8027781B2D9C1E92003D7436 /* XCTestApp */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8027781A2D9C1E92003D7436 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestApp;
 		};
 		8027781D2D9C1E92003D7436 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8027781A2D9C1E92003D7436 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		8037B4A22D9D2FB90055C018 /* SpeziFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8037B4A12D9D2FB90055C018 /* XCRemoteSwiftPackageReference "SpeziFoundation" */;
 			productName = SpeziFoundation;
 		};
 		805AF80A2DD210CB001756DE /* SpeziScheduler */ = {

@@ -1,0 +1,304 @@
+{
+  "configurations" : [
+    {
+      "id" : "A0A09AE7-6C26-4869-A626-173CD10D8313",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ByteCodingTests",
+        "name" : "ByteCodingTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "EDFFormatTests",
+        "name" : "EDFFormatTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FHIRModelsExtensionsTests",
+        "name" : "FHIRModelsExtensionsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FHIRPathParserTests",
+        "name" : "FHIRPathParserTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "HealthKitOnFHIRMacrosTests",
+        "name" : "HealthKitOnFHIRMacrosTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "HealthKitOnFHIRTests",
+        "name" : "HealthKitOnFHIRTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ResearchKitOnFHIRTests",
+        "name" : "ResearchKitOnFHIRTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "RuntimeAssertionsTests",
+        "name" : "RuntimeAssertionsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziAccessGuardTests",
+        "name" : "SpeziAccessGuardTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziBluetoothServicesTests",
+        "name" : "SpeziBluetoothServicesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziBluetoothTests",
+        "name" : "SpeziBluetoothTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziChatTests",
+        "name" : "SpeziChatTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziConsentTests",
+        "name" : "SpeziConsentTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziContactTests",
+        "name" : "SpeziContactTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziDevicesTests",
+        "name" : "SpeziDevicesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziFHIRTests",
+        "name" : "SpeziFHIRTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziFirebaseTests",
+        "name" : "SpeziFirebaseTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziFoundationTests",
+        "name" : "SpeziFoundationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziHealthKitTests",
+        "name" : "SpeziHealthKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziLLMTests",
+        "name" : "SpeziLLMTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziLicenseTests",
+        "name" : "SpeziLicenseTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziLocalizationTests",
+        "name" : "SpeziLocalizationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziLocationTests",
+        "name" : "SpeziLocationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziMedicationTests",
+        "name" : "SpeziMedicationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziNotificationsTests",
+        "name" : "SpeziNotificationsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziNumericsTests",
+        "name" : "SpeziNumericsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziOmronTests",
+        "name" : "SpeziOmronTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziOnboardingTests",
+        "name" : "SpeziOnboardingTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziQuestionnaireTests",
+        "name" : "SpeziQuestionnaireTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziSchedulerTests",
+        "name" : "SpeziSchedulerTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziSchedulerUITests",
+        "name" : "SpeziSchedulerUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziSensorKitTests",
+        "name" : "SpeziSensorKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziSpeechTests",
+        "name" : "SpeziSpeechTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziStorageTests",
+        "name" : "SpeziStorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziStudyTests",
+        "name" : "SpeziStudyTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziTests",
+        "name" : "SpeziTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SpeziViewsTests",
+        "name" : "SpeziViewsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ThreadLocalTests",
+        "name" : "ThreadLocalTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "XCTHealthKitTests",
+        "name" : "XCTHealthKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "XCTRuntimeAssertionsTests",
+        "name" : "XCTRuntimeAssertionsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "XCTestExtensionsTests",
+        "name" : "XCTestExtensionsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -219,9 +219,6 @@ var targets: [Target] = [
             .target(name: "FHIRModelsExtensions"),
             .target(name: "FHIRQuestionnaires")
         ],
-        exclude: [
-            "UITests"
-        ],
         plugins: [] + swiftLintPlugin
     ),
     .testTarget(

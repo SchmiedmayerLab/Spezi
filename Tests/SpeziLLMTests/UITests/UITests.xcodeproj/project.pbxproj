@@ -32,7 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* SpeziLLM */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziLLM; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* SpeziLLM */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziLLM; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
@@ -41,7 +41,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		80A516742F49D085002AB920 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		80A516742F49D085002AB920 /* Exceptions for "TestApp" folder in "TestApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -51,8 +51,29 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8074DA3F2F4A39BF00B8997A /* TestAppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestAppUITests; sourceTree = "<group>"; };
-		80A516492F49D085002AB920 /* TestApp */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (80A516742F49D085002AB920 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TestApp; sourceTree = "<group>"; };
+		8074DA3F2F4A39BF00B8997A /* TestAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestAppUITests;
+			sourceTree = "<group>";
+		};
+		80A516492F49D085002AB920 /* TestApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				80A516742F49D085002AB920 /* Exceptions for "TestApp" folder in "TestApp" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,9 +225,6 @@
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
 			packageReferences = (
-				2FD590502A19E9F000153BE4 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-				9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */,
-				979D418E2BB3EBD8001953BD /* XCRemoteSwiftPackageReference "SpeziAccount" */,
 				DA7ED27E2C5FCAEC00BA8C47 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
 			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
@@ -336,8 +354,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -396,8 +414,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -579,30 +597,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2FD590502A19E9F000153BE4 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.6;
-			};
-		};
-		9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziFirebase";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.3;
-			};
-		};
-		979D418E2BB3EBD8001953BD /* XCRemoteSwiftPackageReference "SpeziAccount" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziAccount";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.3;
-			};
-		};
 		DA7ED27E2C5FCAEC00BA8C47 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-generator.git";
@@ -616,12 +610,10 @@
 /* Begin XCSwiftPackageProductDependency section */
 		2FAD21CA2CBDC82500C9665B /* SpeziFirebaseAccountStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */;
 			productName = SpeziFirebaseAccountStorage;
 		};
 		2FD590512A19E9F000153BE4 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2FD590502A19E9F000153BE4 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		8054ECD32F4A0A3100EC57AD /* SpeziLLMAnthropic */ = {
@@ -650,12 +642,10 @@
 		};
 		9770F2902BB3C40C00478571 /* SpeziFirebaseAccount */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */;
 			productName = SpeziFirebaseAccount;
 		};
 		979D418F2BB3EBD8001953BD /* SpeziAccount */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 979D418E2BB3EBD8001953BD /* XCRemoteSwiftPackageReference "SpeziAccount" */;
 			productName = SpeziAccount;
 		};
 		97A36E142B999EA60034D821 /* SpeziLLMFog */ = {

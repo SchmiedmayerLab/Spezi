@@ -27,14 +27,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2F61BDC129DD023E00D71D33 /* SpeziHealthKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziHealthKit; path = ../..; sourceTree = "<group>"; };
+		2F61BDC129DD023E00D71D33 /* SpeziHealthKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziHealthKit; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		800683E72E566694008E72E8 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		800683E72E566694008E72E8 /* Exceptions for "TestApp" folder in "TestApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -44,8 +44,29 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		803D2A492DAC71BC003D723D /* TestApp */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (800683E72E566694008E72E8 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TestApp; sourceTree = "<group>"; };
-		803D2A5A2DAC71C2003D723D /* TestAppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestAppUITests; sourceTree = "<group>"; };
+		803D2A492DAC71BC003D723D /* TestApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				800683E72E566694008E72E8 /* Exceptions for "TestApp" folder in "TestApp" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
+		803D2A5A2DAC71C2003D723D /* TestAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestAppUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,11 +206,6 @@
 				de,
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
-			packageReferences = (
-				2FE33CB72B9B815B00BD886D /* XCRemoteSwiftPackageReference "SpeziViews" */,
-				8042D7962D3D5B8F00807498 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-				8085376F2DDB487F00E95213 /* XCRemoteSwiftPackageReference "XCTHealthKit" */,
-			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -635,33 +651,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		2FE33CB72B9B815B00BD886D /* XCRemoteSwiftPackageReference "SpeziViews" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziViews.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.12.0;
-			};
-		};
-		8042D7962D3D5B8F00807498 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.1;
-			};
-		};
-		8085376F2DDB487F00E95213 /* XCRemoteSwiftPackageReference "XCTHealthKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTHealthKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		2F61BDC229DD02D600D71D33 /* SpeziHealthKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -669,7 +658,6 @@
 		};
 		2FE33CB82B9B815B00BD886D /* SpeziViews */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2FE33CB72B9B815B00BD886D /* XCRemoteSwiftPackageReference "SpeziViews" */;
 			productName = SpeziViews;
 		};
 		8053AA162DB19E37003B4EA4 /* SpeziHealthKitBulkExport */ = {
@@ -678,7 +666,6 @@
 		};
 		808537702DDB487F00E95213 /* XCTHealthKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8085376F2DDB487F00E95213 /* XCRemoteSwiftPackageReference "XCTHealthKit" */;
 			productName = XCTHealthKit;
 		};
 		808EB0272D452800009D9AB2 /* SpeziHealthKitUI */ = {
