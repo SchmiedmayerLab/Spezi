@@ -79,12 +79,16 @@ jobs:
     name: ${{ matrix.package }} (${{ matrix.platform }})
     needs: detect
     if: needs.detect.outputs.has_jobs == 'true'
-    runs-on: [self-hosted, macOS]
+    # Apple platforms -> macOS-26 (toggle to [self-hosted, macOS] when those runners are up);
+    runs-on: ${{ matrix.platform == 'Linux' && 'ubuntu-latest' || fromJson('["macOS-26"]') }} # '["macOS", "self-hosted"]'
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Swift
+        if: ${{ matrix.platform == 'Linux' }}
+        uses: SwiftyLab/setup-swift@v1
       - name: Test ${{ matrix.package }} on ${{ matrix.platform }}
         run: Scripts/run-package-tests.sh "${{ matrix.package }}" "${{ matrix.platform }}"
 

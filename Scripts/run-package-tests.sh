@@ -74,7 +74,19 @@ esac; }
 # Pretty-print xcodebuild output via xcbeautify; emit GitHub annotations when running in CI.
 beautify() { if [ -n "${GITHUB_ACTIONS:-}" ]; then xcbeautify --renderer github-actions; else xcbeautify; fi; }
 
-run() { # <testplan> <platform>
+run() { # <package/testplan> <platform>
+  if [ "$2" = "Linux" ]; then
+    # Linux has no Xcode test plans, and SwiftPM builds ONE combined <Package>PackageTests.xctest
+    # per package (so a subset can't be run). Instead compile-check each of the package's test
+    # targets (scoped via --target) on GitHub-hosted Linux — verifies the package still builds there.
+    local tts
+    tts="$(python3 -c "import tomllib; print(' '.join(tomllib.load(open('packages.toml','rb'))['$1']['tests']))")"
+    for tt in $tts; do
+      echo "==> $1 on Linux: swift build --target $tt (compile-check)"
+      swift build --target "$tt"
+    done
+    return
+  fi
   echo "==> $1 on $2"
   xcodebuild test \
     -scheme Spezi-Tests \

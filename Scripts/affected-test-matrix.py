@@ -10,6 +10,10 @@
 # job matrix (one job per affected package x platform). Used by .github/workflows/tests.yml
 # to run only the tests of packages whose code actually changed.
 #
+# The logical sub-packages (their source/test target dirs + platforms) are defined in the
+# repo-root packages.toml; the dir -> package map used for change detection is derived from it
+# (so a new target only needs to be added to packages.toml, never to a separate inverse map).
+#
 # Usage:
 #   affected-test-matrix.py <changed-files.txt>     # one path per line; or the literal __ALL__
 #   git diff --name-only A B | affected-test-matrix.py
@@ -18,23 +22,30 @@
 #   matrix={"include":[{"package":"SpeziAccount","platform":"macOS"}, ...]}
 #   has_jobs=true|false
 #   affected=SpeziAccount,SpeziHealthKit
-import json, os, sys
+import json, os, sys, tomllib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-M = json.load(open(os.path.join(ROOT, "Scripts", "test-matrix.json")))
-DIR2PKG = M["dir_to_package"]
-PKGS = M["packages"]
+with open(os.path.join(ROOT, "packages.toml"), "rb") as f:
+    PKGS = tomllib.load(f)
 
-# Any change to these means "run everything" (shared manifest / test infra / CI / lint config).
+# dir (directly under Sources/ or Tests/) -> logical package, derived from each package's
+# `targets` + `tests`. A change under Tests/<X>/UITests/... still routes via its <X> test dir.
+DIR2PKG = {}
+for _pkg, _info in PKGS.items():
+    for _d in _info.get("targets", []) + _info.get("tests", []):
+        DIR2PKG[_d] = _pkg
+
+# Any change to these means "run everything" (shared manifest / test infra / CI / lint / pkg defs).
 GLOBAL_PREFIXES = (
-    "Package.swift", "Package@", "Package.resolved",
+    "Package.swift", "Package@", "Package.resolved", "packages.toml",
     ".swiftlint.yml", ".github/", "Scripts/", "Tests/TestPlans/", ".swiftpm/",
 )
 
 # TEMPORARY: limit CI test scheduling to these platforms. A package is scheduled on a platform only
-# if it both supports that platform (per test-matrix.json) and the platform is listed here. Remove
-# this filter (and its use below) to restore macCatalyst / visionOS / tvOS scheduling.
-CI_PLATFORMS = ("iOS", "macOS", "watchOS")
+# if it both supports that platform (per packages.toml) and the platform is listed here. macCatalyst
+# / visionOS / tvOS are deliberately left out for now. Linux is on and runs on GitHub-hosted ubuntu
+# (see .github/workflows/tests.yml); Apple platforms run via run-package-tests.sh on macOS.
+CI_PLATFORMS = ("iOS", "macOS", "watchOS", "Linux")
 
 def read_changed():
     src = open(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] != "-" else sys.stdin
@@ -65,7 +76,6 @@ def main():
                 continue
             include.append({"package": pkg, "platform": platform})
 
-    out = os.environ.get("GITHUB_OUTPUT")
     lines = [
         f'matrix={json.dumps({"include": include})}',
         f'has_jobs={"true" if include else "false"}',

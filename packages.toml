@@ -1,0 +1,188 @@
+#
+# This source file is part of the Stanford Spezi open-source project
+#
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+# List of logical sub-packages within the monorepo
+#
+# Each entry is a logical sub-package within the monorepo: a collection of targets that belong
+# together to implement a set of APIs. Used to map changed files -> affected sub-package -> tests.
+#   platforms = the platforms the sub-package's upstream repo tested on (CI may schedule a subset).
+#               "Linux" is recorded where upstream ran `swift test` on Linux; it is not yet scheduled
+#               (xcodebuild CI is Apple-only) and SpeziAccount lists iOS deliberately (some tests fail).
+#   targets   = its source target directories  (Sources/<name>)
+#   tests     = its test target directories     (Tests/<name>; a Tests/<name>/UITests/ subfolder counts too)
+# Note: SpeziFoundation's "CZlib" is a directory name (Sources/CZlib); its Swift target is "SpeziCZlib".
+
+[FHIRModelsExtensions]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "tvOS"]
+targets = ["FHIRModelsExtensions", "FHIRPathParser", "FHIRQuestionnaires"]
+tests = ["FHIRModelsExtensionsTests", "FHIRPathParserTests"]
+
+[HealthKitOnFHIR]
+platforms = ["iOS", "macOS", "watchOS"]
+targets = ["HealthKitOnFHIR", "HealthKitOnFHIRMacros", "HealthKitOnFHIRMacrosImpl"]
+tests = ["HealthKitOnFHIRTests", "HealthKitOnFHIRMacrosTests"]
+
+[ResearchKitOnFHIR]
+platforms = ["iOS"]
+targets = ["ResearchKitOnFHIR"]
+tests = ["ResearchKitOnFHIRTests"]
+
+[Spezi]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "tvOS", "Linux"]
+targets = ["Spezi", "SpeziTesting", "XCTSpezi"]
+tests = ["SpeziTests"]
+
+[SpeziAccessGuard]
+platforms = ["iOS"]
+targets = ["SpeziAccessGuard"]
+tests = ["SpeziAccessGuardTests"]
+
+[SpeziAccount]
+platforms = ["iOS", "macOS"]
+targets = ["SpeziAccount", "SpeziAccountMacros", "SpeziAccountPhoneNumbers", "XCTSpeziAccount"]
+tests = ["SpeziAccountTests", "SpeziAccountMacrosTests"]
+
+[SpeziBluetooth]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "tvOS"]
+targets = ["SpeziBluetooth", "SpeziBluetoothServices", "TestPeripheral"]
+tests = ["SpeziBluetoothTests", "SpeziBluetoothServicesTests"]
+
+[SpeziChat]
+platforms = ["iOS", "macOS", "visionOS"]
+targets = ["SpeziChat"]
+tests = ["SpeziChatTests"]
+
+[SpeziConsent]
+platforms = ["iOS", "macOS", "visionOS"]
+targets = ["SpeziConsent"]
+tests = ["SpeziConsentTests"]
+
+[SpeziContact]
+platforms = ["iOS"]
+targets = ["SpeziContact"]
+tests = ["SpeziContactTests"]
+
+[SpeziDevices]
+platforms = ["iOS", "macOS", "macCatalyst", "visionOS"]
+targets = ["SpeziDevices", "SpeziDevicesUI", "SpeziOmron"]
+tests = ["SpeziDevicesTests", "SpeziOmronTests"]
+
+[SpeziFHIR]
+platforms = ["iOS"]
+targets = ["SpeziFHIR", "SpeziFHIRHealthKit", "SpeziFHIRMockPatients"]
+tests = ["SpeziFHIRTests"]
+
+[SpeziFileFormats]
+platforms = ["iOS", "macOS", "watchOS", "visionOS", "tvOS"]
+targets = ["SpeziFileFormats", "EDFFormat"]
+tests = ["EDFFormatTests"]
+
+[SpeziFirebase]
+platforms = ["iOS"]
+targets = ["SpeziFirebase", "SpeziFirebaseAccount", "SpeziFirebaseAccountStorage", "SpeziFirebaseConfiguration", "SpeziFirebaseStorage", "SpeziFirestore"]
+tests = ["SpeziFirebaseTests"]
+
+[SpeziFoundation]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "tvOS", "Linux"]
+targets = ["SpeziFoundation", "CZlib", "SpeziFoundationObjC", "SpeziLocalization"]
+tests = ["SpeziFoundationTests", "SpeziLocalizationTests"]
+
+[SpeziHealthKit]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "Linux"]
+targets = ["SpeziHealthKit", "Codegen", "LocalizationsProcessor", "SpeziHealthKitBulkExport", "SpeziHealthKitUI"]
+tests = ["SpeziHealthKitTests"]
+
+[SpeziLLM]
+platforms = ["iOS", "macOS", "visionOS"]
+targets = ["SpeziLLM", "GeneratedOpenAIClient", "SpeziLLMAnthropic", "SpeziLLMFog", "SpeziLLMGemini", "SpeziLLMLocal", "SpeziLLMLocalDownload", "SpeziLLMOpenAI", "SpeziLLMOpenAIRealtime"]
+tests = ["SpeziLLMTests"]
+
+[SpeziLicense]
+platforms = ["iOS"]
+targets = ["SpeziLicense"]
+tests = ["SpeziLicenseTests"]
+
+[SpeziLocation]
+platforms = ["iOS", "watchOS"]
+targets = ["SpeziLocation"]
+tests = ["SpeziLocationTests"]
+
+[SpeziMedication]
+platforms = ["iOS"]
+targets = ["SpeziMedication"]
+tests = ["SpeziMedicationTests"]
+
+[SpeziNetworking]
+platforms = ["iOS", "macOS", "watchOS", "visionOS", "tvOS"]
+targets = ["SpeziNetworking", "ByteCoding", "ByteCodingTesting", "SpeziNumerics", "XCTByteCoding"]
+tests = ["ByteCodingTests", "SpeziNumericsTests"]
+
+[SpeziNotifications]
+platforms = ["iOS", "macOS", "watchOS", "visionOS", "tvOS"]
+targets = ["SpeziNotifications", "XCTSpeziNotifications", "XCTSpeziNotificationsUI"]
+tests = ["SpeziNotificationsTests"]
+
+[SpeziOnboarding]
+platforms = ["iOS", "macOS", "visionOS"]
+targets = ["SpeziOnboarding"]
+tests = ["SpeziOnboardingTests"]
+
+[SpeziQuestionnaire]
+platforms = ["iOS"]
+targets = ["SpeziQuestionnaire", "SpeziQuestionnaireCatalog", "SpeziQuestionnaireFHIR", "SpeziQuestionnaireLegacy", "XCTSpeziQuestionnaire"]
+tests = ["SpeziQuestionnaireTests"]
+
+[SpeziScheduler]
+platforms = ["iOS", "macOS", "watchOS", "visionOS"]
+targets = ["SpeziScheduler", "SpeziSchedulerMacros", "SpeziSchedulerUI"]
+tests = ["SpeziSchedulerTests", "SpeziSchedulerUITests"]
+
+[SpeziSensorKit]
+platforms = ["iOS"]
+targets = ["SpeziSensorKit"]
+tests = ["SpeziSensorKitTests"]
+
+[SpeziSpeech]
+platforms = ["iOS", "macOS", "visionOS"]
+targets = ["SpeziSpeech", "SpeziSpeechRecognizer", "SpeziSpeechSynthesizer"]
+tests = ["SpeziSpeechTests"]
+
+[SpeziStorage]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS"]
+targets = ["SpeziStorage", "SpeziKeychainStorage", "SpeziLocalStorage"]
+tests = ["SpeziStorageTests"]
+
+[SpeziStudy]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "Linux"]
+targets = ["SpeziStudy", "SpeziStudyDefinition"]
+tests = ["SpeziStudyTests"]
+
+[SpeziViews]
+platforms = ["iOS", "macOS", "watchOS", "visionOS", "tvOS"]
+targets = ["SpeziViews", "SpeziPersonalInfo", "SpeziValidation"]
+tests = ["SpeziViewsTests"]
+
+[ThreadLocal]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "tvOS", "Linux"]
+targets = ["ThreadLocal", "ThreadLocalMacros"]
+tests = ["ThreadLocalTests"]
+
+[XCTHealthKit]
+platforms = ["iOS"]
+targets = ["XCTHealthKit"]
+tests = ["XCTHealthKitTests"]
+
+[XCTRuntimeAssertions]
+platforms = ["iOS", "macOS", "macCatalyst", "watchOS", "visionOS", "tvOS"]
+targets = ["XCTRuntimeAssertions", "RuntimeAssertions", "RuntimeAssertionsTesting"]
+tests = ["XCTRuntimeAssertionsTests", "RuntimeAssertionsTests"]
+
+[XCTestExtensions]
+platforms = ["iOS", "macOS", "watchOS", "visionOS"]
+targets = ["XCTestExtensions", "XCTestApp"]
+tests = ["XCTestExtensionsTests"]
