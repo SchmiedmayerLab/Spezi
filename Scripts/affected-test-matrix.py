@@ -6,22 +6,27 @@
 #
 # SPDX-License-Identifier: MIT
 #
-# Maps a list of changed files to the set of affected packages and emits a GitHub Actions
-# job matrix (one job per affected package x platform). Used by .github/workflows/tests.yml
-# to run only the tests of packages whose code actually changed.
+# Maps a list of changed files to the set of affected packages and emits TWO GitHub Actions job
+# matrices: one for unit tests (run on GitHub-hosted runners) and one for UI tests (run on the
+# custom/self-hosted runner). Used by .github/workflows/tests.yml so only the tests of packages
+# whose code actually changed are run — and whenever a package's unit tests run, its UI tests do too.
 #
-# The logical sub-packages (their source/test target dirs + platforms) are defined in the
-# repo-root packages.toml; the dir -> package map used for change detection is derived from it
-# (so a new target only needs to be added to packages.toml, never to a separate inverse map).
+# The logical sub-packages are defined in the repo-root packages.toml:
+#   platforms = the platforms its unit tests run on (subject to the temporary CI_PLATFORMS limit)
+#   uiTests   = the platforms its UI tests run on, straight from the UITests project's Xcode config
+#               (NOT subject to CI_PLATFORMS — absent for packages with no UITests project)
+# The dir -> package map used for change detection is derived from each package's targets+tests.
 #
 # Usage:
 #   affected-test-matrix.py <changed-files.txt>     # one path per line; or the literal __ALL__
 #   git diff --name-only A B | affected-test-matrix.py
 #
 # Emits (to stdout, GITHUB_OUTPUT format):
-#   matrix={"include":[{"package":"SpeziAccount","platform":"macOS"}, ...]}
+#   matrix={"include":[{"package":"SpeziAccount","platform":"macOS"}, ...]}        # unit tests
+#   ui_matrix={"include":[{"package":"SpeziViews","platform":"iPadOS"}, ...]}      # UI tests
 #   has_jobs=true|false
-#   affected=SpeziAccount,SpeziHealthKit
+#   has_ui_jobs=true|false
+#   affected=SpeziAccount,SpeziViews
 import json, os, sys, tomllib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,10 +46,9 @@ GLOBAL_PREFIXES = (
     ".swiftlint.yml", ".github/", "Scripts/", "Tests/TestPlans/", ".swiftpm/",
 )
 
-# TEMPORARY: limit CI test scheduling to these platforms. A package is scheduled on a platform only
-# if it both supports that platform (per packages.toml) and the platform is listed here. macCatalyst
-# / visionOS / tvOS are deliberately left out for now. Linux is on and runs on GitHub-hosted ubuntu
-# (see .github/workflows/tests.yml); Apple platforms run via run-package-tests.sh on macOS.
+# TEMPORARY: limit UNIT-test scheduling to these platforms (macCatalyst/visionOS/tvOS excluded for
+# now — remove from this tuple to restore). Linux runs on GitHub-hosted ubuntu. UI tests are NOT
+# limited by this; their platforms come straight from each project's `uiTests` in packages.toml.
 CI_PLATFORMS = ("iOS", "macOS", "watchOS", "Linux")
 
 def read_changed():
@@ -69,20 +73,27 @@ def main():
     if run_all:
         affected = set(PKGS.keys())
 
-    include = []
+    unit, ui = [], []
     for pkg in sorted(affected):
-        for platform in PKGS[pkg]["platforms"]:
-            if platform not in CI_PLATFORMS:  # TEMPORARY platform limit (see CI_PLATFORMS above)
-                continue
-            include.append({"package": pkg, "platform": platform})
+        info = PKGS[pkg]
+        for platform in info["platforms"]:
+            if platform in CI_PLATFORMS:  # TEMPORARY unit-test platform limit (see CI_PLATFORMS above)
+                unit.append({"package": pkg, "platform": platform})
+        for platform in info.get("uiTests", []):  # UI tests: from the UITests project's Xcode config
+            ui.append({"package": pkg, "platform": platform})
 
     lines = [
-        f'matrix={json.dumps({"include": include})}',
-        f'has_jobs={"true" if include else "false"}',
+        f'matrix={json.dumps({"include": unit})}',
+        f'ui_matrix={json.dumps({"include": ui})}',
+        f'has_jobs={"true" if unit else "false"}',
+        f'has_ui_jobs={"true" if ui else "false"}',
         f'affected={",".join(sorted(affected)) if affected else "(none)"}',
     ]
     sys.stdout.write("\n".join(lines) + "\n")
-    sys.stderr.write(f"[affected-test-matrix] run_all={run_all} affected={sorted(affected)} jobs={len(include)}\n")
+    sys.stderr.write(
+        f"[affected-test-matrix] run_all={run_all} affected={sorted(affected)} "
+        f"unit_jobs={len(unit)} ui_jobs={len(ui)}\n"
+    )
 
 if __name__ == "__main__":
     main()

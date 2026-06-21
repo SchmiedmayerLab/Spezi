@@ -63,6 +63,7 @@ platforms_for() { case "$1" in
 
 dest() { case "$1" in
   iOS)          echo "platform=iOS Simulator,name=iPhone 17 Pro" ;;
+  iPadOS)       echo "platform=iOS Simulator,name=iPad Pro 13-inch (M4)" ;;
   macOS)        echo "platform=macOS,arch=arm64" ;;
   macCatalyst)  echo "platform=macOS,arch=arm64,variant=Mac Catalyst" ;;
   watchOS)      echo "platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)" ;;
@@ -74,7 +75,22 @@ esac; }
 # Pretty-print xcodebuild output via xcbeautify; emit GitHub annotations when running in CI.
 beautify() { if [ -n "${GITHUB_ACTIONS:-}" ]; then xcbeautify --renderer github-actions; else xcbeautify; fi; }
 
-run() { # <package/testplan> <platform>
+run() { # <package> <platform> [mode: "ui"]
+  if [ "${3:-}" = "ui" ]; then
+    # UI tests: build+run the package's embedded TestApp (Tests/<Pkg>Tests/UITests/UITests.xcodeproj),
+    # scheme "TestApp", on the platform's destination. Debug only for now (Release is a later add).
+    echo "==> $1 UI tests on $2"
+    xcodebuild test \
+      -project "Tests/${1}Tests/UITests/UITests.xcodeproj" \
+      -scheme TestApp \
+      -configuration Debug \
+      -destination "$(dest "$2")" \
+      -skipMacroValidation \
+      -skipPackagePluginValidation \
+      -derivedDataPath ".derivedData" \
+    | beautify
+    return
+  fi
   if [ "$2" = "Linux" ]; then
     # Linux has no Xcode test plans, and SwiftPM builds ONE combined <Package>PackageTests.xctest
     # per package (so a subset can't be run). Instead compile-check each of the package's test
@@ -106,11 +122,11 @@ case "${1:-}" in
     xcodebuild test -scheme Spezi-Package -destination "$(dest iOS)" \
       -skipMacroValidation -skipPackagePluginValidation | beautify ;;
   "")
-    echo "usage: $0 <Package> [Platform] | --all-ios | --list" >&2; exit 1 ;;
+    echo "usage: $0 <Package> [Platform] [ui] | --all-ios | --list" >&2; exit 1 ;;
   *)
     PKG="$1"
     PLATS="$(platforms_for "$PKG")"
     [ -n "$PLATS" ] || { echo "unknown package: $PKG (see --list)" >&2; exit 1; }
-    if [ "${2:-}" ]; then run "$PKG" "$2"
+    if [ "${2:-}" ]; then run "$PKG" "$2" "${3:-}"
     else for plat in $PLATS; do run "$PKG" "$plat"; done; fi ;;
 esac
