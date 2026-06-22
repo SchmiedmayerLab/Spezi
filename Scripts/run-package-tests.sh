@@ -78,12 +78,16 @@ run() { # <package> <platform> [mode: "ui"]
   if [ "${3:-}" = "ui" ]; then
     # UI tests: build+run the package's embedded TestApp (Tests/<Pkg>Tests/UITests/UITests.xcodeproj),
     # scheme "TestApp", on the platform's destination. Debug only for now (Release is a later add).
+    # Writes an .xcresult bundle that the test-ui CI job uploads as an artifact (even on test failure).
+    local result="${1}-${2}-UITests.xcresult"
+    rm -rf "$result"   # self-hosted runners reuse the workspace — avoid a stale bundle path
     echo "==> $1 UI tests on $2"
     xcodebuild test \
       -project "Tests/${1}Tests/UITests/UITests.xcodeproj" \
       -scheme TestApp \
       -configuration Debug \
       -destination "$(dest "$2")" \
+      -resultBundlePath "$result" \
       -skipMacroValidation \
       -skipPackagePluginValidation \
       -derivedDataPath ".derivedData" \
@@ -103,10 +107,14 @@ run() { # <package> <platform> [mode: "ui"]
     return
   fi
   echo "==> $1 on $2"
+  # Writes an .xcresult bundle that the `test` CI job uploads as an artifact on failure.
+  local result="${1}-${2}-Tests.xcresult"
+  rm -rf "$result"
   xcodebuild test \
     -scheme Spezi-Tests \
     -testPlan "$1" \
     -destination "$(dest "$2")" \
+    -resultBundlePath "$result" \
     -skipMacroValidation \
     -skipPackagePluginValidation \
     -derivedDataPath ".derivedData" \

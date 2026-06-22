@@ -94,6 +94,12 @@ jobs:
         uses: SwiftyLab/setup-swift@v1
       - name: Test ${{ matrix.package }} on ${{ matrix.platform }}
         run: Scripts/run-package-tests.sh "${{ matrix.package }}" "${{ matrix.platform }}"
+      - name: Upload .xcresult
+        if: failure() && matrix.platform != 'Linux'   # only on failure; Linux is a compile-check (no .xcresult)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}-${{ matrix.platform }}-Tests
+          path: ${{ matrix.package }}-${{ matrix.platform }}-Tests.xcresult
 
   test-ui:
     name: ${{ matrix.package }} UI (${{ matrix.platform }})
@@ -109,6 +115,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: UI test ${{ matrix.package }} on ${{ matrix.platform }}
         run: Scripts/run-package-tests.sh "${{ matrix.package }}" "${{ matrix.platform }}" ui
+      - name: Upload .xcresult
+        if: failure()   # only keep the result bundle when the UI tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}-${{ matrix.platform }}-UITests
+          path: ${{ matrix.package }}-${{ matrix.platform }}-UITests.xcresult
 
   # Single gate to use as the required status check in branch protection.
   # Does no work itself; it just aggregates the result of all `test` matrix jobs.
