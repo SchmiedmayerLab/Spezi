@@ -17,7 +17,7 @@
 #   Scripts/run-package-tests.sh --list                 # print the package -> platforms matrix
 #
 # Platforms: iOS macOS macCatalyst watchOS visionOS tvOS
-set -euo pipefail
+set -euxo pipefail
 cd "$(dirname "$0")/.."
 
 PACKAGES="FHIRModelsExtensions HealthKitOnFHIR ResearchKitOnFHIR Spezi SpeziAccessGuard SpeziAccount SpeziBluetooth SpeziChat SpeziConsent SpeziContact SpeziDevices SpeziFHIR SpeziFileFormats SpeziFirebase SpeziFoundation SpeziHealthKit SpeziLLM SpeziLicense SpeziLocation SpeziNetworking SpeziNotifications SpeziOnboarding SpeziQuestionnaire SpeziScheduler SpeziSensorKit SpeziSpeech SpeziStorage SpeziStudy SpeziViews ThreadLocal XCTHealthKit XCTRuntimeAssertions XCTestExtensions"
