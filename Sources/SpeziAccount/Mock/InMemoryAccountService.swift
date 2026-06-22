@@ -47,7 +47,7 @@ private struct AnonymousSignupButton: View {
             Label {
                 Text(verbatim: "Stanford SUNet")
             } icon: {
-                Image(systemName: "graduationcap.fill") // swiftlint:disable:this accessibility_label_for_image
+                Image(systemName: "graduationcap.fill")
             }
         }
         .tint(colorScheme == .light ? cardinalRed : cardinalRedDark)

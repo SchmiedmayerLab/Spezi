@@ -30,7 +30,7 @@ public struct PendingNotificationsList: View {
                     Label {
                         Text("No Notifications", bundle: .module)
                     } icon: {
-                        Image(systemName: "mail") // swiftlint:disable:this accessibility_label_for_image
+                        Image(systemName: "mail")
                     }
                 } description: {
                     Text("No pending notification requests.", bundle: .module)
@@ -62,7 +62,7 @@ public struct PendingNotificationsList: View {
             Label {
                 Text("Refresh", bundle: .module)
             } icon: {
-                Image(systemName: "arrow.clockwise") // swiftlint:disable:this accessibility_label_for_image
+                Image(systemName: "arrow.clockwise")
             }
         }
     }
