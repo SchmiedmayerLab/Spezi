@@ -1,0 +1,86 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Downloaded %@%% of 100%%." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloaded %@%% of 100%%."
+          }
+        }
+      }
+    },
+    "LLM_ALREADY_DOWNLOADED_DESCRIPTION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Large Language Model is already present on the device."
+          }
+        }
+      }
+    },
+    "LLM_DOWNLOAD_BUTTON" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download LLM"
+          }
+        }
+      }
+    },
+    "LLM_DOWNLOAD_FAILED_ERROR" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An error occurred during the download of the LLM."
+          }
+        }
+      }
+    },
+    "LLM_DOWNLOAD_NEXT_BUTTON" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish setup"
+          }
+        }
+      }
+    },
+    "LLM_DOWNLOAD_SUBTITLE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In order to locally execute a LLM, first download a model."
+          }
+        }
+      }
+    },
+    "LLM_DOWNLOAD_TITLE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM Download"
+          }
+        }
+      }
+    },
+    "LLM_DOWNLOADED_DESCRIPTION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Large Language Model is downloaded to the device."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

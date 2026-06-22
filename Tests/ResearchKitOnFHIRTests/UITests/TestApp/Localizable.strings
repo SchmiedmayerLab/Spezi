@@ -1,0 +1,21 @@
+/* 
+ This source file is part of the ResearchKitOnFHIR open source project
+
+ SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
+
+ SPDX-License-Identifier: MIT
+*/
+
+"QUESTIONNAIRE_LIST_TITLE" = "Questionnaires";
+"QUESTIONNAIRE_LIST_EXAMPLES_HEADER" = "ResearchKit-On-FHIR Feature Examples";
+"QUESTIONNAIRE_LIST_RESEARCH_EXAMPLES_HEADER" = "Clinical Research Questionnaire Examples";
+"ERROR_MESSAGE" = "Could not load the FHIR-based questionnaire. Please check your JSON file or any errors thrown during the decoding.";
+"QUESTIONNAIRES_VIEW_JSON" = "View JSON";
+"QUESTIONNAIRES_VIEW_RESPONSES" = "View Responses";
+"QUESTIONNAIRE_DEFAULT_TITLE" = "Untiteled Questionnaire";
+"JSON_ERROR_MESSAGE" = "Could not load JSON.";
+"RESPONSE_DATE_ERROR_MESSAGE" = "Response";
+"RESPONSES_LIST_NO_SELECTION" = "Please select a response";
+"RESPONSES_LIST_TITLE" = "Responses";
+"RESPONSES_LIST_NO_RESPONSES" = "No responses";
+"COMPLETION_STEP_MESSAGE" = "Thank you for completing this Questionnaire. Long press on the Questionnaire's button on the main screen to see your results.";

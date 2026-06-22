@@ -1,0 +1,26 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@-Minute Run Test" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba de carrera de %@ minutos"
+          }
+        }
+      }
+    },
+    "%@-Minute Walk Test" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba de la marcha de %@ minutos"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

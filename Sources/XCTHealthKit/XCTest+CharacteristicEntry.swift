@@ -1,0 +1,256 @@
+//
+// This source file is part of the Stanford XCTHealthKit open-source project
+//
+// SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
+//
+// SPDX-License-Identifier: MIT
+//
+
+import Foundation
+import HealthKit
+import XCTest
+
+
+/// Characteristics which should be entered into the health app.
+public struct CharacteristicsDefinition {
+    /// The blood type that should be entered, if any.
+    ///
+    /// Specifying `nil` will cause this field to get skipped; the current value will remain unchanged.
+    public let bloodType: HKBloodType?
+    
+    /// The date of birth that should be entered, if any.
+    ///
+    /// Specifying `nil` will cause this field to get skipped; the current value will remain unchanged.
+    public let dateOfBirth: DateComponents?
+    
+    /// The biological sex that should be entered, if any.
+    ///
+    /// Specifying `nil` will cause this field to get skipped; the current value will remain unchanged.
+    public let biologicalSex: HKBiologicalSex?
+    
+    /// The skin type that should be entered, if any.
+    ///
+    /// Specifying `nil` will cause this field to get skipped; the current value will remain unchanged.
+    public let skinType: HKFitzpatrickSkinType?
+    
+    /// The wheelchair use that should be entered, if any.
+    ///
+    /// Specifying `nil` will cause this field to get skipped; the current value will remain unchanged.
+    public let wheelchairUse: HKWheelchairUse?
+    
+    /// Creates a new characteristics input definition object
+    public init(
+        bloodType: HKBloodType? = nil,
+        dateOfBirth: DateComponents? = nil,
+        biologicalSex: HKBiologicalSex? = nil,
+        skinType: HKFitzpatrickSkinType? = nil,
+        wheelchairUse: HKWheelchairUse? = nil
+    ) {
+        self.bloodType = bloodType
+        self.dateOfBirth = dateOfBirth
+        self.biologicalSex = biologicalSex
+        self.skinType = skinType
+        self.wheelchairUse = wheelchairUse
+    }
+}
+
+
+extension XCTestCase {
+    /// Launches the Health app and enters the specified characteristics entries.
+    @MainActor
+    public func launchHealthAppAndEnterCharacteristics( // swiftlint:disable:this function_body_length cyclomatic_complexity
+        _ characteristics: CharacteristicsDefinition
+    ) throws {
+        let healthApp = XCUIApplication.healthApp
+        healthApp.launch()
+        healthApp.terminate()
+        healthApp.launch()
+        handleHealthAppOnboardingIfNecessary()
+        
+        healthApp.tabBars.buttons["Summary"].tap() // make sure we're on the first tab
+        let profileButton = healthApp.buttons["Profile"]
+        XCTAssert(profileButton.waitForExistence(timeout: 2))
+        profileButton.tryToTapReallySoftlyMaybeThisWillMakeItWork()
+        sleep(1) // wait a second to make sure the sheet has fully appeared
+        healthApp.cells["Health Details"].tap()
+        sleep(1) // wait a second to make sure the "Health Details" view has been presented.
+        healthApp.navigationBars["Health Details"].buttons["Edit"].tap()
+        
+        if let dateOfBirth = characteristics.dateOfBirth {
+            healthApp.cells["Date of Birth"].tap()
+            let picker = healthApp.pickers.firstMatch
+            XCTAssert(picker.waitForExistence(timeout: 2))
+            // This is far from perfect (we're looking at the locale of the test runner, rather than the simulator/device,
+            // which could be completely different, but it's the best we've got.
+            let pickerWheelsMapping: [Calendar.Component: Int]
+            let dayFormatString: String
+            switch Locale.current.dateOrder {
+            case .mdy:
+                pickerWheelsMapping = [.month: 0, .day: 1, .year: 2]
+                dayFormatString = "%lld"
+            case .dmy:
+                pickerWheelsMapping = [.day: 0, .month: 1, .year: 2]
+                dayFormatString = "%lld."
+            case .ymd, .other:
+                throw XCTestError(.failureWhileWaiting, userInfo: [
+                    NSLocalizedDescriptionKey: "Unsupported date order \(Locale.current.dateOrder)"
+                ])
+            }
+            if let month = dateOfBirth.month {
+                picker.pickerWheels
+                    .element(boundBy: try XCTUnwrap(pickerWheelsMapping[.month]))
+                    .adjust(toPickerWheelValue: XCUIElement.monthName(for: month))
+            }
+            if let day = dateOfBirth.day {
+                picker.pickerWheels
+                    .element(boundBy: try XCTUnwrap(pickerWheelsMapping[.day]))
+                    .adjust(toPickerWheelValue: String(format: dayFormatString, day))
+            }
+            if let year = dateOfBirth.year {
+                picker.pickerWheels
+                    .element(boundBy: try XCTUnwrap(pickerWheelsMapping[.year]))
+                    .adjust(toPickerWheelValue: String(year))
+            }
+            healthApp.cells["Date of Birth"].tap()
+        }
+        
+        if let biologicalSex = characteristics.biologicalSex {
+            healthApp.cells["Sex"].tap()
+            let picker = healthApp.pickers.firstMatch.pickerWheels.firstMatch
+            switch biologicalSex {
+            case .notSet:
+                picker.adjust(toPickerWheelValue: "")
+            case .male:
+                picker.adjust(toPickerWheelValue: "Male")
+            case .female:
+                picker.adjust(toPickerWheelValue: "Female")
+            case .other:
+                picker.adjust(toPickerWheelValue: "Other")
+            @unknown default:
+                XCTFail("Unhandled biological sex value: \(biologicalSex)")
+            }
+            healthApp.cells["Sex"].tap()
+        }
+        
+        if let bloodType = characteristics.bloodType {
+            healthApp.cells["Blood Type"].tap()
+            let picker = healthApp.pickers.firstMatch.pickerWheels.firstMatch
+            switch bloodType {
+            case .notSet:
+                picker.adjust(toPickerWheelValue: "")
+            case .aPositive:
+                picker.adjust(toPickerWheelValue: "A+")
+            case .aNegative:
+                picker.adjust(toPickerWheelValue: "A-")
+            case .bPositive:
+                picker.adjust(toPickerWheelValue: "B+")
+            case .bNegative:
+                picker.adjust(toPickerWheelValue: "B-")
+            case .abPositive:
+                picker.adjust(toPickerWheelValue: "AB+")
+            case .abNegative:
+                picker.adjust(toPickerWheelValue: "AB-")
+            case .oPositive:
+                picker.adjust(toPickerWheelValue: "O+")
+            case .oNegative:
+                picker.adjust(toPickerWheelValue: "O-")
+            @unknown default:
+                XCTFail("Unhandled blood type value: \(bloodType)")
+            }
+            healthApp.cells["Blood Type"].tap()
+        }
+        
+        if let skinType = characteristics.skinType {
+            healthApp.cells["Fitzpatrick Skin Type"].tap()
+            let picker = healthApp.pickers.firstMatch.pickerWheels.firstMatch
+            switch skinType {
+            case .notSet:
+                picker.adjust(toPickerWheelValue: "")
+            case .I:
+                picker.adjust(toPickerWheelValue: "Type I")
+            case .II:
+                picker.adjust(toPickerWheelValue: "Type II")
+            case .III:
+                picker.adjust(toPickerWheelValue: "Type III")
+            case .IV:
+                picker.adjust(toPickerWheelValue: "Type IV")
+            case .V:
+                picker.adjust(toPickerWheelValue: "Type V")
+            case .VI:
+                picker.adjust(toPickerWheelValue: "Type VI")
+            @unknown default:
+                XCTFail("Unhandled skin type value: \(skinType)")
+            }
+            healthApp.cells["Fitzpatrick Skin Type"].tap()
+        }
+        
+        if let wheelchairUse = characteristics.wheelchairUse {
+            healthApp.cells["Wheelchair"].tap()
+            let picker = healthApp.pickers.firstMatch.pickerWheels.firstMatch
+            switch wheelchairUse {
+            case .notSet:
+                picker.adjust(toPickerWheelValue: "")
+            case .no:
+                picker.adjust(toPickerWheelValue: "No")
+            case .yes:
+                picker.adjust(toPickerWheelValue: "Yes")
+            @unknown default:
+                XCTFail("Unhandled wheelchair use value: \(wheelchairUse)")
+            }
+            healthApp.cells["Wheelchair"].tap()
+        }
+        
+        healthApp.navigationBars["Health Details"].buttons["Done"].tap()
+        healthApp.navigationBars["Health Details"].buttons["Profile"].tap()
+        let doneButton = healthApp.navigationBars.firstMatch.buttons["Done"]
+        let closeButton = healthApp.navigationBars.firstMatch.buttons["close"]
+        if doneButton.exists {
+            doneButton.tap()
+        } else if closeButton.exists {
+            closeButton.tap()
+        } else {
+            XCTFail("Unable to find done/close button")
+        }
+    }
+}
+
+
+extension XCUIElement {
+    // This is required to work around an apparent XCTest bug when trying to tap e.g. the Health App's Profile button.
+    // See also: https://stackoverflow.com/a/33534187
+    func tryToTapReallySoftlyMaybeThisWillMakeItWork() {
+        if isHittable {
+            tap()
+        } else {
+            coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
+    }
+}
+
+
+extension Locale {
+    enum DateOrder {
+        case mdy
+        case dmy
+        case ymd
+        case other(String)
+    }
+    
+    var dateOrder: DateOrder {
+        let fmt = DateFormatter.dateFormat(fromTemplate: "yMd", options: 0, locale: self) ?? ""
+        let order = fmt.compactMap { char -> Character? in
+            switch char {
+            case "y": "y"
+            case "M", "L": "M"
+            case "d": "d"
+            default: nil
+            }
+        }
+        return switch order {
+        case ["M", "d", "y"]: .mdy
+        case ["d", "M", "y"]: .dmy
+        case ["y", "M", "d"]: .ymd
+        default: .other(String(order))
+        }
+    }
+}

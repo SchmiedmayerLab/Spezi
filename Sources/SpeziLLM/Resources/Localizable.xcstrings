@@ -1,0 +1,96 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "LLM_STATE_ERROR" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM state error."
+          }
+        }
+      }
+    },
+    "LLM_STATE_CALLING_TOOLS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM state calling tools."
+          }
+        }
+      }
+    },
+    "LLM_STATE_GENERATING" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM state generating."
+          }
+        }
+      }
+    },
+    "LLM_STATE_LOADING" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM state loading."
+          }
+        }
+      }
+    },
+    "LLM_STATE_READY" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM state ready."
+          }
+        }
+      }
+    },
+    "LLM_STATE_UNINITIALIZED" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM state uninitialized."
+          }
+        }
+      }
+    },
+    "LLM_UNKNOWN_ERROR_DESCRIPTION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown LLM generation error."
+          }
+        }
+      }
+    },
+    "LLM_UNKNOWN_ERROR_FAILURE_REASON" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An unknown error has occurred during LLM inference."
+          }
+        }
+      }
+    },
+    "LLM_UNKNOWN_ERROR_RECOVERY_SUGGESTION" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please retry the inference and restart the application."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
