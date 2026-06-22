@@ -80,10 +80,22 @@ run() { # <package> <platform> [mode: "ui"]
     # scheme "TestApp", on the platform's destination. Debug only for now (Release is a later add).
     # Writes an .xcresult bundle that the test-ui CI job uploads as an artifact (even on test failure).
     local result="${1}-${2}-UITests.xcresult"
+    local uidir="Tests/${1}Tests/UITests"
     rm -rf "$result"   # self-hosted runners reuse the workspace — avoid a stale bundle path
     echo "==> $1 UI tests on $2"
+    if [ -f "$uidir/firebase.json" ]; then
+      # This package's UITests need the Firebase emulator (e.g. SpeziFirebase). Run the test inside
+      # `firebase emulators:exec` from the UITests dir (so firebase.json/.firebaserc/rules resolve),
+      # writing the .xcresult back to the repo root (absolute path) so the test-ui upload step finds it.
+      # Requires the `firebase` CLI (firebase-tools) on the runner — as the upstream CI also relied on.
+      local root; root="$(pwd)"
+      ( cd "$uidir" \
+        && firebase emulators:exec "xcodebuild test -project UITests.xcodeproj -scheme TestApp -configuration Debug -destination '$(dest "$2")' -resultBundlePath '$root/$result' -derivedDataPath '$root/.derivedData' -skipMacroValidation -skipPackagePluginValidation" ) \
+      | beautify
+      return
+    fi
     xcodebuild test \
-      -project "Tests/${1}Tests/UITests/UITests.xcodeproj" \
+      -project "$uidir/UITests.xcodeproj" \
       -scheme TestApp \
       -configuration Debug \
       -destination "$(dest "$2")" \
