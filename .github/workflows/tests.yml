@@ -98,7 +98,7 @@ jobs:
         if: failure() && matrix.platform != 'Linux'   # only on failure; Linux is a compile-check (no .xcresult)
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.package }}-${{ matrix.platform }}-Tests
+          name: ${{ matrix.package }}-${{ matrix.platform }}-Tests.xcresult
           path: ${{ matrix.package }}-${{ matrix.platform }}-Tests.xcresult
 
   test-ui:
@@ -119,7 +119,7 @@ jobs:
         if: failure()   # only keep the result bundle when the UI tests fail
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.package }}-${{ matrix.platform }}-UITests
+          name: ${{ matrix.package }}-${{ matrix.platform }}-UITests.xcresult
           path: ${{ matrix.package }}-${{ matrix.platform }}-UITests.xcresult
 
   # Single gate to use as the required status check in branch protection.
