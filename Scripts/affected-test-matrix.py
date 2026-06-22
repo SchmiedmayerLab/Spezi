@@ -47,9 +47,12 @@ GLOBAL_PREFIXES = (
 )
 
 # TEMPORARY: limit UNIT-test scheduling to these platforms (macCatalyst/visionOS/tvOS excluded for
-# now — remove from this tuple to restore). Linux runs on GitHub-hosted ubuntu. UI tests are NOT
-# limited by this; their platforms come straight from each project's `uiTests` in packages.toml.
+# now — remove from this tuple to restore). Linux runs on GitHub-hosted ubuntu.
 CI_PLATFORMS = ("iOS", "macOS", "watchOS", "Linux")
+
+# TEMPORARY: limit UI-test scheduling to these platforms. The full per-project set (from packages.toml
+# `uiTests`) is iOS/iPadOS/visionOS; iPadOS + visionOS are disabled for now — add them back here to re-enable.
+UI_PLATFORMS = ("iOS",)
 
 def read_changed():
     src = open(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] != "-" else sys.stdin
@@ -79,7 +82,9 @@ def main():
         for platform in info["platforms"]:
             if platform in CI_PLATFORMS:  # TEMPORARY unit-test platform limit (see CI_PLATFORMS above)
                 unit.append({"package": pkg, "platform": platform})
-        for platform in info.get("uiTests", []):  # UI tests: from the UITests project's Xcode config
+        for platform in info.get("uiTests", []):  # UI tests: per-project platforms from packages.toml
+            if platform not in UI_PLATFORMS:  # TEMPORARY UI-test platform limit (see UI_PLATFORMS above)
+                continue
             ui.append({"package": pkg, "platform": platform})
 
     lines = [
