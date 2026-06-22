@@ -70,9 +70,6 @@
             reference = "container:Tests/TestPlans/SpeziLocation.xctestplan">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:Tests/TestPlans/SpeziMedication.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
             reference = "container:Tests/TestPlans/SpeziNetworking.xctestplan">
          </TestPlanReference>
          <TestPlanReference

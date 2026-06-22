@@ -89,8 +89,6 @@ var products: [Product] = [
     .library(name: "SpeziLicense", targets: ["SpeziLicense"]),
     // MARK: SpeziLocation
     .library(name: "SpeziLocation", targets: ["SpeziLocation"]),
-    // MARK: SpeziMedication
-    .library(name: "SpeziMedication", targets: ["SpeziMedication"]),
     // MARK: SpeziNetworking
     .library(name: "ByteCoding", targets: ["ByteCoding"]),
     .library(name: "SpeziNumerics", targets: ["SpeziNumerics"]),
@@ -1363,34 +1361,6 @@ var targets: [Target] = [
         ],
         swiftSettings: [
             .swiftLanguageMode(.v5)
-        ],
-        plugins: [] + swiftLintPlugin
-    ),
-    // MARK: SpeziMedication
-    .target(
-        name: "SpeziMedication",
-        dependencies: [
-            .target(name: "SpeziViews")
-        ],
-        exclude: [
-            "CITATION.cff",
-            "CONTRIBUTORS.md",
-            "LICENSE.md",
-            "LICENSES",
-            "README.md"
-        ],
-        resources: [
-            .process("Resources")
-        ],
-        plugins: [] + swiftLintPlugin
-    ),
-    .testTarget(
-        name: "SpeziMedicationTests",
-        dependencies: [
-            .target(name: "SpeziMedication")
-        ],
-        exclude: [
-            "UITests"
         ],
         plugins: [] + swiftLintPlugin
     ),

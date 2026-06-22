@@ -129,12 +129,6 @@ targets = ["SpeziLocation"]
 tests = ["SpeziLocationTests"]
 uiTests = ["iOS", "iPadOS"]
 
-[SpeziMedication]
-platforms = ["iOS"]
-targets = ["SpeziMedication"]
-tests = ["SpeziMedicationTests"]
-uiTests = ["iOS", "iPadOS"]
-
 [SpeziNetworking]
 platforms = ["iOS", "macOS", "watchOS", "visionOS", "tvOS"]
 targets = ["SpeziNetworking", "ByteCoding", "ByteCodingTesting", "SpeziNumerics", "XCTByteCoding"]

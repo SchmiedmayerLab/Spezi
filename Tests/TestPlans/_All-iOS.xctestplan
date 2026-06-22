@@ -176,13 +176,6 @@
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "SpeziMedicationTests",
-        "name" : "SpeziMedicationTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
         "identifier" : "SpeziNotificationsTests",
         "name" : "SpeziNotificationsTests"
       }
