@@ -1,0 +1,117 @@
+{
+  "title": "TestSurvey",
+  "resourceType": "Questionnaire",
+  "language": "en-US",
+  "status": "draft",
+  "id": "66D6F5E6-242A-43CA-996C-D8907CFA9F16",
+  "meta": {
+    "profile": [
+      "http://spezi.health/fhir/StructureDefinition/sdf-Questionnaire"
+    ],
+    "tag": [
+      {
+        "system": "urn:ietf:bcp:47",
+        "code": "en-US",
+        "display": "English"
+      }
+    ]
+  },
+  "useContext": [
+    {
+      "code": {
+        "system": "http://hl7.org/fhir/ValueSet/usage-context-type",
+        "code": "focus",
+        "display": "Clinical Focus"
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.8655",
+            "display": "TestSurvey"
+          }
+        ]
+      }
+    }
+  ],
+  "contact": [
+    {}
+  ],
+  "subjectType": [
+    "Patient"
+  ],
+  "item": [
+    {
+      "linkId": "34DC797F-EC9D-4D11-8F99-19628735109B",
+      "type": "choice",
+      "text": "Select a Letter",
+      "required": false,
+      "answerOption": [
+        {
+          "valueCoding": {
+            "code": "a",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "A"
+          }
+        },
+        {
+          "valueCoding": {
+            "code": "b",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "B"
+          }
+        },
+        {
+          "valueCoding": {
+            "code": "c",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "C"
+          }
+        }
+      ]
+    },
+    {
+      "linkId": "5BCE212D-FC43-482C-A0D1-9AC77B190D49",
+      "type": "choice",
+      "text": "Select a Letter",
+      "required": false,
+      "answerOption": [
+        {
+          "valueCoding": {
+            "code": "a",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "A"
+          }
+        },
+        {
+          "valueCoding": {
+            "code": "c",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "B"
+          }
+        }
+      ]
+    },
+    {
+      "linkId": "EC9F523D-343C-4186-8F12-7794F28DFD87",
+      "type": "choice",
+      "text": "Select a Letter",
+      "required": false,
+      "answerOption": [
+        {
+          "valueCoding": {
+            "code": "a",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "A"
+          }
+        },
+        {
+          "valueCoding": {
+            "code": "b",
+            "system": "urn:uuid:4cf7ebf9-1fe3-40d1-96fb-a84f3105b3ac",
+            "display": "C"
+          }
+        }
+      ]
+    }
+  ]
+}
