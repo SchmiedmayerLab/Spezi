@@ -7,6 +7,7 @@
 //
 
 import Spezi
+@_spi(TestingSupport)
 import SpeziHealthKit
 import SpeziHealthKitBulkExport
 
@@ -38,7 +39,9 @@ class TestAppDelegate: SpeziAppDelegate {
                 CollectSamples(.stairAscentSpeed, continueInBackground: true)
                 CollectSamples(.stairDescentSpeed, continueInBackground: false)
                 CollectSamples(.workout)
-                CollectSamples(.bloodPressure, start: .automatic, continueInBackground: true)
+                if !HealthKit.needsBloodPressureAuthFlowFix {
+                    CollectSamples(.bloodPressure, start: .automatic, continueInBackground: true)
+                }
                 
                 RequestReadAccess(
                     quantity: [.bloodOxygen],

@@ -256,8 +256,7 @@ extension HealthKit {
             // from the list in the sheet will cause the sample type to never be decided on, unless the user manually
             // goes to the settings app and toggles the switch there.)
             // Reported as FB23147195.
-            let affectedRange = Version(26, 5, 0)..<Version(27, 0, 0)
-            if affectedRange.contains(Version(ProcessInfo.processInfo.operatingSystemVersion)) {
+            if HealthKit.needsBloodPressureAuthFlowFix {
                 let undecided = DataAccessRequirements(
                     read: accessRequirements.read.filter { prevAuthStates[$0] == .shouldRequest },
                     write: accessRequirements.write.filter { prevAuthStates[$0] == .shouldRequest }
@@ -673,5 +672,13 @@ extension HealthKit {
     @_spi(Testing)
     public static var bundle: Bundle {
         Bundle.module
+    }
+}
+
+
+extension HealthKit {
+    @_spi(TestingSupport)
+    public static var needsBloodPressureAuthFlowFix: Bool {
+        (Version(26, 5, 0)..<Version(27, 0, 0)).contains(Version(ProcessInfo.processInfo.operatingSystemVersion))
     }
 }
