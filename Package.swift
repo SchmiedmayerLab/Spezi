@@ -419,7 +419,7 @@ var targets: [Target] = [
         dependencies: [
             .target(name: "SpeziAccessGuard"),
             .target(name: "SpeziTesting"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
@@ -507,7 +507,7 @@ var targets: [Target] = [
             .target(name: "XCTRuntimeAssertions"),
             .target(name: "Spezi"),
             .target(name: "SpeziTesting"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
@@ -665,7 +665,7 @@ var targets: [Target] = [
         dependencies: [
             .target(name: "SpeziConsent"),
             .target(name: "SpeziFoundation"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
@@ -1113,7 +1113,7 @@ var targets: [Target] = [
             .target(name: "SpeziHealthKit"),
             .target(name: "SpeziHealthKitBulkExport"),
             .target(name: "SpeziHealthKitUI"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
