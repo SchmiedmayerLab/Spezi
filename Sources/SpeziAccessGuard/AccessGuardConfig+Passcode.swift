@@ -40,18 +40,18 @@ public struct CodeAccessGuard: _AccessGuardConfig {
     public enum ValidationResult: Sendable {
         /// The user-entered passcode was correct, and the access guard should be unlocked in response.
         case valid
-        
+
         /// The user-entered passcode was incorrect, and the access guard should remain locked.
         ///
         /// - parameter message: An optional error message that should be displayed to the user.
         case invalid(message: LocalizedStringResource?)
-        
+
         /// The user-entered passcode was incorrect, and the access guard should remain locked.
         public static var invalid: Self {
             .invalid(message: nil)
         }
     }
-    
+
     public enum Kind: Sendable {
         case regular(format: PasscodeFormat)
         case custom(
@@ -60,7 +60,7 @@ public struct CodeAccessGuard: _AccessGuardConfig {
             validate: @Sendable (String) async -> ValidationResult
         )
     }
-    
+
     public let id: AccessGuardIdentifier<Self>
     public let timeout: Duration
     let isOptional: Bool
@@ -71,14 +71,14 @@ public struct CodeAccessGuard: _AccessGuardConfig {
             format
         }
     }
-    
+
     init(id: AccessGuardIdentifier<Self>, timeout: Duration, isOptional: Bool, kind: Kind) {
         self.id = id
         self.timeout = timeout
         self.isOptional = isOptional
         self.kind = kind
     }
-    
+
     @_spi(Internal)
     public func _makeUnlockView(model: _PasscodeAccessGuardModel) -> some View { // swiftlint:disable:this identifier_name
         switch kind {
@@ -112,7 +112,7 @@ extension CodeAccessGuard {
         self.isOptional = isOptional
         self.kind = .regular(format: codeFormat)
     }
-    
+
     /// Creates a passcode-based Access Guard that uses a fixed code
     public init(
         _ id: AccessGuardIdentifier<Self>,
@@ -123,7 +123,7 @@ extension CodeAccessGuard {
             code == fixedCode ? .valid : .invalid
         }
     }
-    
+
     /// Creates a dynamic passcode-based Access Guard with custom code validation.
     ///
     /// This allows the app to fully control the unlock behaviour of a passcode-protected access guard.
@@ -161,13 +161,13 @@ extension CodeAccessGuard {
     /// ```
     ///
     /// - Tip: In the example above, if `ConsumableCodes` were changed to conform to Spezi's `Module` protocol and added to the configuration,
-    ///     it'd be able to access (via the [`@Dependency`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module/dependency) API) other Spezi modules,
+    ///     it'd be able to access (via the [`@Dependency`](../Spezi/Spezi.docc/Module/Module.md) API) other Spezi modules,
     ///     thereby giving the access guard validation logic full access to the entire Spezi environment
-    ///     and it could use e.g. [SpeziStorage](https://swiftpackageindex.com/StanfordSpezi/SpeziStorage/documentation/) to keep track of the consumed/available codes.
+    ///     and it could use e.g. SpeziStorage to keep track of the consumed/available codes.
     public init(
         _ id: AccessGuardIdentifier<Self>,
         timeout: Duration = .minutes(5),
-        message: LocalizedStringResource? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        message: LocalizedStringResource? = nil,
         format: PasscodeFormat,
         validate: @escaping @Sendable (String) async -> ValidationResult
     ) {

@@ -24,12 +24,12 @@ public struct GeminiPlatformDefinition: LLMOpenAILikePlatformDefinition {
             self.rawValue = value
         }
     }
-    
+
     public static let platformName = "Gemini"
     public static let platformServiceIdentifier = "generativelanguage.googleapis.com"
-    
-    public static let defaultServerUrl = URL(string: "https://generativelanguage.googleapis.com/v1beta/openai")! // swiftlint:disable:this force_unwrapping
-    
+
+    public static let defaultServerUrl = URL(string: "https://generativelanguage.googleapis.com/v1beta/openai")!
+
     public static let platformDeveloperConsoleUrl = URL(string: "https://aistudio.google.com/app/api-keys")
 }
 
@@ -46,7 +46,7 @@ public typealias LLMGeminiParameters = LLMOpenAILikeParameters<GeminiPlatformDef
 
 /// LLM execution platform of a ``LLMGeminiSchema``.
 ///
-/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAIPlatform`, except that it interacts with Gemini's APIs instead of OpenAI's; see the [`LLMOpenAIPlatform`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaiplatform) documentation for further documentation.
+/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAIPlatform`, except that it interacts with Gemini's APIs instead of OpenAI's; see the [`LLMOpenAIPlatform`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation for further documentation.
 ///
 /// ### Usage
 ///
@@ -70,10 +70,10 @@ public typealias LLMGeminiPlatform = LLMOpenAILikePlatform<GeminiPlatformDefinit
 /// The ``LLMGeminiSchema`` is used as a configuration for the to-be-used LLMGeminiPlatform LLM. It contains all information necessary for the creation of an executable ``LLMGeminiSession``.
 /// It is bound to a ``LLMGeminiPlatform`` that is responsible for turning the ``LLMGeminiSchema`` to an ``LLMGeminiSession``.
 ///
-/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISchema`, except that it interacts with Gemini's APIs instead of OpenAI's; see the [`LLMOpenAISchema`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaischema) documentation for further documentation.
+/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISchema`, except that it interacts with Gemini's APIs instead of OpenAI's; see the [`LLMOpenAISchema`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation for further documentation.
 ///
 /// - Tip: ``LLMGeminiSchema`` also enables the function calling mechanism to establish a structured, bidirectional, and reliable communication between the ``LLMGeminiPlatform`` LLMs and external tools.
-///     For more details, refer to the [`LLMOpenAISchema`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaischema) documentation.
+///     For more details, refer to the [`LLMOpenAISchema`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation.
 public typealias LLMGeminiSchema = LLMOpenAILikeSchema<GeminiPlatformDefinition>
 
 
@@ -82,7 +82,7 @@ public typealias LLMGeminiSchema = LLMOpenAILikeSchema<GeminiPlatformDefinition>
 /// The ``LLMGeminiSession`` is the executable version of the LLMGeminiPlatform LLM containing context and state as defined by the ``LLMGeminiSchema``.
 /// It provides access to text-based models from Gemini.
 ///
-/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISession`, except that it interacts with Gemini's APIs instead of OpenAI's; see the [`LLMOpenAISession`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaisession) documentation for further documentation.
+/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISession`, except that it interacts with Gemini's APIs instead of OpenAI's; see the [`LLMOpenAISession`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation for further documentation.
 ///
 ///
 /// ### Usage
@@ -150,19 +150,19 @@ extension CredentialsTag {
 extension GeminiPlatformDefinition.ModelType {
     /// The default model to be used with Gemini.
     public static let `default`: Self = .gemini2_5_pro
-    
+
     public static let wellKnownModels: [Self] = [ // swiftlint:disable:this missing_docs
         .gemini3_1_pro, .gemini3_pro, .gemini3_flash,
         .gemini2_5_pro, .gemini2_5_flash, .gemini2_5_flash_lite
     ]
-    
+
     /// Gemini 3.1 Pro
     public static let gemini3_1_pro = Self(rawValue: "gemini-3.1-pro")
     /// Gemini 3 Pro
     public static let gemini3_pro = Self(rawValue: "gemini-3-pro")
     /// Gemini 3 Flash
     public static let gemini3_flash = Self(rawValue: "gemini-3-flash")
-    
+
     /// Gemini 2.5 Pro
     public static let gemini2_5_pro = Self(rawValue: "gemini-2.5-pro")
     /// Gemini 2.5 Flash

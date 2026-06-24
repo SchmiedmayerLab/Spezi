@@ -15,7 +15,7 @@ Interact with OpenAI's Realtime API for bidirectional audio and voice conversati
 ## Overview
 
 A module that allows you to interact with OpenAI's Realtime API for real-time, bidirectional audio conversations with GPT-based Large Language Models (LLMs) within your Spezi application.
-``SpeziLLMOpenAIRealtime`` provides a pure Swift-based API for interacting with the OpenAI Realtime API, enabling natural voice conversations with automatic speech recognition, voice activity detection, and real-time audio streaming. It builds on top of the infrastructure of the [SpeziLLM target](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm).
+``SpeziLLMOpenAIRealtime`` provides a pure Swift-based API for interacting with the OpenAI Realtime API, enabling natural voice conversations with automatic speech recognition, voice activity detection, and real-time audio streaming. It builds on top of the infrastructure of the [SpeziLLM target](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md).
 
 ## Setup
 
@@ -25,7 +25,7 @@ You need to add the SpeziLLM Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ## Spezi LLM OpenAI Realtime Components
 
@@ -43,8 +43,8 @@ The core components of the ``SpeziLLMOpenAIRealtime`` target are the ``LLMOpenAI
 
 #### Setup
 
-In order to use OpenAI Realtime LLMs, the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) needs to be initialized in the Spezi `Configuration` with the ``LLMOpenAIRealtimePlatform``. Only after, the `LLMRunner` can be used to perform real-time voice interactions via OpenAI Realtime LLMs.
-See the [SpeziLLM documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) for more details.
+In order to use OpenAI Realtime LLMs, the [SpeziLLM](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) needs to be initialized in the Spezi `Configuration` with the ``LLMOpenAIRealtimePlatform``. Only after, the `LLMRunner` can be used to perform real-time voice interactions via OpenAI Realtime LLMs.
+See the [SpeziLLM documentation](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) for more details.
 
 ```swift
 import Spezi
@@ -65,9 +65,9 @@ class LLMOpenAIRealtimeAppDelegate: SpeziAppDelegate {
 
 #### Usage
 
-The code example below showcases the interaction with OpenAI Realtime LLMs within the Spezi ecosystem through the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
+The code example below showcases the interaction with OpenAI Realtime LLMs within the Spezi ecosystem through the [SpeziLLM](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
 
-The ``LLMOpenAIRealtimeSchema`` defines the type and configurations of the to-be-executed ``LLMOpenAIRealtimeSession``. This transformation is done via the [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) that uses the ``LLMOpenAIRealtimePlatform``. The inference via ``LLMOpenAIRealtimeSession/generate()`` returns an `AsyncThrowingStream` that yields all generated text transcript pieces.
+The ``LLMOpenAIRealtimeSchema`` defines the type and configurations of the to-be-executed ``LLMOpenAIRealtimeSession``. This transformation is done via the [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) that uses the ``LLMOpenAIRealtimePlatform``. The inference via ``LLMOpenAIRealtimeSession/generate()`` returns an `AsyncThrowingStream` that yields all generated text transcript pieces.
 
 ```swift
 import SpeziLLM
@@ -240,7 +240,7 @@ Each voice has distinct characteristics:
 
 Like the standard OpenAI API, the Realtime API supports function calling to enable structured communication between the LLM and external tools. ``SpeziLLMOpenAIRealtime`` provides the same declarative Domain Specific Language for function calling as `SpeziLLMOpenAI`.
 
-For extensive documentation on function calling, refer to the [SpeziLLMOpenAI Function Calling documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/functioncalling).
+For extensive documentation on function calling, refer to the [SpeziLLMOpenAI Function Calling documentation](../../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/FunctionCalling.md).
 
 ### Session Management
 

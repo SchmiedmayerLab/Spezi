@@ -90,7 +90,7 @@ public class BluetoothPeripheral { // swiftlint:disable:this type_body_length
     private var currentlyReadingInitialValue: Set<CharacteristicLocator> = []
 
     /// The internally managed identifier for the peripheral.
-    public nonisolated let id: UUID
+    nonisolated public let id: UUID
 
     /// The name of the peripheral.
     ///
@@ -103,17 +103,17 @@ public class BluetoothPeripheral { // swiftlint:disable:this type_body_length
     ///
     /// This value is automatically updated when the device is advertising.
     /// Once the device establishes a connection this has to be manually updated.
-    public nonisolated var rssi: Int {
+    nonisolated public var rssi: Int {
         storage.readOnlyRssi
     }
 
     /// The advertisement data of the last bluetooth advertisement.
-    public nonisolated var advertisementData: AdvertisementData {
+    nonisolated public var advertisementData: AdvertisementData {
         storage.readOnlyAdvertisementData
     }
 
     /// The current peripheral device state.
-    public nonisolated var state: PeripheralState {
+    nonisolated public var state: PeripheralState {
         storage.readOnlyState
     }
 
@@ -579,7 +579,6 @@ public class BluetoothPeripheral { // swiftlint:disable:this type_body_length
     ///   - serviceId: The service the characteristic lives on.
     ///   - characteristicId: The characteristic to notify about.
     public func enableNotifications(_ enabled: Bool = true, serviceId: BTUUID, characteristicId: BTUUID) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         let id = CharacteristicLocator(serviceId: serviceId, characteristicId: characteristicId)
 
         if enabled {
@@ -832,7 +831,7 @@ extension BluetoothPeripheral: Identifiable, Sendable {}
 
 
 extension BluetoothPeripheral: CustomStringConvertible, CustomDebugStringConvertible {
-    public nonisolated var description: String {
+    nonisolated public var description: String {
         if let name {
             "'\(name)'@\(id)"
         } else {
@@ -840,7 +839,7 @@ extension BluetoothPeripheral: CustomStringConvertible, CustomDebugStringConvert
         }
     }
 
-    public nonisolated var debugDescription: String {
+    nonisolated public var debugDescription: String {
         description
     }
 }
@@ -848,12 +847,12 @@ extension BluetoothPeripheral: CustomStringConvertible, CustomDebugStringConvert
 
 // MARK: Hashable
 extension BluetoothPeripheral: Hashable {
-    public nonisolated static func == (lhs: BluetoothPeripheral, rhs: BluetoothPeripheral) -> Bool {
+    nonisolated public static func == (lhs: BluetoothPeripheral, rhs: BluetoothPeripheral) -> Bool {
         lhs.id == rhs.id
     }
 
 
-    public nonisolated func hash(into hasher: inout Hasher) {
+    nonisolated public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }

@@ -19,7 +19,7 @@ SpeziPersonalInfo provides predefined UI components to deal with common cases in
 @Column {
     @Image(source: "NameFields", alt: "Three text fields to input your first, middle and last name.") {
         Collect the input for multiple [`PersonNameComponents`](https://developer.apple.com/documentation/foundation/personnamecomponents)
-        fields using [`NameFieldRow`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/spezipersonalinfo/namefieldrow).
+        fields using [`NameFieldRow`](SpeziPersonalInfo.md).
     }
 }
 

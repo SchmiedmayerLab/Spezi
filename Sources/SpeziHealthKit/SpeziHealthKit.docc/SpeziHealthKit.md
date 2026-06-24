@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2024 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 Access Health data in your Spezi app.
@@ -23,7 +23,7 @@ You need to add the Spezi HealthKit Swift package to
  [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
 > Important: If your application is not yet configured to use Spezi, follow the
- [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) and set up the core Spezi infrastructure. 
+ [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) and set up the core Spezi infrastructure.
 
 ### Example
 

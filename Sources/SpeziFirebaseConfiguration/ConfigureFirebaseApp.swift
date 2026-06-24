@@ -51,7 +51,7 @@ public final class ConfigureFirebaseApp: Module, DefaultInitializable {
     /// Creates a ``ConfigureFirebaseApp`` instance, which will configure firebase using custom configuration options.
     /// - parameter name: The name of the app. Defaults to `__FIRAPP_DEFAULT`.
     /// - parameter options: The options which should be used to configure firebase.
-    public init(name: String = kFIRDefaultAppName, options: FirebaseOptions) { // swiftlint:disable:this function_default_parameter_at_end
+    public init(name: String = kFIRDefaultAppName, options: FirebaseOptions) {
         input = .custom(name: name, options: options)
     }
     

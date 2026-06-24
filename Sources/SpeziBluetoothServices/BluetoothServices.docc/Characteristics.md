@@ -19,7 +19,7 @@ This includes generic characteristics like
 ``DateTime`` and a collection of characteristics from the health domain.
 
 Below is a list of already implemented characteristics.
-Encoding and decoding is handled using [`ByteCodable`](https://swiftpackageindex.com/StanfordSpezi/SpeziFileFormats/documentation/bytecoding)
+Encoding and decoding is handled using [`ByteCodable`](../../ByteCoding/ByteCoding.docc/ByteCoding.md)
 which natively integrates with SpeziBluetooth-defined services.
 
 ## Topics

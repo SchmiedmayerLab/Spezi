@@ -1,20 +1,15 @@
 <!--
-                  
+
 This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # SpeziSpeech
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziSpeech/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziSpeech/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziSpeech/graph/badge.svg?token=ufmRQvE0Cs)](https://codecov.io/gh/StanfordSpezi/SpeziSpeech)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10146086.svg)](https://doi.org/10.5281/zenodo.10146086)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziSpeech%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziSpeech)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziSpeech%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziSpeech)
 
 Recognize and synthesize natural language speech.
 
@@ -29,17 +24,41 @@ The Spezi Speech component provides an easy and convenient way to recognize (spe
 
 ### 1. Add Spezi Speech as a Dependency
 
-You need to add the Spezi Speech Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the `SpeziSpeechRecognizer` and `SpeziSpeechSynthesizer` products.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
+
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziSpeechRecognizer", package: "Spezi"),
+        .product(name: "SpeziSpeechSynthesizer", package: "Spezi")
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ### 2. Configure the `SpeechRecognizer` and the `SpeechSynthesizer` in the Spezi `Configuration`
 
-The [`SpeechRecognizer`](https://swiftpackageindex.com/stanfordspezi/spezispeech/documentation/spezispeechrecognizer/speechrecognizer) and [`SpeechSynthesizer`](https://swiftpackageindex.com/stanfordspezi/spezispeech/documentation/spezispeechsynthesizer/speechsynthesizer) modules need to be registered in a Spezi-based application using the [`configuration`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate/configuration)
-in a [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate):
+The `SpeechRecognizer` and `SpeechSynthesizer` modules need to be registered in a Spezi-based application using the `configuration`
+in a `SpeziAppDelegate`:
 ```swift
 class ExampleAppDelegate: SpeziAppDelegate {
     override var configuration: Configuration {
@@ -52,8 +71,8 @@ class ExampleAppDelegate: SpeziAppDelegate {
 }
 ```
 
-> [!NOTE]  
-> You can learn more about a [`Module` in the Spezi documentation](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module).
+> [!NOTE]
+> You can learn more about a [`Module`](../Spezi/Spezi.docc/Module/Module.md) in the Spezi documentation.
 
 ### 3. Configure target properties
 
@@ -64,12 +83,12 @@ To ensure that your application has the necessary permissions for microphone acc
    - Add a key named `Privacy - Microphone Usage Description` and provide a string value that describes why your application needs access to the microphone. This description will be displayed to the user when the app first requests microphone access.
    - Add another key named `Privacy - Speech Recognition Usage Description` with a string value that explains why your app requires the speech recognition capability. This will be presented to the user when the app first attempts to perform speech recognition.
 
-These entries are mandatory for apps that utilize microphone and speech recognition features. Failing to provide them will result in your app being unable to access these features. 
+These entries are mandatory for apps that utilize microphone and speech recognition features. Failing to provide them will result in your app being unable to access these features.
 
 ## Example
 
 `SpeechTestView` provides a demonstration of the capabilities of Spezi Speech.
-It showcases the interaction with the [`SpeechRecognizer`](https://swiftpackageindex.com/stanfordspezi/spezispeech/documentation/spezispeechrecognizer/speechrecognizer) to provide speech-to-text capabilities and the [`SpeechSynthesizer`](https://swiftpackageindex.com/stanfordspezi/spezispeech/documentation/spezispeechsynthesizer/speechsynthesizer) to generate speech from text.
+It showcases the interaction with the `SpeechRecognizer` to provide speech-to-text capabilities and the `SpeechSynthesizer` to generate speech from text.
 
 
 ```swift
@@ -94,7 +113,7 @@ struct SpeechTestView: View {
              playbackButtonPressed()
          }
              .padding(.bottom)
-         
+
          Text(message)
       }
    }
@@ -117,7 +136,7 @@ struct SpeechTestView: View {
          }
       }
    }
-    
+
    private func playbackButtonPressed() {
       if speechSynthesizer.isSpeaking {
          // If speech is currently synthezized, pause the playback.
@@ -130,7 +149,7 @@ struct SpeechTestView: View {
 }
 ```
 
-SpeziSpeech also supports selecting voices, including [personal voices](https://support.apple.com/en-us/104993). 
+SpeziSpeech also supports selecting voices, including [personal voices](https://support.apple.com/en-us/104993).
 
 The following example shows how a user can be given a choice of voices in their current locale and the selected voice can be used to synthesize speech.
 
@@ -169,18 +188,18 @@ struct SpeechVoiceSelectionExample: View {
 
 Personal voices are supported on iOS 17 and above. Users must first [create a personal voice](https://support.apple.com/en-us/104993). Using personal voices also requires obtaining authorization from the user. To request access to any available personal voices, you can use the `getPersonalVoices()` method of the `SpeechSynthesizer`. Personal voices will then become available alongside system voices.
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordSpezi/SpeziSpeech/documentation).
+For more information, please refer to the [SpeziSpeechRecognizer](../SpeziSpeechRecognizer/SpeziSpeechRecognizer.docc/SpeziSpeechRecognizer.md) and [SpeziSpeechSynthesizer](../SpeziSpeechSynthesizer/SpeziSpeechSynthesizer.docc/SpeziSpeechSynthesizer.md) documentation.
 
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
-
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziSpeech/tree/main/LICENSES) for more information.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer~dark.png#gh-dark-mode-only)
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

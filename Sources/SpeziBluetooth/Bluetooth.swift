@@ -27,9 +27,9 @@ import Spezi
 ///
 /// First of all we define our Bluetooth service by implementing a ``BluetoothService``.
 /// We use the ``Characteristic`` property wrapper to declare its characteristics.
-/// [`ByteEncodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/documentation/bytecoding/byteencodable),
-/// [`ByteDecodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/1.0.0/documentation/bytecoding/bytedecodable) or
-/// [`ByteCodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/documentation/bytecoding/bytecodable) respectively.
+/// [`ByteEncodable`](../ByteCoding/ByteCoding.docc/ByteCoding.md),
+/// [`ByteDecodable`](../ByteCoding/ByteCoding.docc/ByteCoding.md) or
+/// [`ByteCodable`](../ByteCoding/ByteCoding.docc/ByteCoding.md) respectively.
 ///
 /// ```swift
 /// struct DeviceInformationService: BluetoothService {
@@ -70,7 +70,7 @@ import Spezi
 /// ### Configure the Bluetooth Module
 ///
 /// We use the above `BluetoothDevice` implementation to configure the `Bluetooth` module within the
-/// [SpeziAppDelegate](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+/// [SpeziAppDelegate](../Spezi/Spezi.docc/Spezi.md).
 ///
 /// ```swift
 /// import Spezi
@@ -169,11 +169,11 @@ import Spezi
 ///
 /// ### Integration with Spezi Modules
 ///
-/// A Spezi [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module) is a great way of structuring your application into
+/// A Spezi [`Module`](../Spezi/Spezi.docc/Module/Module.md) is a great way of structuring your application into
 /// different subsystems and provides extensive capabilities to model relationship and dependence between modules.
 /// Every ``BluetoothDevice`` is a `Module`.
 /// Therefore, you can easily access your SpeziBluetooth device from within any Spezi `Module` using the standard
-/// [Module Dependency](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module-dependency) infrastructure. At the same time,
+/// [Module Dependency](../Spezi/Spezi.docc/Module/Module%20Dependency.md) infrastructure. At the same time,
 /// every `BluetoothDevice` can benefit from the same capabilities as every other Spezi `Module`.
 ///
 /// Below is a short code example demonstrating how a `BluetoothDevice` uses the `@Dependency` property to interact with a Spezi Module that is
@@ -245,7 +245,7 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
     /// The Bluetooth device configuration.
     ///
     /// Set of configured ``BluetoothDevice`` with their corresponding ``DiscoveryCriteria``.
-    public nonisolated let configuration: Set<DeviceDiscoveryDescriptor>
+    nonisolated public let configuration: Set<DeviceDiscoveryDescriptor>
 
     // sadly Swifts "lazy var" won't work here with strict concurrency as it doesn't isolate the underlying lazy storage
     @SpeziBluetooth private var _lazy_discoveryConfiguration: Set<DiscoveryDescription>?
@@ -263,12 +263,12 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
 
 
     /// Represents the current state of Bluetooth.
-    public nonisolated var state: BluetoothState {
+    nonisolated public var state: BluetoothState {
         bluetoothManager.state
     }
 
     /// Whether or not we are currently scanning for nearby devices.
-    public nonisolated var isScanning: Bool {
+    nonisolated public var isScanning: Bool {
         bluetoothManager.isScanning
     }
 
@@ -285,7 +285,7 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
     /// Subscribe to changes of the `state` property.
     ///
     /// Creates an `AsyncStream` that yields all **future** changes to the ``state`` property.
-    public nonisolated var stateSubscription: AsyncStream<BluetoothState> {
+    nonisolated public var stateSubscription: AsyncStream<BluetoothState> {
         bluetoothManager.stateSubscription
     }
 
@@ -299,7 +299,7 @@ public final class Bluetooth: Module, EnvironmentAccessible, @unchecked Sendable
     @Application(\.spezi)
     private var spezi
 
-    private nonisolated var logger: Logger {
+    nonisolated private var logger: Logger {
         Self.logger
     }
 
@@ -643,7 +643,7 @@ extension Bluetooth {
     @SpeziBluetooth
     func prepareDevice<Device: BluetoothDevice>(id uuid: UUID, _ device: Device.Type, peripheral: BluetoothPeripheral) -> Device {
         let device = device.init()
-        
+
         let didInjectAnything = device.inject(peripheral: peripheral, using: self)
         if didInjectAnything {
             initializedDevices[uuid] = device.weaklyReference
@@ -660,7 +660,7 @@ extension Bluetooth {
 
         observePeripheralState(of: peripheral.id) // register \.state onChange closure
 
-        
+
         precondition(!(device is EnvironmentAccessible), "Cannot load BluetoothDevice \(Device.self) that conforms to \(EnvironmentAccessible.self)!")
 
         return device

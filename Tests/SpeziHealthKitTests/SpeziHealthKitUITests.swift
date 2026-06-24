@@ -6,7 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-#if canImport(HealthKit) && canImport(SwiftUI)
+// the UI stuff works fine on catalyst, but the charts render slightly differently
+// (different device scale, different line lengths for dotted axis lines, etc...),
+// so we skip that for the time being.
+#if os(iOS) && !targetEnvironment(macCatalyst)
 
 import HealthKit
 import SnapshotTesting
@@ -17,13 +20,9 @@ import SwiftUI
 import Testing
 
 
-@Suite("SpeziHealthKitUITests")
+@Suite
+@MainActor
 struct SpeziHealthKitUITests {
-    // the UI stuff works fine on catalyst, but the charts render slightly differently
-    // (different device scale, different line lengths for dotted axis lines, etc...),
-    // so we skip that for the time being.
-    #if os(iOS) && !targetEnvironment(macCatalyst)
-    @MainActor
     @Test("Simple HealthChart View Snapshot")
     func simpleHealthChartViewSnapshot() throws {
         var heartRateSamplesProvider = FakeSamplesProvider(
@@ -31,26 +30,25 @@ struct SpeziHealthKitUITests {
             values: [97 as Double, 95, 91, 89, 89, 92, 117, 119, 118, 95, 85, 87].makeLoopingIterator(),
             dateProvider: try makeDateProvider(interval: (.hour, 2), starting: .init(year: 2024, month: 12, day: 17))
         )
-        
+
         let results = MockQueryResults(sampleType: .heartRate, timeRange: .currentWeek, samples: try heartRateSamplesProvider.makeSamples(12 * 7))
         let healthChart = HealthChart {
             HealthChartEntry(results, drawingConfig: .init(chartType: .line, color: .red))
         }
             .frame(width: 600, height: 500)
             .withLocale(.enUS, timeZone: .losAngeles)
-        
+
         assertSnapshot(of: healthChart, as: .image)
-        
+
         heartRateSamplesProvider.skipValues(5)
         heartRateSamplesProvider.skipDates(12 * 2)
-        
+
         results.samples.append(contentsOf: try heartRateSamplesProvider.makeSamples(12 * 4))
-        
+
         assertSnapshot(of: healthChart, as: .image)
     }
-    
-    
-    @MainActor
+
+
     @Test("Multi Entry HealthChart View Snapshot")
     func multiEntryHealthChartViewSnapshot() throws {
         var heartRateSamplesProvider = FakeSamplesProvider(
@@ -65,7 +63,7 @@ struct SpeziHealthKitUITests {
                 .makeLoopingIterator(),
             dateProvider: try makeDateProvider(interval: (.hour, 1), starting: .init(year: 2024, month: 12, day: 18))
         )
-        
+
         let heartRateResults = MockQueryResults(
             sampleType: .heartRate,
             timeRange: .currentWeek,
@@ -76,19 +74,18 @@ struct SpeziHealthKitUITests {
             timeRange: .currentWeek,
             samples: try bloodOxygenSamplesProvider.makeSamples(24 * 7)
         )
-        
+
         let healthChart = HealthChart {
             HealthChartEntry(heartRateResults, drawingConfig: .init(chartType: .line, color: .red))
             HealthChartEntry(blooxOxygenResults, drawingConfig: .init(chartType: .line, color: .blue))
         }
             .frame(width: 600, height: 500)
             .withLocale(.enUS, timeZone: .losAngeles)
-        
+
         assertSnapshot(of: healthChart, as: .image)
     }
-    
-    
-    @MainActor
+
+
     @Test("Empty HealthChart No Entries Snapshot")
     func emptyHealthChartNoEntriesSnapshot() {
         let healthChart = HealthChart {
@@ -96,11 +93,11 @@ struct SpeziHealthKitUITests {
         }
             .frame(width: 600, height: 500)
             .withLocale(.enUS, timeZone: .losAngeles)
-        
+
         assertSnapshot(of: healthChart, as: .image)
     }
-    
-    @MainActor
+
+
     @Test("Empty HealthChart Entries But No Data Snapshot")
     func emptyHealthChartEntriesButNoDataSnapshot() throws {
         let data = MockQueryResults(sampleType: .heartRate, timeRange: .currentWeek, samples: [])
@@ -109,12 +106,11 @@ struct SpeziHealthKitUITests {
         }
             .frame(width: 600, height: 500)
             .withLocale(.enUS, timeZone: .losAngeles)
-        
+
         assertSnapshot(of: healthChart, as: .image)
     }
-    
-    
-    @MainActor
+
+
     @Test("Conditional HealthChart Content Snapshot")
     func conditionalHealthChartContentSnapshot() throws {
         var heartRateSamplesProvider = FakeSamplesProvider(
@@ -129,7 +125,7 @@ struct SpeziHealthKitUITests {
                 .makeLoopingIterator(),
             dateProvider: try makeDateProvider(interval: (.hour, 1), starting: .init(year: 2024, month: 12, day: 18))
         )
-        
+
         let heartRateResults = MockQueryResults(
             sampleType: .heartRate,
             timeRange: .currentWeek,
@@ -140,7 +136,7 @@ struct SpeziHealthKitUITests {
             timeRange: .currentWeek,
             samples: try bloodOxygenSamplesProvider.makeSamples(24 * 7)
         )
-        
+
         func makeHealthChart(flag: Bool) -> some View {
             HealthChart {
                 if flag {
@@ -152,14 +148,13 @@ struct SpeziHealthKitUITests {
             .frame(width: 600, height: 500)
             .withLocale(.enUS, timeZone: .losAngeles)
         }
-        
+
         let healthChart1 = makeHealthChart(flag: true)
         assertSnapshot(of: healthChart1, as: .image)
-        
+
         let healthChart2 = makeHealthChart(flag: false)
         assertSnapshot(of: healthChart2, as: .image)
     }
-    #endif
 }
 
 #endif

@@ -7,7 +7,7 @@ This source file is part of the Stanford Spezi open source project
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-       
+
 -->
 
 ## Study Evolution
@@ -20,7 +20,7 @@ The SpeziStudy package and the ``StudyDefinition`` type provide facilities for d
 ### Study Content Evolution
 *Content Evolution* refers to all those changes that are made within one specific study definition, e.g. adding a new component, or adjusting some component's schedule.
 The ``StudyDefinition/studyRevision`` property exists for tracking such changes; and should be incremented by `1` every time a changed version of a ``StudyDefinition`` is made available to an app.
-SpeziStudy's [`StudyManager`](https://swiftpackageindex.com/stanfordspezi/spezistudy/documentation/spezistudy/studymanager) uses this value to ensure the integrity of a user's study enrollments,
+SpeziStudy's [`StudyManager`](../../SpeziStudy/SpeziStudy.docc/SpeziStudy.md) uses this value to ensure the integrity of a user's study enrollments,
 and to properly incurporate changes made to a study definition into the app's state.
 
 ### Study Definition Evolution

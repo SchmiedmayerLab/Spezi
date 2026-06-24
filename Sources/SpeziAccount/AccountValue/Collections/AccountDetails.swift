@@ -94,7 +94,7 @@ private struct CopyKeyVisitor: AccountKeyVisitor {
 /// ### Iteration
 ///
 /// `AccountDetails` conforms to the [`Collection`](https://developer.apple.com/documentation/swift/collection) protocol and therefore support iteration.
-/// However, `Element`s of the collection are of type [`AnyRepositoryValue`](https://swiftpackageindex.com/stanfordspezi/spezifoundation/documentation/spezifoundation/anyrepositoryvalue)
+/// However, `Element`s of the collection are of type [`AnyRepositoryValue`](../../../SpeziFoundation/SpeziFoundation.docc/SpeziFoundation.md)
 /// as non-`AccountKey`-conforming knowledge sources might be stored in the ``AccountDetails`` (e.g., metadata like ``isNewUser``).
 ///
 /// If you want to iterate through account details in a strongly-typed manner, refer to the ``AccountValueVisitor`` documentation.
@@ -270,7 +270,7 @@ extension AccountDetails: SendableSharedRepository {
     public mutating func set<Source: KnowledgeSource<Anchor>>(_ source: Source.Type, value newValue: Source.Value?) where Source.Value: Sendable {
         storage.set(source, value: newValue)
     }
-    
+
     public func collect<Value>(allOf type: Value.Type) -> [Value] {
         storage.collect(allOf: type)
     }

@@ -1,13 +1,13 @@
 # ``SpeziScheduler``
 
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 Schedule and observe tasks for your users to complete, such as taking surveys or taking measurements.
@@ -25,7 +25,7 @@ for tasks. It allows to modify the properties (e.g., schedule) of future events 
 You create and automatically update your tasks
 using ``Scheduler/createOrUpdateTask(id:title:instructions:category:schedule:completionPolicy:tags:effectiveFrom:with:)``.
 
-Below is a example on how to create your own [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module)
+Below is a example on how to create your own [`Module`](../../Spezi/Spezi.docc/Module/Module.md)
 to manage your tasks and ensure they are always up to date.
 
 ```swift

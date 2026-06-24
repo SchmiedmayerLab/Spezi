@@ -21,14 +21,14 @@ final class PairedDevice: Sendable {
         case finished
     }
 
-    private static nonisolated let logger = Logger(subsystem: "edu.stanford.spezi.SpeziDevices", category: "PairedDevice")
+    nonisolated private static let logger = Logger(subsystem: "edu.stanford.spezi.SpeziDevices", category: "PairedDevice")
 
     nonisolated let id: UUID
     @MainActor let info: PairedDeviceInfo
 
     @MainActor private(set) var peripheral: (any PairableDevice)?
 
-    private nonisolated(unsafe) var _events: (stream: AsyncStream<ConnectionEvent>, continuation: AsyncStream<ConnectionEvent>.Continuation)
+    nonisolated(unsafe) private var _events: (stream: AsyncStream<ConnectionEvent>, continuation: AsyncStream<ConnectionEvent>.Continuation)
     private let eventsLock = NSLock()
 
     @MainActor

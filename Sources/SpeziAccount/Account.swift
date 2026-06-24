@@ -75,7 +75,7 @@ public final class Account {
     /// The user details of the currently associated user account.
     ///
     /// - Note: The ``AccountDetails`` acts as a typed collection and is implemented as a
-    /// [Shared Repository](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/shared-repository).
+    /// [Shared Repository](../Spezi/Spezi.docc/Spezi.md).
     @MainActor public private(set) var details: AccountDetails?
 
     @MainActor private weak var _accountService: (any AccountService)?

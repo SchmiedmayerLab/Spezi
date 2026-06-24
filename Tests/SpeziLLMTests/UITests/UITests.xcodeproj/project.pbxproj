@@ -32,7 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* SpeziLLM */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziLLM; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* SpeziLLM */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziLLM; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
@@ -125,7 +125,6 @@
 				2F6D138E28F5F384007C25D6 /* Sources */,
 				2F6D138F28F5F384007C25D6 /* Frameworks */,
 				2F6D139028F5F384007C25D6 /* Resources */,
-				43A784C02A85FDED00C4FE91 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -204,9 +203,6 @@
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
 			packageReferences = (
-				2FD590502A19E9F000153BE4 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-				9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */,
-				979D418E2BB3EBD8001953BD /* XCRemoteSwiftPackageReference "SpeziAccount" */,
 				DA7ED27E2C5FCAEC00BA8C47 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
 			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
@@ -235,28 +231,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		43A784C02A85FDED00C4FE91 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n  export PATH=\"$PATH:/opt/homebrew/bin\"\n  if which swiftlint > /dev/null; then\n    cd ../.. && swiftlint\n  else\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n  fi\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2F6D138E28F5F384007C25D6 /* Sources */ = {
@@ -336,8 +310,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -346,7 +320,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -396,8 +370,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -406,7 +380,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -579,30 +553,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2FD590502A19E9F000153BE4 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.6;
-			};
-		};
-		9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziFirebase";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.3;
-			};
-		};
-		979D418E2BB3EBD8001953BD /* XCRemoteSwiftPackageReference "SpeziAccount" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziAccount";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.3;
-			};
-		};
 		DA7ED27E2C5FCAEC00BA8C47 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-generator.git";
@@ -616,12 +566,10 @@
 /* Begin XCSwiftPackageProductDependency section */
 		2FAD21CA2CBDC82500C9665B /* SpeziFirebaseAccountStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */;
 			productName = SpeziFirebaseAccountStorage;
 		};
 		2FD590512A19E9F000153BE4 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2FD590502A19E9F000153BE4 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		8054ECD32F4A0A3100EC57AD /* SpeziLLMAnthropic */ = {
@@ -650,12 +598,10 @@
 		};
 		9770F2902BB3C40C00478571 /* SpeziFirebaseAccount */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9770F28F2BB3C40C00478571 /* XCRemoteSwiftPackageReference "SpeziFirebase" */;
 			productName = SpeziFirebaseAccount;
 		};
 		979D418F2BB3EBD8001953BD /* SpeziAccount */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 979D418E2BB3EBD8001953BD /* XCRemoteSwiftPackageReference "SpeziAccount" */;
 			productName = SpeziAccount;
 		};
 		97A36E142B999EA60034D821 /* SpeziLLMFog */ = {

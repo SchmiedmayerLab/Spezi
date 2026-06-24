@@ -104,7 +104,7 @@ extension Questionnaire {
     func find(taskId: Task.ID) -> (section: Section, task: Task)? {
         for section in sections {
             for task in section.tasks {
-                if task.id == taskId {
+                if task.id == taskId { // swiftlint:disable:this for_where
                     return (section, task)
                 }
             }

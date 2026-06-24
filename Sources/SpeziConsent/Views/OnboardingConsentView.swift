@@ -97,7 +97,7 @@ public struct OnboardingConsentView: View {
     public init(
         consentDocument: ConsentDocument?,
         title: LocalizedStringResource? = LocalizationDefaults.consentFormTitle,
-        currentDateInSignature: Bool = true, // swiftlint:disable:this function_default_parameter_at_end
+        currentDateInSignature: Bool = true,
         viewState: Binding<ViewState>,
         action: @escaping @MainActor () async throws -> Void
     ) {

@@ -7,7 +7,7 @@ This source file is part of the SpeziSensorKit open source project
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-       
+
 -->
 
 Interact with SensorKit in your Spezi application
@@ -21,7 +21,7 @@ You need to add the Spezi SensorKit Swift package to
  [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
 > Important: If your application is not yet configured to use Spezi, follow the
- [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) and set up the core Spezi infrastructure. 
+ [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) and set up the core Spezi infrastructure.
 
 
 ### SensorKit Entitlements
@@ -94,7 +94,7 @@ While some of them collect only a small number of samples, some others (e.g., ``
 
 Make sure in your app to use lazy sequence/collection operations when possible when working with SensorKit data (see e.g. the example above).
 
-Additionally, SpeziSensorKit offers the ``SensorKit/FetchResultsIterator`` to efficiently process individual samples alongside their SensorKit timestamps, without unnecessary intermediate allocations. 
+Additionally, SpeziSensorKit offers the ``SensorKit/FetchResultsIterator`` to efficiently process individual samples alongside their SensorKit timestamps, without unnecessary intermediate allocations.
 
 
 ### Threading Considerations
@@ -111,7 +111,7 @@ When performing multiple queries on a single ``Sensor`` at the same time, ensure
 - ``SensorKit/authorizationStatus(for:)``
 - ``SensorKit/requestAccess(to:)``
 
-### Working with Sensors 
+### Working with Sensors
 - ``Sensor``
 - ``AnySensor``
 

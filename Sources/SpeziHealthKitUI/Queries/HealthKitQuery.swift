@@ -18,7 +18,7 @@ public import SwiftUI
 
 /// Query the HealthKit database within SwiftUI views.
 ///
-/// Queries are performed in the context of the [`HealthKit`](https://swiftpackageindex.com/stanfordspezi/spezihealthkit/documentation/spezihealthkit/healthkit) module, which must be enabled via an app's `SpeziAppDelegate`.
+/// Queries are performed in the context of the [`HealthKit`](../../SpeziHealthKit/SpeziHealthKit.docc/SpeziHealthKit.md) module, which must be enabled via an app's `SpeziAppDelegate`.
 ///
 /// A query exposes, via its wrapped value, the samples it received from the HealthKit database.
 /// The actual type of the samples returned is dependent on the specific sample type being queried for.
@@ -56,15 +56,15 @@ public import SwiftUI
 public struct HealthKitQuery<Sample: _HKSampleWithSampleType>: DynamicProperty { // swiftlint:disable:this file_types_order
     private let input: SamplesQueryResults<Sample>.Input
     private let limit: Int?
-    
+
     @Environment(HealthKit.self)
     private var healthKit
-    
+
     @State
     private var results = SamplesQueryResults<Sample>()
-    
+
     @HealthAccessAuthorizationObserver private var accessAuthObserver
-    
+
     /// The individual query results.
     ///
     /// - Note: This property is a `RandomAccessCollection<Sample>`; the specific type is an implementation detail and may change.
@@ -72,7 +72,7 @@ public struct HealthKitQuery<Sample: _HKSampleWithSampleType>: DynamicProperty {
         // until https://github.com/swiftlang/swift/issues/78405 https://github.com/swiftlang/swift/issues/81560
         // and https://github.com/swiftlang/swift/issues/81561 are fixed, we can't return `some RandomAccessCollection<Sample>` here,
         // which would arguably be vastly preferable, and sadly need to expose the `OrderedArray` implementation detail :/
-        
+
         // Note that we're intentionally not returning `results` directly here (even though it also is a RandomAccessCollection),
         // the reason being that it would be auto-updating, which might be unexpected since it's not communicated via the return
         // type. Instead, we return `results.dataPoints`, i.e. essentially a snapshot of the current state of the results object.
@@ -82,13 +82,13 @@ public struct HealthKitQuery<Sample: _HKSampleWithSampleType>: DynamicProperty {
             results.samples[...]
         }
     }
-    
+
     /// The query's underlying auto-updating results object.
     /// This can be used e.g. to provide data to a ``HealthChart``.
     public var projectedValue: SamplesQueryResults<Sample> {
         results
     }
-    
+
     /// Creates a new query.
     /// - parameter sampleType: The sample type to query for
     /// - parameter timeRange: The interval for which the query should fetch samples.
@@ -113,7 +113,7 @@ public struct HealthKitQuery<Sample: _HKSampleWithSampleType>: DynamicProperty {
         )
         self.limit = limit
     }
-    
+
     @_documentation(visibility: internal)
     nonisolated public func update() {
         MainActor.assumeIsolated {
@@ -142,7 +142,7 @@ public final class SamplesQueryResults<Sample: _HKSampleWithSampleType>: @unchec
         let sourceFilter: HealthKit.SourceFilter
         let filterPredicate: NSPredicate?
     }
-    
+
     /// The `HKHealthStore` to be used by this query.
     ///
     /// We intentionally require this object be externally-supplied,
@@ -152,19 +152,19 @@ public final class SamplesQueryResults<Sample: _HKSampleWithSampleType>: @unchec
     /// property wrapper, which assigns a non-nil health store prior to updating the `input` property.
     @ObservationIgnored
     private var healthKit: HealthKit! // swiftlint:disable:this implicitly_unwrapped_optional
-    
+
     @ObservationIgnored
     private var input: Input?
-    
+
     @ObservationIgnored
     private var queryTask: Task<Void, Never>?
-    
+
     @ObservationIgnored
     private var authorizationObserverTask: Task<Void, Never>?
-    
+
     public private(set) var isCurrentlyPerformingInitialFetch: Bool = false
     public private(set) var queryError: (any Error)?
-    
+
     fileprivate private(set) var samples = OrderedArray<Sample> { lhs, rhs in
         if lhs.startDate < rhs.startDate {
             return true
@@ -174,15 +174,15 @@ public final class SamplesQueryResults<Sample: _HKSampleWithSampleType>: @unchec
             return lhs.uuid < rhs.uuid
         }
     }
-    
-    
+
+
     /// Creates an empty, uninitialized ``StatisticsQueryResults`` object.
     ///
     /// The purpose of this initializer is to allow this type to be used as a state object in SwiftUI,
     /// for which we need to be able to initialize it without passing in any context.
     fileprivate init() {}
-    
-    
+
+
     @MainActor
     fileprivate func initializeSwiftUIManagedQuery(healthKit: HealthKit, input: Input, forceUpdate: Bool = false) {
         guard forceUpdate || self.input != input else {
@@ -192,8 +192,8 @@ public final class SamplesQueryResults<Sample: _HKSampleWithSampleType>: @unchec
         self.input = input
         startQuery()
     }
-    
-    
+
+
     /// Starts the auto-updating query.
     /// - Note: it might take a bit until the first results arrive and the query gets populated.
     @MainActor
@@ -238,7 +238,7 @@ public final class SamplesQueryResults<Sample: _HKSampleWithSampleType>: @unchec
             }
         }
     }
-    
+
     deinit {
         queryTask?.cancel()
         queryTask = nil
@@ -249,33 +249,33 @@ public final class SamplesQueryResults<Sample: _HKSampleWithSampleType>: @unchec
 extension SamplesQueryResults: HealthKitQueryResults {
     public typealias Index = OrderedArray<Sample>.Index
     public typealias Element = Sample
-    
+
     public var count: Int {
         samples.count
     }
-    
+
     public var startIndex: Index {
         samples.startIndex
     }
-    
+
     public var endIndex: Index {
         samples.endIndex
     }
-    
+
     public var sampleType: SampleType<Sample> {
         guard let input else {
             preconditionFailure("Cannot access \(#function) of \(Self.self) outside of being installed on a SwiftUI view")
         }
         return input.sampleType
     }
-    
+
     public var timeRange: HealthKitQueryTimeRange {
         guard let input else {
             preconditionFailure("Cannot access \(#function) of \(Self.self) outside of being installed on a SwiftUI view")
         }
         return input.timeRange
     }
-    
+
     public subscript(position: Index) -> Element {
         samples[position]
     }

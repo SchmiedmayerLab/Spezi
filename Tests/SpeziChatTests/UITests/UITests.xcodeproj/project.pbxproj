@@ -35,7 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* SpeziChat */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziChat; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* SpeziChat */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziChat; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
@@ -43,8 +43,28 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		80A516762F49D9F1002AB920 /* TestAppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestAppUITests; sourceTree = "<group>"; };
-		80A5167B2F49D9F4002AB920 /* TestApp */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestApp; sourceTree = "<group>"; };
+		80A516762F49D9F1002AB920 /* TestAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestAppUITests;
+			sourceTree = "<group>";
+		};
+		80A5167B2F49D9F4002AB920 /* TestApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,9 +195,6 @@
 				Base,
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
-			packageReferences = (
-				97911AF92B01A27D003AEEF5 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -434,8 +451,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezichat.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -458,8 +475,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezichat.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -583,8 +600,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezichat.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -635,17 +652,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		97911AF92B01A27D003AEEF5 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.2;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		971D0E1E2B005E9C003AD89E /* SpeziChat */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -653,7 +659,6 @@
 		};
 		97911AFA2B01A27D003AEEF5 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 97911AF92B01A27D003AEEF5 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 /* End XCSwiftPackageProductDependency section */

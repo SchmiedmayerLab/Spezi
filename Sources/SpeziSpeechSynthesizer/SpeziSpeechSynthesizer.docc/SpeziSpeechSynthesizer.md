@@ -1,13 +1,13 @@
 # ``SpeziSpeechSynthesizer``
 
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 Provides text-to-speech capabilities via Apple's `AVFoundation` framework.
@@ -25,12 +25,12 @@ You need to add the SpeziSpeech Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ### 2. Configure the `SpeechSynthesizer` in the Spezi `Configuration`
 
-The module needs to be registered in a Spezi-based application using the [`configuration`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate/configuration)
-in a [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate):
+The module needs to be registered in a Spezi-based application using the [`configuration`](../../Spezi/Spezi.docc/Spezi.md)
+in a [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md):
 ```swift
 class ExampleAppDelegate: SpeziAppDelegate {
     override var configuration: Configuration {
@@ -41,7 +41,7 @@ class ExampleAppDelegate: SpeziAppDelegate {
     }
 }
 ```
-> Tip: You can learn more about a [`Module` in the Spezi documentation](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module).
+> Tip: You can learn more about a [`Module` in the Spezi documentation](../../Spezi/Spezi.docc/Module/Module.md).
 
 ## Example
 
@@ -62,7 +62,7 @@ struct SpeechTestView: View {
         }
    }
 
-    
+
    private func playbackButtonPressed() {
       if speechSynthesizer.isSpeaking {
          // If speech is currently synthezized, pause the playback.
@@ -75,7 +75,7 @@ struct SpeechTestView: View {
 }
 ```
 
-SpeziSpeech also supports selecting voices, including [personal voices](https://support.apple.com/en-us/104993). 
+SpeziSpeech also supports selecting voices, including [personal voices](https://support.apple.com/en-us/104993).
 
 The following example shows how a user can be given a choice of voices in their current locale and the selected voice can be used to synthesize speech.
 

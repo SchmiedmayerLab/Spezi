@@ -30,7 +30,7 @@
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
-		2FE0B6E52A14C64E00818AE9 /* SpeziScheduler */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziScheduler; path = ../..; sourceTree = "<group>"; };
+		2FE0B6E52A14C64E00818AE9 /* SpeziScheduler */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziScheduler; path = ../../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -54,6 +54,8 @@
 		};
 		807CEC2B2E21166C00BEAF36 /* TestAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = TestAppUITests;
 			sourceTree = "<group>";
 		};
@@ -194,10 +196,6 @@
 				Base,
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
-			packageReferences = (
-				2FE0B6E82A14D82600818AE9 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-				80328A732D6CE4E60050ECB6 /* XCRemoteSwiftPackageReference "SpeziNotifications" */,
-			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
@@ -304,8 +302,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -314,7 +312,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -364,8 +362,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -374,7 +372,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -538,25 +536,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		2FE0B6E82A14D82600818AE9 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		80328A732D6CE4E60050ECB6 /* XCRemoteSwiftPackageReference "SpeziNotifications" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziNotifications.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.5;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		2F68C3C7292EA52000B3E12C /* Spezi */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -568,22 +547,18 @@
 		};
 		2FE0B6E92A14D82600818AE9 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2FE0B6E82A14D82600818AE9 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		80328A742D6CE4E60050ECB6 /* XCTSpeziNotifications */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 80328A732D6CE4E60050ECB6 /* XCRemoteSwiftPackageReference "SpeziNotifications" */;
 			productName = XCTSpeziNotifications;
 		};
 		80328A762D6CE4E60050ECB6 /* XCTSpeziNotificationsUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 80328A732D6CE4E60050ECB6 /* XCRemoteSwiftPackageReference "SpeziNotifications" */;
 			productName = XCTSpeziNotificationsUI;
 		};
 		805BAA042D79C2E700115B39 /* XCTestApp */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2FE0B6E82A14D82600818AE9 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestApp;
 		};
 		A977F6722C92F4C00071A1D1 /* SpeziSchedulerUI */ = {

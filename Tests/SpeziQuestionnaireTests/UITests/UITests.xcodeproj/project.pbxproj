@@ -32,13 +32,13 @@
 
 /* Begin PBXFileReference section */
 		2F2ECEA32A7378EB00C599A1 /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
-		2F68C3C6292E9F8F00B3E12C /* SpeziQuestionnaire */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziQuestionnaire; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* SpeziQuestionnaire */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziQuestionnaire; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		655E64B22F23E9950026B0AA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		655E64B22F23E9950026B0AA /* Exceptions for "TestApp" folder in "TestApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -48,8 +48,29 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		655E64A72F23E9940026B0AA /* TestApp */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (655E64B22F23E9950026B0AA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TestApp; sourceTree = "<group>"; };
-		8007367E2F40C05800827270 /* TestAppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestAppUITests; sourceTree = "<group>"; };
+		655E64A72F23E9940026B0AA /* TestApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				655E64B22F23E9950026B0AA /* Exceptions for "TestApp" folder in "TestApp" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
+		8007367E2F40C05800827270 /* TestAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestAppUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,10 +213,7 @@
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
 			packageReferences = (
-				80073E892F42349F00827270 /* XCRemoteSwiftPackageReference "ResearchKitOnFHIR" */,
 				802B4B2C2F464DAD00554747 /* XCRemoteSwiftPackageReference "ResearchKit" */,
-				802B4B352F4657C600554747 /* XCRemoteSwiftPackageReference "SpeziFoundation" */,
-				8047A11B2F6193EB0094AAF3 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
 			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
@@ -302,7 +320,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -361,7 +379,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -554,7 +572,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -666,36 +684,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		80073E892F42349F00827270 /* XCRemoteSwiftPackageReference "ResearchKitOnFHIR" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/ResearchKitOnFHIR.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = "3.0.0-beta.1";
-			};
-		};
 		802B4B2C2F464DAD00554747 /* XCRemoteSwiftPackageReference "ResearchKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/StanfordBDHG/ResearchKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.1.4;
-			};
-		};
-		802B4B352F4657C600554747 /* XCRemoteSwiftPackageReference "SpeziFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziFoundation.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.7.3;
-			};
-		};
-		8047A11B2F6193EB0094AAF3 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -711,7 +705,6 @@
 		};
 		80073E8A2F42349F00827270 /* FHIRQuestionnaires */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 80073E892F42349F00827270 /* XCRemoteSwiftPackageReference "ResearchKitOnFHIR" */;
 			productName = FHIRQuestionnaires;
 		};
 		80158D6D2F5EF86F00C7BD29 /* SpeziQuestionnaireCatalog */ = {
@@ -735,17 +728,14 @@
 		};
 		802B4B332F464E4700554747 /* ResearchKitOnFHIR */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 80073E892F42349F00827270 /* XCRemoteSwiftPackageReference "ResearchKitOnFHIR" */;
 			productName = ResearchKitOnFHIR;
 		};
 		802B4B362F4657C600554747 /* SpeziFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 802B4B352F4657C600554747 /* XCRemoteSwiftPackageReference "SpeziFoundation" */;
 			productName = SpeziFoundation;
 		};
 		8047A11C2F6193EB0094AAF3 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8047A11B2F6193EB0094AAF3 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		80D6959E2F473B4C0015A557 /* XCTSpeziQuestionnaire */ = {

@@ -13,7 +13,7 @@ import SwiftUI
 
 /// Displays a Markdown document, with optional support for dynamic and interactive content.
 ///
-/// You use this view to display [`MarkdownDocument`](https://swiftpackageindex.com/stanfordspezi/spezifoundation/documentation/spezifoundation/markdowndocument).
+/// You use this view to display [`MarkdownDocument`](../../../SpeziFoundation/SpeziFoundation.docc/SpeziFoundation.md).
 ///
 /// - Note: The `MarkdownView` intentionally does not wrap its contents in a `ScrollView`.
 ///     Instead, the parent view should ensure that a `MarkdownView` is always placed within a `ScrollView`.
@@ -36,11 +36,11 @@ public struct MarkdownView<CustomElementView: View>: View {
         _ blockIdx: Int,
         _ element: MarkdownDocument.CustomElement
     ) -> CustomElementView
-    
+
     /// Defines when the ``MarkdownView`` places `Divider`s between its sections.
     ///
-    /// When rendering a [`MarkdownDocument`](https://swiftpackageindex.com/stanfordspezi/spezifoundation/documentation/spezifoundation/markdowndocument),
-    /// the ``MarkdownView`` internally turns each of the `MarkdownDocument`'s [`Block`](https://swiftpackageindex.com/stanfordspezi/spezifoundation/2.2.0/documentation/spezifoundation/markdowndocument/block)s into a separate SwiftUI `View`.
+    /// When rendering a [`MarkdownDocument`](../../../SpeziFoundation/SpeziFoundation.docc/SpeziFoundation.md),
+    /// the ``MarkdownView`` internally turns each of the `MarkdownDocument`'s [`Block`](../../../SpeziFoundation/SpeziFoundation.docc/SpeziFoundation.md)s into a separate SwiftUI `View`.
     ///
     /// In some cases, you might want to have a `Divider` placed between two blocks, e.g. to visually separate interactive elements from the surrounding Markdown.
     ///
@@ -61,15 +61,15 @@ public struct MarkdownView<CustomElementView: View>: View {
         @inlinable public static var never: Self {
             .init { _, _ in false }
         }
-        
+
         /// The `MarkdownView` will always place dividers
         @inlinable public static var always: Self {
             .init { _, _ in true }
         }
-        
+
         @usableFromInline
         let shouldInsertDividerAfter: @MainActor (_ blockIdx: Int, _ block: borrowing MarkdownDocument.Block) -> Bool
-        
+
         /// Creates a `DividerRule` that uses a custom, dynamic condition.
         ///
         /// - Parameters:
@@ -81,19 +81,19 @@ public struct MarkdownView<CustomElementView: View>: View {
             self.shouldInsertDividerAfter = shouldInsertDividerAfter
         }
     }
-    
+
     private enum LoadingState {
         case pending(() async -> Data, viewStateBinding: Binding<ViewState>)
         case loaded(MarkdownDocument)
     }
-    
-    
+
+
     @Environment(\.multilineTextAlignment) private var textAlignment
-    
+
     private let dividerRule: DividerRule
     private let customElementViewProvider: CustomElementViewProvider
     @State private var loadingState: LoadingState
-    
+
     @_documentation(visibility: internal)
     public var body: some View {
         Group {
@@ -136,16 +136,16 @@ public struct MarkdownView<CustomElementView: View>: View {
             }
         }
     }
-    
+
     private init(loadingState: LoadingState, dividerRule: DividerRule, customElementViewProvider: @escaping CustomElementViewProvider) {
         self._loadingState = .init(initialValue: loadingState)
         self.dividerRule = dividerRule
         self.customElementViewProvider = customElementViewProvider
     }
-    
+
     /// Creates a new MarkdownView
     ///
-    /// - parameter document: The [`MarkdownDocument`](https://swiftpackageindex.com/stanfordspezi/spezifoundation/documentation/spezifoundation/markdowndocument) the view should display
+    /// - parameter document: The [`MarkdownDocument`](../../../SpeziFoundation/SpeziFoundation.docc/SpeziFoundation.md) the view should display
     /// - parameter dividerRule: Defines when the view should place a `Divider` between two sections. Defaults to ``DividerRule/never``.
     /// - parameter customElementViewProvider: A `ViewBuilder` closure that provides backing views for custom elements in the Markdown which cannot be handled by the ``MarkdownView`` itself.
     public init(
@@ -159,8 +159,8 @@ public struct MarkdownView<CustomElementView: View>: View {
             customElementViewProvider: customElementViewProvider
         )
     }
-    
-    
+
+
     @ViewBuilder
     private func view(for block: MarkdownDocument.Block, at idx: Int, in document: MarkdownDocument) -> some View {
         switch block {
@@ -196,7 +196,7 @@ public struct MarkdownView<CustomElementView: View>: View {
 extension MarkdownView {
     /// Creates a new MarkdownView
     ///
-    /// - parameter markdownDocument: The [`MarkdownDocument`](https://swiftpackageindex.com/stanfordspezi/spezifoundation/documentation/spezifoundation/markdowndocument) the view should display
+    /// - parameter markdownDocument: The [`MarkdownDocument`](../../../SpeziFoundation/SpeziFoundation.docc/SpeziFoundation.md) the view should display
     /// - parameter dividerRule: Defines when the view should place a `Divider` between two sections. Defaults to ``DividerRule/never``.
     /// - parameter customElementViewProvider: A `ViewBuilder` closure that provides backing views for custom elements in the Markdown which cannot be handled by the ``MarkdownView`` itself.
     @available(*, deprecated, renamed: "init(document:dividerRule:_:)")
@@ -211,7 +211,7 @@ extension MarkdownView {
             customElementViewProvider: customElementViewProvider
         )
     }
-    
+
     /// Creates a ``MarkdownView`` that displays the content of a markdown file as an UTF-8 representation that is loaded asynchronously.
     /// - Parameters:
     ///   - asyncMarkdown: An async closure to load the markdown in an UTF-8 representation.
@@ -233,7 +233,7 @@ extension MarkdownView {
             customElementViewProvider: { _, _ in EmptyView() }
         )
     }
-    
+
     /// Creates a ``MarkdownView`` that displays the content of a markdown file
     /// - Parameters:
     ///   - markdown: A `Data` instance containing the markdown file in an UTF-8 representation.

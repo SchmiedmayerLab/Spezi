@@ -29,7 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2F61BDC129DD023E00D71D33 /* SpeziViews */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziViews; path = ../..; sourceTree = "<group>"; };
+		2F61BDC129DD023E00D71D33 /* SpeziViews */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziViews; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
@@ -38,11 +38,15 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		80547A9B2D988067008C13FF /* TestAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = TestAppUITests;
 			sourceTree = "<group>";
 		};
 		806F2C2D2DFF6A1300F21D03 /* TestApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = TestApp;
 			sourceTree = "<group>";
 		};
@@ -189,10 +193,7 @@
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
 			packageReferences = (
-				977CF55A2AD2B92C006D9B54 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-				A9BA82B22C29FF7C00472FF3 /* XCRemoteSwiftPackageReference "Spezi" */,
 				806BE79E2E0934D00066C827 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
-				80FEAAC82E096713006100DE /* XCRemoteSwiftPackageReference "SpeziFoundation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
@@ -301,7 +302,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -313,7 +314,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -364,7 +365,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -376,7 +377,7 @@
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
 				VALIDATE_PRODUCT = YES;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -401,7 +402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezi.views.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -439,7 +440,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezi.views.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -553,7 +554,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -565,7 +566,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Test;
 		};
@@ -590,7 +591,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezi.views.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -673,30 +674,6 @@
 				minimumVersion = 1.2.1;
 			};
 		};
-		80FEAAC82E096713006100DE /* XCRemoteSwiftPackageReference "SpeziFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziFoundation.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
-			};
-		};
-		977CF55A2AD2B92C006D9B54 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 1.1.0;
-			};
-		};
-		A9BA82B22C29FF7C00472FF3 /* XCRemoteSwiftPackageReference "Spezi" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/Spezi.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -706,7 +683,6 @@
 		};
 		802DAC1F2E9AAB310044F476 /* SpeziFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 80FEAAC82E096713006100DE /* XCRemoteSwiftPackageReference "SpeziFoundation" */;
 			productName = SpeziFoundation;
 		};
 		806BE79F2E0934D00066C827 /* Algorithms */ = {
@@ -716,17 +692,14 @@
 		};
 		80FEAAC92E096713006100DE /* SpeziFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 80FEAAC82E096713006100DE /* XCRemoteSwiftPackageReference "SpeziFoundation" */;
 			productName = SpeziFoundation;
 		};
 		977CF55B2AD2B92C006D9B54 /* XCTestApp */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 977CF55A2AD2B92C006D9B54 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestApp;
 		};
 		977CF55D2AD2B92C006D9B54 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 977CF55A2AD2B92C006D9B54 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		A95B6E642AF4298500919504 /* SpeziPersonalInfo */ = {
@@ -739,7 +712,6 @@
 		};
 		A9BA82B32C29FF7C00472FF3 /* Spezi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A9BA82B22C29FF7C00472FF3 /* XCRemoteSwiftPackageReference "Spezi" */;
 			productName = Spezi;
 		};
 /* End XCSwiftPackageProductDependency section */

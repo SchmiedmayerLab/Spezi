@@ -73,7 +73,7 @@ extension HealthAppSampleType {
     /// Navigates the Health app to the sample type's page.
     @MainActor
     public func navigateToPage(
-        in healthApp: XCUIApplication = .healthApp, // swiftlint:disable:this function_default_parameter_at_end
+        in healthApp: XCUIApplication = .healthApp,
         assumeAlreadyInCategory: Bool
     ) throws {
         if !assumeAlreadyInCategory {

@@ -15,13 +15,13 @@ Firebase Auth support for SpeziAccount.
 ## Overview
 
 This Module adds support for Firebase Auth for SpeziAccount by implementing an
- [`AccountService`](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/accountservice).
+ [`AccountService`](../../SpeziAccount/SpeziAccount.docc/SpeziAccount.md).
 
 Configure the account service by supplying it to the
- [`AccountConfiguration`](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/accountconfiguration).
+ [`AccountConfiguration`](../../SpeziAccount/SpeziAccount.docc/SpeziAccount.md).
 
-> Note: For more information refer to the 
-[Account Configuration](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/initial-setup#Account-Configuration) article.
+> Note: For more information refer to the
+[Account Configuration](../../SpeziAccount/SpeziAccount.docc/Setup%20Guides/Initial%20Setup.md#Account-Configuration) article.
 
 ```swift
 import SpeziAccount
@@ -57,4 +57,3 @@ class ExampleAppDelegate: SpeziAppDelegate {
 ### Errors
 
 - ``FirebaseAccountError``
-

@@ -27,7 +27,7 @@ import SwiftUI
 /// You create and automatically update your tasks
 /// using ``createOrUpdateTask(id:title:instructions:category:schedule:completionPolicy:scheduleNotifications:notificationThread:tags:effectiveFrom:shadowedOutcomesHandling:with:)``.
 ///
-/// Below is a example on how to create your own [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module)
+/// Below is a example on how to create your own [`Module`](../Spezi/Spezi.docc/Module/Module.md)
 /// to manage your tasks and ensure they are always up to date.
 ///
 /// ```swift
@@ -89,7 +89,7 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
         /// Attempting to update an already-existing task in a way that would shadow existing outcomes will result in the shadowed outcomes being deleted.
         case delete
     }
-    
+
     /// How the ``Scheduler`` should persist its data.
     public enum PersistenceConfiguration: Sendable {
         /// The ``Scheduler`` will use an on-disk database for persistence.
@@ -103,23 +103,23 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
         /// - Note: This is intended for configuring the ``Scheduler`` with a pre-populated model container that is already configured for the ``Task`` and ``Outcome`` types.
         @_spi(TestingSupport)
         case testingContainer(ModelContainer)
-        
+
         /// The ``Scheduler`` will use an on-disk database for persistence, located in the `~/Documents/SpeziScheduler` directory.
         @inlinable public static var onDisk: Self {
             .onDisk(directory: .documentsDirectory.appending(component: "SpeziScheduler", directoryHint: .isDirectory))
         }
     }
-    
+
     /// Utility type that allows us to easily defer a `context.save()` operation until the next run loop operation.
     /// This is benefitial since it means that we'll be able to skip unnecessary `save()`s if multiple changes are made to the context directly after each other.
     @MainActor
     private final class SaveTask {
         private typealias Task = _Concurrency.Task
-        
+
         private unowned let scheduler: Scheduler
         private var saveTask: Task<Void, Never>?
         private var scheduleNotifications = false
-        
+
         init(scheduler: Scheduler, context: ModelContext) {
             self.scheduler = scheduler
             saveTask = Task { @MainActor in
@@ -139,21 +139,21 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
                 }
             }
         }
-        
+
         func rescheduleNotifications() {
             scheduleNotifications = true
         }
     }
-    
+
     // swiftlint:disable attributes
     @Application(\.logger) private var logger
     @Dependency(SchedulerNotifications.self) private var notifications
     // swiftlint:enable attributes
-    
+
     private let persistence: PersistenceConfiguration
     private var pendingIOS26Migration: IOS26StringLocalizationValuesMigration?
     private let _container: Result<ModelContainer, any Error>
-    
+
     private var container: ModelContainer {
         get throws {
             do {
@@ -163,14 +163,14 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
             }
         }
     }
-    
+
     var context: ModelContext {
         get throws {
             try container.mainContext
         }
     }
-    
-    
+
+
     /// A task that slightly delays saving tasks.
     private var saveTask: SaveTask?
     /// Observer closures that are called in response to new ``Outcome``s being added to the Scheduler.
@@ -180,7 +180,7 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
     nonisolated public convenience init() {
         self.init(persistence: .onDisk)
     }
-    
+
     /// Creates a new Scheduler, using the specified persistence configuration.
     nonisolated public init(persistence: PersistenceConfiguration) {
         self.persistence = persistence
@@ -233,8 +233,8 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
             self._container = .success(modelContainer)
         }
     }
-    
-    
+
+
     /// Configure the Scheduler module.
     @_documentation(visibility: internal)
     public func configure() {
@@ -264,13 +264,13 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
         // It also makes it easier to understand the SwiftData-related infrastructure around Spezi Scheduler.
         // One could think that Apple could have provided a lot of this information in their documentation.
         notifications.registerProcessingTask(using: self)
-        
+
         assert(
             ((try? self.queryAllTasks()) ?? []).allSatisfy { $0.allVersions.adjacentPairs().allSatisfy { $0.effectiveFrom < $1.effectiveFrom } },
             "Scheduler Database contains Tasks with non-increasing effectiveFrom values!"
         )
     }
-    
+
     /// Trigger a manual refresh of the scheduled notifications.
     ///
     /// Call this method after requesting notification authorization from the user, if you disabled the ``SchedulerNotifications/automaticallyRequestProvisionalAuthorization``
@@ -278,8 +278,8 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
     public func manuallyScheduleNotificationRefresh() {
         notifications.scheduleNotificationsUpdate(using: self)
     }
-    
-    
+
+
     /// Schedules a new save.
     ///
     /// When we add a new task we want to instantly save it to disk. This helps to, e.g., make sure a `@EventQuery` receives the update by subscribing to the
@@ -290,7 +290,6 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
     /// - parameter forceSave: Flag to always schedule an immediate save, regardless of whether `context.hasChanges` is actually true. Required to work around FB17583572.
     /// - parameter rescheduleNotifications: whether the scheduler should reschedule notifications for all ``Task``s.
     private func scheduleSave(for context: ModelContext, forceSave: Bool = false, rescheduleNotifications: Bool) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         if saveTask != nil {
             // as we run on the MainActor in the task, if the saveTask is not nil,
             // we know that the Task isn't executed yet but will on the "next" tick.
@@ -302,8 +301,8 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
             saveTask?.rescheduleNotifications() // will never be nil
         }
     }
-    
-    
+
+
     /// Add a new task or update its content if it exists and its properties changed.
     ///
     /// This method will check if the task with the specified `id` is already present in the model container. If not, it inserts a new instance of this task.
@@ -336,7 +335,7 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
         id: String,
         title: String.LocalizationValue,
         instructions: String.LocalizationValue,
-        category: Task.Category? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        category: Task.Category? = nil,
         schedule: Schedule,
         completionPolicy: AllowedCompletionPolicy = .sameDay,
         scheduleNotifications: Bool = false,
@@ -424,8 +423,8 @@ public final class Scheduler: Module, EnvironmentAccessible, DefaultInitializabl
             return (task, true)
         }
     }
-    
-    
+
+
     func addOutcome(_ outcome: Outcome) {
         let context: ModelContext
         do {
@@ -460,7 +459,7 @@ extension Scheduler {
     public func deleteTasks(_ tasks: Task...) throws {
         try self.deleteTasks(tasks)
     }
-    
+
     /// Delete a task from the store.
     ///
     /// This permanently deletes a task (version) from the store.
@@ -511,7 +510,7 @@ extension Scheduler {
         // 3. We then can delete the actual Tasks we're asked to delete. In this step, we can simply delete the oldest to-be-deleted
         //     version of each task, without having to take care of the cascading delete ourselves.
         //     (The reason probably being that `Task.previousVersion` and `Task.nextVersion` are both optional?)
-        
+
         /// The oldest version of every ``Task`` that should be deleted.
         let oldestTaskVersionsToDelete: Set<Task>
         /// Whether we need to update the scheduled notifications as part of this delete operation.
@@ -571,7 +570,7 @@ extension Scheduler {
         }
         scheduleSave(for: context, rescheduleNotifications: needsNotificationsUpdate)
     }
-    
+
     /// Delete all versions of the supplied task from the store.
     ///
     /// This permanently deletes all versions of a task from the store.
@@ -585,7 +584,7 @@ extension Scheduler {
     public func deleteAllVersions(of task: Task) throws {
         try deleteAllVersions(ofTask: task.id)
     }
-    
+
     /// Delete all versions of the supplied task from the store.
     ///
     /// This permanently deletes all versions of a task from the store.
@@ -638,7 +637,7 @@ extension Scheduler {
         )
     }
 
-    
+
     /// Query the list of tasks.
     ///
     /// This method queries all tasks (and task versions) for the specified parameters.
@@ -703,8 +702,8 @@ extension Scheduler {
         let outcomes = try queryOutcomes(for: range, predicate: taskPredicate)
         return assembleEvents(for: range, tasks: tasks, outcomes: outcomes)
     }
-    
-    
+
+
     /// Query all events for a specific task, in a specific time period.
     ///
     /// - Note: This will query for events belonging to the latest version of the task that was in effect during the specified time period
@@ -718,17 +717,17 @@ extension Scheduler {
         }
         return try queryEvents(for: task, in: range)
     }
-    
+
     /// Query all upcoming events for a specific task version, in a specific time period.
     public func queryEvents(for task: Task, in range: Range<Date>) throws -> [Event] {
         let taskId = task.id
         let outcomes = try queryOutcomes(for: range, predicate: #Predicate { $0.id == taskId })
         return assembleEvents(for: range, tasks: CollectionOfOne(task), outcomes: outcomes)
     }
-    
-    
+
+
     // MARK: TestingSupport functions
-    
+
     /// Fetches all ``Task``s stored in the module.
     ///
     /// - Note: This will return all versions of each ``Task`` known to the Scheduler, not just the latest one!
@@ -736,13 +735,13 @@ extension Scheduler {
     public func queryAllTasks() throws -> [Task] {
         try self.context.fetch(FetchDescriptor<Task>())
     }
-    
+
     /// Fetches all ``Outcome``s stored in the module.
     @_spi(TestingSupport)
     public func queryAllOutcomes() throws -> [Outcome] {
         try self.context.fetch(FetchDescriptor<Outcome>())
     }
-    
+
     /// Deletes all tasks and associated data (e.g. outcomes) from the store.
     ///
     /// - Note: This function is intended for internal usage, to completely wipe the scheduler module to ensure a clean slate when running unit tests.
@@ -750,7 +749,7 @@ extension Scheduler {
     public func deleteAllTasks() throws {
         try deleteTasks(try queryAllTasks())
     }
-    
+
     /// Deletes all data from the ``Scheduler`` module's underlying data store.
     ///
     /// - Note: This function is intended for internal usage, to completely wipe the scheduler module to ensure a clean slate when running unit tests.
@@ -768,13 +767,13 @@ extension Scheduler {
     private struct OccurrenceId: Hashable {
         let taskId: Task.ID
         let startDate: Date
-        
+
         init(task: Task, startDate: Date) {
             self.taskId = task.id
             self.startDate = startDate
         }
     }
-    
+
     func assembleEvents(
         for range: Range<Date>,
         tasks: some Sequence<Task>,
@@ -821,18 +820,18 @@ extension Scheduler {
                 lhs.occurrence < rhs.occurrence
             }
     }
-    
+
     func hasEventOccurrence(in range: Range<Date>, tasks: some Sequence<Task>) -> Bool {
         tasks
             .lazy
             .compactMap { $0.schedule.nextOccurrence(in: range) }
             .contains { _ in true }
     }
-    
+
     func queryEventsAnchor(for range: Range<Date>, predicate taskPredicate: Predicate<Task> = .true) throws -> Set<PersistentIdentifier> {
         let taskIdentifier = try queryTaskIdentifiers(with: Task.inRangePredicate(for: range), combineWith: taskPredicate)
         let outcomeIdentifiers = try queryOutcomeIdentifiers(for: range, predicate: taskPredicate)
-        
+
         return taskIdentifier.union(outcomeIdentifiers)
     }
 }
@@ -843,12 +842,12 @@ extension Scheduler {
     public final class OutcomeSubscription: Sendable {
         private let id: UUID
         nonisolated(unsafe) private weak var scheduler: Scheduler? // safe as reference counting is atomic and we do not mutate otherwise
-        
+
         init(id: UUID, scheduler: Scheduler) {
             self.id = id
             self.scheduler = scheduler
         }
-        
+
         deinit {
             guard let scheduler else {
                 return
@@ -859,7 +858,7 @@ extension Scheduler {
             }
         }
     }
-    
+
     /// Subscribes to save events on the scheduler's internal SwiftData ModelContext, using the specified closure.
     @_spi(APISupport)
     public func sinkDidSavePublisher(into consume: @escaping @MainActor (Notification) -> Void) throws -> AnyCancellable {
@@ -872,7 +871,7 @@ extension Scheduler {
                 }
             }
     }
-    
+
     /// Registers an observer function that gets called when new ``Outcome``s are created within the Scheduler.
     ///
     /// - parameter handler: A closure which will get invoked every time a new ``Outcome`` is added to the ``Scheduler``.
@@ -902,7 +901,7 @@ extension Scheduler {
         with basePredicate: Predicate<Task>,
         combineWith userPredicate: Predicate<Task>,
         sortBy sortDescriptors: [SortDescriptor<Task>],
-        fetchLimit: Int? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        fetchLimit: Int? = nil,
         prefetchOutcomes: Bool
     ) throws -> [Task] {
         var descriptor = FetchDescriptor<Task>(
@@ -972,9 +971,9 @@ extension Scheduler {
         URL.documentsDirectory.appending(path: "edu.stanford.spezi.scheduler.storage.sqlite-shm"),
         URL.documentsDirectory.appending(path: "edu.stanford.spezi.scheduler.storage.sqlite-wal")
     ]
-    
+
     nonisolated static let didPerformIOS26MigrationFlagFilename = "didPerformIOS26Migration"
-    
+
     nonisolated private static func setupPersistentStorageFileLocations(in directory: URL) {
         let fileManager = FileManager.default
         guard !fileManager.itemExists(at: directory) else {
@@ -986,8 +985,8 @@ extension Scheduler {
             preconditionFailure("Unable to create SpeziScheduler directory: \(error)")
         }
     }
-    
-    
+
+
     nonisolated private static func migratePersistentStorageFileLocationIfNeeded(dstDirectory: URL) {
         do {
             let fileManager = FileManager()

@@ -27,7 +27,7 @@
 /* Begin PBXFileReference section */
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2FAD38BE2A455F7D00E79ED1 /* SpeziAccount */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziAccount; path = ../..; sourceTree = "<group>"; };
+		2FAD38BE2A455F7D00E79ED1 /* SpeziAccount */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziAccount; path = ../../..; sourceTree = "<group>"; };
 		2FE750C92A8720CE00723EAE /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,6 +52,8 @@
 		};
 		80D1A08D2E82BCBC004D7378 /* TestAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = TestAppUITests;
 			sourceTree = "<group>";
 		};
@@ -190,7 +192,6 @@
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
 			packageReferences = (
-				2F027C9929D6C91D00234098 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
 				A969240D2A9A198800E2128B /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -300,7 +301,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -364,7 +365,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -412,7 +413,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -447,7 +448,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -470,7 +471,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_TARGET_NAME = TestApp;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -492,7 +493,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_TARGET_NAME = TestApp;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -529,14 +530,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2F027C9929D6C91D00234098 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		A969240D2A9A198800E2128B /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
@@ -550,7 +543,6 @@
 /* Begin XCSwiftPackageProductDependency section */
 		2F027C9A29D6C91E00234098 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2F027C9929D6C91D00234098 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		2FAD38BF2A455FC200E79ED1 /* SpeziAccount */ = {

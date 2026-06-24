@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 
@@ -49,7 +49,7 @@ This struct has the following responsibilities:
 - Provide the UI that will be displayed whereever a question of this kind appears in a ``Questionnaire``;
 - Validate user-entered responses;
 - (Optional) enable support for FHIR-related operations such as creating a Spezi ``Questionnaire`` from a [FHIR R4 Questionnaire](https://hl7.org/fhir/R4/questionnaire.html), or converting collected ``QuestionnaireResponses`` into a [FHIR R4 QuestionnaireResponse](https://hl7.org/fhir/R4/questionnaireresponse.html).
-  See [`QuestionKindDefinitionWithFHIRSupport`](https://swiftpackageindex.com/stanfordspezi/speziquestionnaire/documentation/speziquestionnairefhir/questionkinddefinitionwithfhirsupport) for more info. 
+  See [`QuestionKindDefinitionWithFHIRSupport`](../../SpeziQuestionnaireFHIR/SpeziQuestionnaireFHIR.docc/SpeziQuestionnaireFHIR.md) for more info.
 
 
 
@@ -70,12 +70,12 @@ Example: A simple "acknowledge disclaimer" question kind
 /// A question kind that asks the user to consent to a statement.
 struct AcknowledgeDisclaimerQuestionKind: QuestionKindDefinition {
     // The config is what allows each instantiation of the question kind to customize the question's input.
-    // In this case, it allows us to specify the question's consent text, and the title of the "I Agree" button. 
+    // In this case, it allows us to specify the question's consent text, and the title of the "I Agree" button.
     struct Config: QuestionKindConfig {
         let disclaimerText: String
         let consentButtonTitle: String
     }
-    
+
     // Creates the view used to display an Acknowledge Disclaimer question within a `QuestionnaireSheet`.
     // In this case, we simply display the text we want the user to acknowledge, and a `Toggle` collecting the user response.
     static func makeView(for task: Questionnaire.Task, using config: Config, response: Binding<QuestionnaireResponses.Response>) -> some View {
@@ -92,7 +92,7 @@ struct AcknowledgeDisclaimerQuestionKind: QuestionKindDefinition {
             }
         }
     }
-    
+
     // We can also customize the question kind's response validation logic.
     // In this case, we require that the user consent to the disclaimer, so we reject all non-yes responses.
     // This effectively prevents the user from completing the questionnaire until they have consented to the disclaimer,

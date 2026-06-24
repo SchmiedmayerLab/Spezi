@@ -7,9 +7,9 @@
 //
 
 @_spi(TestingSupport)
-import SpeziBluetoothServices
-@_spi(TestingSupport)
 import SpeziBluetooth
+@_spi(TestingSupport)
+import SpeziBluetoothServices
 import SwiftUI
 
 

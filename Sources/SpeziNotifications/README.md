@@ -1,33 +1,28 @@
 <!--
-                  
+
 This source file is part of the SpeziNotifications open source project
 
 SPDX-FileCopyrightText: 2024 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # SpeziNotifications
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziNotifications/actions/workflows/main.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziNotifications/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziNotifications/graph/badge.svg?token=dWaDzUBFoV)](https://codecov.io/gh/StanfordSpezi/SpeziNotifications)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14003714.svg)](https://doi.org/10.5281/zenodo.14003714)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziNotifications%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziNotifications)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziNotifications%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziNotifications)
 
 Simplify User Notifications in Spezi-based applications.
 
 ## Overview
- 
-SpeziNotifications simplifies interaction with user notifications by adding additional actions to the Environment of SwiftUI Views and
-Spezi Modules.
+
+[`SpeziNotifications`](SpeziNotifications.docc/SpeziNotifications.md) simplifies interaction with user notifications by adding additional actions to the Environment of SwiftUI Views and
+Spezi [`Module`](../Spezi/Spezi.docc/Module/Module.md)s.
 
 ### Schedule Notifications
 
-You can use the [`Notifications`]((https://swiftpackageindex.com/stanfordspezi/spezinotifications/documentation/spezinotifications/notifications))
+You can use the [`Notifications`](SpeziNotifications.docc/SpeziNotifications.md)
 module to interact with user notifications within your application. You can either define it as a dependency
-of your Spezi [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module)
+of your Spezi [`Module`](../Spezi/Spezi.docc/Module/Module.md)
 or retrieve it from the environment using the [`@Environment`](https://developer.apple.com/documentation/swiftui/environment)
 property wrapper in your SwiftUI View.
 
@@ -106,24 +101,45 @@ struct NotificationOnboarding: View {
 }
 ```
 
-> [!IMPORTANT] 
-> The example above uses the [`AsyncButton`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/asyncbutton)
-> and the [`ViewState`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/viewstate) model from SpeziViews to more
+> [!IMPORTANT]
+> The example above uses `AsyncButton`
+> and the `ViewState` model from [SpeziViews](../SpeziViews/SpeziViews.docc/SpeziViews.md) to more
 > easily manage the state of asynchronous actions and handle erroneous conditions.
 
 ## Setup
 
-You need to add the SpeziNotifications Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the `SpeziNotifications` product.
+
+In Xcode, select **File > Add Package Dependencies...**, enter:
+
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziNotifications", package: "Spezi")
+    ]
+)
+```
 
 ## License
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziNotifications/tree/main/LICENSES) for more information.
+
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
 
 ## Contributors
-This project is developed as part of the Stanford Mussallem Center for Biodesign at Stanford University.
-See [CONTRIBUTORS.md](https://github.com/StanfordSpezi/SpeziNotifications/tree/main/CONTRIBUTORS.md) for a full list of all SpeziNotifications contributors.
 
-![Stanford Mussallem Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-light.png#gh-light-mode-only)
-![Stanford Mussallem Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-dark.png#gh-dark-mode-only)
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

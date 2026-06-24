@@ -1,20 +1,15 @@
 <!--
-                  
+
 This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # Spezi LLM
 
-[![CI](https://github.com/StanfordSpezi/SpeziLLM/actions/workflows/ci.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziLLM/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziLLM/branch/main/graph/badge.svg?token=pptLyqtoNR)](https://codecov.io/gh/StanfordSpezi/SpeziLLM)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7954213.svg)](https://doi.org/10.5281/zenodo.7954213)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziLLM%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziLLM)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziLLM%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziLLM)
 
 
 ## Overview
@@ -22,7 +17,7 @@ SPDX-License-Identifier: MIT
 The Spezi LLM Swift Package includes modules that are helpful to integrate LLM-related functionality in your application.
 The package provides all necessary tools for local LLM execution, the usage of remote OpenAI-based LLMs, as well as LLMs running on Fog node resources within the local network.
 
-|<picture><source media="(prefers-color-scheme: dark)" srcset="Sources/SpeziLLMOpenAI/SpeziLLMOpenAI.docc/Resources/ChatView~dark.png"><img src="Sources/SpeziLLMOpenAI/SpeziLLMOpenAI.docc/Resources/ChatView.png" width="250" alt="Screenshot displaying the Chat View utilizing the OpenAI API from SpeziLLMOpenAI." /></picture>|<picture><source media="(prefers-color-scheme: dark)" srcset="Sources/SpeziLLMLocalDownload/SpeziLLMLocalDownload.docc/Resources/LLMLocalDownload~dark.png"><img src="Sources/SpeziLLMLocalDownload/SpeziLLMLocalDownload.docc/Resources/LLMLocalDownload.png" width="250" alt="Screenshot displaying the Local LLM Download View from SpeziLLMLocalDownload." /></picture>|<picture><source media="(prefers-color-scheme: dark)" srcset="Sources/SpeziLLMLocal/SpeziLLMLocal.docc/Resources/ChatView~dark.png"><img src="Sources/SpeziLLMLocal/SpeziLLMLocal.docc/Resources/ChatView.png" width="250" alt="Screenshot displaying the Chat View utilizing a locally executed LLM via SpeziLLMLocal." /></picture>|
+|<picture><source media="(prefers-color-scheme: dark)" srcset="../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/Resources/ChatView~dark.png"><img src="../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/Resources/ChatView.png" width="250" alt="Screenshot displaying the Chat View utilizing the OpenAI API from SpeziLLMOpenAI." /></picture>|<picture><source media="(prefers-color-scheme: dark)" srcset="../SpeziLLMLocalDownload/SpeziLLMLocalDownload.docc/Resources/LLMLocalDownload~dark.png"><img src="../SpeziLLMLocalDownload/SpeziLLMLocalDownload.docc/Resources/LLMLocalDownload.png" width="250" alt="Screenshot displaying the Local LLM Download View from SpeziLLMLocalDownload." /></picture>|<picture><source media="(prefers-color-scheme: dark)" srcset="../SpeziLLMLocal/SpeziLLMLocal.docc/Resources/ChatView~dark.png"><img src="../SpeziLLMLocal/SpeziLLMLocal.docc/Resources/ChatView.png" width="250" alt="Screenshot displaying the Chat View utilizing a locally executed LLM via SpeziLLMLocal." /></picture>|
 |:--:|:--:|:--:|
 |`OpenAI LLM Chat View`|`Language Model Download`|`Local LLM Chat View`|
 
@@ -30,12 +25,40 @@ The package provides all necessary tools for local LLM execution, the usage of r
 
 ### 1. Add Spezi LLM as a Dependency
 
-You need to add the SpeziLLM Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the products you need, such as `SpeziLLM`, `SpeziLLMLocal`, `SpeziLLMLocalDownload`, `SpeziLLMOpenAI`, `SpeziLLMFog`, `SpeziLLMOpenAIRealtime`, `SpeziLLMAnthropic`, or `SpeziLLMGemini`.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
+
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziLLM", package: "Spezi"),
+        .product(name: "SpeziLLMLocal", package: "Spezi"),
+        .product(name: "SpeziLLMLocalDownload", package: "Spezi"),
+        .product(name: "SpeziLLMOpenAI", package: "Spezi"),
+        .product(name: "SpeziLLMFog", package: "Spezi"),
+        // Add other Spezi products from this package as needed.
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ### 2. Follow the setup steps of the individual targets
 
@@ -44,22 +67,22 @@ As Spezi LLM contains a variety of different targets for specific LLM functional
 ## Targets
 
 Spezi LLM provides a number of targets to help developers integrate LLMs in their Spezi-based applications:
-- [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm): Base infrastructure of LLM execution in the Spezi ecosystem.
-- [SpeziLLMLocal](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmlocal): Local LLM execution capabilities directly on-device. Enables running open-source LLMs from Hugging Face like [Meta's Llama2](https://ai.meta.com/llama/), [Microsoft's Phi](https://azure.microsoft.com/en-us/products/phi), [Google's Gemma](https://ai.google.dev/gemma), or [DeepSeek-R1](https://huggingface.co/deepseek-ai/DeepSeek-R1), among others. See [LLMLocalModel](https://swiftpackageindex.com/stanfordspezi/spezillm/main/documentation/spezillmlocal/llmlocalmodel) for a list of models tested with SpeziLLM.
-- [SpeziLLMLocalDownload](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmlocaldownload): Download and storage manager of local Language Models, including onboarding views. 
-- [SpeziLLMOpenAI](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai): Integration with OpenAI's GPT models via using OpenAI's API service.
-- [SpeziLLMFog](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmfog): Discover and dispatch LLM inference jobs to Fog node resources within the local network.
+- [SpeziLLM](SpeziLLM.docc/SpeziLLM.md): Base infrastructure of LLM execution in the Spezi ecosystem.
+- [SpeziLLMLocal](../SpeziLLMLocal/SpeziLLMLocal.docc/SpeziLLMLocal.md): Local LLM execution capabilities directly on-device. Enables running open-source LLMs from Hugging Face like [Meta's Llama2](https://ai.meta.com/llama/), [Microsoft's Phi](https://azure.microsoft.com/en-us/products/phi), [Google's Gemma](https://ai.google.dev/gemma), or [DeepSeek-R1](https://huggingface.co/deepseek-ai/DeepSeek-R1), among others. See LLMLocalModel for a list of models tested with SpeziLLM.
+- [SpeziLLMLocalDownload](../SpeziLLMLocalDownload/SpeziLLMLocalDownload.docc/SpeziLLMLocalDownload.md): Download and storage manager of local Language Models, including onboarding views.
+- [SpeziLLMOpenAI](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md): Integration with OpenAI's GPT models via using OpenAI's API service.
+- [SpeziLLMFog](../SpeziLLMFog/SpeziLLMFog.docc/SpeziLLMFog.md): Discover and dispatch LLM inference jobs to Fog node resources within the local network.
 
-The section below highlights the setup and basic use of the [SpeziLLMLocal](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmlocal), [SpeziLLMOpenAI](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai), and [SpeziLLMFog](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmfog) targets in order to integrate Language Models in a Spezi-based application. 
+The section below highlights the setup and basic use of the SpeziLLMLocal, SpeziLLMOpenAI, and SpeziLLMFog targets in order to integrate Language Models in a Spezi-based application.
 
-> [!NOTE]  
-> To learn more about the usage of the individual targets, please refer to the [DocC documentation of the package](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation).
+> [!NOTE]
+> To learn more about the usage of the individual targets, please refer to the [SpeziLLM](SpeziLLM.docc/SpeziLLM.md), [SpeziLLMLocal](../SpeziLLMLocal/SpeziLLMLocal.docc/SpeziLLMLocal.md), [SpeziLLMLocalDownload](../SpeziLLMLocalDownload/SpeziLLMLocalDownload.docc/SpeziLLMLocalDownload.md), [SpeziLLMOpenAI](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md), and [SpeziLLMFog](../SpeziLLMFog/SpeziLLMFog.docc/SpeziLLMFog.md) documentation.
 
 ### Spezi LLM Local
 
-The target enables developers to easily execute medium-size Language Models (LLMs) locally on-device. The module allows you to interact with the locally run LLM via purely Swift-based APIs, no interaction with low-level code is necessary, building on top of the infrastructure of the [SpeziLLM target](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm).
+The target enables developers to easily execute medium-size Language Models (LLMs) locally on-device. The module allows you to interact with the locally run LLM via purely Swift-based APIs, no interaction with low-level code is necessary, building on top of the infrastructure of the [SpeziLLM](SpeziLLM.docc/SpeziLLM.md) target.
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > Spezi LLM Local is not compatible with simulators. The underlying [`mlx-swift`](https://github.com/ml-explore/mlx-swift) requires a modern Metal MTLGPUFamily and the simulator does not provide that.
 
 > [!IMPORTANT]
@@ -68,7 +91,7 @@ The target enables developers to easily execute medium-size Language Models (LLM
 #### Setup
 
 You can configure the Spezi Local LLM execution within the typical `SpeziAppDelegate`.
-In the example below, the `LLMRunner` from the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) target which is responsible for providing LLM functionality within the Spezi ecosystem is configured with the `LLMLocalPlatform` from the [SpeziLLMLocal](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmlocal) target. This prepares the `LLMRunner` to locally execute Language Models.
+In the example below, the `LLMRunner` from the SpeziLLM target which is responsible for providing LLM functionality within the Spezi ecosystem is configured with the `LLMLocalPlatform` from the SpeziLLMLocal target. This prepares the `LLMRunner` to locally execute Language Models.
 
 ```swift
 class TestAppDelegate: SpeziAppDelegate {
@@ -82,7 +105,7 @@ class TestAppDelegate: SpeziAppDelegate {
 }
 ```
 
-[SpeziLLMLocalDownload](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmlocaldownload) can be used to download an LLM from [HuggingFace](https://huggingface.co/) and save it on the device for execution. The `LLMLocalDownloadView` provides an out-of-the-box onboarding view for downloading models locally.
+[SpeziLLMLocalDownload](../SpeziLLMLocalDownload/SpeziLLMLocalDownload.docc/SpeziLLMLocalDownload.md) can be used to download an LLM from [HuggingFace](https://huggingface.co/) and save it on the device for execution. The `LLMLocalDownloadView` provides an out-of-the-box onboarding view for downloading models locally.
 
 ```swift
 struct LLMLocalOnboardingDownloadView: View {
@@ -98,14 +121,14 @@ struct LLMLocalOnboardingDownloadView: View {
 ```
 
 > [!TIP]
-> The `LLMLocalDownloadView` view can be included in your onboarding process using SpeziOnboarding as [demonstrated in this example](https://swiftpackageindex.com/stanfordspezi/spezillm/main/documentation/spezillmlocaldownload/llmlocaldownloadview#overview).
+> The `LLMLocalDownloadView` view can be included in your onboarding process using [SpeziOnboarding](../SpeziOnboarding/SpeziOnboarding.docc/SpeziOnboarding.md) as demonstrated in this example.
 
 
 #### Usage
 
-The code example below showcases the interaction with local LLMs through the the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
+The code example below showcases the interaction with local LLMs through the the SpeziLLM `LLMRunner`, which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
 
-The `LLMLocalSchema` defines the type and configurations of the to-be-executed `LLMLocalSession`. This transformation is done via the [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) that uses the `LLMLocalPlatform`. The inference via `LLMLocalSession/generate()` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
+The `LLMLocalSchema` defines the type and configurations of the to-be-executed `LLMLocalSession`. This transformation is done via the `LLMRunner` that uses the `LLMLocalPlatform`. The inference via `LLMLocalSession/generate()` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
 
 ```swift
 struct LLMLocalDemoView: View {
@@ -134,7 +157,7 @@ struct LLMLocalDemoView: View {
 }
 ```
 
-The [`LLMChatViewSchema`](https://swiftpackageindex.com/stanfordspezi/spezillm/main/documentation/spezillm/llmchatviewschema) can be used to easily create a conversational chat interface for your chatbot application with a local LLM.
+The `LLMChatViewSchema` can be used to easily create a conversational chat interface for your chatbot application with a local LLM.
 
 ```swift
 struct LLMLocalChatView: View {
@@ -153,19 +176,19 @@ struct LLMLocalChatView: View {
 To optimize inference performance and minimize resource consumption within the application, use the `LLMLocalSession.offload()` method. This function unloads the model from memory, thereby freeing up system resources when the model is not actively in use.
 When further interaction with the model is required, calling either `LLMLocalSession.setup()` or `LLMLocalSession.generate()` will automatically reload the model into memory as needed.
 
-> [!NOTE]  
-> To learn more about the usage of SpeziLLMLocal, please refer to the comprehensive [DocC documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmlocal).
+> [!NOTE]
+> To learn more about the usage of SpeziLLMLocal, please refer to the [SpeziLLMLocal documentation](../SpeziLLMLocal/SpeziLLMLocal.docc/SpeziLLMLocal.md).
 
 ### Spezi LLM Open AI
 
 A module that allows you to interact with GPT-based Large Language Models (LLMs) from OpenAI within your Spezi application.
-`SpeziLLMOpenAI` provides a pure Swift-based API for interacting with the OpenAI GPT API, building on top of the infrastructure of the [SpeziLLM target](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm).
+`SpeziLLMOpenAI` provides a pure Swift-based API for interacting with the OpenAI GPT API, building on top of the infrastructure of the [SpeziLLM](SpeziLLM.docc/SpeziLLM.md) target.
 In addition, `SpeziLLMOpenAI` provides developers with a declarative Domain Specific Language to utilize OpenAI function calling mechanism. This enables a structured, bidirectional, and reliable communication between the OpenAI LLMs and external tools, such as the Spezi ecosystem.
 
 #### Setup
 
-In order to use OpenAI LLMs within the Spezi ecosystem, the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) needs to be initialized in the Spezi `Configuration` with the `LLMOpenAIPlatform`. Only after, the `LLMRunner` can be used for inference of OpenAI LLMs.
-See the [SpeziLLM documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) for more details.
+In order to use OpenAI LLMs within the Spezi ecosystem, the SpeziLLM `LLMRunner` needs to be initialized in the Spezi `Configuration` with the `LLMOpenAIPlatform`. Only after, the `LLMRunner` can be used for inference of OpenAI LLMs.
+See the [SpeziLLM documentation](SpeziLLM.docc/SpeziLLM.md) for more details.
 
 ```swift
 import Spezi
@@ -188,9 +211,9 @@ class LLMOpenAIAppDelegate: SpeziAppDelegate {
 
 #### Usage
 
-The code example below showcases the interaction with an OpenAI LLM through the the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
+The code example below showcases the interaction with an OpenAI LLM through the the SpeziLLM `LLMRunner`, which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
 
-The `LLMOpenAISchema` defines the type and configurations of the to-be-executed `LLMOpenAISession`. This transformation is done via the [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) that uses the `LLMOpenAIPlatform`. The inference via `LLMOpenAISession/generate()` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
+The `LLMOpenAISchema` defines the type and configurations of the to-be-executed `LLMOpenAISession`. This transformation is done via the `LLMRunner` that uses the `LLMOpenAIPlatform`. The inference via `LLMOpenAISession/generate()` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
 
 ```swift
 import SpeziLLM
@@ -227,8 +250,8 @@ struct LLMOpenAIDemoView: View {
 }
 ```
 
-> [!NOTE]  
-> To learn more about the usage of SpeziLLMOpenAI, please refer to the [DocC documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai).
+> [!NOTE]
+> To learn more about the usage of SpeziLLMOpenAI, please refer to the [SpeziLLMOpenAI documentation](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md).
 
 ### Spezi LLM Fog
 
@@ -236,7 +259,7 @@ The `SpeziLLMFog` target enables you to use LLMs running on [Fog node](https://e
 `SpeziLLMFog` then dispatches LLM inference jobs dynamically to a random fog node within the local network and streams the response to surface it to the user.
 
 > [!IMPORTANT]
-> `SpeziLLMFog` requires a `SpeziLLMFogNode` within the local network hosted on some computing resource that actually performs the inference requests. `SpeziLLMFog` provides the `SpeziLLMFogNode` Docker-based package that enables an easy setup of these fog nodes. See the `FogNode` directory on the root level of the SPM package as well as the respective `README.md` for more details.
+> `SpeziLLMFog` requires a `SpeziLLMFogNode` within the local network hosted on some computing resource that actually performs the inference requests. `SpeziLLMFog` provides the `SpeziLLMFogNode` Docker-based package that enables an easy setup of these fog nodes. See the [FogNode README](FogNode/README.md) for more details.
 
 > [!IMPORTANT]
 > `SpeziLLMFog` performs dynamic discovery of available fog node services in the local network using Bonjour. To enable this functionality, the consuming application must configure the following `Info.plist` entries:
@@ -249,7 +272,7 @@ The `SpeziLLMFog` target enables you to use LLMs running on [Fog node](https://e
 
 #### Setup
 
-In order to use Fog LLMs within the Spezi ecosystem, the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) needs to be initialized in the Spezi `Configuration` with the `LLMFogPlatform`. Only after, the `LLMRunner` can be used for inference with Fog LLMs. See the [SpeziLLM documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) for more details.
+In order to use Fog LLMs within the Spezi ecosystem, the SpeziLLM `LLMRunner` needs to be initialized in the Spezi `Configuration` with the `LLMFogPlatform`. Only after, the `LLMRunner` can be used for inference with Fog LLMs. See the [SpeziLLM documentation](SpeziLLM.docc/SpeziLLM.md) for more details.
 The `LLMFogPlatform` needs to be initialized with the custom root CA certificate that was used to sign the fog node web service certificate (see the `FogNode/README.md` documentation for more information). Copy the root CA certificate from the fog node as resource to the application using `SpeziLLMFog` and use it to initialize the `LLMFogPlatform` within the Spezi `Configuration`.
 
 ```swift
@@ -257,7 +280,7 @@ class LLMFogAppDelegate: SpeziAppDelegate {
     private nonisolated static var caCertificateUrl: URL {
         // Return local file URL of root CA certificate in the `.crt` format
     }
-    
+
     override var configuration: Configuration {
          Configuration {
              LLMRunner {
@@ -275,16 +298,16 @@ class LLMFogAppDelegate: SpeziAppDelegate {
 In addition to set local network discovery entitlements described above, users must grant explicit authorization for local network access.
 This authorization can be requested during the app’s onboarding process using `LLMFogDiscoveryAuthorizationView`.
 It informs users about the need for local network access, prompts them to grant it, and attempts to verify the access status (note: the OS does not expose this information).
-For detailed guidance on integrating the `LLMFogDiscoveryAuthorizationView` in an onboarding flow managed by `[SpeziOnboarding`](https://swiftpackageindex.com/stanfordspezi/spezionboarding), refer to the in-line documentation of the `LLMFogDiscoveryAuthorizationView`.
+For detailed guidance on integrating the `LLMFogDiscoveryAuthorizationView` in an onboarding flow managed by [SpeziOnboarding](../SpeziOnboarding/SpeziOnboarding.docc/SpeziOnboarding.md), refer to the in-line documentation of the `LLMFogDiscoveryAuthorizationView`.
 
 #### Usage
 
-The code example below showcases the interaction with a Fog LLM through the the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
+The code example below showcases the interaction with a Fog LLM through the the SpeziLLM `LLMRunner`, which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
 
-The `LLMFogSchema` defines the type and configurations of the to-be-executed `LLMFogSession`. This transformation is done via the [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) that uses the `LLMFogPlatform`. The inference via `LLMFogSession/generate()` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
+The `LLMFogSchema` defines the type and configurations of the to-be-executed `LLMFogSession`. This transformation is done via the `LLMRunner` that uses the `LLMFogPlatform`. The inference via `LLMFogSession/generate()` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
 The `LLMFogSession` automatically discovers all available LLM fog nodes within the local network upon setup and the dispatches the LLM inference jobs to the fog computing resource, streaming back the response and surfaces it to the user.
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > The `LLMFogSchema` accepts a closure that returns an authorization token that is passed with every request to the Fog node in the `Bearer` HTTP field via the `LLMFogParameters/init(modelType:overwritingAuthToken:systemPrompt:)`. The token is created via the closure upon every LLM inference request, as the `LLMFogSession` may be long lasting and the token could therefore expire. Ensure that the closure appropriately caches the token in order to prevent unnecessary token refresh roundtrips to external systems.
 
 ```swift
@@ -318,17 +341,18 @@ struct LLMFogDemoView: View {
 }
 ```
 
-> [!NOTE]  
-> To learn more about the usage of SpeziLLMFog, please refer to the [DocC documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmfog).
+> [!NOTE]
+> To learn more about the usage of SpeziLLMFog, please refer to the [SpeziLLMFog documentation](../SpeziLLMFog/SpeziLLMFog.docc/SpeziLLMFog.md).
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
-
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziLLM/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterLight.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterDark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

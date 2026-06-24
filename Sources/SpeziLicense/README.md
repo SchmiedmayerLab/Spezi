@@ -1,20 +1,15 @@
 <!--
-                  
+
 This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # SpeziLicense
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziLicense/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziLicense/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziLicense/graph/badge.svg?token=y5KRPBrCAN)](https://codecov.io/gh/StanfordSpezi/SpeziLicense)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10915670.svg)](https://doi.org/10.5281/zenodo.10915670)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziLicense%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziLicense)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziLicense%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziLicense)
 
 
 Provides a view that renders a list of third-party libraries used in an iOS app.
@@ -22,12 +17,12 @@ Provides a view that renders a list of third-party libraries used in an iOS app.
 <table style="width: 80%">
   <tr>
     <td align="center" width="50%">
-      <img src="Sources/SpeziLicense/SpeziLicense.docc/Resources/Overview.png#gh-light-mode-only" width="80%"/>
-      <img src="Sources/SpeziLicense/SpeziLicense.docc/Resources/Overview~dark.png#gh-dark-mode-only" width="80%"/>
+      <img src="SpeziLicense.docc/Resources/Overview.png#gh-light-mode-only" width="80%"/>
+      <img src="SpeziLicense.docc/Resources/Overview~dark.png#gh-dark-mode-only" width="80%"/>
     </td>
     <td align="center" width="50%">
-      <img src="Sources/SpeziLicense/SpeziLicense.docc/Resources/License.png#gh-light-mode-only" width="80%"/>
-      <img src="Sources/SpeziLicense/SpeziLicense.docc/Resources/License~dark.png#gh-dark-mode-only" width="80%"/>
+      <img src="SpeziLicense.docc/Resources/License.png#gh-light-mode-only" width="80%"/>
+      <img src="SpeziLicense.docc/Resources/License~dark.png#gh-dark-mode-only" width="80%"/>
     </td>
   </tr>
   <tr>
@@ -46,11 +41,34 @@ This package builds on Felix Hermann's' [SwiftPackageList](https://github.com/Fe
 
 ## Setup
 
-### 1. Add Spezi License and Swift Package List as a Dependency.
+### 1. Add Spezi License as a Dependency
 
-You need to add the SpeziLicense and [SwiftPackageList](https://github.com/FelixHerrmann/swift-package-list) Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the `SpeziLicense` product.
+
+In Xcode, select **File > Add Package Dependencies...**, enter:
+
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziLicense", package: "Spezi")
+    ]
+)
+```
 
 ### 2. Add the SwiftPackageListPlugin to your Xcode Project
 
@@ -80,13 +98,13 @@ struct ExamplePackageDependenciesView: View {
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
-
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/Spezi/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer~dark.png#gh-dark-mode-only)
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

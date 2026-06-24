@@ -89,7 +89,7 @@ extension KeychainStorage {
     /// - parameter username: The username to check for. Specify `nil` to ignore this and fetch all credentials that match the tag, regardless of their usernames.
     /// - parameter tag: The ``CredentialsTag`` whose entries should be queried.
     public func retrieveAllCredentials(
-        withUsername username: String? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        withUsername username: String? = nil,
         for tag: CredentialsTag
     ) throws -> [Credentials] {
         var query: [CFString: Any] = [:]
@@ -201,7 +201,7 @@ extension KeychainStorage {
     /// - parameter username: The username associated with the credentials.
     /// - parameter tag: The tag identifying the credentials entry.
     public func deleteCredentials(
-        withUsername username: String? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        withUsername username: String? = nil,
         for tag: CredentialsTag
     ) throws {
         do {

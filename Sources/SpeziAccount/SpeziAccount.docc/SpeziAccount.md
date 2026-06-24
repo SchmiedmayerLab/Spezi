@@ -3,19 +3,19 @@
 A Spezi framework that provides account-related functionality including login, sign up and password reset.
 
 <!--
-                  
+
 This source file is part of the Spezi open-source project
 
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 ## Overview
 
 The `SpeziAccount` framework fully abstracts setup and management of user account functionality for the
-[Spezi](https://github.com/StanfordSpezi/Spezi/) framework ecosystem.
+[Spezi](../../Spezi/Spezi.docc/Spezi.md) framework ecosystem.
 
 @Row {
     @Column {
@@ -30,7 +30,7 @@ The `SpeziAccount` framework fully abstracts setup and management of user accoun
     }
     @Column {
         @Image(source: "AccountOverview", alt: "Screenshot displaying the Account Overview.") {
-            The ``AccountOverview`` is used to view and modify the user details of the currently associated account. 
+            The ``AccountOverview`` is used to view and modify the user details of the currently associated account.
         }
     }
 }
@@ -41,8 +41,8 @@ You use the ``AccountDetails`` collection within your views to visualize account
 An ``AccountService`` provides an abstraction layer for managing different types of account management services
 (e.g., email address and password-based service combined with an identity provider like Sign in with Apple).
 
-> Note: The [SpeziFirebase](https://github.com/StanfordSpezi/SpeziFirebase)
-framework provides the [`FirebaseAccountService`](https://swiftpackageindex.com/stanfordspezi/spezifirebase/documentation/spezifirebaseaccount/firebaseaccountservice)
+> Note: The [SpeziFirebase](../../SpeziFirebase/README.md)
+framework provides the [`FirebaseAccountService`](../../SpeziFirebaseAccount/SpeziFirebaseAccount.docc/SpeziFirebaseAccount.md)
 you can use to configure an Account Service base on the Google Firebase service.
 
 ## Setup
@@ -51,7 +51,7 @@ You need to add the Spezi Account Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 The <doc:Initial-Setup> article provides a quick-start guide to set up `SpeziAccount` in your App.
 
@@ -80,7 +80,6 @@ Refer to the <doc:Creating-your-own-Account-Service> article if you plan on impl
 - ``FollowUpInfoSheet``
 - ``SwiftUICore/View/accountRequired(_:accountSetupIsComplete:setupSheet:)``
 - ``SwiftUICore/EnvironmentValues/accountRequired``
->>>>>>> main
 
 ### Environment & Preferences
 

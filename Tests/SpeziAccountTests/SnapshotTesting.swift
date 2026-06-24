@@ -20,7 +20,15 @@ let isRunningIOS = true
 let isRunningIOS = false
 #endif
 
-@Suite("iOS Snapshot tests", .enabled(if: isRunningIOS, "Requires iOS to run"))
+@Suite(
+    "iOS Snapshot tests",
+    .enabled(if: isRunningIOS, "Requires iOS to run"),
+    .disabled("""
+        Disabled because the Text Fields don't render in the snapshots anymore,
+        and we'd need a host application be present in order to be able to set
+        `drawHierarchyInKeyWindow: true` in the .image() calls.
+        """)
+)
 struct SnapshotTesting {
     @MainActor
     @Test
@@ -128,19 +136,21 @@ struct SnapshotTesting {
         let view5Signup = view5.preferredAccountSetupStyle(.signup)
 
 #if os(iOS)
-        assertSnapshot(of: view0, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view0")
-        assertSnapshot(of: view1, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view1")
-        assertSnapshot(of: view2, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view2")
-        assertSnapshot(of: view3, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view3")
-        assertSnapshot(of: view4, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view4")
-        assertSnapshot(of: view5, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view5")
-        
-        assertSnapshot(of: view0Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view0-signup")
-        assertSnapshot(of: view1Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view1-signup")
-        assertSnapshot(of: view2Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view2-signup")
-        assertSnapshot(of: view3Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view3-signup")
-        assertSnapshot(of: view4Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view4-signup")
-        assertSnapshot(of: view5Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view5-signup")
+        withSnapshotTesting(diffTool: .ksdiff) {
+            assertSnapshot(of: view0, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view0")
+            assertSnapshot(of: view1, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view1")
+            assertSnapshot(of: view2, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view2")
+            assertSnapshot(of: view3, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view3")
+            assertSnapshot(of: view4, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view4")
+            assertSnapshot(of: view5, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view5")
+
+            assertSnapshot(of: view0Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view0-signup")
+            assertSnapshot(of: view1Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view1-signup")
+            assertSnapshot(of: view2Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view2-signup")
+            assertSnapshot(of: view3Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view3-signup")
+            assertSnapshot(of: view4Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view4-signup")
+            assertSnapshot(of: view5Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view5-signup")
+        }
 #endif
     }
     

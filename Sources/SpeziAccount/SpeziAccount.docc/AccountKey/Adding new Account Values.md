@@ -3,13 +3,13 @@
 Support new user account details by defining your own `AccountKey`.
 
 <!--
-                  
+
 This source file is part of the Spezi open-source project
 
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 ## Overview
@@ -26,7 +26,7 @@ This articles guides you through all the necessary steps to declare your custom 
 You use the ``AccountKey(id:name:category:as:initial:displayView:entryView:)`` macro to declare a new ``AccountKey``.
 
 It is mandatory to provide a localizable ``AccountKey/name`` and the `Value` type.
-> Note: Refer to <doc:Value-Conformances> to learn more of the mandatory conformances for the `Value` type. 
+> Note: Refer to <doc:Value-Conformances> to learn more of the mandatory conformances for the `Value` type.
 
 Optionally, you might want to customize the ``AccountKey/category`` in which the account details are shown (see ``AccountKeyCategory``).
 An ``AccountKey/initialValue-6h1oo`` might be required, depending on the `Value` type if `SpeziAccount` cannot derive a sensible default
@@ -150,15 +150,15 @@ A ``AccountKey/DataEntry`` view is automatically provide if:
 
 ### Input Validation
 
-Input validation relies on the [SpeziValidation](https://swiftpackageindex.com/StanfordSpezi/SpeziViews/documentation/spezivalidation) package.
+Input validation relies on the [SpeziValidation](../../../SpeziValidation/SpeziValidation.docc/SpeziValidation.md) package.
 
 `SpeziAccount` provides basic validation for most cases where necessary due to ``FieldValidationRules`` or ``AccountKeyRequirement`` configurations.
 Still, you are required to evaluate to which extent validation has to be handled in your implementation.
 
 * For all `String`-based types validation is automatically managed. Validation is either configured based on
     the rules provided by the account service through ``FieldValidationRules`` or if the user specified a ``AccountKeyRequirement/required`` level.
-    If not using default components like [`VerifiableTextField`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/spezivalidation/verifiabletextfield)),
-    you need to visualize validation results yourself using the [`ValidationEngine`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/spezivalidation/validationengine))
+    If not using default components like [`VerifiableTextField`](../../../SpeziValidation/SpeziValidation.docc/SpeziValidation.md)),
+    you need to visualize validation results yourself using the [`ValidationEngine`](../../../SpeziValidation/SpeziValidation.docc/SpeziValidation.md))
     in the environment.
 * For other types that use ``InitialValue/empty(_:)`` and are specified to be ``AccountKeyRequirement/required``,
     validation is automatically set up to check if the user provided a value. For example given a `Date`-based account value, we would require that

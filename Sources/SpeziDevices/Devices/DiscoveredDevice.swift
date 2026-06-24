@@ -12,10 +12,10 @@ import SpeziFoundation
 
 
 final class DiscoveredDevice: Sendable {
-    private static nonisolated let logger = Logger(subsystem: "edu.stanford.spezi.SpeziDevices", category: "DiscoveredDevice")
+    nonisolated private static let logger = Logger(subsystem: "edu.stanford.spezi.SpeziDevices", category: "DiscoveredDevice")
 
     let device: any PairableDevice
-    private nonisolated(unsafe) var ongoingPairing: PairingContinuation?
+    nonisolated(unsafe) private var ongoingPairing: PairingContinuation?
     private let nsLock = NSLock()
 
     var hasContinuationAssigned: Bool {

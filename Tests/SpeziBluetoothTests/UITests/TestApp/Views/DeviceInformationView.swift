@@ -8,9 +8,9 @@
 
 @_spi(TestingSupport)
 import ByteCoding
-import SpeziBluetoothServices
 @_spi(TestingSupport)
 import SpeziBluetooth
+import SpeziBluetoothServices
 import SpeziViews
 import SwiftUI
 

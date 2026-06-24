@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 Provides download and storage functionality for Large Language Models (LLMs).
@@ -24,7 +24,7 @@ You need to add the SpeziLLM Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ## Spezi LLM Local Download Components
 
@@ -32,8 +32,8 @@ The two main components of ``SpeziLLMLocalDownload`` are the ``LLMLocalDownloadV
 
 ### Download View
 
-The ``LLMLocalDownloadView`` provides an out-of-the-box onboarding view for downloading locally executed [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) LLMs to the device.
-It can be combined with the [SpeziViews](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation) [`ManagedNavigationStack`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/managednavigationstack) to create an easy onboarding flow within the application.
+The ``LLMLocalDownloadView`` provides an out-of-the-box onboarding view for downloading locally executed [SpeziLLM](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) LLMs to the device.
+It can be combined with the [SpeziViews](../../SpeziViews/SpeziViews.docc/SpeziViews.md) [`ManagedNavigationStack`](../../SpeziViews/SpeziViews.docc/SpeziViews.md) to create an easy onboarding flow within the application.
 The ``LLMLocalDownloadView`` automatically checks if the model already exists on disk, and if not, offers the start of the download via a button click. The download process itself includes the presentation of a percentage progress view in order to give the user a better feeling for the download progress.
 
 The ``LLMLocalDownloadView/init(model:downloadDescription:action:)-4a14v`` initializer accepts a download description displayed in the view, the remote download `URL` of the LLM, the local storage `URL` of the downloaded model, as well as an action closure to move onto the next (onboarding) step.
@@ -42,7 +42,7 @@ The heavy lifting of downloading and storing the model is done by the ``LLMLocal
 
 #### Usage
 
-The code example below creates an onboarding flow via the [SpeziViews](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation) [`ManagedNavigationStack`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/managednavigationstack) that downloads and stores an Language Model on the local device via the use of the ``LLMLocalDownloadView``.
+The code example below creates an onboarding flow via the [SpeziViews](../../SpeziViews/SpeziViews.docc/SpeziViews.md) [`ManagedNavigationStack`](../../SpeziViews/SpeziViews.docc/SpeziViews.md) that downloads and stores an Language Model on the local device via the use of the ``LLMLocalDownloadView``.
 
 ```swift
 struct LLMLocalDownloadApp: View {

@@ -5,35 +5,56 @@ This source file is part of the Stanford Spezi open-source project.
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-  
+
 -->
 
 # Spezi Firebase
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziFirebase/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziFirebase/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziFirebase/branch/main/graph/badge.svg?token=LCRkf3e2lx)](https://codecov.io/gh/StanfordSpezi/SpeziFirebase)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7706899.svg)](https://doi.org/10.5281/zenodo.7706899)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziFirebase%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziFirebase)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziFirebase%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziFirebase)
 
 Integrate Google Firebase services into your Spezi application.
 
 ## Overview
 
 This Module allows you to use the [Google Firebase](https://firebase.google.com/) platform as a managed backend for
-authentication and data storage in your apps built with the [Spezi framework](https://github.com/StanfordSpezi/Spezi).
+authentication and data storage in your apps built with the [Spezi framework](../Spezi/README.md).
 
 We currently implement support for Authentication, Storage, and Firestore services.
 
 ## Setup
 
-You need to add the Spezi Firebase Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the products you need, such as `SpeziFirebaseAccount`, `SpeziFirebaseConfiguration`, `SpeziFirestore`, `SpeziFirebaseStorage`, or `SpeziFirebaseAccountStorage`.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup)#
-    to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
+
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziFirebaseAccount", package: "Spezi"),
+        .product(name: "SpeziFirebaseConfiguration", package: "Spezi"),
+        .product(name: "SpeziFirestore", package: "Spezi"),
+        .product(name: "SpeziFirebaseStorage", package: "Spezi"),
+        .product(name: "SpeziFirebaseAccountStorage", package: "Spezi")
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 
 ## Examples
@@ -56,9 +77,7 @@ To do this, please follow the [installation instructions](https://firebase.googl
 
 ### 2. Add Spezi Firebase as a Dependency
 
-First, you will need to add the SpeziFirebase Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+If you have not already done so, add the Spezi monorepo package and select the Firebase products listed in [Setup](#setup).
 
 ### 3. Register the Spezi Firebase Modules
 
@@ -90,23 +109,24 @@ class ExampleDelegate: SpeziAppDelegate {
 }
 ```
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordSpezi/SpeziFirebase/documentation).
+For more information, please refer to the [SpeziFirebaseAccount](../SpeziFirebaseAccount/SpeziFirebaseAccount.docc/SpeziFirebaseAccount.md), [SpeziFirebaseConfiguration](../SpeziFirebaseConfiguration/FirebaseConfiguration.docc/FirebaseConfiguration.md), [SpeziFirestore](../SpeziFirestore/SpeziFirestore.docc/SpeziFirestore.md), [SpeziFirebaseStorage](../SpeziFirebaseStorage/SpeziFirebaseStorage.docc/SpeziFirebaseStorage.md), and [SpeziFirebaseAccountStorage](../SpeziFirebaseAccountStorage/SpeziFirebaseAccountStorage.docc/SpeziFirebaseAccountStorage.md) documentation.
 
 
 ## The Spezi Template Application
 
-The Spezi Firebase Module comes pre-configured in the [Spezi Template Application](https://github.com/StanfordSpezi/SpeziTemplateApplication),
+The Spezi Firebase Module comes pre-configured in the Spezi Template Application,
 which is a great way to get started on your Spezi Application.
 
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
-
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziFirebase/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterLight.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterDark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

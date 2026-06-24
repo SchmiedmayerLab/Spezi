@@ -58,7 +58,7 @@ struct SleepSessionTestsView: View {
         )
     }
     
-    private func test1() async throws {
+    func test1() async throws {
         try await resetSleepData()
         let startDate = try unwrap(cal.date(from: .init(year: 2025, month: 7, day: 17, hour: 22)))
         let samples = try await addSamples(startDate: startDate, for: [
@@ -82,7 +82,7 @@ struct SleepSessionTestsView: View {
     
     
     // Tests overlapping samples
-    private func test2() async throws {
+    func test2() async throws {
         try await resetSleepData()
         let startDate = try unwrap(cal.date(from: .init(year: 2025, month: 7, day: 17, hour: 22)))
         let inputSamples = try await addSamples(startDate: startDate, for: [

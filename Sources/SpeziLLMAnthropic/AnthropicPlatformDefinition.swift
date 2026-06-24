@@ -24,12 +24,12 @@ public struct AnthropicPlatformDefinition: LLMOpenAILikePlatformDefinition {
             self.rawValue = value
         }
     }
-    
+
     public static let platformName = "Anthropic"
     public static let platformServiceIdentifier = "api.anthropic.com"
-    
-    public static let defaultServerUrl = URL(string: "https://api.anthropic.com/v1")! // swiftlint:disable:this force_unwrapping
-    
+
+    public static let defaultServerUrl = URL(string: "https://api.anthropic.com/v1")!
+
     public static let platformDeveloperConsoleUrl = URL(string: "https://platform.claude.com/settings/keys")
 }
 
@@ -46,7 +46,7 @@ public typealias LLMAnthropicParameters = LLMOpenAILikeParameters<AnthropicPlatf
 
 /// LLM execution platform of an Anthropic ``LLMAnthropicSchema``.
 ///
-/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAIPlatform`, except that it interacts with Anthropic's APIs instead of OpenAI's; see the [`LLMOpenAIPlatform`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaiplatform) documentation for further documentation.
+/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAIPlatform`, except that it interacts with Anthropic's APIs instead of OpenAI's; see the [`LLMOpenAIPlatform`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation for further documentation.
 ///
 /// ### Usage
 ///
@@ -70,10 +70,10 @@ public typealias LLMAnthropicPlatform = LLMOpenAILikePlatform<AnthropicPlatformD
 /// The ``LLMAnthropicSchema`` is used as a configuration for the to-be-used LLMAnthropicPlatform LLM. It contains all information necessary for the creation of an executable ``LLMAnthropicSession``.
 /// It is bound to a ``LLMAnthropicPlatform`` that is responsible for turning the ``LLMAnthropicSchema`` to an ``LLMAnthropicSession``.
 ///
-/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISchema`, except that it interacts with Anthropic's APIs instead of OpenAI's; see the [`LLMOpenAISchema`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaischema) documentation for further documentation.
+/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISchema`, except that it interacts with Anthropic's APIs instead of OpenAI's; see the [`LLMOpenAISchema`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation for further documentation.
 ///
 /// - Tip: ``LLMAnthropicSchema`` also enables the function calling mechanism to establish a structured, bidirectional, and reliable communication between the ``LLMAnthropicPlatform`` LLMs and external tools.
-///     For more details, refer to the [`LLMOpenAISchema`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaischema) documentation.
+///     For more details, refer to the [`LLMOpenAISchema`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation.
 public typealias LLMAnthropicSchema = LLMOpenAILikeSchema<AnthropicPlatformDefinition>
 
 
@@ -82,7 +82,7 @@ public typealias LLMAnthropicSchema = LLMOpenAILikeSchema<AnthropicPlatformDefin
 /// The ``LLMAnthropicSession`` is the executable version of the LLMAnthropicPlatform LLM containing context and state as defined by the ``LLMAnthropicSchema``.
 /// It provides access to text-based models from Anthropic, such as Claude Opus or Sonnet.
 ///
-/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISession`, except that it interacts with Anthropic's APIs instead of OpenAI's; see the [`LLMOpenAISession`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillmopenai/llmopenaisession) documentation for further documentation.
+/// - Note: This type behaves identical to SpeziLLMOpenAI's `LLMOpenAISession`, except that it interacts with Anthropic's APIs instead of OpenAI's; see the [`LLMOpenAISession`](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/SpeziLLMOpenAI.md) documentation for further documentation.
 ///
 ///
 /// ### Usage
@@ -150,11 +150,11 @@ extension CredentialsTag {
 extension AnthropicPlatformDefinition.ModelType {
     /// The default model to be used with Anthropic.
     public static let `default`: Self = .opus4_6
-    
+
     public static let wellKnownModels: [Self] = [ // swiftlint:disable:this missing_docs
         .opus4_6, .sonnet4_6, .haiku4_6
     ]
-    
+
     /// Claude Opus 4.6
     public static let opus4_6 = Self(rawValue: "claude-opus-4-6")
     /// Claude Sonnet 4.6

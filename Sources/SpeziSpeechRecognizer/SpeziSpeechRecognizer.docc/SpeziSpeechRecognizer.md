@@ -1,13 +1,13 @@
 # ``SpeziSpeechRecognizer``
 
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 Provides speech-to-text capabilities via Apple's `Speech` framework.
@@ -25,12 +25,12 @@ You need to add the SpeziSpeech Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ### 2. Configure the `SpeechRecognizer` in the Spezi `Configuration`
 
-The module needs to be registered in a Spezi-based application using the [`configuration`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate/configuration)
-in a [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate):
+The module needs to be registered in a Spezi-based application using the [`configuration`](../../Spezi/Spezi.docc/Spezi.md)
+in a [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md):
 ```swift
 class ExampleAppDelegate: SpeziAppDelegate {
     override var configuration: Configuration {
@@ -41,7 +41,7 @@ class ExampleAppDelegate: SpeziAppDelegate {
     }
 }
 ```
-> Tip: You can learn more about a [`Module` in the Spezi documentation](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module).
+> Tip: You can learn more about a [`Module` in the Spezi documentation](../../Spezi/Spezi.docc/Module/Module.md).
 
 ### 3. Configure target properties
 
@@ -52,7 +52,7 @@ To ensure that your application has the necessary permissions for microphone acc
    - Add a key named `Privacy - Microphone Usage Description` and provide a string value that describes why your application needs access to the microphone. This description will be displayed to the user when the app first requests microphone access.
    - Add another key named `Privacy - Speech Recognition Usage Description` with a string value that explains why your app requires the speech recognition capability. This will be presented to the user when the app first attempts to perform speech recognition.
 
-These entries are mandatory for apps that utilize microphone and speech recognition features. Failing to provide them will result in your app being unable to access these features. 
+These entries are mandatory for apps that utilize microphone and speech recognition features. Failing to provide them will result in your app being unable to access these features.
 
 ## Example
 

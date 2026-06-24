@@ -25,8 +25,8 @@ import SwiftUI
 ///
 /// Use the `PairedDevices` module to discover and pair ``PairableDevice``s and automatically manage connection establishment
 /// of connected devices.
-/// - Note: Implement your device as a [`BluetoothDevice`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetoothdevice)
-///     using [SpeziBluetooth](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth).
+/// - Note: Implement your device as a [`BluetoothDevice`](../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md)
+///     using [SpeziBluetooth](../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md).
 ///
 /// ## AccessorySetupKit
 ///
@@ -39,11 +39,11 @@ import SwiftUI
 ///
 /// To support `PairedDevices`, you need to adopt the ``PairableDevice`` protocol for your device.
 /// Optionally you can adopt ``BatteryPoweredDevice`` if your device supports the
-/// [`BatteryService`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/batteryservice).
+/// [`BatteryService`](../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md).
 /// Once your device is loaded, register it with the `PairedDevices` module by calling the ``configure(device:accessing:_:_:)`` method.
 ///
 /// - Important: Don't forget to configure the `PairedDevices` module in
-///   your [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+///   your [`SpeziAppDelegate`](../Spezi/Spezi.docc/Spezi.md).
 ///
 /// ```swift
 /// import SpeziDevices
@@ -79,7 +79,7 @@ import SwiftUI
 /// ```
 ///
 /// - Tip: To display and manage paired devices and support adding new paired devices, you can use the full-featured
-/// [`DevicesView`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevicesui/devicesview).
+/// [`DevicesView`](../SpeziDevicesUI/SpeziDevicesUI.docc/SpeziDevicesUI.md).
 ///
 /// ## Topics
 ///
@@ -168,7 +168,7 @@ public final class PairedDevices: ServiceModule {
     }
 
 
-    private nonisolated(unsafe) var _pairedDevices: OrderedDictionary<UUID, PairedDevice> = [:]
+    nonisolated(unsafe) private var _pairedDevices: OrderedDictionary<UUID, PairedDevice> = [:]
     private let devicesLock = NSLock()
     /// The collection of paired devices that are persisted on disk.
     @MainActor public var pairedDevices: [PairedDeviceInfo]? { // swiftlint:disable:this discouraged_optional_collection
@@ -340,7 +340,7 @@ public final class PairedDevices: ServiceModule {
         shouldPresentDevicePairing = true
 #endif
     }
-    
+
     /// Show the accessory picker to migrate existing devices.
     ///
     /// Use the ``needsAccessorySetupKitMigration`` flag to determine if the migration picker needs to be shown.
@@ -1183,7 +1183,7 @@ extension Bluetooth {
         }
     }
 
-    fileprivate nonisolated func pairableDevice(identifier deviceTypeIdentifier: String) -> (any PairableDevice.Type)? {
+    nonisolated fileprivate func pairableDevice(identifier deviceTypeIdentifier: String) -> (any PairableDevice.Type)? {
         for descriptor in self.configuration {
             guard let pairableDevice = descriptor.deviceType as? any PairableDevice.Type,
                   pairableDevice.deviceTypeIdentifier == deviceTypeIdentifier else {
@@ -1198,7 +1198,7 @@ extension Bluetooth {
 
 #if canImport(AccessorySetupKit) && !os(macOS) && !targetEnvironment(macCatalyst)
     @available(iOS 18, *)
-    fileprivate nonisolated func pairableDevice(matches discoveryDescriptor: ASDiscoveryDescriptor) -> (any PairableDevice.Type)? {
+    nonisolated fileprivate func pairableDevice(matches discoveryDescriptor: ASDiscoveryDescriptor) -> (any PairableDevice.Type)? {
         for descriptor in self.configuration {
             guard let pairableDevice = descriptor.deviceType as? any PairableDevice.Type,
                   descriptor.discoveryCriteria.matches(descriptor: discoveryDescriptor) else {

@@ -109,7 +109,7 @@ public final class AccountConfiguration {
     @_spi(TestingSupport)
     public convenience init<Service: AccountService>(
         service: Service,
-        configuration: AccountValueConfiguration = .default, // swiftlint:disable:this function_default_parameter_at_end
+        configuration: AccountValueConfiguration = .default,
         activeDetails: AccountDetails
     ) {
         self.init(accountService: service, configuration: configuration, defaultActiveDetails: activeDetails)
@@ -126,7 +126,7 @@ public final class AccountConfiguration {
     public convenience init<Service: AccountService, Storage: AccountStorageProvider>(
         service: Service,
         storageProvider: Storage,
-        configuration: AccountValueConfiguration = .default, // swiftlint:disable:this function_default_parameter_at_end
+        configuration: AccountValueConfiguration = .default,
         activeDetails: AccountDetails
     ) {
         self.init(accountService: service, storageProvider: storageProvider, configuration: configuration, defaultActiveDetails: activeDetails)
@@ -134,7 +134,7 @@ public final class AccountConfiguration {
 
     init<Service: AccountService>(
         accountService: Service,
-        storageProvider: (any AccountStorageProvider)? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        storageProvider: (any AccountStorageProvider)? = nil,
         configuration: AccountValueConfiguration,
         defaultActiveDetails: AccountDetails? = nil
     ) {

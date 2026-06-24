@@ -1,13 +1,13 @@
 # ``SpeziConsent``
 
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 Present your user consent documents to read, sign, and export.
@@ -55,10 +55,10 @@ import SwiftUI
 
 struct ConsentStep: View {
     let url: URL
-    
+
     @State private var consentDocument: ConsentDocument?
     @State private var viewState: ViewState = .idle
-    
+
     var body: some View {
         OnboardingConsentView(consentDocument: consentDocument, viewState: $viewState) {
             // advance your Onboarding flow in response to the user having confirmed a completed consent document
@@ -100,7 +100,7 @@ ManagedNavigationStack {
 }
 ```
 
-> Note: The [`ManagedNavigationStack`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/managednavigationstack) in the example above is from the [SpeziViews](https://github.com/StanfordSpezi/SpeziViews) package.
+> Note: The [`ManagedNavigationStack`](../../SpeziViews/SpeziViews.docc/SpeziViews.md) in the example above is from the [SpeziViews](../../SpeziViews/SpeziViews.docc/SpeziViews.md) package.
 
 ### Consent Documents
 

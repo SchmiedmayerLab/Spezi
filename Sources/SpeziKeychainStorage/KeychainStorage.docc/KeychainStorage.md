@@ -1,13 +1,13 @@
 # ``SpeziKeychainStorage``
 
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 Securely store small chunks of data, such as credentials and cryptographic keys.
@@ -16,7 +16,7 @@ Securely store small chunks of data, such as credentials and cryptographic keys.
 ## Overview
 
 The `KeychainStorage` module allows for the encrypted storage of small chunks of sensitive user data, such as usernames and passwords for internet services,
-using Apple's [Keychain](https://developer.apple.com/documentation/security/keychain_services/keychain_items/using_the_keychain_to_manage_user_secrets). 
+using Apple's [Keychain](https://developer.apple.com/documentation/security/keychain_services/keychain_items/using_the_keychain_to_manage_user_secrets).
 
 Credentials can be stored in the system keychain, and optionally synchronized across multiple devices.
 Cryptographic keys can be stored in the system keychain, or if available the Secure Enclave.
@@ -28,11 +28,11 @@ You need to add the Spezi Storage Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 > Important: If you use the ``KeychainStorage`` on the macOS platform, ensure to add the [`Keychain Access Groups` entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/keychain-access-groups) to the enclosing Xcode project via *PROJECT_NAME > Signing&Capabilities > + Capability*. The array of keychain groups can be left empty, only the base entitlement is required.
 
-You can configure the ``KeychainStorage`` module in the [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+You can configure the ``KeychainStorage`` module in the [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md).
 
 ```swift
 import Spezi
@@ -61,7 +61,7 @@ struct ExampleStorageView: View {
 }
 ```
 
-Alternatively, it is common to use the `KeychainStorage` module in other modules as a dependency: [Spezi Module dependencies](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module-dependency).
+Alternatively, it is common to use the `KeychainStorage` module in other modules as a dependency: [Spezi Module dependencies](../../Spezi/Spezi.docc/Module/Module%20Dependency.md).
 
 
 ## Using the KeychainStorage Module

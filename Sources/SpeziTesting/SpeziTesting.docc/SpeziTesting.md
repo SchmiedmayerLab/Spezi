@@ -19,7 +19,7 @@ This package provides several testing extensions for the Spezi framework.
 
 ### Testing Modules
 
-Unit test are particularly useful to test the behavior of a Spezi [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module)
+Unit test are particularly useful to test the behavior of a Spezi [`Module`](../../Spezi/Spezi.docc/Module/Module.md)
 without building a complete SwiftUI App and testing functionality via UI Tests.
 However, it might be required to resolve and configure dependencies of a `Module` before it is usable.
 To do so, you can use ``withDependencyResolution(standard:simulateLifecycle:_:)`` or ``withDependencyResolution(simulateLifecycle:_:)``.

@@ -16,11 +16,11 @@ import SwiftUI
 ///
 /// The input can be either typed out via the iOS keyboard or provided as voice input and transcribed into written text.
 ///
-/// - Tip: The ``LLMChatView`` builds on top of the [SpeziChat package](https://swiftpackageindex.com/stanfordspezi/spezichat/documentation).
-/// For more details, please refer to the DocC documentation of the [`ChatView`](https://swiftpackageindex.com/stanfordspezi/spezichat/documentation/spezichat/chatview).
+/// - Tip: The ``LLMChatView`` builds on top of the [SpeziChat package](../../SpeziChat/SpeziChat.docc/SpeziChat.md).
+/// For more details, please refer to the DocC documentation of the [`ChatView`](../../SpeziChat/SpeziChat.docc/SpeziChat.md).
 ///
-/// - Tip: To add text-to-speech capabilities to the ``LLMChatView``, use the [SpeziChat package](https://swiftpackageindex.com/stanfordspezi/spezichat/documentation) and more specifically the `View/speak(_:muted:)` and `View/speechToolbarButton(enabled:muted:)` view modifiers.
-/// For more details, please refer to the DocC documentation of the [`ChatView`](https://swiftpackageindex.com/stanfordspezi/spezichat/documentation/spezichat/chatview).
+/// - Tip: To add text-to-speech capabilities to the ``LLMChatView``, use the [SpeziChat package](../../SpeziChat/SpeziChat.docc/SpeziChat.md) and more specifically the `View/speak(_:muted:)` and `View/speechToolbarButton(enabled:muted:)` view modifiers.
+/// For more details, please refer to the DocC documentation of the [`ChatView`](../../SpeziChat/SpeziChat.docc/SpeziChat.md).
 ///
 /// ### Usage
 ///
@@ -33,7 +33,7 @@ import SwiftUI
 /// The `@LLMSessionProvider` wrapper abstracts away the necessity to use the ``LLMRunner`` from the SwiftUI `Environment` within a `.task()` view modifier to instantiate the ``LLMSession``.
 /// In addition, state handling becomes easier, as one doesn't have to deal with the optionality of the ``LLMSession`` anymore.
 ///
-/// In addition, one is able to use the  text-to-speech capabilities of [SpeziChat package](https://swiftpackageindex.com/stanfordspezi/spezichat/documentation) via the `View/speak(_:muted:)` and `View/speechToolbarButton(enabled:muted:)` view modifiers.
+/// In addition, one is able to use the  text-to-speech capabilities of [SpeziChat package](../../SpeziChat/SpeziChat.docc/SpeziChat.md) via the `View/speak(_:muted:)` and `View/speechToolbarButton(enabled:muted:)` view modifiers.
 ///
 /// ```swift
 /// struct LLMChatTestView: View {
@@ -86,7 +86,7 @@ public struct LLMChatView<Session: LLMSession>: View {
                 guard self.messageTaskIdentifier != nil else {
                     return
                 }
-                
+
                 do {
                     // Trigger an output generation based on the `LLMSession/context`.
                     let stream = try await self.llm.generate()

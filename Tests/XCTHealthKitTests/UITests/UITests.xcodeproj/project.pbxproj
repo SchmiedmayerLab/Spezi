@@ -22,15 +22,35 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* XCTHealthKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = XCTHealthKit; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* XCTHealthKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = XCTHealthKit; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEE102F2998BD97000822E1 /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		80289F7B2E71B337008AF245 /* TestApp */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestApp; sourceTree = "<group>"; };
-		80289F802E71B337008AF245 /* TestAppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestAppUITests; sourceTree = "<group>"; };
+		80289F7B2E71B337008AF245 /* TestApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
+		80289F802E71B337008AF245 /* TestAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestAppUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,8 +120,6 @@
 				80289F7B2E71B337008AF245 /* TestApp */,
 			);
 			name = TestApp;
-			packageProductDependencies = (
-			);
 			productName = Example;
 			productReference = 2F6D139228F5F384007C25D6 /* TestApp.app */;
 			productType = "com.apple.product-type.application";
@@ -159,9 +177,6 @@
 				Base,
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
-			packageReferences = (
-				2FED18EE299954C600A51A28 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -265,7 +280,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -321,7 +336,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -469,17 +484,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		2FED18EE299954C600A51A28 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 1.2.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		2F87F9ED2952F10600810247 /* XCTHealthKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -487,7 +491,6 @@
 		};
 		2FED18EF299954C600A51A28 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2FED18EE299954C600A51A28 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -115,7 +115,7 @@ public struct ConsentSignatureForm: View {
     /// - parameter signatureDate: The date that is displayed under the signature line.
     /// - parameter signatureDateFormat: The date format used to format the `signatureDate`.
     public init(
-        labels: Labels = .init(), // swiftlint:disable:this function_default_parameter_at_end
+        labels: Labels = .init(),
         storage: Binding<ConsentDocument.SignatureStorage>,
         isSigning: Binding<Bool>? = nil,
         signatureDate: Date? = nil,

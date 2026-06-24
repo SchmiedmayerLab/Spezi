@@ -24,8 +24,8 @@ public import class UIKit.UIScene
 ///
 /// ### Defining and Using Access Guards
 ///
-/// The module needs to be registered in a Spezi-based application using the [`configuration`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate/configuration)
-/// in a [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate):
+/// The module needs to be registered in a Spezi-based application using the [`configuration`](../Spezi/Spezi.docc/Spezi.md)
+/// in a [`SpeziAppDelegate`](../Spezi/Spezi.docc/Spezi.md):
 /// ```swift
 /// class ExampleAppDelegate: SpeziAppDelegate {
 ///     override var configuration: Configuration {
@@ -42,7 +42,7 @@ public import class UIKit.UIScene
 /// }
 /// ```
 ///
-/// > Tip: You can learn more about a [`Module` in the Spezi documentation](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module).
+/// > Tip: You can learn more about a [`Module` in the Spezi documentation](../Spezi/Spezi.docc/Module/Module.md).
 ///
 /// You can now use ``AccessGuarded`` to protect individual views within your app with this access guard,
 /// enforcing that the user enter a passcode or perform a biometrics-based check (depending on the access guard's configuration)
@@ -110,24 +110,24 @@ public final class AccessGuards: Module, EnvironmentAccessible, LifecycleHandler
     private struct ModelKey: Hashable {
         private let rawIdentifier: String
         private let identifierType: ObjectIdentifier
-        
+
         init<I: _AnyAccessGuardIdentifier>(_ identifier: I) {
             rawIdentifier = identifier.value
             identifierType = ObjectIdentifier(I.self)
         }
     }
-    
+
     @ObservationIgnored @Dependency(KeychainStorage.self) var keychain
     private(set) var lastEnteredBackground: Date = .now
     private var configs: [any _AccessGuardConfig]
     private var models: [ModelKey: any _AnyAccessGuardModel] = [:]
-    
-    
+
+
     public init(@ArrayBuilder<any _AccessGuardConfig> _ configurations: () -> [any _AccessGuardConfig]) {
         self.configs = configurations()
         Self.assertUniqueness(configs.map(\.typeErasedId))
     }
-    
+
     private static func assertUniqueness(_ identifiers: [any _AnyAccessGuardIdentifier]) {
         let duplicateIdentifiers = identifiers
             .grouped(by: \.value)
@@ -155,7 +155,7 @@ extension AccessGuards {
             model.didEnterBackground()
         }
     }
-    
+
     @_documentation(visibility: internal)
     @MainActor
     public func sceneWillEnterForeground(_ scene: UIScene) { // swiftlint:disable:this missing_docs
@@ -175,7 +175,7 @@ extension AccessGuards {
         }
         configs.append(config)
     }
-    
+
     /// Resets the access guard for an identifier.
     ///
     /// The function removes the code and all stored information.
@@ -191,7 +191,7 @@ extension AccessGuards {
             break
         }
     }
-    
+
     /// Determine the setup state of an access lock.
     ///
     /// Use the ``SetAccessGuard`` view to setup an access guard.
@@ -201,14 +201,14 @@ extension AccessGuards {
     public func setupComplete(for id: AccessGuardIdentifier<CodeAccessGuard>) -> Bool {
         !model(for: id).needsSetup
     }
-    
+
     /// Locks an access guard.
     /// - Parameter id: The identifier of the access guard that should be locked.
     @MainActor
     public func lock(_ id: AccessGuardIdentifier<some Any>) {
         model(for: id).lock()
     }
-    
+
     /// Locks an access guard.
     /// - Parameter id: The identifier of the access guard that should be locked.
     @MainActor
@@ -216,13 +216,13 @@ extension AccessGuards {
     public func lock(_ id: some _AnyAccessGuardIdentifier<some Any>) {
         model(for: id).lock()
     }
-    
+
     /// Checks is the `AccessGuard` associated with the given identifier is currently locked.
     @MainActor
     public func isLocked(_ id: AccessGuardIdentifier<some Any>) -> Bool {
         model(for: id).isLocked
     }
-    
+
     func config<Config>(for id: some _AnyAccessGuardIdentifier<Config>) -> Config {
         guard let config = configs.first(where: { $0.typeErasedId.value == id.value }) else {
             preconditionFailure(
@@ -234,7 +234,7 @@ extension AccessGuards {
         }
         return config
     }
-    
+
     @MainActor
     func model<Config>(for id: some _AnyAccessGuardIdentifier<Config>) -> Config._Model {
         let config = config(for: id)

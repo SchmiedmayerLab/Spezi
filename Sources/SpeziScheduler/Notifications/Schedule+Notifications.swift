@@ -64,7 +64,6 @@ extension Schedule {
     }
     
     
-    // swiftlint:disable function_default_parameter_at_end
     static func notificationMatchingHint( // swiftlint:disable:this function_parameter_count
         forMatchingInterval interval: Int,
         calendar: Calendar,
@@ -75,7 +74,6 @@ extension Schedule {
         second: Int,
         weekday: Int? = nil,
         consider duration: Duration
-        // swiftlint:enable function_default_parameter_at_end
     ) -> NotificationMatchingHint {
         guard interval == 1 else {
             return .none

@@ -17,7 +17,7 @@ import SpeziBluetoothServices
 public protocol GenericDevice: BluetoothDevice, GenericBluetoothPeripheral, Identifiable, Sendable {
     /// The device identifier.
     ///
-    /// Use the [`DeviceState`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/devicestate) property wrapper to
+    /// Use the [`DeviceState`](../../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md) property wrapper to
     /// declare this property.
     /// ```swift
     /// @DeviceState(\.id) var id
@@ -26,7 +26,7 @@ public protocol GenericDevice: BluetoothDevice, GenericBluetoothPeripheral, Iden
 
     /// The device name.
     ///
-    /// Use the [`DeviceState`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/devicestate) property wrapper to
+    /// Use the [`DeviceState`](../../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md) property wrapper to
     /// declare this property.
     /// ```swift
     /// @DeviceState(\.name) var name
@@ -35,7 +35,7 @@ public protocol GenericDevice: BluetoothDevice, GenericBluetoothPeripheral, Iden
 
     /// The advertisement data received in the latest advertisement.
     ///
-    /// Use the [`DeviceState`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/devicestate) property wrapper to
+    /// Use the [`DeviceState`](../../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md) property wrapper to
     /// declare this property.
     /// ```swift
     /// @DeviceState(\.advertisementData) var advertisementData
@@ -44,7 +44,7 @@ public protocol GenericDevice: BluetoothDevice, GenericBluetoothPeripheral, Iden
 
     /// The device information service of the peripheral.
     ///
-    /// Use the [`@Service`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/service) property wrapper to
+    /// Use the [`@Service`](../../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md) property wrapper to
     /// declare this property.
     /// ```swift
     /// @Service var deviceInformation = DeviceInformationService()

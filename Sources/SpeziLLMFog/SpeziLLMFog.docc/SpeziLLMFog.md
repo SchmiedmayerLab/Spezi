@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 Discover and dispatch Large Language Models (LLMs) inference jobs to Fog node resources within the local network.
@@ -16,7 +16,7 @@ Discover and dispatch Large Language Models (LLMs) inference jobs to Fog node re
 
 A module that allows you to interact with Fog node-based Large Language Models (LLMs) in the local network within your Spezi application.
 ``SpeziLLMFog`` automatically discovers LLM computing resources within the local network, establishes a connection to these [Fog nodes](https://en.wikipedia.org/wiki/Fog_computing), and then dispatches LLM inference jobs to these nodes. The response is then streamed back to ``SpeziLLMFog`` and surfaced to the user. The fog nodes advertise their services via [mDNS](https://en.wikipedia.org/wiki/Multicast_DNS), enabling clients to discover all fog nodes serving a specific host within the local network.
-``SpeziLLMFog`` provides a pure Swift-based API for interacting with the Fog LLMs, building on top of the infrastructure of the [SpeziLLM target](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm).
+``SpeziLLMFog`` provides a pure Swift-based API for interacting with the Fog LLMs, building on top of the infrastructure of the [SpeziLLM target](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md).
 
 ## Setup
 
@@ -26,7 +26,7 @@ You need to add the SpeziLLM Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ## Spezi LLM Fog Components
 
@@ -53,7 +53,7 @@ As the to-be-used models are running on a Fog node within the local network, the
 
 #### Setup
 
-In order to use Fog LLMs within the Spezi ecosystem, the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) needs to be initialized in the Spezi `Configuration` with the `LLMFogPlatform`. Only after, the `LLMRunner` can be used for inference with Fog LLMs. See the [SpeziLLM documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) for more details.
+In order to use Fog LLMs within the Spezi ecosystem, the [SpeziLLM](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) needs to be initialized in the Spezi `Configuration` with the `LLMFogPlatform`. Only after, the `LLMRunner` can be used for inference with Fog LLMs. See the [SpeziLLM documentation](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) for more details.
 The `LLMFogPlatform` needs to be initialized with the custom root CA certificate that was used to sign the fog node web service certificate (see the `FogNode/README.md` documentation for more information). Copy the root CA certificate from the fog node as resource to the application using `SpeziLLMFog` and use it to initialize the `LLMFogPlatform` within the Spezi `Configuration`.
 
 ```swift
@@ -79,13 +79,13 @@ On the client-side within Spezi, one has to pass `nil` for the `caCertificate` p
 In addition to set local network discovery entitlements described above, users must grant explicit authorization for local network access.
 This authorization can be requested during the app’s onboarding process using ``LLMFogDiscoveryAuthorizationView``.
 It informs users about the need for local network access, prompts them to grant it, and attempts to verify the access status (note: the OS does not expose this information).
-For detailed guidance on integrating the ``LLMFogDiscoveryAuthorizationView`` in an onboarding flow managed by `[SpeziOnboarding`](https://swiftpackageindex.com/stanfordspezi/spezionboarding), refer to the in-line documentation of the ``LLMFogDiscoveryAuthorizationView``.
+For detailed guidance on integrating the ``LLMFogDiscoveryAuthorizationView`` in an onboarding flow managed by `SpeziOnboarding`, refer to the in-line documentation of the ``LLMFogDiscoveryAuthorizationView``.
 
 #### Usage
 
-The code example below showcases the interaction with a Fog LLM through the the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
+The code example below showcases the interaction with a Fog LLM through the the [SpeziLLM](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
 
-The ``LLMFogSchema`` defines the type and configurations of the to-be-executed ``LLMFogSession``. This transformation is done via the [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) that uses the ``LLMFogPlatform``. The inference via ``LLMFogSession/generate()`` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
+The ``LLMFogSchema`` defines the type and configurations of the to-be-executed ``LLMFogSession``. This transformation is done via the [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) that uses the ``LLMFogPlatform``. The inference via ``LLMFogSession/generate()`` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
 The ``LLMFogSession`` automatically discovers all available LLM fog nodes within the local network upon setup and the dispatches the LLM inference jobs to the fog computing resource, streaming back the response and surfaces it to the user.
 
 - Note: Use the ``LLMFogDiscoverySelectionView`` to give users more freedom about the discovered and selected fog resource within the local network.

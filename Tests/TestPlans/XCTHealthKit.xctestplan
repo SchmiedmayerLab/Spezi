@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "00000000-0000-0000-0000-000000000032",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+      {
+        "containerPath" : "container:",
+        "identifier" : "XCTHealthKit",
+        "name" : "XCTHealthKit"
+      }
+    ]
+    }
+  },
+  "testTargets" : [
+      {
+        "target" : {
+          "containerPath" : "container:",
+          "identifier" : "XCTHealthKitTests",
+          "name" : "XCTHealthKitTests"
+        }
+      }
+  ],
+  "version" : 1
+}

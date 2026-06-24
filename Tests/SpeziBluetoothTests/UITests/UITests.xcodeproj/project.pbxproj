@@ -38,14 +38,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* SpeziBluetooth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziBluetooth; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* SpeziBluetooth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziBluetooth; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		80DAE2162E620F280027474C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		80DAE2162E620F280027474C /* Exceptions for "TestApp" folder in "TestApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -55,8 +55,29 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		80DAE1ED2E620F150027474C /* TestAppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestAppUITests; sourceTree = "<group>"; };
-		80DAE2052E620F280027474C /* TestApp */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (80DAE2162E620F280027474C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TestApp; sourceTree = "<group>"; };
+		80DAE1ED2E620F150027474C /* TestAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestAppUITests;
+			sourceTree = "<group>";
+		};
+		80DAE2052E620F280027474C /* TestApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				80DAE2162E620F280027474C /* Exceptions for "TestApp" folder in "TestApp" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,10 +213,6 @@
 				Base,
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
-			packageReferences = (
-				2F64EA892A86B3DE006789D0 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-				A9AAC7F02C26D73C0034088B /* XCRemoteSwiftPackageReference "SpeziViews" */,
-			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -305,8 +322,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -315,7 +332,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -365,8 +382,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -375,7 +392,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -405,7 +422,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezi.bluetooth.testapplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -446,7 +463,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezi.bluetooth.testapplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -469,7 +486,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezi.bluetooth.testapplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -493,7 +510,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.spezi.bluetooth.testapplication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -541,29 +558,9 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		2F64EA892A86B3DE006789D0 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		A9AAC7F02C26D73C0034088B /* XCRemoteSwiftPackageReference "SpeziViews" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziViews.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		2F64EA8A2A86B3DE006789D0 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2F64EA892A86B3DE006789D0 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		A92802B62B5081F200874D0A /* SpeziBluetooth */ = {
@@ -580,7 +577,6 @@
 		};
 		A9AAC7F12C26D73C0034088B /* SpeziViews */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A9AAC7F02C26D73C0034088B /* XCRemoteSwiftPackageReference "SpeziViews" */;
 			productName = SpeziViews;
 		};
 /* End XCSwiftPackageProductDependency section */

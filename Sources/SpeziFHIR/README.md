@@ -5,16 +5,11 @@ This source file is part of the Stanford Spezi open-source project.
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-  
+
 -->
 
 # Spezi FHIR
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziFHIR/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziFHIR/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziFHIR/branch/main/graph/badge.svg?token=zVpvbIrHL6)](https://codecov.io/gh/StanfordSpezi/SpeziFHIR)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7803123.svg)](https://doi.org/10.5281/zenodo.7803123)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziFHIR%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziFHIR)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziFHIR%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziFHIR)
 
 Build FHIR-based healthcare applications with Spezi.
 
@@ -26,21 +21,45 @@ The Spezi FHIR Swift Package provides essential building blocks for developing F
 
 ### Add SpeziFHIR as a Dependency
 
-You need to add the SpeziFHIR Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the products you need, such as `SpeziFHIR`, `SpeziFHIRHealthKit`, or `SpeziFHIRMockPatients`.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziFHIR", package: "Spezi"),
+        .product(name: "SpeziFHIRHealthKit", package: "Spezi"),
+        .product(name: "SpeziFHIRMockPatients", package: "Spezi")
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ## Targets
 
 Spezi FHIR provides a number of targets to help developers integrate FHIR functionality in their Spezi-based applications:
 
-- [`SpeziFHIR`](https://swiftpackageindex.com/stanfordspezi/spezifhir/documentation/spezifhir): Core FHIR resource management, storage, and utilities for working with FHIR R4 and DSTU2 resources.
-- [`SpeziFHIRHealthKit`](https://swiftpackageindex.com/stanfordspezi/spezifhir/documentation/spezifhirhealthkit): Seamless integration between HealthKit data and FHIR resources, enabling conversion of health data to FHIR format.
-- [`SpeziFHIRMockPatients`](https://swiftpackageindex.com/stanfordspezi/spezifhir/documentation/spezifhirmockpatients): Mock patient data and FHIR bundles for testing and development purposes.
+- `SpeziFHIR`: Core FHIR resource management, storage, and utilities for working with FHIR R4 and DSTU2 resources.
+- `SpeziFHIRHealthKit`: Seamless integration between HealthKit data and FHIR resources, enabling conversion of health data to FHIR format.
+- `SpeziFHIRMockPatients`: Mock patient data and FHIR bundles for testing and development purposes.
 
 ### SpeziFHIR
 
@@ -73,7 +92,7 @@ import SwiftUI
 
 struct ExampleView: View {
     @Environment(FHIRStore.self) private var fhirStore
-    
+
 
     var body: some View {
         List {
@@ -82,7 +101,7 @@ struct ExampleView: View {
                     Text(observation.displayName)
                 }
             }
-            
+
             Section("Conditions") {
                 ForEach(fhirStore.conditions) { condition in
                     Text(condition.displayName)
@@ -96,20 +115,22 @@ struct ExampleView: View {
 ### SpeziFHIRHealthKit
 
 Seamlessly integrate HealthKit data with FHIR resources including easy ways to add `HKSample`s to the `FHIRStore` while loading attachments from the FHIR resources stored in HealthKit or attached information such as voltage information of symptoms for electrocardiograms.
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/stanfordspezi/spezifhir/documentation/spezifhirhealthkit).
+For more information, review the [SpeziFHIRHealthKit sources](../SpeziFHIRHealthKit).
 
 ### SpeziFHIRMockPatients
 
 The target offers easily loadable mock patient data for testing and development.
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/stanfordspezi/spezifhir/documentation/spezifhirmockpatients).
+For more information, review the [SpeziFHIRMockPatients sources](../SpeziFHIRMockPatients).
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziFHIR/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterLight.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterDark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

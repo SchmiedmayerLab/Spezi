@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 A Spezi module for accessing location data.
@@ -24,7 +24,7 @@ You need to add the SpeziLocation Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ### 2. Configure the SpeziLocation module in the SpeziAppDelegate.
 
@@ -67,20 +67,20 @@ import SwiftUI
 
 struct LocationPermissionsView: View {
     @Environment(SpeziLocation.self) private var speziLocation
-    
+
     var body: some View {
         Button("Request Location Access") {
             Task {
                 do {
                     // Request permission to access location while the app is in use
                     let result = await speziLocation.requestWhenInUseAuthorization()
-                    
+
                     // Check if permission was granted
                     if (result == .authorizedWhenInUse) {
-                        
+
                         // Get the user's latest location
                         let location = try await speziLocation.getLatestLocation()
-                        
+
                         // Extract the latitude and longitude
                         let latitude = location.coordinate.latitude
                         let longitude = location.coordinate.longitude

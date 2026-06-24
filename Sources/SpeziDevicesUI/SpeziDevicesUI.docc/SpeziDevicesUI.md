@@ -36,10 +36,10 @@ SpeziDevicesUI helps you to visualize Bluetooth device state and communicate int
 
 ### Displaying paired devices
 
-When managing paired devices using [`PairedDevices`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevices/paireddevices),
+When managing paired devices using [`PairedDevices`](../../SpeziDevices/SpeziDevices.docc/SpeziDevices.md),
 SpeziDevicesUI provides reusable View components to display paired devices.
 
-The ``DevicesView`` provides everything you need to pair and manage paired devices. 
+The ``DevicesView`` provides everything you need to pair and manage paired devices.
 It shows already paired devices in a grid layout using the ``DevicesGrid``. Additionally, it places an add button in the toolbar
 to discover new devices using the ``AccessorySetupSheet`` view.
 
@@ -62,8 +62,8 @@ struct MyHomeView: View {
 
 ### Displaying Measurements
 
-When managing measurements using [`HealthMeasurements`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevices/healthmeasurements),
-you can use the [`MeasurementsRecordedSheet`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevicesui/measurementsrecordedsheet)
+When managing measurements using [`HealthMeasurements`](../../SpeziDevices/SpeziDevices.docc/SpeziDevices.md),
+you can use the [`MeasurementsRecordedSheet`](SpeziDevicesUI.md)
 to display pending measurements.
 Below is a short code example on how you would configure this view.
 
@@ -84,7 +84,7 @@ struct MyHomeView: View {
 ```
 
 > Important: Don't forget to configure the `HealthMeasurements` module in
-    your [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+    your [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md).
 
 ## Topics
 

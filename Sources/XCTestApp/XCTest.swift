@@ -266,7 +266,7 @@ public func XCTAssertNoThrow(
 // MARK: Utilities
 
 private func formatFailureMessage(
-    _ caller: String = #function, // swiftlint:disable:this function_default_parameter_at_end
+    _ caller: String = #function,
     baseText: String,
     additionalMessage: String
 ) -> String {

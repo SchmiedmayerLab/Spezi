@@ -64,6 +64,7 @@ public struct AccessorySetupSheet<Collection: RandomAccessCollection, PairingHin
             .presentationDetents([.medium])
             .presentationCornerRadius(25)
             .interactiveDismissDisabled()
+            .accessibilityIdentifier("AccessorySetupSheet")
     }
 
     /// Create a new Accessory Setup sheet.

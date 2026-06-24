@@ -28,7 +28,7 @@ import UserNotifications
 ///
 /// - Note: The `SchedulerNotifications` module is automatically configured by the `Scheduler` module using default configuration options. If you want to
 ///     customize the configuration, just provide the configured module in your `configuration` section of your
-///     [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+///     [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md).
 ///
 /// ### Automatic Scheduling
 ///
@@ -159,7 +159,7 @@ public final class SchedulerNotifications: Module, DefaultInitializable, Environ
 
     /// Defines the presentation of scheduler notifications if they are delivered when the app is in foreground.
     nonisolated public let notificationPresentation: UNNotificationPresentationOptions
-    
+
     private let cal = Calendar.current
 
     /// Automatically request provisional notification authorization if notification authorization isn't determined yet.
@@ -170,7 +170,7 @@ public final class SchedulerNotifications: Module, DefaultInitializable, Environ
 
     /// Make sure we aren't running multiple notification scheduling at the same time.
     private let scheduleNotificationAccess = AsyncSemaphore()
-    
+
     /// Small flag that helps us to debounce multiple calls to schedule notifications.
     ///
     /// This flag is set once the scheduling notifications task is queued and reset once it starts running.
@@ -185,7 +185,7 @@ public final class SchedulerNotifications: Module, DefaultInitializable, Environ
     /// In the case that background tasks are not enabled, we still want to schedule notifications on a best-effort approach.
     @AppStorage(SchedulerNotifications.earliestScheduleRefreshDateStorageKey)
     private var earliestScheduleRefreshDate: Date?
-    
+
     @AppStorage(SchedulerNotifications.authorizationDisallowedLastSchedulingStorageKey)
     private var authorizationDisallowedLastScheduling = false
 
@@ -195,7 +195,7 @@ public final class SchedulerNotifications: Module, DefaultInitializable, Environ
     nonisolated public required convenience init() {
         self.init(notificationLimit: 30)
     }
-    
+
     /// Configure the scheduler notifications module.
     /// - Parameters:
     ///   - notificationLimit: The limit of notification requests that should be pre-scheduled at a time.
@@ -218,7 +218,7 @@ public final class SchedulerNotifications: Module, DefaultInitializable, Environ
         self.automaticallyRequestProvisionalAuthorization = automaticallyRequestProvisionalAuthorization
         precondition(schedulingInterval >= .weeks(1), "The scheduling interval must be at least 1 week.")
     }
-    
+
     /// Configures the module.
     @_documentation(visibility: internal)
     public func configure() {
@@ -345,20 +345,20 @@ extension SchedulerNotifications {
         await notifications.removePendingNotificationRequests { request in
             request.isSpeziSchedulerRequest
         }
-        
+
         // 2: cancel any pending/upcoming background notification scheduling registrations
         #if !(os(macOS) || os(watchOS))
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: PermittedBackgroundTaskIdentifier.speziSchedulerNotificationsScheduling.rawValue)
         #endif
         earliestScheduleRefreshDate = nil
-        
+
         let now = Date.now // ensure consistency in queries
         guard try scheduler.hasTasksWithNotifications(for: now...) else {
             // this check is important. We know that not a single task (from now on) has notifications enabled.
             // Therefore, we do not need to schedule a background task to refresh notifications, or do anything else.
             return
         }
-        
+
         // 3: create new requests, based on the tasks, their schedules, etc
         let settings = await notificationSettings()
         switch settings.authorizationStatus {
@@ -389,16 +389,16 @@ extension SchedulerNotifications {
         }
 
         authorizationDisallowedLastScheduling = false
-        
+
         /// the amount of "slots" which would be currently available to other modules to schedule notifications.
         let remainingNotificationSlots = await Notifications.pendingNotificationsLimit
             - notifications.pendingNotificationRequests().count
             - notificationLimit
         // if remainingNotificationSlots is negative, we need to lower our limit, because there is simply not enough space for us
         let currentSchedulerLimit = min(notificationLimit, notificationLimit + remainingNotificationSlots)
-        
+
         let range = now..<now.addingTimeInterval(schedulingInterval)
-        
+
         var upcomingEventsByTask: [[Event]] = try scheduler.queryTasks(for: range, predicate: #Predicate { $0.scheduleNotifications })
             .map { task in
                 try scheduler.queryEvents(for: task, in: range).filter { !$0.isCompleted }
@@ -506,7 +506,7 @@ extension SchedulerNotifications {
                 }
             }
         }
-        
+
         if let earliestNonScheduledEvent = upcomingEventsByTask.flatMap({ $0 }).min(by: { $0.occurrence.start < $1.occurrence.start }) {
             // register a background refresh for the earliest event we did not schedule a notification for
             scheduleNotificationsRefresh(nextThreshold: earliestNonScheduledEvent.occurrence.start)

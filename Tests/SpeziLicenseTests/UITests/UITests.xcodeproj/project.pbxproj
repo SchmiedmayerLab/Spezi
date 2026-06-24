@@ -12,6 +12,7 @@
 		2FA7382C290ADFAA007ACEB9 /* TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7382B290ADFAA007ACEB9 /* TestApp.swift */; };
 		5673DB522BAC91A400162083 /* SpeziViews in Frameworks */ = {isa = PBXBuildFile; productRef = 5673DB512BAC91A400162083 /* SpeziViews */; };
 		56DF6C9F2BAC525A00ABE636 /* SpeziLicense in Frameworks */ = {isa = PBXBuildFile; productRef = 56DF6C9E2BAC525A00ABE636 /* SpeziLicense */; };
+		809338212FEC01D80037BEBF /* ThreadLocal in Frameworks */ = {isa = PBXBuildFile; productRef = 809338202FEC01D80037BEBF /* ThreadLocal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +45,7 @@
 		2F8A431229130A8C005D2B8F /* TestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppUITests.swift; sourceTree = "<group>"; };
 		2FA7382B290ADFAA007ACEB9 /* TestApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestApp.swift; sourceTree = "<group>"; };
 		2FB0758A299DDB9000C0B37F /* TestApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestApp.xctestplan; sourceTree = "<group>"; };
-		56A038C82BAC520200E0D1C4 /* SpeziLicense */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziLicense; path = ../..; sourceTree = "<group>"; };
+		56A038C82BAC520200E0D1C4 /* SpeziLicense */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziLicense; path = ../../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +55,7 @@
 			files = (
 				56DF6C9F2BAC525A00ABE636 /* SpeziLicense in Frameworks */,
 				5673DB522BAC91A400162083 /* SpeziViews in Frameworks */,
+				809338212FEC01D80037BEBF /* ThreadLocal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +135,7 @@
 			packageProductDependencies = (
 				56DF6C9E2BAC525A00ABE636 /* SpeziLicense */,
 				5673DB512BAC91A400162083 /* SpeziViews */,
+				809338202FEC01D80037BEBF /* ThreadLocal */,
 			);
 			productName = Example;
 			productReference = 2F6D139228F5F384007C25D6 /* TestApp.app */;
@@ -187,7 +190,7 @@
 			mainGroup = 2F6D138928F5F384007C25D6;
 			packageReferences = (
 				5673DB462BAC90E800162083 /* XCRemoteSwiftPackageReference "swift-package-list" */,
-				5673DB502BAC91A400162083 /* XCRemoteSwiftPackageReference "SpeziViews" */,
+				8093381F2FEC01D80037BEBF /* XCRemoteSwiftPackageReference "ThreadLocal" */,
 			);
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
@@ -385,12 +388,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -423,12 +426,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -451,8 +454,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -476,8 +479,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -573,12 +576,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -601,8 +604,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637867499T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.templatepackage.testapp.uitests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -662,12 +665,12 @@
 				minimumVersion = 4.1.0;
 			};
 		};
-		5673DB502BAC91A400162083 /* XCRemoteSwiftPackageReference "SpeziViews" */ = {
+		8093381F2FEC01D80037BEBF /* XCRemoteSwiftPackageReference "ThreadLocal" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordSpezi/SpeziViews";
+			repositoryURL = "https://github.com/SchmiedmayerLab/ThreadLocal.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.1;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.1.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -680,12 +683,16 @@
 		};
 		5673DB512BAC91A400162083 /* SpeziViews */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5673DB502BAC91A400162083 /* XCRemoteSwiftPackageReference "SpeziViews" */;
 			productName = SpeziViews;
 		};
 		56DF6C9E2BAC525A00ABE636 /* SpeziLicense */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SpeziLicense;
+		};
+		809338202FEC01D80037BEBF /* ThreadLocal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8093381F2FEC01D80037BEBF /* XCRemoteSwiftPackageReference "ThreadLocal" */;
+			productName = ThreadLocal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

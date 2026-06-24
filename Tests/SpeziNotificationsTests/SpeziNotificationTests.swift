@@ -6,9 +6,9 @@
 // SPDX-License-Identifier: MIT
 //
 
+@testable import struct Spezi.Configuration
 import protocol Spezi.Module
 import class Spezi.SpeziAppDelegate
-@testable import struct Spezi.Configuration
 @testable import SpeziNotifications
 import SwiftUI
 import UserNotifications

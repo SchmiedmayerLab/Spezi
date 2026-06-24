@@ -1,13 +1,13 @@
 # ``XCTHealthKit``
 
 <!--
-                  
+
 This source file is part of the XCTHealthKit open source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 XCTHealthKit is an XCTest-based framework to test the creation of HealthKit samples using the Apple Health App on the iPhone simulator.
@@ -15,7 +15,7 @@ XCTHealthKit is an XCTest-based framework to test the creation of HealthKit samp
 
 ## How To Use XCTHealthKit
 
-You can use XCTHealthKit in your UI tests. The [API documentation](https://swiftpackageindex.com/StanfordBDHG/XCTHealthKit/documentation) provides a detailed overview of the public interface of XCTHealthKit.
+You can use XCTHealthKit in your UI tests. The [API documentation](XCTHealthKit.md) provides a detailed overview of the public interface of XCTHealthKit.
 
 The framework has the following functionalities:
 
@@ -67,7 +67,7 @@ class HealthKitUITests: XCTestCase {
     func testHandleTheHealthKitAuthorizationSheet() throws {
         let app = XCUIApplication()
         app.launch()
-        
+
         app.buttons["Request HealthKit Authorization"].tap()
         try app.handleHealthKitAuthorization()
     }

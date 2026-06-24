@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
 ## Overview
 
 `SpeziAccountPhoneNumbers` provides phone number management functionality for the
-[Spezi](https://github.com/StanfordSpezi/Spezi/) framework ecosystem, enabling users to add, verify, and manage phone numbers in their accounts.
+[Spezi](../../Spezi/Spezi.docc/Spezi.md) framework ecosystem, enabling users to add, verify, and manage phone numbers in their accounts.
 
 The framework integrates with the `SpeziAccount` framework to provide a seamless phone number management experience.
 It uses the [PhoneNumberKit](https://github.com/marmelroy/PhoneNumberKit) library for robust phone number validation and formatting.

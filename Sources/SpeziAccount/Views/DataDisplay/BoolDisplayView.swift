@@ -65,7 +65,6 @@ public struct BoolDisplayView<Key: AccountKey>: DataDisplayView where Key.Value 
     ///   - value: The value to display.
     @MainActor
     public init(label: Label = .onOff, _ keyPath: KeyPath<AccountKeys, Key.Type>, _ value: Key.Value) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.init(label: label, value)
     }
 

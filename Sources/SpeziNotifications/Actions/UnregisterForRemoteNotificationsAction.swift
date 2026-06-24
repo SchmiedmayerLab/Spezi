@@ -30,7 +30,7 @@ extension Spezi {
     /// For more information refer to the [`unregisterForRemoteNotifications()`](https://developer.apple.com/documentation/uikit/uiapplication/1623093-unregisterforremotenotifications)
     /// documentation for `UIApplication` or for the respective equivalent for your current platform.
     ///
-    /// Below is a short code example on how to use this action within your [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module).
+    /// Below is a short code example on how to use this action within your [`Module`](../../Spezi/Spezi.docc/Module/Module.md).
     ///
     /// ```swift
     /// class ExampleModule: Module {

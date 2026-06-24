@@ -63,7 +63,7 @@ extension Spezi {
     /// Below is a short code example on how to use this action within your ``Module``.
     ///
     /// - Warning: Registering for Remote Notifications on Simulator devices might not be possible if your are not signed into an Apple ID on the host machine.
-    ///     The method might throw a [`TimeoutError`](https://swiftpackageindex.com/stanfordspezi/spezifoundation/documentation/spezifoundation/timeouterror)
+    ///     The method might throw a [`TimeoutError`](../../SpeziFoundation/SpeziFoundation.docc/SpeziFoundation.md)
     ///     in such a case.
     ///
     /// ```swift

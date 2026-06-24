@@ -12,11 +12,11 @@ SPDX-License-Identifier: MIT
 
 Thank you for contributing to the Stanford Spezi open-source project; we value the time and effort you invest in the open-source project! This guide provides you with hints and guidance to contribute to a Swift-based Spezi repository.
 
-> Important: This Contributing guide extens the [Contributing Guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) with Swift-specific guidelines and hints. You MUST refer to the [Contributing Guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) for more general information on how to contribute to the Stanford Spezi open-source project.
+> Important: This contributing guide provides Swift-specific guidelines and hints for contributing to the Spezi monorepo.
 
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-Spezi has a great collection of Swift Package-based modules: https://swiftpackageindex.com/StanfordSpezi.
+Spezi has a collection of Swift Package-based modules included in this monorepo; see the package manifest for the current list.
 All Swift-based Stanford Spezi repositories follow a similar setup and structure that is further described in this document.
 
 > Tip: This guide uses the terminology defined in the <doc:Spezi-Guide> and refers to the <doc:Documentation-Guide>.
@@ -37,7 +37,7 @@ All contributions MUST use these localization features and MUST use the Swift Pa
 
 ## Testing
 
-As noted in the [Contributing Guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md), all changes MUST be properly tested.
+All changes MUST be properly tested.
 Therefore, all Swift Spezi Modules contain a testing setup; it is essential to test all the functionality and run those tests during the development process.
 You can learn more about running tests in [Xcode: Running tests and interpreting results - Apple Documentation](https://developer.apple.com/documentation/xcode/running-tests-and-interpreting-results).
 
@@ -52,7 +52,7 @@ All user interface-related changes MUST be tested using UI tests.
 
 ## Documentation
 
-The Swift-based Stanford Spezi modules contain a [DocC-based](https://github.com/apple/swift-docc) documentation merging inline documentation, dedicated articles, and tutorials within a single documentation bundle deployed to the Swift Package Index.
+The Swift-based Stanford Spezi modules contain [DocC-based](https://github.com/apple/swift-docc) documentation merging inline documentation, dedicated articles, and tutorials within a single documentation bundle.
 The DocC documentation archives are typically found in the Swift Package target's respective sources folder.
 
 > Tip: The [WWDC 2021 session "Meet DocC documentation in Xcode"](https://developer.apple.com/wwdc21/10166) is an excellent resource to get started with understanding DocC documentation and how you can find, edit, and inspect it right in Xcode.

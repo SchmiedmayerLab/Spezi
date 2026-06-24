@@ -371,7 +371,6 @@ extension GenericFileWriter where S == EDFSample {
     ///   - signals: The array of signal descriptions.
     /// - Throws: Throws if FileHandle creation fails.
     public convenience init(url: URL, format: RecordingFormat? = nil, information: FileInformation, signals: [Signal]) throws {
-        // swiftlint:disable:previous function_default_parameter_at_end
         try self.init(url: url, format: .edf, fileInformation: information, dataFormat: format?.dataFormat(for: .edf), signals: signals)
     }
 }
@@ -389,7 +388,7 @@ extension GenericFileWriter where S == BDFSample {
     public convenience init(
         url: URL,
         type: FileFormat = .bdf,
-        format: RecordingFormat? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        format: RecordingFormat? = nil,
         information: FileInformation,
         signals: [Signal]
     ) throws {

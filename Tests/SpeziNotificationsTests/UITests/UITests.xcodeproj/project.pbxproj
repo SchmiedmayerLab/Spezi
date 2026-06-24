@@ -44,7 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2F68C3C6292E9F8F00B3E12C /* SpeziNotifications */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziNotifications; path = ../..; sourceTree = "<group>"; };
+		2F68C3C6292E9F8F00B3E12C /* SpeziNotifications */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SpeziNotifications; path = ../../..; sourceTree = "<group>"; };
 		2F6D139228F5F384007C25D6 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F6D139928F5F386007C25D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F6D13AC28F5F386007C25D6 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -200,9 +200,6 @@
 				Base,
 			);
 			mainGroup = 2F6D138928F5F384007C25D6;
-			packageReferences = (
-				A9E031642CAAACF900E13BD9 /* XCRemoteSwiftPackageReference "XCTestExtensions" */,
-			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2F6D139328F5F384007C25D6 /* Products */;
 			projectDirPath = "";
@@ -315,8 +312,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -325,8 +322,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -375,8 +372,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -385,8 +382,8 @@
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -573,8 +570,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -583,8 +580,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Test;
 		};
@@ -689,17 +686,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		A9E031642CAAACF900E13BD9 /* XCRemoteSwiftPackageReference "XCTestExtensions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StanfordBDHG/XCTestExtensions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		2F68C3C7292EA52000B3E12C /* SpeziNotifications */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -711,7 +697,6 @@
 		};
 		A9E031652CAAACF900E13BD9 /* XCTestExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A9E031642CAAACF900E13BD9 /* XCRemoteSwiftPackageReference "XCTestExtensions" */;
 			productName = XCTestExtensions;
 		};
 		A9E031672CAAAF6800E13BD9 /* XCTSpeziNotifications */ = {

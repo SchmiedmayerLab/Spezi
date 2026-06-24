@@ -49,7 +49,7 @@ public struct InstructionsTile<Header: View, Info: View, Footer: View>: View {
         /// The component should be hidden if the event has already been completed.
         case hideIfCompleted
     }
-    
+
     private let alignment: HorizontalAlignment
     private let event: Event
     private let header: Header
@@ -57,10 +57,10 @@ public struct InstructionsTile<Header: View, Info: View, Footer: View>: View {
     private let footerVisibility: ComponentVisibility
     private let moreInfo: Info
     private let moreInfoVisibility: ComponentVisibility
-    
+
     @State private var isShowingMoreInfoSheet: Bool = false
-    
-    
+
+
     private var moreButton: some View {
         Button {
             isShowingMoreInfoSheet = true
@@ -75,19 +75,19 @@ public struct InstructionsTile<Header: View, Info: View, Footer: View>: View {
         .buttonStyle(.borderless)
         .accessibilityLabel("More Information")
     }
-    
+
     private var moreButtonCompact: some View {
         moreButton
             .labelStyle(.iconOnly)
             .font(.title3)
     }
-    
+
     private var moreButtonExtended: some View {
         moreButton
             .labelStyle(.titleAndIcon)
             .font(.footnote)
     }
-    
+
     private var tileAlignment: HorizontalAlignment {
         if event.isCompleted {
             .leading
@@ -95,7 +95,7 @@ public struct InstructionsTile<Header: View, Info: View, Footer: View>: View {
             alignment
         }
     }
-    
+
     public var body: some View {
         SimpleTile(alignment: tileAlignment) {
             if event.isCompleted {
@@ -149,8 +149,8 @@ public struct InstructionsTile<Header: View, Info: View, Footer: View>: View {
             isShowingMoreInfoSheet = true
         }
     }
-    
-    
+
+
     /// Create a new instructions with a header, a details view and a footer view.
     /// - Parameters:
     ///   - event: The event instance.
@@ -158,7 +158,7 @@ public struct InstructionsTile<Header: View, Info: View, Footer: View>: View {
     ///   - footerVisibility: Controls when the tile's footer view will be displayed.
     ///       The footer view is used e.g. to display the ``EventActionButton``; controlling this behaviour allows you to offer an already-completed task be performed again.
     ///   - moreInfoVisibility: Controls when the tile's "more info" button will be displayed.
-    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/tileheader)
+    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](../SpeziViews/SpeziViews.docc/SpeziViews.md)
     ///   - more: An optional view that is presented as a sheet if the user presses the "more information" button. The view can be used to provide additional explanation or instructions for a task.
     ///   - footer: A footer that is shown below the body of the tile. You may use the ``EventActionButton``.
     public init(
@@ -201,7 +201,7 @@ extension InstructionsTile {
             DefaultTileHeader(event, alignment: alignment)
         }
     }
-    
+
     /// Create a new instructions with a header and an action button.
     ///
     /// This initializers uses the ``EventActionButton``.
@@ -211,7 +211,7 @@ extension InstructionsTile {
     ///   - footerVisibility: Controls when the tile's footer view will be displayed.
     ///       The footer view is used e.g. to display the ``EventActionButton``; controlling this behaviour allows you to offer an already-completed task be performed again.
     ///   - action: The closure that is executed if the action button is pressed.
-    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/tileheader)
+    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](../SpeziViews/SpeziViews.docc/SpeziViews.md)
     public init(
         _ event: Event,
         alignment: HorizontalAlignment = .leading,
@@ -254,7 +254,7 @@ extension InstructionsTile {
             more: more
         )
     }
-    
+
     /// Create a new instructions with a header, an action button and a details view.
     ///
     /// This initializers uses the ``EventActionButton``.
@@ -265,7 +265,7 @@ extension InstructionsTile {
     ///       The footer view is used e.g. to display the ``EventActionButton``; controlling this behaviour allows you to offer an already-completed task be performed again.
     ///   - moreInfoVisibility: Controls when the tile's "more info" button will be displayed.
     ///   - action: The closure that is executed if the action button is pressed.
-    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/tileheader)
+    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](../SpeziViews/SpeziViews.docc/SpeziViews.md)
     ///   - more: An optional view that is presented as a sheet if the user presses the "more information" button. The view can be used to provide additional explanation or instructions for a task.
     public init(
         _ event: Event,
@@ -286,7 +286,7 @@ extension InstructionsTile {
             more: more
         )
     }
-    
+
     /// Create a new instructions.
     ///
     /// This initializers uses the ``DefaultTileHeader``.
@@ -301,7 +301,7 @@ extension InstructionsTile {
             EmptyView()
         }
     }
-    
+
     /// Create a new instructions with a footer view.
     ///
     /// This initializers uses the ``DefaultTileHeader``.
@@ -349,12 +349,12 @@ extension InstructionsTile {
             more: more
         )
     }
-    
+
     /// Create a new instructions with a header and no action view.
     /// - Parameters:
     ///   - event: The event instance.
     ///   - alignment: The horizontal alignment of the tile.
-    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/tileheader)
+    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](../SpeziViews/SpeziViews.docc/SpeziViews.md)
     @_disfavoredOverload
     public init(
         _ event: Event,
@@ -365,14 +365,14 @@ extension InstructionsTile {
             EmptyView()
         }
     }
-    
+
     /// Create a new instructions with a header and a footer view.
     /// - Parameters:
     ///   - event: The event instance.
     ///   - alignment: The horizontal alignment of the tile.
     ///   - footerVisibility: Controls when the tile's footer view will be displayed.
     ///       The footer view is used e.g. to display the ``EventActionButton``; controlling this behaviour allows you to offer an already-completed task be performed again.
-    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/tileheader)
+    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](../SpeziViews/SpeziViews.docc/SpeziViews.md)
     ///   - footer: A footer that is shown below the body of the tile. You may use the ``EventActionButton``.
     @_disfavoredOverload
     public init(
@@ -392,7 +392,7 @@ extension InstructionsTile {
     ///   - event: The event instance.
     ///   - alignment: The horizontal alignment of the tile.
     ///   - moreInfoVisibility: Controls when the tile's "more info" button will be displayed.
-    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/tileheader)
+    ///   - header: A custom header that is shown on the top of the tile. You can use the [`TileHeader`](../SpeziViews/SpeziViews.docc/SpeziViews.md)
     ///     view as a basis for your implementation.
     ///   - more: An optional view that is presented as a sheet if the user presses the "more information" button. The view can be used to provide additional explanation or instructions for a task.
     public init(

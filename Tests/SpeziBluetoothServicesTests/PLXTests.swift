@@ -9,11 +9,11 @@
 import ByteCodingTesting
 import Foundation
 import NIOCore
-import SpeziNumerics
 @_spi(TestingSupport)
 @testable import SpeziBluetooth
 @_spi(TestingSupport)
 @testable import SpeziBluetoothServices
+import SpeziNumerics
 import Testing
 
 

@@ -1,20 +1,15 @@
 <!--
-                  
+
 This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # SpeziBluetooth
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziBluetooth/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziBluetooth/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziBluetooth/graph/badge.svg?token=mgZAjyPJH4)](https://codecov.io/gh/StanfordSpezi/SpeziBluetooth)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10020080.svg)](https://doi.org/10.5281/zenodo.10020080)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziBluetooth%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziBluetooth)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziBluetooth%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziBluetooth)
 
 Connect and communicate with Bluetooth devices using modern programming paradigms.
 
@@ -27,7 +22,7 @@ and write data to a combination of services and characteristics.
 
 This package uses Apples [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) framework under the hood.
 
-> [!NOTE]  
+> [!NOTE]
 > You will need a basic understanding of the Bluetooth Terminology and the underlying software model to
   understand the structure and API of the Spezi Bluetooth module. You can find a good overview in the
   [Wikipedia Bluetooth Low Energy (LE) Software Model section](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy#Software_model)
@@ -39,19 +34,41 @@ This package uses Apples [CoreBluetooth](https://developer.apple.com/documentati
 
 ### Add Spezi Bluetooth as a Dependency
 
-You need to add the Spezi Bluetooth Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the `SpeziBluetooth` product.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziBluetooth", package: "Spezi")
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ### Register the Module
 
-The [`Bluetooth`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth) module needs to be registered in a Spezi-based application using the 
-[`configuration`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate/configuration) in a
-[`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate):
+The `Bluetooth` module needs to be registered in a Spezi-based application using the
+`configuration` in a
+`SpeziAppDelegate`:
 ```swift
 class ExampleAppDelegate: SpeziAppDelegate {
     override var configuration: Configuration {
@@ -64,26 +81,26 @@ class ExampleAppDelegate: SpeziAppDelegate {
 }
 ```
 
-> [!NOTE]  
-> You can learn more about a [`Module` in the Spezi documentation](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module).
+> [!NOTE]
+> You can learn more about a [`Module`](../Spezi/Spezi.docc/Module/Module.md) in the Spezi documentation.
 
 
 ## Example
 
 ### Create your Bluetooth device
 
-The [`Bluetooth`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth) 
-module allows to declarative define your Bluetooth device using a [`BluetoothDevice`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetoothdevice) implementation and property wrappers
-like [`Service`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/service) and [`Characteristic`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/characteristic).
+The `Bluetooth`
+module allows to declarative define your Bluetooth device using a `BluetoothDevice` implementation and property wrappers
+like `Service` and `Characteristic`.
 
 The below code examples demonstrate how you can implement your own Bluetooth device.
 
-First of all we define our Bluetooth service by implementing a [`BluetoothService`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetoothservice).
-We use the [`Characteristic`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/characteristic) property wrapper to declare its characteristics.
+First of all we define our Bluetooth service by implementing a `BluetoothService`.
+We use the `Characteristic` property wrapper to declare its characteristics.
 Note that the value types needs to be optional and conform to
-[`ByteEncodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/documentation/bytecoding/byteencodable),
-[`ByteDecodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/1.0.0/documentation/bytecoding/bytedecodable) or
-[`ByteCodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/documentation/bytecoding/bytecodable) respectively.
+`ByteEncodable`,
+`ByteDecodable` or
+`ByteCodable` respectively.
 
 ```swift
 struct DeviceInformationService: BluetoothService {
@@ -99,8 +116,8 @@ struct DeviceInformationService: BluetoothService {
 We can use this Bluetooth service now in the `MyDevice` implementation as follows.
 
 > [!TIP]
-> We use the [`DeviceState`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/devicestate) and [`DeviceAction`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/deviceaction) property wrappers to get access to the device state and its actions. Those two
-  property wrappers can also be used within a [`BluetoothService`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetoothservice) type.
+> We use the `DeviceState` and `DeviceAction` property wrappers to get access to the device state and its actions. Those two
+  property wrappers can also be used within a `BluetoothService` type.
 
 ```swift
 class MyDevice: BluetoothDevice {
@@ -124,8 +141,8 @@ class MyDevice: BluetoothDevice {
 
 ### Configure the Bluetooth Module
 
-We use the above `BluetoothDevice` implementation to configure the [`Bluetooth`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth) module within the
-[SpeziAppDelegate](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+We use the above `BluetoothDevice` implementation to configure the `Bluetooth` module within the
+SpeziAppDelegate.
 
 ```swift
 import Spezi
@@ -148,16 +165,16 @@ class ExampleDelegate: SpeziAppDelegate {
 Once you have the `Bluetooth` module configured within your Spezi app, you can access the module within your
 [`Environment`](https://developer.apple.com/documentation/swiftui/environment).
 
-You can use the [`scanNearbyDevices(enabled:with:minimumRSSI:advertisementStaleInterval:autoConnect:)`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/swiftuicore/view/scannearbydevices(enabled:with:minimumrssi:advertisementstaleinterval:autoconnect:))
-and [`autoConnect(enabled:with:minimumRSSI:advertisementStaleInterval:)`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/swiftuicore/view/autoconnect(enabled:with:minimumrssi:advertisementstaleinterval:))
+You can use the `scanNearbyDevices(enabled:with:minimumRSSI:advertisementStaleInterval:autoConnect:)`
+and `autoConnect(enabled:with:minimumRSSI:advertisementStaleInterval:)`
 modifiers to scan for nearby devices and/or auto connect to the first available device. Otherwise, you can also manually start and stop scanning for nearby devices
-using [`scanNearbyDevices(minimumRSSI:advertisementStaleInterval:autoConnect:)`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth/scanNearbyDevices(minimumRSSI:advertisementStaleInterval:autoConnect:)) and [`stopScanning()`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth/stopScanning()).
+using `scanNearbyDevices(minimumRSSI:advertisementStaleInterval:autoConnect:)` and `stopScanning()`.
 
-To retrieve the list of nearby devices you may use [`nearbyDevices(for:)`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth/nearbyDevices(for:)).
+To retrieve the list of nearby devices you may use `nearbyDevices(for:)`.
 
 > [!TIP]
 > To easily access the first connected device, you can just query the SwiftUI Environment for your `BluetoothDevice` type.
-  Make sure to declare the property as optional using the respective [`Environment(_:)`](https://developer.apple.com/documentation/swiftui/environment/init(_:)-8slkf)
+  Make sure to declare the property as optional using the respective [`Environment(_:)`](<https://developer.apple.com/documentation/swiftui/environment/init(_:)-8slkf>)
   initializer.
 
 The below code example demonstrates all these steps of retrieving the `Bluetooth` module from the environment, listing all nearby devices,
@@ -203,14 +220,14 @@ struct MyView: View {
 ```
 
 > [!TIP]
-> Use [`ConnectedDevices`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/ConnectedDevices) to retrieve the full list of connected devices from the SwiftUI environment.
+> Use `ConnectedDevices` to retrieve the full list of connected devices from the SwiftUI environment.
 
 #### Retrieving Devices
 
 The previous section explained how to discover nearby devices and retrieve the currently connected one from the environment.
 This is great ad-hoc connection establishment with devices currently nearby.
 However, this might not be the most efficient approach, if you want to connect to a specific, previously paired device.
-In these situations you can use the [`retrieveDevice(for:as:)`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth/retrieveDevice(for:as:)) method to retrieve a known device.
+In these situations you can use the `retrieveDevice(for:as:)` method to retrieve a known device.
 
 Below is a short code example illustrating this method.
 
@@ -226,11 +243,11 @@ await device.connect() // assume declaration of @DeviceAction(\.connect)
 
 ### Integration with Spezi Modules
 
-A Spezi [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module) is a great way of structuring your application into
+A Spezi `Module` is a great way of structuring your application into
 different subsystems and provides extensive capabilities to model relationship and dependence between modules.
-Every [`BluetoothDevice`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetoothdevice) is a `Module`.
+Every `BluetoothDevice` is a `Module`.
 Therefore, you can easily access your SpeziBluetooth device from within any Spezi `Module` using the standard
-[Module Dependency](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module-dependency) infrastructure. At the same time,
+[`Module` dependency infrastructure](../Spezi/Spezi.docc/Module/Module%20Dependency.md). At the same time,
 every `BluetoothDevice` can benefit from the same capabilities as every other Spezi `Module`.
 
 Below is a short code example demonstrating how a `BluetoothDevice` uses the `@Dependency` property to interact with a Spezi Module that is
@@ -247,35 +264,36 @@ class Measurements: Module, EnvironmentAccessible, DefaultInitializable {
 
 class MyDevice: BluetoothDevice {
     @Service var weightScale = WeightScaleService()
-    
+
     // declare dependency to a configured Spezi Module
     @Dependency var measurements: Measurements
-    
+
     required init() {}
-    
+
     func configure() {
         weightScale.$weightMeasurement.onChange { [weak self] value in
             self?.handleNewMeasurement(value)
         }
     }
-    
+
     private func handleNewMeasurement(_ measurement: WeightMeasurement) {
         measurements.recordNewMeasurement(measurement)
     }
 }
 ```
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordSpezi/SpeziBluetooth/documentation).
+For more information, please refer to the [API documentation](SpeziBluetooth.docc/SpeziBluetooth.md).
 
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
-
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziBluetooth/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterLight.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterDark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

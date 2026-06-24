@@ -6,8 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-import PDFKit
 import UniformTypeIdentifiers
+#if canImport(PDFKit)
+import PDFKit
+#endif
 
 
 // swiftlint:disable file_types_order
@@ -39,6 +41,7 @@ struct TextContentExtractor: ContentExtractor {
     }
 }
 
+#if canImport(PDFKit)
 /// Extractor for PDF document content types.
 struct PDFContentExtractor: ContentExtractor {
     private let pdfDocumentProvider: any PDFDocumentProviding
@@ -75,3 +78,4 @@ struct PDFContentExtractor: ContentExtractor {
         return documentContent.string
     }
 }
+#endif

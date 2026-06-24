@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 Provides base Large Language Model (LLM) execution infrastructure within the Spezi ecosystem.
@@ -24,7 +24,7 @@ You need to add the SpeziLLM Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ## Spezi LLM Components
 
@@ -42,14 +42,14 @@ regardless of the execution locality (local or remote) or the specific model typ
 Developers can use these protocols to conform their LLM interface implementations to a standard which is consistent throughout the Spezi ecosystem.
 
 The actual inference logic as well as state is held within the ``LLMSession``. It requires implementation of the ``LLMSession/generate()`` as well as ``LLMSession/cancel()`` functions, starting and cancelling the inference by the LLM respectively.
-In addition, it contains the ``LLMSession/context`` in which the entire conversational history with the LLM is held as well as the ``LLMSession/state`` describing the current execution state of the session. 
+In addition, it contains the ``LLMSession/context`` in which the entire conversational history with the LLM is held as well as the ``LLMSession/state`` describing the current execution state of the session.
 
 > Important: Any of the three aforementioned LLM abstractions shouldn't be used on it's own but always together with the ``LLMRunner``.
     Please refer to the ``LLMRunner`` documentation for a complete code example.
 
 ### LLM runner
 
-The ``LLMRunner`` is a Spezi `Module` accessible via the SwiftUI `Environment` that handles the execution of Language Models in the Spezi ecosystem, regardless of their execution locality (represented by the ``LLMPlatform``) or the specific model type. 
+The ``LLMRunner`` is a Spezi `Module` accessible via the SwiftUI `Environment` that handles the execution of Language Models in the Spezi ecosystem, regardless of their execution locality (represented by the ``LLMPlatform``) or the specific model type.
 A ``LLMRunner`` is responsible for turning a ``LLMSchema`` towards an executable and stateful ``LLMSession`` by using the underlying ``LLMPlatform``.
 
 The ``LLMRunner`` is configured with the supported ``LLMPlatform``s, enabling the runner to delegate the LLM execution to the correct ``LLMPlatform``.
@@ -162,8 +162,8 @@ The ``LLMChatView`` and ``LLMChatViewSchema`` present basic chat views that enab
 The ``LLMChatViewSchema`` takes an ``LLMSchema`` instance to define which LLM in what configuration should be used for the text inference.
 The ``LLMChatView`` is passed an ``LLMSession`` that represents the LLM in execution containing state and context, and an optional `ChatView/ChatExportFormat` that defines the format of the to-be-exported `SpeziChat/Chat` (can be any of `.pdf`, `.text`, `.json`).
 
-> Tip: The ``LLMChatView`` and ``LLMChatViewSchema`` build on top of the [SpeziChat package](https://swiftpackageindex.com/stanfordspezi/spezichat/documentation).
-    For more details, please refer to the DocC documentation of the [`ChatView`](https://swiftpackageindex.com/stanfordspezi/spezichat/documentation/spezichat/chatview).
+> Tip: The ``LLMChatView`` and ``LLMChatViewSchema`` build on top of the [SpeziChat package](../../SpeziChat/SpeziChat.docc/SpeziChat.md).
+    For more details, please refer to the DocC documentation of the [`ChatView`](../../SpeziChat/SpeziChat.docc/SpeziChat.md).
 
 > Tip: By default, the ``LLMChatView`` presents no share button in the toolbar that exports the current `SpeziChat/Chat`. To add this element or change the export functionality, pass the desired export format for the `exportFormat` parameter in ``LLMChatView/init(session:exportFormat:)``.
 

@@ -133,10 +133,10 @@ public struct OmronManufacturerData {
     ///   - servicesMode: The services mode.
     ///   - users: The list of users. At least one, maximum four.
     public init(
-        timeSet: Bool = true, // swiftlint:disable:this function_default_parameter_at_end
+        timeSet: Bool = true,
         pairingMode: PairingMode,
         streamingMode: StreamingMode = .dataCommunication,
-        servicesMode: ServicesMode = .bluetoothStandard, // swiftlint:disable:this function_default_parameter_at_end
+        servicesMode: ServicesMode = .bluetoothStandard,
         users: [UserSlot]
     ) {
         // swiftlint:disable:next empty_count

@@ -38,7 +38,7 @@ public struct AccountServiceButton<Label: View>: View {
 
     public init(
         _ titleKey: LocalizedStringResource,
-        systemImage: String = "person.crop.square", // swiftlint:disable:this function_default_parameter_at_end
+        systemImage: String = "person.crop.square",
         state: Binding<ViewState>,
         action: @escaping @MainActor  () async throws -> Void
     ) where Label == SwiftUI.Label<Text, Image> {

@@ -1,20 +1,15 @@
 <!--
-                  
+
 This source file is part of the XCTHealthKit open source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # XCTHealthKit
 
-[![Build and Test](https://github.com/StanfordBDHG/XCTHealthKit/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordBDHG/XCTHealthKit/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordBDHG/XCTHealthKit/branch/main/graph/badge.svg?token=boAhFgMIOp)](https://codecov.io/gh/StanfordBDHG/XCTHealthKit)
-[![DOI](https://zenodo.org/badge/580684238.svg)](https://zenodo.org/badge/latestdoi/580684238)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordBDHG%2FXCTHealthKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordBDHG/XCTHealthKit)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordBDHG%2FXCTHealthKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordBDHG/XCTHealthKit)
 
 
 XCTHealthKit is an XCTest-based framework to test the creation of HealthKit samples using the Apple Health App on the iPhone simulator.
@@ -22,7 +17,7 @@ XCTHealthKit is an XCTest-based framework to test the creation of HealthKit samp
 
 ## How To Use XCTHealthKit
 
-You can use XCTHealthKit in your UI tests. The [API documentation](https://swiftpackageindex.com/StanfordBDHG/XCTHealthKit/documentation) provides a detailed overview of the public interface of XCTHealthKit.
+You can use XCTHealthKit in your UI tests. The [API documentation](XCTHealthKit.docc/XCTHealthKit.md) provides a detailed overview of the public interface of XCTHealthKit.
 
 The framework has the following functionalities:
 
@@ -74,7 +69,7 @@ class HealthKitUITests: XCTestCase {
     func testHandleTheHealthKitAuthorizationSheet() throws {
         let app = XCUIApplication()
         app.launch()
-        
+
         app.buttons["Request HealthKit Authorization"].tap()
         try app.handleHealthKitAuthorization()
     }
@@ -84,22 +79,38 @@ class HealthKitUITests: XCTestCase {
 
 ## Installation
 
-The project can be added to your Xcode project or Swift Package using the [Swift Package Manager](https://github.com/apple/swift-package-manager).
+Add the Spezi monorepo package to your app and select the `XCTHealthKit` product.
 
-**Xcode:** For an Xcode project, follow the instructions on [Adding package dependencies to your app](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app).
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
-**Swift Package:** You can follow the [Swift Package Manager documentation about defining dependencies](https://github.com/apple/swift-package-manager/blob/main/Documentation/Usage.md#defining-dependencies) to add this project as a dependency to your Swift Package.
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
 
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "XCTHealthKit", package: "Spezi")
+    ]
+)
+```
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordBDHG/XCTHealthKit/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
 
 ## Contributors
 
-This project is developed as part of the Stanford Byers Center for Biodesign at Stanford University.
-See [CONTRIBUTORS.md](https://github.com/StanfordBDHG/XCTHealthKit/tree/main/CONTRIBUTORS.md) for a full list of all XCTHealthKit contributors.
-
-![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-light.png#gh-light-mode-only)
-![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-dark.png#gh-dark-mode-only)
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

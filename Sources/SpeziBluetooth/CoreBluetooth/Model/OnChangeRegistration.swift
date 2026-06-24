@@ -17,7 +17,7 @@ import Foundation
 /// - Tip: The on-change handler will be automatically unregistered when this object is deallocated.
 public final class OnChangeRegistration {
     // reference counting is atomic, so non-isolated(unsafe) is fine, we never mutate
-    private nonisolated(unsafe) weak var peripheral: BluetoothPeripheral?
+    nonisolated(unsafe) private weak var peripheral: BluetoothPeripheral?
     let locator: CharacteristicLocator
     let handlerId: UUID
 

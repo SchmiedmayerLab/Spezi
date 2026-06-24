@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 Interact with Large Language Models (LLMs) from OpenAI.
@@ -15,7 +15,7 @@ Interact with Large Language Models (LLMs) from OpenAI.
 ## Overview
 
 A module that allows you to interact with GPT-based Large Language Models (LLMs) from OpenAI within your Spezi application.
-``SpeziLLMOpenAI`` provides a pure Swift-based API for interacting with the OpenAI GPT API, building on top of the infrastructure of the [SpeziLLM target](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm).
+``SpeziLLMOpenAI`` provides a pure Swift-based API for interacting with the OpenAI GPT API, building on top of the infrastructure of the [SpeziLLM target](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md).
 
 @Row {
     @Column {
@@ -43,7 +43,7 @@ You need to add the SpeziLLM Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ## Spezi LLM OpenAI Components
 
@@ -61,8 +61,8 @@ The core components of the ``SpeziLLMOpenAI`` target are the ``LLMOpenAISchema``
 
 #### Setup
 
-In order to use OpenAI LLMs, the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) needs to be initialized in the Spezi `Configuration` with the ``LLMOpenAIPlatform``. Only after, the `LLMRunner` can be used to do inference via OpenAI LLMs.
-See the [SpeziLLM documentation](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) for more details.
+In order to use OpenAI LLMs, the [SpeziLLM](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) needs to be initialized in the Spezi `Configuration` with the ``LLMOpenAIPlatform``. Only after, the `LLMRunner` can be used to do inference via OpenAI LLMs.
+See the [SpeziLLM documentation](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) for more details.
 
 ```swift
 import Spezi
@@ -82,9 +82,9 @@ class LLMOpenAIAppDelegate: SpeziAppDelegate {
 
 #### Usage
 
-The code example below showcases the interaction with the OpenAI LLMs within the Spezi ecosystem through the the [SpeziLLM](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm) [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
+The code example below showcases the interaction with the OpenAI LLMs within the Spezi ecosystem through the the [SpeziLLM](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md), which is injected into the SwiftUI `Environment` via the `Configuration` shown above.
 
-The ``LLMOpenAISchema`` defines the type and configurations of the to-be-executed ``LLMOpenAISession``. This transformation is done via the [`LLMRunner`](https://swiftpackageindex.com/stanfordspezi/spezillm/documentation/spezillm/llmrunner) that uses the ``LLMOpenAIPlatform``. The inference via ``LLMOpenAILikeSession/generate()`` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
+The ``LLMOpenAISchema`` defines the type and configurations of the to-be-executed ``LLMOpenAISession``. This transformation is done via the [`LLMRunner`](../../SpeziLLM/SpeziLLM.docc/SpeziLLM.md) that uses the ``LLMOpenAIPlatform``. The inference via ``LLMOpenAILikeSession/generate()`` returns an `AsyncThrowingStream` that yields all generated `String` pieces.
 
 The ``LLMOpenAISession`` contains the ``LLMOpenAILikeSession/context`` property which holds the entire history of the model interactions. This includes the system prompt, user input, but also assistant responses.
 Ensure the property always contains all necessary information, as the ``LLMOpenAILikeSession/generate()`` function executes the inference based on the ``LLMOpenAILikeSession/context``
@@ -143,7 +143,7 @@ import SwiftUI
 
 struct OpenAIAPIKey: View {
     @Environment(OnboardingNavigationPath.self) private var onboardingNavigationPath: OnboardingNavigationPath
-    
+
     var body: some View {
         LLMOpenAIAPITokenOnboardingStep {
             onboardingNavigationPath.nextStep()
@@ -160,7 +160,7 @@ import SwiftUI
 
 struct OnboardingFlow: View {
     @AppStorage(StorageKeys.onboardingFlowComplete) var completedOnboardingFlow = false
-    
+
     var body: some View {
         ManagedNavigationStack(didComplete: $completedOnboardingFlow) {
             // ... other steps

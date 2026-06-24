@@ -44,7 +44,7 @@ var body: some View {
 }
 ```
 
-> Note: The inner views can access the ``ValidationEngine`` using the [Environment](https://developer.apple.com/documentation/swiftui/environment/init(_:)-8slkf)
+> Note: The inner views can access the ``ValidationEngine`` using the [Environment](<https://developer.apple.com/documentation/swiftui/environment/init(_:)-8slkf>)
 property wrapper.
 
 ### Managing Validation

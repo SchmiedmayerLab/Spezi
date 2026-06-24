@@ -49,7 +49,7 @@ extension DeviceStateAccessor {
     /// - Note: `onChange` handlers are bound to the lifetime of the device. If you need to control the lifetime yourself refer to using ``subscription``.
     ///
     /// Note that you cannot set up onChange handlers within the initializers.
-    /// Use the [`configure()`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module/configure()-5pa83) to set up
+    /// Use the [`configure()`](../../../Spezi/Spezi.docc/Module/Module.md)-5pa83) to set up
     /// all your handlers.
     /// - Important: You must capture `self` weakly only. Capturing `self` strongly causes a memory leak.
     ///
@@ -73,7 +73,7 @@ extension DeviceStateAccessor {
     /// - Note: `onChange` handlers are bound to the lifetime of the device. If you need to control the lifetime yourself refer to using ``subscription``.
     ///
     /// Note that you cannot set up onChange handlers within the initializers.
-    /// Use the [`configure()`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module/configure()-5pa83) to set up
+    /// Use the [`configure()`](../../../Spezi/Spezi.docc/Module/Module.md)-5pa83) to set up
     /// all your handlers.
     /// - Important: You must capture `self` weakly only. Capturing `self` strongly causes a memory leak.
     ///

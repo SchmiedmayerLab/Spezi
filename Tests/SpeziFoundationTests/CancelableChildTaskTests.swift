@@ -17,10 +17,18 @@ struct CancelableChildTaskTests {
         await withDiscardingTaskGroup { group in
             await confirmation { confirmation in
                 let handle = group.addCancelableTask {
-                    try? await Task.sleep(for: .milliseconds(250), tolerance: .nanoseconds(0))
+                    do {
+                        try await Task.sleep(for: .milliseconds(250), tolerance: .nanoseconds(0))
+                    } catch {
+                        Issue.record(error, "Task.sleep unexpectedly failed")
+                    }
                     confirmation()
                 }
-                try? await Task.sleep(for: .milliseconds(1000), tolerance: .nanoseconds(0))
+                do {
+                    try await Task.sleep(for: .milliseconds(2000), tolerance: .nanoseconds(0))
+                } catch {
+                    Issue.record(error, "Task.sleep unexpectedly failed")
+                }
                 handle.cancel()
             }
         }
@@ -32,7 +40,7 @@ struct CancelableChildTaskTests {
             await confirmation { confirmation in
                 let handle = group.addCancelableTask {
                     do {
-                        try await Task.sleep(for: .milliseconds(300), tolerance: .nanoseconds(0))
+                        try await Task.sleep(for: .milliseconds(350), tolerance: .nanoseconds(0))
                         Issue.record("Task was not cancelled!")
                     } catch {
                         confirmation()
@@ -40,7 +48,7 @@ struct CancelableChildTaskTests {
                 }
                 try? await Task.sleep(for: .milliseconds(50), tolerance: .nanoseconds(0))
                 handle.cancel()
-                try? await Task.sleep(for: .milliseconds(500), tolerance: .nanoseconds(0))
+                try? await Task.sleep(for: .milliseconds(1000), tolerance: .nanoseconds(0))
             }
         }
     }

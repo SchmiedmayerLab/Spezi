@@ -208,7 +208,7 @@ extension LocalStorageKey { // swiftlint:disable:this file_types_order
     @_disfavoredOverload
     public convenience init<E: SpeziFoundation.TopLevelEncoder & Sendable, D: SpeziFoundation.TopLevelDecoder & Sendable>(
         _ key: String,
-        setting: LocalStorageSetting = .default, // swiftlint:disable:this function_default_parameter_at_end
+        setting: LocalStorageSetting = .default,
         encoder: E,
         decoder: D
     ) where Value: Codable, E.Output == Data, D.Input == Data {
@@ -218,7 +218,7 @@ extension LocalStorageKey { // swiftlint:disable:this file_types_order
     /// Creates a Local Storage Key for a type that is `CodableWithConfiguration`, that uses a custom encoder and decoder.
     public convenience init<E: SpeziFoundation.TopLevelEncoder & Sendable, D: SpeziFoundation.TopLevelDecoder & Sendable>(
         _ key: String,
-        setting: LocalStorageSetting = .default, // swiftlint:disable:this function_default_parameter_at_end
+        setting: LocalStorageSetting = .default,
         encoder: E,
         decoder: D
     ) where Value: CodableWithConfiguration, E.Output == Data, D.Input == Data {

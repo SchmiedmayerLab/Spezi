@@ -78,9 +78,9 @@ private struct UserUpdate {
 
 /// Configures an `AccountService` that interacts with Firebase Auth.
 ///
-/// 
+///
 /// Configure the account service using the
-/// [`AccountConfiguration`](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/accountconfiguration).
+/// [`AccountConfiguration`](../SpeziAccount/SpeziAccount.docc/SpeziAccount.md).
 ///
 /// ```swift
 /// import SpeziAccount
@@ -136,7 +136,7 @@ public final class FirebaseAccountService: AccountService { // swiftlint:disable
 
     @Application(\.logger)
     private var logger
-    
+
     @StandardActor private var standard: any Standard
     private var notifyStandard: (any AccountNotifyConstraint)? {
         standard as? any AccountNotifyConstraint

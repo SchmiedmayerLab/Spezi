@@ -196,7 +196,7 @@ public struct AsyncButton<Label: View>: View {
     @_disfavoredOverload
     public init<Title: StringProtocol>(
         _ title: Title,
-        role: ButtonRole? = nil,   // swiftlint:disable:this function_default_parameter_at_end
+        role: ButtonRole? = nil,
         state: Binding<ViewState>,
         action: @MainActor @escaping () async throws -> Void
     ) where Label == Text {
@@ -214,7 +214,7 @@ public struct AsyncButton<Label: View>: View {
     ///   - action: An asynchronous button action.
     public init(
         _ title: LocalizedStringResource,
-        role: ButtonRole? = nil,  // swiftlint:disable:this function_default_parameter_at_end
+        role: ButtonRole? = nil,
         state: Binding<ViewState>,
         action: @MainActor @escaping () async throws -> Void
     ) where Label == Text {
@@ -231,7 +231,7 @@ public struct AsyncButton<Label: View>: View {
     ///   - action: An asynchronous button action.
     ///   - label: The Button label.
     public init(
-        role: ButtonRole? = nil,  // swiftlint:disable:this function_default_parameter_at_end
+        role: ButtonRole? = nil,
         state: Binding<ViewState>,
         action: @MainActor @escaping () async throws -> Void,
         @ViewBuilder label: () -> Label

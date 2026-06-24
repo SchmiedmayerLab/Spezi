@@ -32,8 +32,8 @@ class HealthMeasurementsTests: XCTestCase {
         app.navigationBars.buttons["Add Measurement"].tap()
 
         XCTAssert(app.staticTexts["No Pending Measurements"].waitForExistence(timeout: 2.0))
-        XCTAssert(app.navigationBars.buttons["Dismiss"].exists)
-        app.navigationBars.buttons["Dismiss"].tap()
+        XCTAssert(app.navigationBars.buttons["Close"].exists)
+        app.navigationBars.buttons["Close"].tap()
     }
 
     @MainActor
@@ -103,8 +103,8 @@ class HealthMeasurementsTests: XCTestCase {
         XCTAssert(app.buttons["Simulate Weight"].waitForExistence(timeout: 0.5))
         app.buttons["Simulate Weight"].tap()
 
-        XCTAssert(app.navigationBars.buttons["Dismiss"].waitForExistence(timeout: 0.5))
-        app.navigationBars.buttons["Dismiss"].tap()
+        XCTAssert(app.navigationBars.buttons["Close"].waitForExistence(timeout: 0.5))
+        app.navigationBars.buttons["Close"].tap()
 
         XCTAssert(app.navigationBars.buttons["More"].exists)
         app.navigationBars.buttons["More"].tap()
@@ -130,8 +130,8 @@ class HealthMeasurementsTests: XCTestCase {
         XCTAssert(app.buttons["Save"].exists)
         XCTAssert(app.buttons["Discard"].exists)
 
-        XCTAssert(app.navigationBars.buttons["Dismiss"].exists)
-        app.navigationBars.buttons["Dismiss"].tap()
+        XCTAssert(app.navigationBars.buttons["Close"].exists)
+        app.navigationBars.buttons["Close"].tap()
 
         XCTAssert(app.navigationBars.buttons["Add Measurement"].waitForExistence(timeout: 0.5))
         app.navigationBars.buttons["Add Measurement"].tap()

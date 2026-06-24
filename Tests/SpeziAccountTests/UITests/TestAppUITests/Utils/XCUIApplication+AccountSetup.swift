@@ -24,7 +24,7 @@ extension XCUIApplication {
         password: String,
         name: PersonNameComponents? = nil,
         genderIdentity: String? = nil,
-        supplyDateOfBirth: Bool = false, // swiftlint:disable:this function_default_parameter_at_end
+        supplyDateOfBirth: Bool = false,
         biography: String
     ) throws {
         try fillSignupForm(email: email, password: password, name: name, genderIdentity: genderIdentity, supplyDateOfBirth: supplyDateOfBirth)

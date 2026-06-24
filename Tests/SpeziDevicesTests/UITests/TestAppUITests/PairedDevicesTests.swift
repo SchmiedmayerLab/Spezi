@@ -51,8 +51,8 @@ class PairedDevicesTests: XCTestCase {
 
         XCTAssert(app.staticTexts["Discovering"].waitForExistence(timeout: 0.5))
         XCTAssert(app.staticTexts["Enable pairing mode on the device."].exists)
-        XCTAssert(app.navigationBars.buttons["Dismiss"].exists)
-        app.navigationBars.buttons["Dismiss"].tap()
+        XCTAssert(app.navigationBars.buttons["Close"].exists)
+        app.navigationBars.buttons["Close"].tap()
 
         XCTAssert(app.staticTexts["No Devices"].waitForExistence(timeout: 0.5))
     }
@@ -159,8 +159,9 @@ class PairedDevicesTests: XCTestCase {
         app.buttons["Add Device"].tap()
 
         XCTAssert(app.staticTexts["Pair Accessory"].waitForExistence(timeout: 2.0))
-        XCTAssert(app.buttons["Dismiss"].exists)
-        app.buttons["Dismiss"].tap()
+        let closeButton = app.otherElements["AccessorySetupSheet"].navigationBars.buttons["Close"]
+        XCTAssert(closeButton.exists)
+        closeButton.tap()
 
         XCTAssert(app.navigationBars.buttons["Add Device"].exists)
         app.navigationBars.buttons["Add Device"].tap()

@@ -15,7 +15,7 @@ import Foundation
 /// This type helps us to assume the sendable property to bypass Swift concurrency checking
 @dynamicMemberLookup
 struct CBInstance<Value>: Sendable {
-    private nonisolated(unsafe) let object: Value
+    nonisolated(unsafe) private let object: Value
     @SpeziBluetooth var cbObject: Value {
         object
     }
@@ -66,7 +66,7 @@ public actor SpeziBluetooth {
     @usableFromInline nonisolated let dispatchQueue: DispatchSerialQueue
 
     /// The underlying unowned serial executor.
-    public nonisolated var unownedExecutor: UnownedSerialExecutor {
+    nonisolated public var unownedExecutor: UnownedSerialExecutor {
         dispatchQueue.asUnownedSerialExecutor()
     }
 

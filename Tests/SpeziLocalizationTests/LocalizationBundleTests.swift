@@ -51,7 +51,7 @@ struct LocalizationBundleTests { // swiftlint:disable:this type_body_length
         func imp(
             _ resource: LocalizedFileResource,
             using localeMatchingBehavior: LocaleMatchingBehaviour,
-            fallback: LocalizationKey? = nil, // swiftlint:disable:this function_default_parameter_at_end
+            fallback: LocalizationKey? = nil,
             expectedPath: String,
             expectedLocalization: LocalizationKey,
             sourceLocation: SourceLocation = #_sourceLocation
@@ -176,7 +176,7 @@ struct LocalizationBundleTests { // swiftlint:disable:this type_body_length
         func imp(
             _ resource: LocalizedFileResource,
             using localeMatchingBehavior: LocaleMatchingBehaviour,
-            fallback: LocalizationKey? = nil, // swiftlint:disable:this function_default_parameter_at_end
+            fallback: LocalizationKey? = nil,
             expectedPath: String,
             expectedLocalization: LocalizationKey,
             sourceLocation: SourceLocation = #_sourceLocation

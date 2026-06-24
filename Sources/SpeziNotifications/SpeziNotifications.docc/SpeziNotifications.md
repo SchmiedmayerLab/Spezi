@@ -20,7 +20,7 @@ Spezi Modules.
 ### Schedule Notifications
 
 You can use the ``Notifications`` module to interact with user notifications within your application. You can either define it as a dependency
-of your Spezi [`Module`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module)
+of your Spezi [`Module`](../../Spezi/Spezi.docc/Module/Module.md)
 or retrieve it from the environment using the [`@Environment`](https://developer.apple.com/documentation/swiftui/environment)
 property wrapper in your SwiftUI View.
 
@@ -99,8 +99,8 @@ struct NotificationOnboarding: View {
 }
 ```
 
-- Important: The example above uses the [`AsyncButton`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/asyncbutton)
-    and the [`ViewState`](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/speziviews/viewstate) model from SpeziViews to more
+- Important: The example above uses the [`AsyncButton`](../../SpeziViews/SpeziViews.docc/SpeziViews.md)
+    and the [`ViewState`](../../SpeziViews/SpeziViews.docc/SpeziViews.md) model from SpeziViews to more
     easily manage the state of asynchronous actions and handle erroneous conditions.
 
 ## Topics

@@ -14,7 +14,7 @@ import SpeziBluetoothServices
 public protocol BatteryPoweredDevice: BluetoothDevice {
     /// The battery service of the peripheral.
     ///
-    /// Use the [`@Service`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/service) property wrapper to
+    /// Use the [`@Service`](../../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md) property wrapper to
     /// declare this property.
     /// ```swift
     /// @Service var deviceInformation = BatteryService()

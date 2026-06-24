@@ -1,20 +1,15 @@
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # SpeziFoundation
 
-[![CI](https://github.com/StanfordSpezi/SpeziFoundation/actions/workflows/ci.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziFoundation/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziFoundation/graph/badge.svg?token=9S5PQRVKF8)](https://codecov.io/gh/StanfordSpezi/SpeziFoundation)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10077558.svg)](https://doi.org/10.5281/zenodo.10077558)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziFoundation%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziFoundation)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziFoundation%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziFoundation)
 
 Spezi Foundation provides a base layer of functionality useful in many applications, including fundamental types, algorithms, extensions, and data structures.
 
@@ -22,27 +17,48 @@ Spezi Foundation provides a base layer of functionality useful in many applicati
 ## Components
 
 The SpeziFoundation package consists of 2 targets:
-- [SpeziFoundation](https://swiftpackageindex.com/StanfordSpezi/SpeziFoundation/documentation/spezifoundation):
+- SpeziFoundation:
     - Extensions related to concurrency, collection, etc;
     - Data structures;
     - Markdown processing
-    - See [the docs](https://swiftpackageindex.com/StanfordSpezi/SpeziFoundation/documentation/spezifoundation) for an exhaustive list. 
-- [SpeziLocalization](https://swiftpackageindex.com/StanfordSpezi/SpeziFoundation/documentation/spezilocalization):
-    - Localization-related utilities, for working with both string and file-level localization 
+    - See the docs for an exhaustive list.
+- SpeziLocalization:
+    - Localization-related utilities, for working with both string and file-level localization
 
 
 ## Installation
 
-The project can be added to your Xcode project or Swift Package using the [Swift Package Manager](https://github.com/apple/swift-package-manager).
+Add the Spezi monorepo package to your app and select the `SpeziFoundation` and `SpeziLocalization` products.
 
-**Xcode:** For an Xcode project, follow the instructions on [adding package dependencies to your app](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app).
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
-**Swift Package:** You can follow the [Swift Package Manager documentation about defining dependencies](https://docs.swift.org/swiftpm/documentation/packagemanagerdocs/addingdependencies) to add this project as a dependency to your Swift Package.
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
 
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziFoundation", package: "Spezi"),
+        .product(name: "SpeziLocalization", package: "Spezi")
+    ]
+)
+```
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## Testing on Linux
 
@@ -54,10 +70,11 @@ docker build -t spezi-foundation .
 
 This will build the container and run the tests.
 
-
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/Spezi/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer~dark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

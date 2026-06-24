@@ -5,20 +5,15 @@ This source file is part of the Stanford Spezi open-source project.
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-  
+
 -->
 
 # Spezi Access Guard
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziAccessGuard/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziAccessGuard/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziAccessGuard/graph/badge.svg?token=8AFI6Q1WvM)](https://codecov.io/gh/StanfordSpezi/SpeziAccessGuard)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8332974.svg)](https://doi.org/10.5281/zenodo.8332974)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziAccessGuard%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziAccessGuard)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziAccessGuard%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziAccessGuard)
 
 Enforce code or biometrics-guarded access to SwiftUI views.
 
-|<picture><source media="(prefers-color-scheme: dark)" srcset="Sources/SpeziAccessGuard/SpeziAccessGuard.docc/Resources/AccessGuarded-dark.png"><img src="Sources/SpeziAccessGuard/SpeziAccessGuard.docc/Resources/AccessGuarded.png" width="250" alt="Screenshot showing access guarded to a SwiftUI view by an access code." /></picture>|<picture><source media="(prefers-color-scheme: dark)" srcset="Sources/SpeziAccessGuard/SpeziAccessGuard.docc/Resources/AccessGuarded-Biometrics-dark.png"><img src="Sources/SpeziAccessGuard/SpeziAccessGuard.docc/Resources/AccessGuarded-Biometrics.png" width="250" alt="Screenshot showing access guarded to a SwiftUI view by Face ID with an access code fallback." /></picture>|
+|<picture><source media="(prefers-color-scheme: dark)" srcset="SpeziAccessGuard.docc/Resources/AccessGuarded-dark.png"><img src="SpeziAccessGuard.docc/Resources/AccessGuarded.png" width="250" alt="Screenshot showing access guarded to a SwiftUI view by an access code." /></picture>|<picture><source media="(prefers-color-scheme: dark)" srcset="SpeziAccessGuard.docc/Resources/AccessGuarded-Biometrics-dark.png"><img src="SpeziAccessGuard.docc/Resources/AccessGuarded-Biometrics.png" width="250" alt="Screenshot showing access guarded to a SwiftUI view by Face ID with an access code fallback." /></picture>|
 |:--:|:--:|
 |4-digit Numeric Access Code|Face ID with Access Code Fallback|
 
@@ -26,17 +21,39 @@ Enforce code or biometrics-guarded access to SwiftUI views.
 
 Enforce code or biometrics-guarded access to SwiftUI views.
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordSpezi/SpeziAccessGuard/documentation).
+For more information, please refer to the [API documentation](SpeziAccessGuard.docc/SpeziAccessGuard.md).
 
 ### Setup
 
-You need to add the SpeziAccessGuard Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the `SpeziAccessGuard` product.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziAccessGuard", package: "Spezi")
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
 ## Usage
 
@@ -81,17 +98,18 @@ var body: some View {
 }
 ```
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordSpezi/SpeziAccessGuard/documentation/speziaccessguard).
+For more information, please refer to the [API documentation](SpeziAccessGuard.docc/SpeziAccessGuard.md).
 
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
-
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziAccessGuard/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterLight.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterDark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

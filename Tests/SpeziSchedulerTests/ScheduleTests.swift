@@ -183,7 +183,7 @@ final class ScheduleTests: XCTestCase {
 
 extension Date {
     static func withTestDate(year: Int = 2024, month: Int = 8, day: Int = 24, hour: Int, minute: Int, second: Int = 0, nanosecond: Int = 0) throws -> Date {
-        // swiftlint:disable:previous function_default_parameter_at_end line_length
+        // swiftlint:disable:previous line_length
         let components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second, nanosecond: nanosecond)
         return try XCTUnwrap(Calendar.current.date(from: components), "Invalid test date")
     }

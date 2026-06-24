@@ -148,7 +148,7 @@ extension View {
     ///   - autoConnect: If enabled, the bluetooth manager will automatically connect to the nearby device if only one is found.
     /// - Returns: The modified view.
     public func scanNearbyDevices(
-        enabled: Bool = true, // swiftlint:disable:this function_default_parameter_at_end
+        enabled: Bool = true,
         with bluetooth: Bluetooth,
         minimumRSSI: Int? = nil,
         advertisementStaleInterval: TimeInterval? = nil,
@@ -186,7 +186,7 @@ extension View {
     ///   - autoConnect: If enabled, the bluetooth manager will automatically connect to the nearby device if only one is found.
     /// - Returns: The modified view.
     public func scanNearbyDevices(
-        enabled: Bool = true, // swiftlint:disable:this function_default_parameter_at_end
+        enabled: Bool = true,
         with bluetoothManager: BluetoothManager,
         discovery: Set<DiscoveryDescription>,
         minimumRSSI: Int? = nil,

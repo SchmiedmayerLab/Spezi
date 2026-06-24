@@ -272,10 +272,10 @@ extension Schedule {
     ///   - duration: The duration of a single occurrence. By default one hour.
     /// - Returns: Returns the schedule that repeats hourly.
     public static func hourly(
-        calendar: Calendar = .current, // swiftlint:disable:this function_default_parameter_at_end
-        interval: Int = 1, // swiftlint:disable:this function_default_parameter_at_end
+        calendar: Calendar = .current,
+        interval: Int = 1,
         minute: Int,
-        second: Int = 0, // swiftlint:disable:this function_default_parameter_at_end
+        second: Int = 0,
         startingAt start: Date,
         end: Calendar.RecurrenceRule.End = .never,
         duration: Duration = .tillEndOfDay
@@ -322,11 +322,11 @@ extension Schedule {
     ///   - duration: The duration of a single occurrence. By default one hour.
     /// - Returns: Returns the schedule that repeats daily.
     public static func daily(
-        calendar: Calendar = .current, // swiftlint:disable:this function_default_parameter_at_end
-        interval: Int = 1, // swiftlint:disable:this function_default_parameter_at_end
+        calendar: Calendar = .current,
+        interval: Int = 1,
         hour: Int,
         minute: Int,
-        second: Int = 0, // swiftlint:disable:this function_default_parameter_at_end
+        second: Int = 0,
         startingAt start: Date,
         end: Calendar.RecurrenceRule.End = .never,
         duration: Duration = .tillEndOfDay
@@ -372,10 +372,10 @@ extension Schedule {
     public static func weekly(
         calendar: Calendar = .current,
         interval: Int = 1,
-        weekday: Locale.Weekday? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        weekday: Locale.Weekday? = nil,
         hour: Int,
         minute: Int,
-        second: Int = 0, // swiftlint:disable:this function_default_parameter_at_end
+        second: Int = 0,
         startingAt start: Date,
         end: Calendar.RecurrenceRule.End = .never,
         duration: Duration = .tillEndOfDay
@@ -429,12 +429,12 @@ extension Schedule {
     ///   - duration: The duration of a single occurrence. By default one hour.
     /// - Returns: Returns the schedule that repeats monthly.
     public static func monthly(
-        calendar: Calendar = .current, // swiftlint:disable:this function_default_parameter_at_end
-        interval: Int = 1, // swiftlint:disable:this function_default_parameter_at_end
+        calendar: Calendar = .current,
+        interval: Int = 1,
         day: Int,
         hour: Int,
         minute: Int,
-        second: Int = 0, // swiftlint:disable:this function_default_parameter_at_end
+        second: Int = 0,
         startingAt start: Date,
         end: Calendar.RecurrenceRule.End = .never,
         duration: Duration = .tillEndOfDay
@@ -482,13 +482,13 @@ extension Schedule {
     ///   - duration: The duration of a single occurrence. By default one hour.
     /// - Returns: Returns the schedule that repeats yearly.
     public static func yearly(
-        calendar: Calendar = .current, // swiftlint:disable:this function_default_parameter_at_end
-        interval: Int = 1, // swiftlint:disable:this function_default_parameter_at_end
+        calendar: Calendar = .current,
+        interval: Int = 1,
         month: Int,
         day: Int,
         hour: Int,
         minute: Int,
-        second: Int = 0, // swiftlint:disable:this function_default_parameter_at_end
+        second: Int = 0,
         startingAt start: Date,
         end: Calendar.RecurrenceRule.End = .never,
         duration: Duration = .tillEndOfDay

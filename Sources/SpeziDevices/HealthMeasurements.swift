@@ -19,8 +19,8 @@ import SwiftUI
 ///
 /// Use the `HealthMeasurements` module to collect health measurements from nearby Bluetooth devices like connected weight scales or
 /// blood pressure cuffs.
-/// - Note: Implement your device as a [`BluetoothDevice`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetoothdevice)
-///     using [SpeziBluetooth](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth).
+/// - Note: Implement your device as a [`BluetoothDevice`](../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md)
+///     using [SpeziBluetooth](../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md).
 ///
 /// To support `HealthMeasurements`, you need to adopt the ``HealthDevice`` protocol for your device.
 /// One your device is loaded, register its measurement service with the `HealthMeasurements` module
@@ -44,7 +44,7 @@ import SwiftUI
 /// ```
 ///
 /// To display new measurements to the user and save them to your external data store, you can use
-/// [`MeasurementsRecordedSheet`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevicesui/measurementsrecordedsheet).
+/// [`MeasurementsRecordedSheet`](../SpeziDevicesUI/SpeziDevicesUI.docc/SpeziDevicesUI.md).
 /// Below is a short code example.
 ///
 /// ```swift
@@ -67,7 +67,7 @@ import SwiftUI
 /// ```
 ///
 /// - Important: Don't forget to configure the `HealthMeasurements` module in
-///     your [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+///     your [`SpeziAppDelegate`](../Spezi/Spezi.docc/Spezi.md).
 ///
 /// ## Topics
 ///

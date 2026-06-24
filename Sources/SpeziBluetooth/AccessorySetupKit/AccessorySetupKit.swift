@@ -94,7 +94,7 @@ public final class AccessorySetupKit {
     ///
     /// - Note: If you need to act on accessory events synchronously, you can register an event handler using ``registerHandler(eventHandler:)``.
     @available(macCatalyst, unavailable)
-    public nonisolated var accessoryChanges: AsyncStream<AccessoryEvent> {
+    nonisolated public var accessoryChanges: AsyncStream<AccessoryEvent> {
         AsyncStream { continuation in
             let id = UUID()
 
@@ -115,7 +115,7 @@ public final class AccessorySetupKit {
 #endif
 
     /// Initialize the accessory setup kit.
-    public nonisolated init() {}
+    nonisolated public init() {}
 
     /// Configure the Module.
     @_documentation(visibility: internal)
@@ -163,7 +163,7 @@ public final class AccessorySetupKit {
     @available(watchOS, unavailable)
     @available(macOS, unavailable)
     @available(macCatalyst, unavailable)
-    public nonisolated func registerHandler(eventHandler: @MainActor @escaping (AccessoryEvent) -> Void) -> AccessoryEventRegistration {
+    nonisolated public func registerHandler(eventHandler: @MainActor @escaping (AccessoryEvent) -> Void) -> AccessoryEventRegistration {
 #if canImport(AccessorySetupKit) && !targetEnvironment(macCatalyst) && !os(macOS)
         let id = UUID()
         handlers.withLock {
@@ -187,7 +187,7 @@ public final class AccessorySetupKit {
     /// Discover display items in picker.
     /// - Parameter items: The known display items to discover.
     @available(macCatalyst, unavailable)
-    public nonisolated func showPicker(for items: [ASPickerDisplayItem]) async throws {
+    nonisolated public func showPicker(for items: [ASPickerDisplayItem]) async throws {
         do {
             try await session.showPicker(for: items)
         } catch {
@@ -202,7 +202,7 @@ public final class AccessorySetupKit {
     ///   - accessory: The accessory.
     ///   - renameOptions: The rename options.
     @available(macCatalyst, unavailable)
-    public nonisolated func renameAccessory(_ accessory: ASAccessory, options renameOptions: ASAccessory.RenameOptions = []) async throws {
+    nonisolated public func renameAccessory(_ accessory: ASAccessory, options renameOptions: ASAccessory.RenameOptions = []) async throws {
         // Funnily enough AccessorySetupKit might just deallocate the completion handler and never call the completion handler
         // this even causes the automatically synthesized async/await version to suspend forever.
         // This might be fixed in the future, just make sure to not rely on this (this used to work in initial iOS 18 builds).
@@ -214,7 +214,7 @@ public final class AccessorySetupKit {
     /// If this application is the last one to access the accessory, it will be permanently un-paired from the device.
     /// - Parameter accessory: The accessory to remove or forget.
     @available(macCatalyst, unavailable)
-    public nonisolated func removeAccessory(_ accessory: ASAccessory) async throws {
+    nonisolated public func removeAccessory(_ accessory: ASAccessory) async throws {
         do {
             try await session.removeAccessory(accessory)
         } catch {
@@ -227,7 +227,7 @@ public final class AccessorySetupKit {
     ///   - accessory: The accessory awaiting authorization.
     ///   - settings: The accessory settings.
     @available(macCatalyst, unavailable)
-    public nonisolated func finishAuthorization(for accessory: ASAccessory, settings: ASAccessorySettings) async throws {
+    nonisolated public func finishAuthorization(for accessory: ASAccessory, settings: ASAccessorySettings) async throws {
         do {
             try await session.finishAuthorization(for: accessory, settings: settings)
         } catch {
@@ -238,7 +238,7 @@ public final class AccessorySetupKit {
     /// Fail accessory setup awaiting authorization.
     /// - Parameter accessory: The accessory awaiting authorization.
     @available(macCatalyst, unavailable)
-    public nonisolated func failAuthorization(for accessory: ASAccessory) async throws {
+    nonisolated public func failAuthorization(for accessory: ASAccessory) async throws {
         do {
             try await session.failAuthorization(for: accessory)
         } catch {
@@ -397,7 +397,7 @@ extension AccessorySetupKit {
     }
     
     /// Retrieve the supported protocols that are defined in the `Info.plist` of the `main` bundle.
-    public static nonisolated var supportedProtocols: [SupportedProtocol] {
+    nonisolated public static var supportedProtocols: [SupportedProtocol] {
         (Bundle.main.object(forInfoDictionaryKey: "NSAccessorySetupKitSupports") as? [String] ?? []).map { .init(rawValue: $0) }
     }
 }

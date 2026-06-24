@@ -38,7 +38,7 @@ struct TimeSubheadline: View {
 
 /// A sheet view displaying one or many newly recorded measurements.
 ///
-/// This view retrieves the pending measurements from the [`HealthMeasurements`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevices/healthmeasurements)
+/// This view retrieves the pending measurements from the [`HealthMeasurements`](../../SpeziDevices/SpeziDevices.docc/SpeziDevices.md)
 /// Module that is present in the SwiftUI environment.
 public struct MeasurementsRecordedSheet: View {
     private let logger = Logger(subsystem: "edu.stanford.spezi.SpeziDevices", category: "MeasurementsRecordedSheet")

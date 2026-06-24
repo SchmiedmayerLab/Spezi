@@ -30,7 +30,7 @@ import SpeziFoundation
 /// }
 /// ```
 ///
-/// - Note: Refer to the [Shared Repository](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/shared-repository)
+/// - Note: Refer to the [Shared Repository](../../../Spezi/Spezi.docc/Spezi.md)
 ///     documentation to leverage the full potential of what's possible with `KnowledgeSource`s. Particularly, how to provide default
 ///     values or compute the value dependent on other configuration options.
 public protocol AccountServiceConfigurationKey: KnowledgeSource<AccountServiceConfigurationStorageAnchor>, Sendable where Value == Self {}

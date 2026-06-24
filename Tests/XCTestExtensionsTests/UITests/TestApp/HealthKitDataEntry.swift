@@ -73,7 +73,7 @@ struct HealthKitDataEntryView: View {
             end: now,
             // adding this incase anyone ever runs this on a real device by accicent,
             // so that they can easily identify and delete any test samples.
-            metadata: ["edu.stanford.BDHG.XCTestExtensions.isTestSample": "1"]
+            metadata: ["XCTestExtensions.isTestSample": "1"]
         )
         try await healthStore.save(sample)
     }

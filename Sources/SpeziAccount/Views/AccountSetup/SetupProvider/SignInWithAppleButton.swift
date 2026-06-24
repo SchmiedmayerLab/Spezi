@@ -115,7 +115,7 @@ public struct SignInWithAppleButton: View {
     ///   - onRequest: The authorization request for an Apple ID.
     ///   - onCompletion: The completion handler that the system calls when the sign-in completes.
     public init(
-        _ label: AuthenticationServices.SignInWithAppleButton.Label? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        _ label: AuthenticationServices.SignInWithAppleButton.Label? = nil,
         state: Binding<ViewState>,
         onRequest: @escaping (ASAuthorizationAppleIDRequest) -> Void,
         onCompletion: @escaping ((Result<ASAuthorization, any Error>) async throws -> Void)

@@ -1,20 +1,20 @@
 # ``SpeziOnboarding``
 
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 Provides SwiftUI views for onboarding users onto a digital health application.
 
 ## Overview
 
-The `SpeziOnboarding` module provides views that can be used for performing onboarding tasks, such as providing an overview of your app and, in combination with [SpeziConsent](https://swiftpackageindex.com/stanfordspezi/speziconsent/documentation/speziconsent) asking a user to read and sign consent documents.
+The `SpeziOnboarding` module provides views that can be used for performing onboarding tasks, such as providing an overview of your app and, in combination with [SpeziConsent](../../SpeziConsent/SpeziConsent.docc/SpeziConsent.md) asking a user to read and sign consent documents.
 
 @Row {
     @Column {
@@ -29,7 +29,7 @@ The `SpeziOnboarding` module provides views that can be used for performing onbo
     }
     @Column {
         @Image(source: "Consent", alt: "Screenshot displaying the consent view.") {
-            In combination with the Spezi Consent Module [`OnboardingConsentView`](https://swiftpackageindex.com/stanfordspezi/speziconsent/documentation/speziconsent/onboardingconsentview), to allow users to read, sign, and export consent documents.
+            In combination with the Spezi Consent Module [`OnboardingConsentView`](../../SpeziConsent/SpeziConsent.docc/SpeziConsent.md), to allow users to read, sign, and export consent documents.
         }
     }
 }
@@ -63,8 +63,8 @@ struct OnboardingViewExample: View {
             subtitle: "This is an example onboarding view",
             areas: [
                 .init(
-                    icon: Image(systemName: "tortoise.fill"), 
-                    title: "Tortoise", 
+                    icon: Image(systemName: "tortoise.fill"),
+                    title: "Tortoise",
                     description: "A Tortoise!"
                 ),
                 .init(
@@ -72,14 +72,14 @@ struct OnboardingViewExample: View {
                         Image(systemName: "lizard.fill")
                             .foregroundColor(.green)
                     },
-                    title: "Lizard", 
+                    title: "Lizard",
                     description: "A Lizard!"
                 ),
                 .init(
                     icon: {
                         Circle().fill(.orange)
-                    }, 
-                    title: "Circle", 
+                    },
+                    title: "Circle",
                     description: "A Circle!"
                 )
             ],
@@ -109,15 +109,15 @@ struct SequentialOnboardingViewExample: View {
             subtitle: "And you should pay close attention ...",
             steps: [
                 .init(
-                    title: "A thing to know", 
+                    title: "A thing to know",
                     description: "This is a first thing that you should know; read carefully!"
                 ),
                 .init(
-                    title: "Second thing to know", 
+                    title: "Second thing to know",
                     description: "This is a second thing that you should know; read carefully!"
                 ),
                 .init(
-                    title: "Third thing to know", 
+                    title: "Third thing to know",
                     description: "This is a third thing that you should know; read carefully!"
                 )
             ],

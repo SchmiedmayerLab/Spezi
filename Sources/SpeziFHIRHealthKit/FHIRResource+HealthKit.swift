@@ -27,6 +27,7 @@ extension FHIRResource {
         loadHealthKitAttachments: Bool = false
     ) async throws -> FHIRResource {
         switch sample {
+        #if !os(watchOS)
         case let record as HKClinicalRecord:
             guard let fhirResource = record.fhirResource else {
                 throw HealthKitOnFHIRError.invalidFHIRResource
@@ -80,6 +81,7 @@ extension FHIRResource {
             default:
                 throw HealthKitOnFHIRError.invalidFHIRResource
             }
+        #endif
         case let electrocardiogram as HKElectrocardiogram:
             guard let healthKit = healthKit else {
                 fallthrough

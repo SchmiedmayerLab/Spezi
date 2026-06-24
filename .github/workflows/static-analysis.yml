@@ -1,0 +1,44 @@
+#
+# This source file is part of the Stanford Spezi open-source project
+#
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: Static Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  reuse:
+    name: REUSE Compliance Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v5
+
+  swiftlint:
+    name: SwiftLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: SwiftLint
+        uses: schmiedmayerlab/action-swiftlint@v4
+        with:
+          args: --strict

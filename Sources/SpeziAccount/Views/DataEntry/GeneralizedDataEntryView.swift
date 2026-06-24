@@ -22,7 +22,7 @@ private protocol GeneralizedStringEntryView {
 /// For every ``DataEntryView`` the following things are automatically taken care of:
 /// - Declare and manage the state of the value and post any changes back up to the parent view.
 /// - If the value is of type `String` and the ``AccountService`` has a ``FieldValidationRules`` configuration for the given
-///     ``AccountKey``, a [validate(input:rules:)](https://swiftpackageindex.com/stanfordspezi/speziviews/documentation/spezivalidation/swiftui/view/validate(input:rules:)-5dac4)
+///     ``AccountKey``, a [validate(input:rules:)](../../../SpeziValidation/SpeziValidation.docc/SpeziValidation.md)-5dac4)
 ///      modifier is automatically injected.
 struct GeneralizedDataEntryView<Key: AccountKey>: View {
     private var dataHookId: String {

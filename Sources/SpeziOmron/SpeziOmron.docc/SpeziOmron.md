@@ -22,9 +22,9 @@ device support.
 The ``OmronBloodPressureCuff`` and ``OmronWeightScale``
 devices provide reusable device implementations for Omron blood pressure cuffs
 and the Omron weight scales respectively.
-Both devices automatically integrate with the [`HealthMeasurements`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevices/healthmeasurements)
-and [`PairedDevices`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevices/paireddevices) modules of SpeziDevices.
-You just need to configure them for use with the [`Bluetooth`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetooth/bluetooth#Configure-the-Bluetooth-Module)
+Both devices automatically integrate with the [`HealthMeasurements`](../../SpeziDevices/SpeziDevices.docc/SpeziDevices.md)
+and [`PairedDevices`](../../SpeziDevices/SpeziDevices.docc/SpeziDevices.md) modules of SpeziDevices.
+You just need to configure them for use with the [`Bluetooth`](../../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md#Configure-the-Bluetooth-Module)
 module.
 
 ```swift

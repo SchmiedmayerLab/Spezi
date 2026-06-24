@@ -1,0 +1,56 @@
+version = 1
+
+# Union of the per-package REUSE.toml annotations (and SpeziAccount's older .reuse/dep5) from the
+# original repositories. The original repos used the Sources/<target> and Tests/<testTarget> layout
+# the monorepo preserves, so paths need no adjustment except the UITest TestApp resources, which are
+# nested under each package's test dir here (originally Tests/UITests/TestApp/Resources/** per repo).
+# Copyright years are kept as they were upstream — these annotate files authored in the upstream repos.
+
+# Upstream annotations dated 2024 (SpeziAccount via .reuse/dep5; SpeziViews).
+[[annotations]]
+path = [
+    "Tests/SpeziAccountTests/__Snapshots__/**",
+    "Tests/SpeziViewsTests/__Snapshots__/**"
+]
+SPDX-FileCopyrightText = "2024 Stanford University and the project authors (see CONTRIBUTORS.md)"
+SPDX-License-Identifier = "MIT"
+
+# Upstream annotations dated 2025.
+[[annotations]]
+path = [
+    "Sources/FHIRPathParser/Generated/**",
+    "Sources/FHIRQuestionnaires/Resources/**",
+    "Sources/SpeziConsent/SpeziConsent.docc/Resources/**",
+    "Sources/SpeziLicense/SpeziLicense.docc/Resources/**",
+    "Sources/SpeziOnboarding/SpeziOnboarding.docc/Resources/**",
+    "Tests/SpeziAccessGuardTests/__Snapshots__/**",
+    "Tests/SpeziConsentTests/Resources/**",
+    "Tests/SpeziConsentTests/__Snapshots__/**",
+    "Tests/SpeziConsentTests/UITests/TestApp/Resources/**",
+    "Tests/SpeziHealthKitTests/__Snapshots__/**",
+    "Tests/SpeziSchedulerTests/Resources/**",
+    "Tests/SpeziSchedulerUITests/__Snapshots__/**",
+    "Tests/SpeziStudyTests/Resources/**",
+    "Tests/SpeziStudyTests/UITests/TestApp/Resources/**"
+]
+SPDX-FileCopyrightText = "2025 Stanford University and the project authors (see CONTRIBUTORS.md)"
+SPDX-License-Identifier = "MIT"
+
+# Upstream annotations dated 2026 (SpeziQuestionnaire).
+[[annotations]]
+path = [
+    "Tests/SpeziQuestionnaireTests/Resources/**",
+    "Tests/SpeziQuestionnaireTests/UITests/TestApp/Resources/**"
+]
+SPDX-FileCopyrightText = "2026 Stanford University and the project authors (see CONTRIBUTORS.md)"
+SPDX-License-Identifier = "MIT"
+
+# Monorepo infrastructure created during the migration (2026) that can't carry an inline SPDX header
+# (JSON test plans, the shared Xcode test-host scheme).
+[[annotations]]
+path = [
+    "Tests/TestPlans/**",
+    ".swiftpm/xcode/xcshareddata/xcschemes/Spezi-Tests.xcscheme"
+]
+SPDX-FileCopyrightText = "2026 Stanford University and the project authors (see CONTRIBUTORS.md)"
+SPDX-License-Identifier = "MIT"

@@ -17,9 +17,9 @@ import SpeziFoundation
 ///
 /// This property wrapper can be used to declare a Bluetooth characteristic within a ``BluetoothService``.
 /// The value type of your property needs to be optional and conform to
-/// [`ByteEncodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/documentation/bytecoding/byteencodable),
-/// [`ByteDecodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/1.0.0/documentation/bytecoding/bytedecodable) or
-/// [`ByteCodable`](https://swiftpackageindex.com/stanfordspezi/spezifileformats/documentation/bytecoding/bytecodable) respectively.
+/// [`ByteEncodable`](../../../ByteCoding/ByteCoding.docc/ByteCoding.md),
+/// [`ByteDecodable`](../../../ByteCoding/ByteCoding.docc/ByteCoding.md) or
+/// [`ByteCodable`](../../../ByteCoding/ByteCoding.docc/ByteCoding.md) respectively.
 ///
 /// If your device is connected, the characteristic value is automatically updated upon a characteristic read or a notify.
 ///
@@ -216,7 +216,7 @@ public struct Characteristic<Value: Sendable>: Sendable {
     @Observable
     final class State: Sendable {
         struct CharacteristicCaptureRetrieval: Sendable { // workaround to make the retrieval of the `capture` property Sendable
-            private nonisolated(unsafe) let characteristic: GATTCharacteristic
+            nonisolated(unsafe) private let characteristic: GATTCharacteristic
 
             var capture: CharacteristicAccessorCapture {
                 characteristic.captured
@@ -228,7 +228,7 @@ public struct Characteristic<Value: Sendable>: Sendable {
         }
 
         private let _value: MainActorBuffered<Value?>
-        @ObservationIgnored private nonisolated(unsafe) var _capture: CharacteristicCaptureRetrieval?
+        @ObservationIgnored nonisolated(unsafe) private var _capture: CharacteristicCaptureRetrieval?
         // protects both properties above
         private let lock = RWLock()
 
@@ -300,7 +300,6 @@ public struct Characteristic<Value: Sendable>: Sendable {
     }
 
     fileprivate init(wrappedValue: Value? = nil, characteristic: BTUUID, notify: Bool, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.storage = Storage(id: characteristic, defaultNotify: notify, autoRead: autoRead, initialValue: wrappedValue)
     }
 
@@ -350,7 +349,6 @@ extension Characteristic where Value: ByteEncodable {
     ///   - id: The characteristic id.
     ///   - autoRead: Flag indicating if  the initial value should be automatically read from the peripheral.
     public init(wrappedValue: Value? = nil, id: BTUUID, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.init(wrappedValue: wrappedValue, characteristic: id, notify: false, autoRead: autoRead)
     }
 }
@@ -364,7 +362,6 @@ extension Characteristic where Value: ByteDecodable {
     ///   - notify: Automatically subscribe to characteristic notifications if supported.
     ///   - autoRead: Flag indicating if  the initial value should be automatically read from the peripheral.
     public init(wrappedValue: Value? = nil, id: BTUUID, notify: Bool = false, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.init(wrappedValue: wrappedValue, characteristic: id, notify: notify, autoRead: autoRead)
     }
 }
@@ -378,7 +375,6 @@ extension Characteristic where Value: ByteCodable { // reduce ambiguity
     ///   - notify: Automatically subscribe to characteristic notifications if supported.
     ///   - autoRead: Flag indicating if  the initial value should be automatically read from the peripheral.
     public init(wrappedValue: Value? = nil, id: BTUUID, notify: Bool = false, autoRead: Bool = true) {
-        // swiftlint:disable:previous function_default_parameter_at_end
         self.init(wrappedValue: wrappedValue, characteristic: id, notify: notify, autoRead: autoRead)
     }
 }

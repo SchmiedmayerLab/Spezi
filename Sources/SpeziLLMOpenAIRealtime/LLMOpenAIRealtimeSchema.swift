@@ -16,7 +16,7 @@ import SpeziLLMOpenAI
 /// The ``LLMOpenAIRealtimeSchema`` is used as a configuration for the to-be-used Realtime OpenAI LLM. It contains all information necessary for the creation of an executable ``LLMOpenAIRealtimeSession``.
 /// It is bound to a ``LLMOpenAIRealtimePlatform`` that is responsible for turning the ``LLMOpenAIRealtimeSchema`` to an ``LLMOpenAIRealtimeSession``.
 ///
-/// - Tip: ``LLMOpenAIRealtimeSchema`` also enables the function calling mechanism to establish a structured, bidirectional, and reliable communication between the OpenAI LLMs and external tools. For details, refer to `LLMFunction` and `LLMFunction/Parameter` from SpeziLLMOpenAI or see [Function Calling](https://swiftpackageindex.com/StanfordSpezi/SpeziLLM/main/documentation/spezillmopenai/functioncalling).
+/// - Tip: ``LLMOpenAIRealtimeSchema`` also enables the function calling mechanism to establish a structured, bidirectional, and reliable communication between the OpenAI LLMs and external tools. For details, refer to `LLMFunction` and `LLMFunction/Parameter` from SpeziLLMOpenAI or see [Function Calling](../SpeziLLMOpenAI/SpeziLLMOpenAI.docc/FunctionCalling.md).
 ///
 /// - Tip: For more information, refer to the documentation of the `LLMSchema` from SpeziLLM.
 public struct LLMOpenAIRealtimeSchema: LLMSchema, Sendable {
@@ -25,7 +25,7 @@ public struct LLMOpenAIRealtimeSchema: LLMSchema, Sendable {
     let parameters: LLMOpenAIRealtimeParameters
     let functions: [String: any LLMFunction]
     public var injectIntoContext: Bool
-    
+
     /// Creates an instance of the ``LLMOpenAIRealtimeSchema`` containing all necessary configuration for Realtime OpenAI LLM inference.
     ///
     /// - Parameters:

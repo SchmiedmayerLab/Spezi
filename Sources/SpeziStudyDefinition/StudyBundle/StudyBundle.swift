@@ -134,7 +134,7 @@ public struct StudyBundle: Identifiable, Sendable {
     public func consentText(
         for fileRef: FileReference,
         in locale: Locale,
-        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default, // swiftlint:disable:this function_default_parameter_at_end
+        using localeMatchingBehaviour: LocaleMatchingBehaviour = .default,
         fallbackLocale: LocalizationKey?
     ) -> String? {
         _decodeResource(for: fileRef, locale: locale, using: localeMatchingBehaviour, fallback: fallbackLocale) {

@@ -11,10 +11,10 @@ import Spezi
 
 /// Spezi standard to support the development of FHIR-based digital health applications.
 ///
-/// > Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) setup the core Spezi infrastructure.
+/// > Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) setup the core Spezi infrastructure.
 ///
-/// The standard needs to be registered in a Spezi-based application using the [`configuration`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate/configuration)
-/// in a [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate):
+/// The standard needs to be registered in a Spezi-based application using the [`configuration`](../Spezi/Spezi.docc/Spezi.md)
+/// in a [`SpeziAppDelegate`](../Spezi/Spezi.docc/Spezi.md):
 /// ```swift
 /// class ExampleAppDelegate: SpeziAppDelegate {
 ///     override var configuration: Configuration {
@@ -24,7 +24,7 @@ import Spezi
 ///     }
 /// }
 /// ```
-/// > Tip: You can learn more about a [`Standard` in the Spezi documentation](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/standard).
+/// > Tip: You can learn more about a [`Standard` in the Spezi documentation](../Spezi/Spezi.docc/Standard.md).
 ///
 ///
 /// ## Usage
@@ -46,7 +46,7 @@ import Spezi
 @available(*, deprecated, message: "We recommend using an app-specific `Standard` instead.")
 public actor FHIR: Standard {
     @Model public private(set) var store = FHIRStore()
-    
-    
+
+
     public init() {}
 }

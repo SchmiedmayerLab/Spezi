@@ -144,7 +144,7 @@ public struct OnboardingView<Header: View, Content: View, Footer: View>: View {
     ///   - action: The close that is called then the primary button is pressed.
     public init(
         title: LocalizedStringResource,
-        subtitle: LocalizedStringResource? = nil, // swiftlint:disable:this function_default_parameter_at_end
+        subtitle: LocalizedStringResource? = nil,
         areas: [OnboardingInformationView.Area],
         actionText: LocalizedStringResource,
         action: @escaping @MainActor () async throws -> Void
@@ -172,7 +172,7 @@ public struct OnboardingView<Header: View, Content: View, Footer: View>: View {
     @_disfavoredOverload
     public init(
         title: some StringProtocol,
-        subtitle: (some StringProtocol)? = String?.none, // swiftlint:disable:this function_default_parameter_at_end
+        subtitle: (some StringProtocol)? = String?.none,
         areas: [OnboardingInformationView.Area],
         actionText: some StringProtocol,
         action: @escaping @MainActor () async throws -> Void

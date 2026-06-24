@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+// PDFKit is unavailable on watchOS; the PDF-backed attachment handling is gated out there.
+#if canImport(PDFKit)
 import PDFKit
 
 
@@ -24,3 +26,4 @@ struct DefaultPDFDocumentProvider: PDFDocumentProviding {
         PDFDocument(data: data)
     }
 }
+#endif

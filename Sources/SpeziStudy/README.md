@@ -1,28 +1,24 @@
 <!--
-                  
+
 This source file is part of the Stanford Spezi open source project
 
 SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # SpeziStudy
 
 Reusable study definitions and infrastructure for the Spezi ecosystem
 
-[![CI](https://github.com/StanfordSpezi/SpeziStudy/actions/workflows/ci.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziStudy/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziStudy/branch/main/graph/badge.svg?token=X7BQYSUKOH)](https://codecov.io/gh/StanfordSpezi/SpeziStudy)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziStudy%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziStudy)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziStudy%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziStudy)
 
 
 ## Overview
 
 The SpeziStudy package consists of the following modules:
-- [`SpeziStudyDefinition`](https://swiftpackageindex.com/stanfordspezi/spezistudy/documentation/spezistudydefinition): implements the [`StudyDefinition`](https://swiftpackageindex.com/stanfordspezi/spezistudy/documentation/spezistudydefinition/studydefinition) type, used for defining reusable studies that can be used with the Spezi ecosystem.
-- [`SpeziStudy`](https://swiftpackageindex.com/stanfordspezi/spezistudy/documentation/spezistudy): implements study-enrollment and participation infrastructure, such as e.g. the [`StudyManager`](https://swiftpackageindex.com/stanfordspezi/spezistudy/documentation/spezistudy/studymanager).
+- [`SpeziStudyDefinition`](../SpeziStudyDefinition/SpeziStudyDefinition.docc/SpeziStudyDefinition.md): implements the `StudyDefinition` type, used for defining reusable studies that can be used with the Spezi ecosystem.
+- [`SpeziStudy`](SpeziStudy.docc/SpeziStudy.md): implements study-enrollment and participation infrastructure, such as e.g. the `StudyManager`.
 
 You enable and configure the ``StudyManager`` by including it in your app's `SpeziAppDelegate`:
 ```swift
@@ -35,22 +31,23 @@ class ExampleAppDelegate: SpeziAppDelegate {
 }
 ```
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordSpezi/SpeziStudy/documentation).
+For more information, please refer to the [SpeziStudy](SpeziStudy.docc/SpeziStudy.md) and [SpeziStudyDefinition](../SpeziStudyDefinition/SpeziStudyDefinition.docc/SpeziStudyDefinition.md) documentation.
 
 
 ## The Spezi Template Application
 
-The [Spezi Template Application](https://github.com/StanfordSpezi/SpeziTemplateApplication) provides a great starting point and example using the [`SpeziStudy`](https://swiftpackageindex.com/stanfordspezi/spezistudy/documentation/spezistudy) module.
+The Spezi Template Application provides a great starting point and example using the `SpeziStudy` module.
 
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
-
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziStudy/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterLight.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/FooterDark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

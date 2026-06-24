@@ -1,13 +1,13 @@
 # ``SpeziLocalStorage``
 
 <!--
-                  
+
 This source file is part of the Stanford Spezi open-source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 Safely store data encryped on-disk.
@@ -19,9 +19,9 @@ You need to add the Spezi Storage Swift package to
 [your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
 [Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
 
-> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+> Important: If your application is not yet configured to use Spezi, follow the [Spezi setup article](../../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
 
-You can configure the `LocalStorage` module in the [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+You can configure the `LocalStorage` module in the [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md).
 
 > Important: If you use the ``LocalStorage`` on the macOS platform, ensure to add the [`Keychain Access Groups` entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/keychain-access-groups) to the enclosing Xcode project via *PROJECT_NAME > Signing&Capabilities > + Capability*. The array of keychain groups can be left empty, only the base entitlement is required.
 
@@ -41,9 +41,9 @@ class ExampleDelegate: SpeziAppDelegate {
 ```
 
 
-You can interact with the `LocalStorage` module from within SwiftUI views, either using the ``LocalStorageEntry`` property wrapper or by accessing the module directly (see below). 
+You can interact with the `LocalStorage` module from within SwiftUI views, either using the ``LocalStorageEntry`` property wrapper or by accessing the module directly (see below).
 
-Alternatively, it is common to use the `LocalStorage` module in other modules as a dependency: [Spezi Module dependencies](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/module-dependency).
+Alternatively, it is common to use the `LocalStorage` module in other modules as a dependency: [Spezi Module dependencies](../../Spezi/Spezi.docc/Module/Module%20Dependency.md).
 
 
 ## Use the LocalStorage Module
@@ -66,7 +66,7 @@ struct Note: Codable, Equatable {
 extension LocalStorageKeys {
     // By default, storage keys are encoded using JSON and stored encrypted.
     static let note = LocalStorageKey<Note>("edu.stanford.spezi.note")
-    
+
     // You can customize these aspects:
     static let plistNote = LocalStorageKey<Note>(
         "edu.stanford.spezi.note2",
@@ -136,7 +136,7 @@ Use the ``LocalStorageEntry`` property wrapper to access individual entries of t
 struct ExampleView: View {
     @LocalStorageEntry(.note)
     private var note
-    
+
     var body: some View {
         // Use note within the view.
         // Assigning a new value to the property wrapper will automatically store it into the LocalStorage.
@@ -167,4 +167,3 @@ struct ExampleStorageView: View {
 - ``LocalStorage``
 - ``LocalStorageKey``
 - ``LocalStorageSetting``
-

@@ -15,12 +15,12 @@ SPDX-License-Identifier: MIT
 ## Overview
 
 SpeziDevices abstracts common interactions with Bluetooth devices that are implemented using
-[SpeziBluetooth](https://swiftpackageindex.com/StanfordSpezi/SpeziBluetooth/documentation/spezibluetooth).
+[SpeziBluetooth](../../SpeziBluetooth/SpeziBluetooth.docc/SpeziBluetooth.md).
 It supports pairing with devices and process health measurements.
 
 ### Pairing Devices
 
-Pairing devices is a good way of making sure that your application only connects to fixed set of devices and doesn't accept data from 
+Pairing devices is a good way of making sure that your application only connects to fixed set of devices and doesn't accept data from
 non-authorized devices.
 Further, it might be necessary to ensure certain operations stay secure.
 
@@ -29,12 +29,12 @@ of connected devices.
 
 To support `PairedDevices`, you need to adopt the ``PairableDevice`` protocol for your device.
 Optionally you can adopt the ``BatteryPoweredDevice`` protocol, if your device supports the
-[`BatteryService`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/batteryservice).
+[`BatteryService`](../../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md).
 Once your device is loaded, register it with the `PairedDevices` module by calling the ``PairedDevices/configure(device:accessing:_:_:)`` method.
 
 
 > Important: Don't forget to configure the `PairedDevices` module in
-    your [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+    your [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md).
 
 ```swift
 import SpeziDevices
@@ -70,7 +70,7 @@ class MyDevice: PairableDevice {
 ```
 
 > Tip: To display and manage paired devices and support adding new paired devices, you can use the full-featured
-[`DevicesView`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevicesui/devicesview).
+[`DevicesView`](../../SpeziDevicesUI/SpeziDevicesUI.docc/SpeziDevicesUI.md).
 
 ### Health Measurements
 
@@ -80,7 +80,7 @@ blood pressure cuffs.
 
 To support `HealthMeasurements`, you need to adopt the ``HealthDevice`` protocol for your device.
 One your device is loaded, register its measurement service with the `HealthMeasurements` module
-by calling a suitable variant of [`configureReceivingMeasurements(for:on:)`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevices/healthmeasurements#register-devices).
+by calling a suitable variant of [`configureReceivingMeasurements(for:on:)`](SpeziDevices.md#register-devices).
 
 ```swift
 import SpeziDevices
@@ -100,7 +100,7 @@ class MyDevice: HealthDevice {
 ```
 
 To display new measurements to the user and save them to your external data store, you can use
- [`MeasurementsRecordedSheet`](https://swiftpackageindex.com/stanfordspezi/spezidevices/documentation/spezidevicesui/measurementsrecordedsheet).
+ [`MeasurementsRecordedSheet`](../../SpeziDevicesUI/SpeziDevicesUI.docc/SpeziDevicesUI.md).
 Below is a short code example.
 
 ```swift
@@ -123,7 +123,7 @@ struct MyHomeView: View {
 ```
 
 > Important: Don't forget to configure the `HealthMeasurements` module in
-    your [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+    your [`SpeziAppDelegate`](../../Spezi/Spezi.docc/Spezi.md).
 
 ## Topics
 

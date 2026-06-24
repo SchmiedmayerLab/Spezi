@@ -7,7 +7,7 @@
 # SPDX-FileCopyrightText: 2024 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
-#       
+#
 -->
 
 Visualize Health data in your app
@@ -15,7 +15,7 @@ Visualize Health data in your app
 
 ## Overview
 
-Use SpeziHealthKitUI's ``HealthChart`` to visualize health data queried via [`SpeziHealthKit`](https://swiftpackageindex.com/StanfordSpezi/SpeziHealthKit/documentation/SpeziHealthKit)
+Use SpeziHealthKitUI's ``HealthChart`` to visualize health data queried via [`SpeziHealthKit`](../../SpeziHealthKit/SpeziHealthKit.docc/SpeziHealthKit.md)
 
 ## Topics
 

@@ -5,27 +5,22 @@ This source file is part of the Spezi open-source project.
 SPDX-FileCopyrightText: 2023 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-  
+
 -->
 
 # Spezi Account
 
-[![Build and Test](https://github.com/StanfordSpezi/SpeziAccount/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SpeziAccount/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziAccount/branch/main/graph/badge.svg?token=IAfXOmGenQ)](https://codecov.io/gh/StanfordSpezi/SpeziAccount)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7796499.svg)](https://doi.org/10.5281/zenodo.7796499)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziAccount%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SpeziAccount)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziAccount%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SpeziAccount)
 
 A Spezi framework that provides account-related functionality including login, sign up and password reset.
 
 ## Overview
 
 The `SpeziAccount` framework fully abstracts setup and management of user account functionality for the
-[Spezi](https://github.com/StanfordSpezi/Spezi/) framework ecosystem.
+[Spezi](../Spezi/README.md) framework ecosystem.
 
-|![Screenshot displaying the account setup view with an email and password prompt and a Sign In with Apple button.](Sources/SpeziAccount/SpeziAccount.docc/Resources/AccountSetup.png#gh-light-mode-only) ![Screenshot displaying the account setup view with an email and password prompt and a Sign In with Apple button.](Sources/SpeziAccount/SpeziAccount.docc/Resources/AccountSetup~dark.png#gh-dark-mode-only)|![Screenshot displaying the Signup Form for Account setup.](Sources/SpeziAccount/SpeziAccount.docc/Resources/SignupForm.png#gh-light-mode-only) ![Screenshot displaying the Signup Form for Account setup.](Sources/SpeziAccount/SpeziAccount.docc/Resources/SignupForm~dark.png#gh-dark-mode-only)|![Screenshot displaying the Account Overview.](Sources/SpeziAccount/SpeziAccount.docc/Resources/AccountOverview.png#gh-light-mode-only) ![Screenshot displaying the Account Overview.](Sources/SpeziAccount/SpeziAccount.docc/Resources/AccountOverview~dark.png#gh-dark-mode-only)|
+|![Screenshot displaying the account setup view with an email and password prompt and a Sign In with Apple button.](SpeziAccount.docc/Resources/AccountSetup.png#gh-light-mode-only) ![Screenshot displaying the account setup view with an email and password prompt and a Sign In with Apple button.](SpeziAccount.docc/Resources/AccountSetup~dark.png#gh-dark-mode-only)|![Screenshot displaying the Signup Form for Account setup.](SpeziAccount.docc/Resources/SignupForm.png#gh-light-mode-only) ![Screenshot displaying the Signup Form for Account setup.](SpeziAccount.docc/Resources/SignupForm~dark.png#gh-dark-mode-only)|![Screenshot displaying the Account Overview.](SpeziAccount.docc/Resources/AccountOverview.png#gh-light-mode-only) ![Screenshot displaying the Account Overview.](SpeziAccount.docc/Resources/AccountOverview~dark.png#gh-dark-mode-only)|
 |:--:|:--:|:--:|
-|The [`AccountSetup`](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/accountsetup) is the central view for account onboarding, facilitating account login and creation. |The [`SignupForm`](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/signupform) is used by email-password-based AccountServices by default. |The [`AccountOverview`](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/accountoverview) is used to view and modify the user details of the currently associated account.|
+|The `AccountSetup` is the central view for account onboarding, facilitating account login and creation. |The `SignupForm` is used by email-password-based AccountServices by default. |The `AccountOverview` is used to view and modify the user details of the currently associated account.|
 
 
 The ``AccountSetup`` and ``AccountOverview`` views are central to `SpeziAccount`.
@@ -34,38 +29,63 @@ You use the ``AccountDetails`` collection within your views to visualize account
 An ``AccountService`` provides an abstraction layer for managing different types of account management services
 (e.g., email address and password-based service combined with an identity provider like Sign in with Apple).
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordSpezi/SpeziAccount/documentation).
+For more information, please refer to the [API documentation](SpeziAccount.docc/SpeziAccount.md).
 
 > [!NOTE]
-> The [SpeziFirebase](https://github.com/StanfordSpezi/SpeziFirebase)
-framework provides the [`FirebaseAccountService`](https://swiftpackageindex.com/stanfordspezi/spezifirebase/documentation/spezifirebaseaccount/firebaseaccountservice)
+> The [SpeziFirebase](../SpeziFirebase/README.md)
+framework provides the `FirebaseAccountService`
 you can use to configure an Account Service base on the Google Firebase service.
 
 
 ### Setup
 
-You need to add the Spezi Account Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the `SpeziAccount` product.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
-The [Initial Setup](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/initial-setup)
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziAccount", package: "Spezi")
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
+
+[Initial Setup](SpeziAccount.docc/Setup%20Guides/Initial%20Setup.md)
 article provides a quick-start guide to set up `SpeziAccount` in your App.
 Refer to the
-[Implementing an Account Service](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/creating-your-own-account-service)
+[Implementing an Account Service](SpeziAccount.docc/AccountService/Creating%20your%20own%20Account%20Service.md)
 article if you plan on implementing your own Account Service.
 
-The [Spezi Template Application](https://github.com/StanfordSpezi/SpeziTemplateApplication) provides a great starting point and example using the Spezi Account module.
+The Spezi Template Application provides a great starting point and example using the Spezi Account module.
 
 ## Contributing
 
-Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/StanfordSpezi/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/StanfordSpezi/.github/blob/main/CODE_OF_CONDUCT.md) first.
+Contributions to this project are welcome. Please make sure to read the [contribution guide](../Spezi/Spezi.docc/Contributing%20Guide.md) and the [Contributor Covenant Code of Conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first.
 
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordSpezi/SpeziAccount/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer.png#gh-light-mode-only)
-![Spezi Footer](https://raw.githubusercontent.com/StanfordSpezi/.github/main/assets/Footer~dark.png#gh-dark-mode-only)
+
+## Contributors
+
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

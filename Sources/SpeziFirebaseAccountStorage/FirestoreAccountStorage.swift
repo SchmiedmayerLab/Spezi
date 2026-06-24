@@ -43,13 +43,13 @@ private struct AccountDetailsWrapper: Codable {
 /// The `FirestoreAccountStorage` can be used to store additional account details, that are not supported out of the box by your account services,
 /// inside Firestore in a custom user collection.
 ///
-/// - Important: The `FirestoreAccountStorage` uses the [`accountId`](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/accountdetails/accountid)
+/// - Important: The `FirestoreAccountStorage` uses the [`accountId`](../SpeziAccount/SpeziAccount.docc/SpeziAccount.md)
 ///     of the user for the document identifier. When using the `FirebaseAccountService`, this is the primary, firebase user identifier. Make sure to configure your firestore security rules respectively.
 ///
 /// To configure Firestore as your external storage provider, just supply the ``FirestoreAccountStorage`` as an argument to the `AccountConfiguration`.
 ///
 /// - Note: For more information refer to the
-///  [Account Configuration](https://swiftpackageindex.com/stanfordspezi/speziaccount/documentation/speziaccount/initial-setup#Account-Configuration) article.
+///  [Account Configuration](../SpeziAccount/SpeziAccount.docc/Setup%20Guides/Initial%20Setup.md#Account-Configuration) article.
 ///
 /// The example below illustrates a configuration example, setting up the `FirebaseAccountService` in combination with the `FirestoreAccountStorage` provider.
 ///
@@ -72,7 +72,7 @@ private struct AccountDetailsWrapper: Codable {
 /// }
 /// ```
 ///
-/// - Important: In order to use the `FirestoreAccountStorage`, you must have [`Firestore`](https://swiftpackageindex.com/stanfordspezi/spezifirebase/main/documentation/spezifirestore/firestore)
+/// - Important: In order to use the `FirestoreAccountStorage`, you must have [`Firestore`](../SpeziFirestore/SpeziFirestore.docc/SpeziFirestore.md)
 ///     configured in your app. Refer to the documentation page for more information.
 ///
 /// ## Topics
@@ -101,12 +101,12 @@ public actor FirestoreAccountStorage: AccountStorageProvider {
     /// Configure the Firestore Account Storage provider.
     ///
     /// - Note: The `collection` parameter is passed as an auto-closure. At the time the closure is called the
-    ///   [`Firestore`](https://swiftpackageindex.com/stanfordspezi/spezifirebase/main/documentation/spezifirestore/firestore)
+    ///   [`Firestore`](../SpeziFirestore/SpeziFirestore.docc/SpeziFirestore.md)
     ///   Module has been configured and it is safe to access `Firestore.firestore()` to derive the collection reference.
     ///
     /// ### Custom Identifier Mapping
     ///
-    /// By default, the [`identifier`](https://swiftpackageindex.com/stanfordspezi/speziaccount/1.2.4/documentation/speziaccount/accountkey/identifier)
+    /// By default, the [`identifier`](../SpeziAccount/SpeziAccount.docc/SpeziAccount.md)
     /// provided by the account key is used as a field name.
     ///
     /// ### Custom Encoder/Decoder Configuration

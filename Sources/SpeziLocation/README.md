@@ -1,31 +1,54 @@
 <!--
-                  
+
 This source file is part of the SpeziLocation open source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # Spezi Location
 
 ## Overview
 
-The Spezi Location Module allows you to access location data from within your [Stanford Spezi](https://github.com/StanfordSpezi) app via Apple's [CoreLocation](https://developer.apple.com/documentation/corelocation) service using a simple asynchronous API.
+The Spezi Location Module allows you to access location data from within your [Stanford Spezi](../Spezi/README.md) app via Apple's [CoreLocation](https://developer.apple.com/documentation/corelocation) service using a simple asynchronous API.
 
 ## Setup
 
 ### 1. Add Spezi Location as a Dependency
 
-You need to add the SpeziLocation Swift package to
-[your app in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app#) or
-[Swift package](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode#Add-a-dependency-on-another-Swift-package).
+Add the Spezi monorepo package to your app and select the `SpeziLocation` product.
 
-> [!IMPORTANT]  
-> If your application is not yet configured to use Spezi, follow the [Spezi setup article](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/initial-setup) to set up the core Spezi infrastructure.
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
-### 2. Configure the SpeziLocation module in the [`SpeziAppDelegate`](https://swiftpackageindex.com/stanfordspezi/spezi/documentation/spezi/speziappdelegate).
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "SpeziLocation", package: "Spezi")
+    ]
+)
+```
+
+> [!IMPORTANT]
+> If your application is not yet configured to use Spezi, follow the [Spezi setup article](../Spezi/Spezi.docc/Initial%20Setup.md) to set up the core Spezi infrastructure.
+
+### 2. Configure the SpeziLocation module in the `SpeziAppDelegate`.
 
 ```swift
 import Spezi
@@ -67,20 +90,20 @@ import SwiftUI
 
 struct LocationPermissionsView: View {
     @Environment(SpeziLocation.self) private var speziLocation
-    
+
     var body: some View {
         Button("Request Location Access") {
             Task {
                 do {
                     // Request permission to access location while the app is in use
                     let result = await speziLocation.requestWhenInUseAuthorization()
-                    
+
                     // Check if permission was granted
                     if (result == .authorizedWhenInUse) {
-                        
+
                         // Get the user's latest location
                         let location = try await speziLocation.getLatestLocation()
-                        
+
                         // Extract the latitude and longitude
                         let latitude = location.coordinate.latitude
                         let longitude = location.coordinate.longitude
@@ -95,12 +118,10 @@ struct LocationPermissionsView: View {
 ```
 
 ## License
-This project is licensed under the MIT License. See [Licenses](https://github.com/vishnuravi/SpeziLocation/tree/main/LICENSES) for more information.
+
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
 
 ## Contributors
-This project is developed as part of the Stanford Mussallem Center for Biodesign at Stanford University.
-See [CONTRIBUTORS.md](https://github.com/vishnuravi/SpeziLocation/tree/main/CONTRIBUTORS.md) for a full list of all SpeziLocation contributors.
 
-![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-light.png#gh-light-mode-only)
-![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-dark.png#gh-dark-mode-only)
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.

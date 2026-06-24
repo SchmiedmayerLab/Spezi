@@ -11,16 +11,26 @@ import UniformTypeIdentifiers
 
 /// Service to handle FHIR attachment content extraction.
 struct FHIRAttachmentService {
+    /// The default set of content extractors. PDF extraction relies on PDFKit, which is unavailable
+    /// on watchOS, so it is only included where PDFKit can be imported.
+    private static var defaultContentExtractors: [any ContentExtractor] {
+        #if canImport(PDFKit)
+        [TextContentExtractor(), PDFContentExtractor()]
+        #else
+        [TextContentExtractor()]
+        #endif
+    }
+
     private let contentExtractors: [any ContentExtractor]
     private let base64Decoder: any Base64Decoding
 
 
     /// Creates a new attachment service instance.
     /// - Parameters:
-    ///   - contentExtractors: Collection of content extractors to use (defaults to text and PDF).
+    ///   - contentExtractors: Collection of content extractors to use (defaults to text and, where available, PDF).
     ///   - base64Decoder: The base64 decoder to use.
     init(
-        contentExtractors: [any ContentExtractor] = [TextContentExtractor(), PDFContentExtractor()],
+        contentExtractors: [any ContentExtractor] = FHIRAttachmentService.defaultContentExtractors,
         base64Decoder: any Base64Decoding = DefaultBase64Decoder()
     ) {
         self.contentExtractors = contentExtractors

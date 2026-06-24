@@ -82,7 +82,7 @@ In this example, since the `FirebaseUploader`'s `Output` type is `Void`, we simp
 
 ### Example 2: Bulk-Export of FHIR-Encoded Historical Health Data to Disk
 
-This example combines the [`HealthKitOnFHIR`](https://github.com/StanfordBDHG/HealthKitOnFHIR) library with the Bulk Exporter, to store each batch into a FHIR-encoded JSON file:
+This example combines the [`HealthKitOnFHIR`](../../HealthKitOnFHIR/HealthKitOnFHIR.docc/HealthKitOnFHIR.md) library with the Bulk Exporter, to store each batch into a FHIR-encoded JSON file:
 ```swift
 extension BulkExportSessionIdentifier {
     static let backgroundFHIRExport = Self("my-fhir-bulk-export-session")

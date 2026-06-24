@@ -29,8 +29,8 @@ public struct OmronOptionService: BluetoothService, Sendable {
     /// Once all records were notified, the method returns.
     ///
     /// - Parameter content: Select the records the request applies to.
-    /// - Throws: Throws a [`RecordAccessResponseFormatError`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/recordaccessresponseformaterror)
-    ///     if there was an unexpected response or a [`RecordAccessResponseCode`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/recordaccessresponsecode)
+    /// - Throws: Throws a [`RecordAccessResponseFormatError`](../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md)
+    ///     if there was an unexpected response or a [`RecordAccessResponseCode`](../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md)
     ///     if the request failed.
     public func reportStoredRecords(_ content: RecordAccessOperationContent<OmronRecordAccessOperand>) async throws {
         try await $recordAccessControlPoint.reportStoredRecords(content)
@@ -40,8 +40,8 @@ public struct OmronOptionService: BluetoothService, Sendable {
     ///
     /// - Parameter content: Select the records the request applies to.
     /// - Returns: The number of stored records.
-    /// - Throws: Throws a [`RecordAccessResponseFormatError`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/recordaccessresponseformaterror)
-    ///     if there was an unexpected response or a [`RecordAccessResponseCode`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/recordaccessresponsecode)
+    /// - Throws: Throws a [`RecordAccessResponseFormatError`](../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md)
+    ///     if there was an unexpected response or a [`RecordAccessResponseCode`](../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md)
     ///     if the request failed.
     public func reportNumberOfStoredRecords(_ content: RecordAccessOperationContent<OmronRecordAccessOperand>) async throws -> UInt16 {
         try await $recordAccessControlPoint.reportNumberOfStoredRecords(content)
@@ -50,8 +50,8 @@ public struct OmronOptionService: BluetoothService, Sendable {
     /// Request the sequence number of the latest records.
     ///
     /// - Returns: The sequence number of the latest record.
-    /// - Throws: Throws a [`RecordAccessResponseFormatError`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/recordaccessresponseformaterror)
-    /// if there was an unexpected response or a [`RecordAccessResponseCode`](https://swiftpackageindex.com/stanfordspezi/spezibluetooth/documentation/spezibluetoothservices/recordaccessresponsecode)
+    /// - Throws: Throws a [`RecordAccessResponseFormatError`](../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md)
+    /// if there was an unexpected response or a [`RecordAccessResponseCode`](../SpeziBluetoothServices/BluetoothServices.docc/BluetoothServices.md)
     /// if the request failed.
     public func reportSequenceNumberOfLatestRecords() async throws -> UInt16 {
         try await $recordAccessControlPoint.reportSequenceNumberOfLatestRecords()

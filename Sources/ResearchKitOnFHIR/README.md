@@ -1,24 +1,19 @@
 <!--
-                  
+
 This source file is part of the ResearchKitOnFHIR open source project
 
 SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
-             
+
 -->
 
 # ResearchKitOnFHIR
 
-[![Build and Test](https://github.com/StanfordBDHG/ResearchKitOnFHIR/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordBDHG/ResearchKitOnFHIR/actions/workflows/build-and-test.yml)
-[![codecov](https://codecov.io/gh/StanfordBDHG/ResearchKitOnFHIR/branch/main/graph/badge.svg?token=A9IUX2PFCL)](https://codecov.io/gh/StanfordBDHG/ResearchKitOnFHIR)
-[![DOI](https://zenodo.org/badge/530673273.svg)](https://zenodo.org/badge/latestdoi/530673273)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordBDHG%2FResearchKitOnFHIR%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordBDHG/ResearchKitOnFHIR)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordBDHG%2FResearchKitOnFHIR%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordBDHG/ResearchKitOnFHIR)
 
 ResearchKitOnFHIR is a framework that allows you to use [FHIR Questionnaires](https://www.hl7.org/fhir/questionnaire.html) with ResearchKit to create healthcare surveys on iOS based on the [HL7 Structured Data Capture Implementation Guide](http://build.fhir.org/ig/HL7/sdc/)
 
-For more information, please refer to the [API documentation](https://swiftpackageindex.com/StanfordBDHG/ResearchKitOnFHIR/documentation).
+For more information, please refer to the [API documentation](ResearchKitOnFHIR.docc/ResearchKitOnFHIR.md).
 
 
 ## Features
@@ -37,21 +32,21 @@ For more information, please refer to the [API documentation](https://swiftpacka
 | [attachment](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-attachment) | [ORKImageCaptureStep](http://researchkit.org/docs/Classes/ORKImageCaptureStep.html) | valueAttachment
 | [boolean](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-boolean) | [ORKBooleanAnswerFormat](http://researchkit.org/docs/Classes/ORKBooleanAnswerFormat.html) | valueBoolean
 | [choice](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-choice) | [ORKTextChoice](http://researchkit.org/docs/Classes/ORKTextChoice.html) | valueCoding
-| [date](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-date) | [ORKDateAnswerFormat](http://researchkit.org/docs/Classes/ORKDateAnswerFormat.html)(style: [ORKDateAnswerStyle.date](http://researchkit.org/docs/Constants/ORKDateAnswerStyle.html)) | valueDate 
+| [date](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-date) | [ORKDateAnswerFormat](http://researchkit.org/docs/Classes/ORKDateAnswerFormat.html)(style: [ORKDateAnswerStyle.date](http://researchkit.org/docs/Constants/ORKDateAnswerStyle.html)) | valueDate
 | [dateTime](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-dateTime) | [ORKDateAnswerFormat](http://researchkit.org/docs/Classes/ORKDateAnswerFormat.html)(style: [ORKDateAnswerStyle.dateAndTime](http://researchkit.org/docs/Constants/ORKDateAnswerStyle.html)) | valueDateTime
-| [decimal](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-decimal) | [ORKNumericAnswerFormat](http://researchkit.org/docs/Classes/ORKNumericAnswerFormat.html).decimalAnswerFormat | valueDecimal 
+| [decimal](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-decimal) | [ORKNumericAnswerFormat](http://researchkit.org/docs/Classes/ORKNumericAnswerFormat.html).decimalAnswerFormat | valueDecimal
 | [display](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-display) | [ORKInstructionStep](http://researchkit.org/docs/Classes/ORKInstructionStep.html) | *none*
 | [group](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-group) | [ORKFormStep](http://researchkit.org/docs/Classes/ORKFormStep.html) | *none*
-| [integer](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-integer) | [ORKNumericAnswerFormat](http://researchkit.org/docs/Classes/ORKNumericAnswerFormat.html).integerAnswerFormat | valueInteger 
+| [integer](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-integer) | [ORKNumericAnswerFormat](http://researchkit.org/docs/Classes/ORKNumericAnswerFormat.html).integerAnswerFormat | valueInteger
 | [quantity](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-quantity) | [ORKNumericAnswerFormat](http://researchkit.org/docs/Classes/ORKNumericAnswerFormat.html).decimalAnswerFormat(withUnit: quantityUnit) | valueQuantity
-| [string](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-string) | [ORKTextAnswerFormat](http://researchkit.org/docs/Classes/ORKTextAnswerFormat.html) | valueString  
-| [text](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-text) | [ORKTextAnswerFormat](http://researchkit.org/docs/Classes/ORKTextAnswerFormat.html) | valueString 
-| [time](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-time) | [ORKTimeOfDayAnswerFormat](http://researchkit.org/docs/Classes/ORKTimeOfDayAnswerFormat.html) | valueTime 
+| [string](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-string) | [ORKTextAnswerFormat](http://researchkit.org/docs/Classes/ORKTextAnswerFormat.html) | valueString
+| [text](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-text) | [ORKTextAnswerFormat](http://researchkit.org/docs/Classes/ORKTextAnswerFormat.html) | valueString
+| [time](https://www.hl7.org/fhir/codesystem-item-type.html#item-type-time) | [ORKTimeOfDayAnswerFormat](http://researchkit.org/docs/Classes/ORKTimeOfDayAnswerFormat.html) | valueTime
 
 
 ### Navigation Rules
 
-The following table describes how the FHIR [enableWhen](https://www.hl7.org/fhir/questionnaire-definitions.html#Questionnaire.item.enableWhen) is converted to a ResearchKit [ORKSkipStepNavigationRule](http://researchkit.org/docs/Classes/ORKSkipStepNavigationRule.html) for each supported type and operator. (The conversion is performed by constructing an ORKResultPredicate from the enableWhen expression and negating it.) 
+The following table describes how the FHIR [enableWhen](https://www.hl7.org/fhir/questionnaire-definitions.html#Questionnaire.item.enableWhen) is converted to a ResearchKit [ORKSkipStepNavigationRule](http://researchkit.org/docs/Classes/ORKSkipStepNavigationRule.html) for each supported type and operator. (The conversion is performed by constructing an ORKResultPredicate from the enableWhen expression and negating it.)
 
 Multiple enableWhen expressions are supported, using the [enableBehavior](https://www.hl7.org/fhir/questionnaire-definitions.html#Questionnaire.item.enableBehavior) element to determine if any or all of the expressions should be applied. If enableBehavior is not defined, all expressions will be applied.
 
@@ -66,11 +61,32 @@ Multiple enableWhen expressions are supported, using the [enableBehavior](https:
 
 ## Installation
 
-ResearchKitOnFHIR can be installed into your Xcode project using [Swift Package Manager](https://github.com/apple/swift-package-manager).
+Add the Spezi monorepo package to your app and select the `ResearchKitOnFHIR` product.
 
-1. In Xcode 14 and newer (requires Swift 5.7), go to “File” » “Add Packages...”
-2. Enter the URL to this GitHub repository, then select the `ResearchKitOnFhir` package to install.
+In Xcode, select **File > Add Package Dependencies...**, enter:
 
+```text
+https://github.com/SchmiedmayerLab/Spezi.git
+```
+
+Choose **Up to Next Minor Version** and enter the latest tagged `0.x` release, for example `0.1.0`.
+
+If you manage dependencies in a `Package.swift`, add the package dependency:
+
+```swift
+.package(url: "https://github.com/SchmiedmayerLab/Spezi.git", .upToNextMinor(from: "0.1.0"))
+```
+
+Then add the product dependency to the target that needs it:
+
+```swift
+.target(
+    name: "MyApp",
+    dependencies: [
+        .product(name: "ResearchKitOnFHIR", package: "Spezi")
+    ]
+)
+```
 
 ## Usage
 
@@ -109,8 +125,8 @@ In your class that implements the `ORKTaskViewControllerDelegateProtocol`, you c
 
 ```swift
 func taskViewController(
-    _ taskViewController: ORKTaskViewController, 
-    didFinishWith reason: ORKTaskViewControllerFinishReason, 
+    _ taskViewController: ORKTaskViewController,
+    didFinishWith reason: ORKTaskViewControllerFinishReason,
     error: Error?
 ) {
     switch reason {
@@ -121,22 +137,17 @@ func taskViewController(
 }
 ```
 
-
 ## License
 
-This project is licensed under the MIT License. See [Licenses](https://github.com/StanfordBDHG/ResearchKitOnFHIR/tree/main/LICENSES) for more information.
+This target is licensed under the MIT License. The local [LICENSES](LICENSES) directory records license information imported from the original upstream repository. See the monorepo [LICENSES](../../LICENSES) directory for license information covering current changes in this repository.
 
 
 ## Contributors
 
-This project is developed as part of the Stanford University projects at Stanford.
-See [CONTRIBUTORS.md](https://github.com/StanfordBDHG/ResearchKitOnFHIR/tree/main/CONTRIBUTORS.md) for a full list of all ResearchKitOnFHIR contributors.
+The local [CONTRIBUTORS.md](CONTRIBUTORS.md) file records contributors from the original upstream repository. See the monorepo [CONTRIBUTORS.md](../../CONTRIBUTORS.md) file for contributors to current changes in this repository.
 
 
 ## Notices
 
 ResearchKit is a registered trademark of Apple, Inc.
 FHIR is a registered trademark of Health Level Seven International.
-
-![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-light.png#gh-light-mode-only)
-![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/StanfordBDHG/.github/main/assets/biodesign-footer-dark.png#gh-dark-mode-only)

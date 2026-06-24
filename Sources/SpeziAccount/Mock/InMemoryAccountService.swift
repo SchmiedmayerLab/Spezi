@@ -47,7 +47,7 @@ private struct AnonymousSignupButton: View {
             Label {
                 Text(verbatim: "Stanford SUNet")
             } icon: {
-                Image(systemName: "graduationcap.fill") // swiftlint:disable:this accessibility_label_for_image
+                Image(systemName: "graduationcap.fill")
             }
         }
         .tint(colorScheme == .light ? cardinalRed : cardinalRedDark)
@@ -485,7 +485,7 @@ extension InMemoryAccountService {
         var phoneNumbers: [String]? // swiftlint:disable:this discouraged_optional_collection
 
         init(
-            accountId: UUID = UUID(), // swiftlint:disable:this function_default_parameter_at_end
+            accountId: UUID = UUID(),
             userId: String?,
             password: String?,
             name: PersonNameComponents? = nil,
