@@ -262,8 +262,9 @@ extension HealthKit {
                     read: accessRequirements.read.filter { prevAuthStates[$0] == .shouldRequest },
                     write: accessRequirements.write.filter { prevAuthStates[$0] == .shouldRequest }
                 )
+                let bloodPressureTypes = SampleType.bloodPressure.effectiveSampleTypesForAuthentication.mapIntoSet { $0.hkSampleType }
                 if Set(undecided.read).union(undecided.write).allSatisfy({
-                    $0.effectiveObjectTypesForAuthorization == SampleType.bloodPressure.effectiveSampleTypesForAuthentication.mapIntoSet { $0.hkSampleType }
+                    $0.effectiveObjectTypesForAuthorization == bloodPressureTypes
                 }) {
                     // is on iOS 26.5.x, and would ask for only blood pressure
                     return DataAccessRequirements()

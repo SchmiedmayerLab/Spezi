@@ -60,7 +60,7 @@ extension LLMOpenAILikePlatformModelType {
         rawValue
     }
     
-    public init(stringLiteral value: String) {
+    public init(stringLiteral value: String) { // swiftlint:disable:this missing_docs
         self.init(rawValue: value)
     }
 }
