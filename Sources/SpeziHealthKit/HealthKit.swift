@@ -661,6 +661,15 @@ extension HKUnit {
     }
 }
 
+
+extension HealthKit {
+    @_spi(TestingSupport)
+    public static var needsBloodPressureAuthFlowFix: Bool {
+        (Version(26, 5, 0)..<Version(27, 0, 0)).contains(Version(ProcessInfo.processInfo.operatingSystemVersion))
+    }
+}
+
+
 #endif
 
 
@@ -672,13 +681,5 @@ extension HealthKit {
     @_spi(Testing)
     public static var bundle: Bundle {
         Bundle.module
-    }
-}
-
-
-extension HealthKit {
-    @_spi(TestingSupport)
-    public static var needsBloodPressureAuthFlowFix: Bool {
-        (Version(26, 5, 0)..<Version(27, 0, 0)).contains(Version(ProcessInfo.processInfo.operatingSystemVersion))
     }
 }
