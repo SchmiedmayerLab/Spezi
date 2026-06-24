@@ -88,6 +88,7 @@ public struct Version: Hashable, Sendable {
         self.buildMetadata = buildMetadata
     }
     
+    #if os(Darwin)
     /// Creates a new `Version` from an `OperatingSystemVersion`.
     @inlinable
     public init(_ other: OperatingSystemVersion) {
@@ -98,6 +99,7 @@ public struct Version: Hashable, Sendable {
         }
         self.init(major, minor, patch)
     }
+    #endif
 }
 
 
