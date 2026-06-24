@@ -16,6 +16,7 @@ import Foundation
 /// - ``init(_:_:_:)``
 /// - ``init(_:_:_:prereleaseIdentifiers:buildMetadata:)``
 /// - ``init(_:)``
+/// - ``init(_:)-(OperatingSystemVersion)``
 /// - ``init(stringLiteral:)``
 ///
 /// ### Instance Properties
@@ -85,6 +86,17 @@ public struct Version: Hashable, Sendable {
         precondition(buildMetadata.allSatisfy(isValidIdentifier))
         self.prereleaseIdentifiers = prereleaseIdentifiers
         self.buildMetadata = buildMetadata
+    }
+    
+    /// Creates a new `Version` from an `OperatingSystemVersion`.
+    @inlinable
+    public init(_ other: OperatingSystemVersion) {
+        guard let major = UInt(exactly: other.majorVersion),
+              let minor = UInt(exactly: other.minorVersion),
+              let patch = UInt(exactly: other.patchVersion) else {
+            preconditionFailure("'\(other)' contained negative components")
+        }
+        self.init(major, minor, patch)
     }
 }
 
@@ -234,4 +246,63 @@ extension Version: Codable {
         var container = encoder.singleValueContainer()
         try container.encode(description)
     }
+}
+
+
+extension Version {
+    /// The next-up major version, with minor and patch set to 0.
+    @inlinable public var nextMajor: Version {
+        Version(major + 1, 0, 0)
+    }
+    
+    /// The next-up minor version, with major unchanged and patch set to 0.
+    @inlinable public var nextMinor: Version {
+        Version(major, minor + 1, 0)
+    }
+    
+    /// The next-up patch version, with major and minor unchanged.
+    @inlinable public var nextPatch: Version {
+        Version(major, minor, patch + 1)
+    }
+}
+
+
+// MARK: Comparison
+
+extension Version {
+    /// A component of a version.
+    public enum Component {
+        /// The major component
+        case major
+        /// The minor component
+        case minor
+        /// The patch component
+        case patch
+    }
+    
+    /// Determines if the version is equal to another version, up to the specified component.
+    @inlinable
+    public func isEqual(to other: Version, downTo component: Component) -> Bool {
+        switch component {
+        case .major:
+            self.major == other.major
+        case .minor:
+            self.major == other.major && self.minor == other.minor
+        case .patch:
+            self.major == other.major && self.minor == other.minor && self.patch == other.patch
+        }
+    }
+    
+//    /// Determines if the version is greater than another version, starting at the specified component.
+//    @inlinable
+//    public func isGreaterThan(_ other: Version, downTo component: Component) -> Bool {
+//        switch component {
+//        case .major:
+//            self.major > other.major
+//        case .minor:
+//            isGreaterThan(other, upFrom: .major) || (self.major == other.major && self.minor > other.minor)
+//        case .patch:
+//            isGreaterThan(other, upFrom: .minor) || (self.minor == other.minor && self.patch > other.patch)
+//        }
+//    }
 }

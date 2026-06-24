@@ -144,6 +144,13 @@ extension AnySampleType {
             [self, SampleType.workout]
         case SampleType.bloodPressureSystolic, SampleType.bloodPressureDiastolic:
             [SampleType.bloodPressureSystolic, SampleType.bloodPressureDiastolic]
+        case let self as SampleType<HKQuantitySample>:
+            switch self {
+            case .bloodPressureSystolic, .bloodPressureDiastolic:
+                [SampleType.bloodPressureSystolic, SampleType.bloodPressureDiastolic]
+            default:
+                [self]
+            }
         default:
             [self]
         }

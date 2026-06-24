@@ -13,7 +13,9 @@ extension XCUIElement {
     /// The `XCUIApplication` to whose view hierarchy this element belongs.
     public var app: XCUIApplication {
         get throws {
-            if let app = self.value(forKey: "application") as? XCUIApplication {
+            if let self = self as? XCUIApplication {
+                return self
+            } else if let app = self.value(forKey: "application") as? XCUIApplication {
                 return app
             } else {
                 throw XCTestError(.failureWhileWaiting, userInfo: [
