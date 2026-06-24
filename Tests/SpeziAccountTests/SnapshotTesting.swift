@@ -130,7 +130,6 @@ struct SnapshotTesting {
         assertSnapshot(of: view3Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view3-signup")
         assertSnapshot(of: view4Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view4-signup")
         assertSnapshot(of: view5Signup, as: .image(layout: .device(config: .iPhone13Pro)), named: "iphone-view5-signup")
-        }
     }
     
     @MainActor
