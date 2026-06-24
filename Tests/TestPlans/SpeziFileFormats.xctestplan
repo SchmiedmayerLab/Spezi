@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "00000000-0000-0000-0000-000000000012",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+      {
+        "containerPath" : "container:",
+        "identifier" : "EDFFormat",
+        "name" : "EDFFormat"
+      }
+    ]
+    }
+  },
+  "testTargets" : [
+      {
+        "target" : {
+          "containerPath" : "container:",
+          "identifier" : "EDFFormatTests",
+          "name" : "EDFFormatTests"
+        }
+      }
+  ],
+  "version" : 1
+}

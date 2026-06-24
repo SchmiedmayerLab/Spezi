@@ -1,0 +1,151 @@
+#
+# This source file is part of the Stanford Spezi open-source project
+#
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  detect:
+    name: Detect affected packages
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.compute.outputs.matrix }}
+      ui_matrix: ${{ steps.compute.outputs.ui_matrix }}
+      has_jobs: ${{ steps.compute.outputs.has_jobs }}
+      has_ui_jobs: ${{ steps.compute.outputs.has_ui_jobs }}
+      affected: ${{ steps.compute.outputs.affected }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # need history to diff against the base / previous commit
+      - name: Determine changed files
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+            git diff --name-only "origin/${{ github.base_ref }}...HEAD" > changed.txt
+          elif [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" > changed.txt
+          else
+            echo "__ALL__" > changed.txt   # first push / unknown base -> test everything
+          fi
+          echo "Changed files:"; cat changed.txt
+      - name: Compute test matrix
+        id: compute
+        run: python3 Scripts/affected-test-matrix.py changed.txt >> "$GITHUB_OUTPUT"
+      - name: Dump matrix (debug)
+        env:
+          AFFECTED: ${{ steps.compute.outputs.affected }}
+          HAS_JOBS: ${{ steps.compute.outputs.has_jobs }}
+          MATRIX: ${{ steps.compute.outputs.matrix }}
+        run: |
+          echo "has_jobs = $HAS_JOBS"
+          echo "affected = $AFFECTED"
+          JOBS=$(printf '%s' "$MATRIX" | python3 -c 'import json,sys; print(len(json.load(sys.stdin).get("include",[])))' 2>/dev/null || echo "?")
+          echo "scheduled jobs = $JOBS"
+          echo "----- generated matrix (pretty) -----"
+          printf '%s' "$MATRIX" | python3 -m json.tool || printf '%s\n' "$MATRIX"
+          {
+            echo "## Test selection"
+            echo "**has_jobs:** \`$HAS_JOBS\`  •  **scheduled jobs:** \`$JOBS\`"
+            echo ""
+            echo "**Affected packages:** $AFFECTED"
+            echo ""
+            echo "<details><summary>Generated matrix JSON ($JOBS jobs)</summary>"
+            echo ""
+            echo '```json'
+            printf '%s' "$MATRIX" | python3 -m json.tool || printf '%s\n' "$MATRIX"
+            echo '```'
+            echo ""
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  test:
+    name: ${{ matrix.package }} (${{ matrix.platform }})
+    needs: detect
+    if: needs.detect.outputs.has_jobs == 'true'
+    # Runner per job: Linux -> GitHub-hosted ubuntu; otherwise self-hosted iff packages.toml's
+    # self-hosted-ci routed unit tests there (matrix.selfHosted), else GitHub-hosted macOS-26.
+    runs-on: ${{ matrix.platform == 'Linux' && 'ubuntu-latest' || (matrix.selfHosted && fromJson('["self-hosted", "macOS"]') || fromJson('["macOS-26"]')) }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Swift
+        if: matrix.platform == 'Linux'
+        uses: SwiftyLab/setup-swift@v1
+      - name: Test ${{ matrix.package }} on ${{ matrix.platform }}
+        run: Scripts/run-package-tests.sh "${{ matrix.package }}" "${{ matrix.platform }}"
+      - name: Upload .xcresult
+        if: always() && matrix.platform != 'Linux'   # always upload (pass or fail); Linux is a compile-check (no .xcresult)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}-${{ matrix.platform }}-Tests.xcresult
+          path: ${{ matrix.package }}-${{ matrix.platform }}-Tests.xcresult
+
+  test-ui:
+    name: ${{ matrix.package }} UI (${{ matrix.platform }})
+    needs: detect
+    if: needs.detect.outputs.has_ui_jobs == 'true'
+    # UI tests run on the self-hosted runner by default (packages.toml self-hosted-ci defaults to
+    # ["ui"]); a package can move its UI tests to GitHub-hosted by dropping "ui" from that list.
+    runs-on: ${{ matrix.selfHosted && fromJson('["self-hosted", "macOS"]') || fromJson('["macOS-26"]') }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.detect.outputs.ui_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: UI test ${{ matrix.package }} on ${{ matrix.platform }}
+        run: Scripts/run-package-tests.sh "${{ matrix.package }}" "${{ matrix.platform }}" ui
+      - name: Upload .xcresult
+        if: always()   # always upload the result bundle (pass or fail)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}-${{ matrix.platform }}-UITests.xcresult
+          path: ${{ matrix.package }}-${{ matrix.platform }}-UITests.xcresult
+
+  # Single gate to use as the required status check in branch protection.
+  # Does no work itself; it just aggregates the result of all `test` matrix jobs.
+  # `if: always()` is required so it still runs (and reports pass/fail) when `test`
+  # failed or was skipped — otherwise the gate would be skipped and a skipped required
+  # check never satisfies branch protection.
+  all-tests-pass:
+    name: All tests pass
+    if: always()
+    needs: [detect, test, test-ui]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify test results
+        run: |
+          echo "detect  = ${{ needs.detect.result }}"
+          echo "test    = ${{ needs.test.result }}"
+          echo "test-ui = ${{ needs.test-ui.result }}"
+          if [ "${{ needs.detect.result }}" != "success" ]; then
+            echo "::error::The 'detect' job did not succeed — cannot determine which tests to run."
+            exit 1
+          fi
+          for r in "${{ needs.test.result }}" "${{ needs.test-ui.result }}"; do
+            case "$r" in
+              success|skipped) ;;
+              *) echo "::error::One or more test jobs did not pass (result: $r)."; exit 1 ;;
+            esac
+          done
+          echo "All required unit + UI tests passed (or no packages were affected)."

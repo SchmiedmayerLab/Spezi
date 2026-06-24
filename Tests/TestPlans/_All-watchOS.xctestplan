@@ -1,0 +1,176 @@
+{
+  "configurations": [
+    {
+      "id": "30247F75-4AA9-4B50-8029-85D89E77A119",
+      "name": "Configuration 1",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {
+    "codeCoverage": false
+  },
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "ByteCodingTests",
+        "name": "ByteCodingTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "EDFFormatTests",
+        "name": "EDFFormatTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "FHIRModelsExtensionsTests",
+        "name": "FHIRModelsExtensionsTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "FHIRPathParserTests",
+        "name": "FHIRPathParserTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "HealthKitOnFHIRMacrosTests",
+        "name": "HealthKitOnFHIRMacrosTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "HealthKitOnFHIRTests",
+        "name": "HealthKitOnFHIRTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "RuntimeAssertionsTests",
+        "name": "RuntimeAssertionsTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziBluetoothServicesTests",
+        "name": "SpeziBluetoothServicesTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziBluetoothTests",
+        "name": "SpeziBluetoothTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziFoundationTests",
+        "name": "SpeziFoundationTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziHealthKitTests",
+        "name": "SpeziHealthKitTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziLocalizationTests",
+        "name": "SpeziLocalizationTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziLocationTests",
+        "name": "SpeziLocationTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziNotificationsTests",
+        "name": "SpeziNotificationsTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziNumericsTests",
+        "name": "SpeziNumericsTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziSchedulerTests",
+        "name": "SpeziSchedulerTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziSchedulerUITests",
+        "name": "SpeziSchedulerUITests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziStorageTests",
+        "name": "SpeziStorageTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziStudyTests",
+        "name": "SpeziStudyTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziTests",
+        "name": "SpeziTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "SpeziViewsTests",
+        "name": "SpeziViewsTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "XCTRuntimeAssertionsTests",
+        "name": "XCTRuntimeAssertionsTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:",
+        "identifier": "XCTestExtensionsTests",
+        "name": "XCTestExtensionsTests"
+      }
+    }
+  ],
+  "version": 1
+}

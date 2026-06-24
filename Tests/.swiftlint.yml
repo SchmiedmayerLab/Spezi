@@ -1,0 +1,16 @@
+#
+# This source file is part of the Stanford Spezi open-source project
+#
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+# disable commonly-hit, low-stakes rules for the tests;
+# these things may not necessarily be acceptable in the primary code, but they are acceptable here.
+disabled_rules:
+  - type_body_length
+  - function_body_length
+  - closure_body_length
+  - line_length
+  - file_length

@@ -1,0 +1,47 @@
+{
+  "resourceType": "Questionnaire",
+  "language": "en-GB",
+  "id": "C8F9D485-3A88-4416-92EE-839CC1974AFC",
+  "title": "Valid",
+  "status": "draft",
+  "meta": {
+    "profile": [
+      "http://spezi.health/fhir/StructureDefinition/sdf-Questionnaire"
+    ],
+    "tag": [
+      {
+        "system": "urn:ietf:bcp:47",
+        "code": "en-GB",
+        "display": "English"
+      }
+    ]
+  },
+  "useContext": [
+    {
+      "code": {
+        "system": "http://hl7.org/fhir/ValueSet/usage-context-type",
+        "code": "focus",
+        "display": "Clinical Focus"
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.8655",
+            "display": "Valid"
+          }
+        ]
+      }
+    }
+  ],
+  "subjectType": [
+    "Patient"
+  ],
+  "item": [
+    {
+      "linkId": "db0de878-d555-4067-948a-18cc907b1b19",
+      "text": "Question title",
+      "type": "integer",
+      "required": false
+    }
+  ]
+}
