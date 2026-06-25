@@ -60,13 +60,13 @@ extension UserInfoStorage {
         value newValue: Source.Value?,
         cache: inout RepositoryCache
     ) throws {
-        cache.repository.set(source, value: newValue)
         if let newValue {
             let encoder = source.coding.encoder
             userInfo[source.identifier] = try encoder.encode(SingleValueWrapper(value: newValue))
         } else {
             userInfo.removeValue(forKey: source.identifier)
         }
+        cache.repository.set(source, value: newValue)
     }
 }
 
