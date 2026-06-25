@@ -186,7 +186,6 @@ var targets: [Target] = [
             .product(name: "ModelsR4", package: "FHIRModels")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -263,7 +262,6 @@ var targets: [Target] = [
             .target(name: "FHIRModelsExtensions")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -314,7 +312,6 @@ var targets: [Target] = [
             .target(name: "FHIRPathParser")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE",
             "LICENSES",
@@ -342,7 +339,6 @@ var targets: [Target] = [
             .product(name: "OrderedCollections", package: "swift-collections")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -401,7 +397,6 @@ var targets: [Target] = [
             .target(name: "SpeziFoundation")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -419,7 +414,7 @@ var targets: [Target] = [
         dependencies: [
             .target(name: "SpeziAccessGuard"),
             .target(name: "SpeziTesting"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
@@ -460,7 +455,6 @@ var targets: [Target] = [
             .target(name: "SpeziAccountMacros")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -507,7 +501,7 @@ var targets: [Target] = [
             .target(name: "XCTRuntimeAssertions"),
             .target(name: "Spezi"),
             .target(name: "SpeziTesting"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
@@ -545,7 +539,6 @@ var targets: [Target] = [
             .product(name: "Atomics", package: "swift-atomics")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -607,7 +600,6 @@ var targets: [Target] = [
             .product(name: "Textual", package: "textual")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -644,7 +636,6 @@ var targets: [Target] = [
             .product(name: "MarkdownUI", package: "swift-markdown-ui")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -665,7 +656,7 @@ var targets: [Target] = [
         dependencies: [
             .target(name: "SpeziConsent"),
             .target(name: "SpeziFoundation"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
@@ -687,7 +678,6 @@ var targets: [Target] = [
             .target(name: "SpeziPersonalInfo")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -723,7 +713,6 @@ var targets: [Target] = [
             .target(name: "Spezi")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -790,7 +779,6 @@ var targets: [Target] = [
             .target(name: "SpeziHealthKit")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -847,7 +835,6 @@ var targets: [Target] = [
     .target(
         name: "SpeziFileFormats",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -881,7 +868,6 @@ var targets: [Target] = [
     .target(
         name: "SpeziFirebase",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -990,7 +976,6 @@ var targets: [Target] = [
             .product(name: "ThreadLocal", package: "ThreadLocal")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "Dockerfile",
             "LICENSE.md",
@@ -1063,7 +1048,6 @@ var targets: [Target] = [
         exclude: [
             "Sample Types/SampleTypeDefs.py",
             "Sample Types/SampleTypes.swift.gyb",
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1113,7 +1097,7 @@ var targets: [Target] = [
             .target(name: "SpeziHealthKit"),
             .target(name: "SpeziHealthKitBulkExport"),
             .target(name: "SpeziHealthKitUI"),
-            .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            .product(name: "SnapshotTesting", package: "swift-snapshot-testing", condition: .when(platforms: [.iOS]))
         ],
         exclude: [
             "UITests"
@@ -1135,7 +1119,6 @@ var targets: [Target] = [
             .target(name: "SpeziViews")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "FogNode",
             "LICENSE.md",
@@ -1315,7 +1298,6 @@ var targets: [Target] = [
             .product(name: "SwiftPackageList", package: "swift-package-list")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1348,7 +1330,6 @@ var targets: [Target] = [
             .target(name: "Spezi")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1376,7 +1357,6 @@ var targets: [Target] = [
     .target(
         name: "SpeziNetworking",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1439,7 +1419,6 @@ var targets: [Target] = [
             .target(name: "Spezi")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1497,7 +1476,6 @@ var targets: [Target] = [
             .target(name: "SpeziViews")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1535,7 +1513,6 @@ var targets: [Target] = [
             .product(name: "Numerics", package: "swift-numerics")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1642,7 +1619,6 @@ var targets: [Target] = [
             return deps
         }(),
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1663,7 +1639,6 @@ var targets: [Target] = [
             .target(name: "SpeziLocalStorage")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1689,7 +1664,6 @@ var targets: [Target] = [
     .target(
         name: "SpeziSpeech",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1726,7 +1700,6 @@ var targets: [Target] = [
     .target(
         name: "SpeziStorage",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1829,7 +1802,6 @@ var targets: [Target] = [
             .product(name: "MarkdownUI", package: "swift-markdown-ui")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1879,7 +1851,6 @@ var targets: [Target] = [
     .target(
         name: "XCTHealthKit",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1901,7 +1872,6 @@ var targets: [Target] = [
     .target(
         name: "RuntimeAssertions",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -1961,7 +1931,6 @@ var targets: [Target] = [
     .target(
         name: "XCTestExtensions",
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",
@@ -2065,7 +2034,6 @@ targets += [
             .product(name: "Algorithms", package: "swift-algorithms")
         ],
         exclude: [
-            "CITATION.cff",
             "CONTRIBUTORS.md",
             "LICENSE.md",
             "LICENSES",

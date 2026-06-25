@@ -59,4 +59,8 @@ extension LLMOpenAILikePlatformModelType {
     public var id: some Hashable { // swiftlint:disable:this missing_docs
         rawValue
     }
+    
+    public init(stringLiteral value: String) { // swiftlint:disable:this missing_docs
+        self.init(rawValue: value)
+    }
 }

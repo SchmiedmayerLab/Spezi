@@ -16,6 +16,7 @@ import Foundation
 /// - ``init(_:_:_:)``
 /// - ``init(_:_:_:prereleaseIdentifiers:buildMetadata:)``
 /// - ``init(_:)``
+/// - ``init(_:)-(OperatingSystemVersion)``
 /// - ``init(stringLiteral:)``
 ///
 /// ### Instance Properties
@@ -86,6 +87,19 @@ public struct Version: Hashable, Sendable {
         self.prereleaseIdentifiers = prereleaseIdentifiers
         self.buildMetadata = buildMetadata
     }
+    
+    #if canImport(Darwin)
+    /// Creates a new `Version` from an `OperatingSystemVersion`.
+    @inlinable
+    public init(_ other: OperatingSystemVersion) {
+        guard let major = UInt(exactly: other.majorVersion),
+              let minor = UInt(exactly: other.minorVersion),
+              let patch = UInt(exactly: other.patchVersion) else {
+            preconditionFailure("'\(other)' contained negative components")
+        }
+        self.init(major, minor, patch)
+    }
+    #endif
 }
 
 

@@ -31,8 +31,11 @@ class SpeziHealthKitTests: XCTestCase {
             app.launchArguments.append("--resetEverything")
         }
         app.launch()
-        if app.alerts["“TestApp” Would Like to Send You Notifications"].waitForExistence(timeout: 5) {
-            app.alerts["“TestApp” Would Like to Send You Notifications"].buttons["Allow"].tap()
+        XCTAssert(app.wait(for: .runningForeground, timeout: 2))
+        if !app.launchArguments.contains("--collectedSamplesOnly") {
+            if app.alerts["“TestApp” Would Like to Send You Notifications"].waitForExistence(timeout: 5) {
+                app.alerts["“TestApp” Would Like to Send You Notifications"].buttons["Allow"].tap()
+            }
         }
         XCTAssert(app.buttons["Ask for authorization"].waitForExistence(timeout: 3))
         if askForAuthorization, app.buttons["Ask for authorization"].isEnabled {
@@ -46,13 +49,7 @@ class SpeziHealthKitTests: XCTestCase {
     
     @MainActor
     func addSample(_ sampleType: SampleType<HKQuantitySample>, in app: XCUIApplication) {
-        let menuButton = app.navigationBars.images["ellipsis.circle"]
-        XCTAssert(menuButton.waitForExistence(timeout: 1))
-        menuButton.tap()
-        let addSampleButton = app.buttons["Add Sample: \(sampleType.displayTitle)"]
-        XCTAssert(addSampleButton.waitForExistence(timeout: 2))
-        addSampleButton.tap()
-        sleep(for: .seconds(0.5)) // i sleep
+        app.performMoreMenuAction("Add Sample: \(sampleType.displayTitle)")
     }
     
     
@@ -137,14 +134,21 @@ extension XCUIApplication {
         XCTFail(msg)
         throw XCTSkip(msg)
         #else
-        let menuButton = self.navigationBars.images["ellipsis.circle"]
+        self.performMoreMenuAction("Delete Test Data from HealthKit")
+        #endif
+    }
+    
+    @MainActor
+    func performMoreMenuAction(_ pathFst: String, _ pathRest: String...) {
+        let menuButton = self.navigationBars.buttons["actions"]
         XCTAssert(menuButton.waitForExistence(timeout: 1))
         menuButton.tap()
-        let button = self.buttons["Delete Test Data from HealthKit"]
-        XCTAssert(button.waitForExistence(timeout: 2))
-        button.tap()
-        sleep(for: .seconds(0.5))
-        #endif
+        for title in [pathFst] + pathRest {
+            let button = self.buttons[title]
+            XCTAssert(button.waitForExistence(timeout: 2))
+            button.tap()
+            sleep(for: .seconds(0.5)) // i sleep
+        }
     }
 }
 

@@ -20,9 +20,6 @@ public struct AnthropicPlatformDefinition: LLMOpenAILikePlatformDefinition {
         public init(rawValue: String) {
             self.rawValue = rawValue
         }
-        public init(stringLiteral value: String) {
-            self.rawValue = value
-        }
     }
 
     public static let platformName = "Anthropic"

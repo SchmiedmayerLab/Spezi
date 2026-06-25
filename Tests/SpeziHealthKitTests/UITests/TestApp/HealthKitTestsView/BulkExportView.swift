@@ -10,6 +10,7 @@
 
 import Foundation
 import HealthKit
+@_spi(TestingSupport)
 import SpeziHealthKit
 import SpeziHealthKitBulkExport
 import SpeziViews
@@ -43,7 +44,7 @@ struct BulkExportView: View {
     // Adding eg a ton of heart rate samples would slow down the app a lot, since they'd trigger the observer mechanism.
     private let sampleTypes = SampleTypesCollection(
         quantity: [.restingHeartRate, .height, .cyclingSpeed],
-//        correlation: [.bloodPressure]
+        correlation: HealthKit.needsBloodPressureAuthFlowFix ? [] : [.bloodPressure]
     )
     
     private let timeRange: Range<Date> = {

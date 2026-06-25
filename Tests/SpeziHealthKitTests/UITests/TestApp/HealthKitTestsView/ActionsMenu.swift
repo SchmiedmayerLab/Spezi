@@ -46,6 +46,24 @@ struct ActionsMenu: View {
                     try await addTestData([entry])
                 }
             }
+            Divider()
+            Menu("Request Access") {
+                AsyncButton("Only Blood Pressure", state: $viewState) {
+                    try await healthKit.askForAuthorization(
+                        for: HealthKit.DataAccessRequirements(readAndWrite: [SampleType.bloodPressure])
+                    )
+                }
+                AsyncButton("Blood Pressure + Steps", state: $viewState) {
+                    try await healthKit.askForAuthorization(
+                        for: HealthKit.DataAccessRequirements(readAndWrite: [SampleType.bloodPressure, SampleType.stepCount] as [any AnySampleType])
+                    )
+                }
+                AsyncButton("Only Steps", state: $viewState) {
+                    try await healthKit.askForAuthorization(
+                        for: HealthKit.DataAccessRequirements(readAndWrite: [SampleType.stepCount])
+                    )
+                }
+            }
         } label: {
             Image(systemName: "ellipsis.circle")
                 .accessibilityLabel("actions")

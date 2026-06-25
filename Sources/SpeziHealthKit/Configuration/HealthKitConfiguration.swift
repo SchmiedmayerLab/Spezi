@@ -62,6 +62,14 @@ extension HealthKit {
             self.write = write.flatMapIntoSet { $0.effectiveObjectTypesForAuthorization.compactMap { $0 as? HKSampleType } }
         }
         
+        /// Creates a new instance, with the specified read and write sample types.
+        public init(read: some Sequence<any AnySampleType> = [], write: some Sequence<any AnySampleType> = []) {
+            self.init(
+                read: read.mapIntoSet { $0.hkSampleType },
+                write: write.mapIntoSet { $0.hkSampleType }
+            )
+        }
+        
         /// Creates a new instance, specifying read and write access to the same set of sample types.
         public init(readAndWrite sampleTypes: some Sequence<HKSampleType>) {
             self.init(
@@ -70,12 +78,9 @@ extension HealthKit {
             )
         }
         
-        /// Creates a new instance, with the specified read and write sample types.
-        public init(read: some Sequence<any AnySampleType> = [], write: some Sequence<any AnySampleType> = []) {
-            self.init(
-                read: read.mapIntoSet { $0.hkSampleType },
-                write: write.mapIntoSet { $0.hkSampleType }
-            )
+        /// Creates a new instance, specifying read and write access to the same set of sample types.
+        public init(readAndWrite sampleTypes: some Sequence<any AnySampleType>) {
+            self.init(readAndWrite: sampleTypes.mapIntoSet { $0.hkSampleType })
         }
         
         /// Creates a new instance, containing the union of the read and write requirements of `self` and `other`.

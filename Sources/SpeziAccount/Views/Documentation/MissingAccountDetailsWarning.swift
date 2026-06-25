@@ -12,10 +12,11 @@ import SwiftUI
 struct MissingAccountDetailsWarning: View {
     private var documentationUrl: URL {
         // we may move to a #URL macro once Swift 5.9 is shipping
-        guard let docsUrl = URL(string: "../../SpeziAccount.docc/Setup%20Guides/Initial%20Setup.md") else {
+        guard let docsUrl = URL(
+            string: "https://github.com/SchmiedmayerLab/Spezi/blob/main/Sources/SpeziAccount/SpeziAccount.docc/Setup%20Guides/Initial%20Setup.md"
+        ) else {
             fatalError("Failed to construct SpeziAccount Documentation URL. Please review URL syntax!")
         }
-
         return docsUrl
     }
 

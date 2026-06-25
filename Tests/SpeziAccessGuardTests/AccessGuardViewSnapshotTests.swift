@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+#if os(iOS)
+
 import SnapshotTesting
 @testable import SpeziAccessGuard
 import SpeziKeychainStorage
@@ -77,3 +79,5 @@ extension AccessGuardIdentifier where AccessGuard == CodeAccessGuard {
 extension CodeAccessGuard {
     static let testConfig = Self(.fixedCodeTest, fixed: "0218")
 }
+
+#endif
