@@ -240,22 +240,7 @@ extension HealthKit {
         }
         let prevAuthStates = await authorizationRequestStates(for: accessRequirements)
         let accessRequirements = { () -> DataAccessRequirements in
-            // Issue: when requesting access to a set of sample types that contains blood pressure, iOS 26.5
-            // will omit the "Blood Pressure" entry from the list in the auth sheet, if the request contains
-            // additional other sample types alongside blood pressure. if the request is only for blood pressure
-            // access (either because blood pressure is the only sample type being requested, or because all other
-            // sample types have already been decided), it presents a non-dismissable full-screen sheet, which
-            // sometimes will stay on screen indefinitely and sometimes will auto-dismiss itself immediately after
-            // being presented.
-            // We try to work around this, by attempting to anticipate that this is about to happen, and skipping the
-            // blood pressure request in that case.
-            // This is important because it is an explicitly recommented pattern for a SpeziHealthKit-using app to
-            // perform an unconditional "ask for all permissions i need" call on launch, regardless of what the current
-            // authorization status is, plus especially if some authorizations are still undetermined.
-            // (Which is exactly the situation this HealthKit bug will leave an app in, since Blood Pressure being omitted
-            // from the list in the sheet will cause the sample type to never be decided on, unless the user manually
-            // goes to the settings app and toggles the switch there.)
-            // Reported as FB23147195.
+            /// See ``HealthKit/needsBloodPressureAuthFlowFix`` for info.
             if HealthKit.needsBloodPressureAuthFlowFix {
                 let undecided = DataAccessRequirements(
                     read: accessRequirements.read.filter { prevAuthStates[$0] == .shouldRequest },
@@ -663,6 +648,25 @@ extension HKUnit {
 
 
 extension HealthKit {
+    /// Whether the OS version the app is running on needs to work around Blood Pressure auth being skipped by HealthKit.
+    ///
+    /// - Note: Reported as FB23147195.
+    ///
+    /// Issue: when requesting access to a set of sample types that contains blood pressure, iOS 26.5
+    /// will omit the "Blood Pressure" entry from the list in the auth sheet, if the request contains
+    /// additional other sample types alongside blood pressure. if the request is only for blood pressure
+    /// access (either because blood pressure is the only sample type being requested, or because all other
+    /// sample types have already been decided), it presents a non-dismissable full-screen sheet, which
+    /// sometimes will stay on screen indefinitely and sometimes will auto-dismiss itself immediately after
+    /// being presented.
+    /// We try to work around this, by attempting to anticipate that this is about to happen, and skipping the
+    /// blood pressure request in that case.
+    /// This is important because it is an explicitly recommented pattern for a SpeziHealthKit-using app to
+    /// perform an unconditional "ask for all permissions i need" call on launch, regardless of what the current
+    /// authorization status is, plus especially if some authorizations are still undetermined.
+    /// (Which is exactly the situation this HealthKit bug will leave an app in, since Blood Pressure being omitted
+    /// from the list in the sheet will cause the sample type to never be decided on, unless the user manually
+    /// goes to the settings app and toggles the switch there.)
     @_spi(TestingSupport)
     public static var needsBloodPressureAuthFlowFix: Bool {
         (Version(26, 5, 0)..<Version(27, 0, 0)).contains(Version(ProcessInfo.processInfo.operatingSystemVersion))
