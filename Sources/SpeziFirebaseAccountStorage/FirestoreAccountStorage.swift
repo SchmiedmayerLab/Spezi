@@ -178,16 +178,31 @@ public actor FirestoreAccountStorage: AccountStorageProvider {
         registeredKeys[accountId] = keys.reduce(into: [:]) { result, key in
             result[ObjectIdentifier(key)] = key
         }
-
-        listenerRegistrations[accountId] = document.addSnapshotListener { [weak self] snapshot, error in
+        // NOTE: it's important we specify `includeMetadataChanges: true` here, in order to ensure the AccountDetails present
+        // in the app are up-to-date and correct.
+        // If the app has *any* local write pending on this document (even to an unrelated field), the server snapshot
+        // carrying the full document arrives with `hasPendingWrites == true` and is skipped below.
+        // Once that write is acknowledged, `hasPendingWrites` flips to `false` *without* the document data changing
+        // (i.e., a metadata-only event).
+        // Without bserving metadata changes that event is never delivered, so the full server document would be dropped
+        // permanently (until the next data change). Observing metadata changes guarantees we still receive the
+        // server-acknowledged snapshot.
+        //
+        // this becomes an issue when an app writes to the AccountDetails very early into its lifecycle (e.g., immediately after being launched)
+        // before the initial load of the AccountDetails completed.
+        // in that case, this early write causes the AccountDetails to remain effectively empty going forward
+        // (or, rather, it is populated with only those fields that were written), until a server-side change triggers a new update.
+        listenerRegistrations[accountId] = document.addSnapshotListener(includeMetadataChanges: true) { [weak self] snapshot, error in
             guard let self else {
                 return
             }
-
             if snapshot?.metadata.hasPendingWrites == true {
-                return // ignore updates we caused locally, see https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
+                // Skip optimistic local echoes only: these reflect our own not-yet-acknowledged writes (and on a cold
+                // cache may contain just the locally written subset of fields). We process the server-acknowledged
+                // snapshot instead, which `includeMetadataChanges` now guarantees we receive once the write settles.
+                // See https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
+                return
             }
-
             Task { @Sendable in
                 guard let snapshot else {
                     await self.logger.error("Failed to retrieve user document collection: \(error)")
