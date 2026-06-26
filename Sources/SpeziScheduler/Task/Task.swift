@@ -674,17 +674,4 @@ extension Task: CustomStringConvertible {
     }
 }
 
-
-extension SetBuilder {
-    // move into SpeziFoundation!
-    static func buildExpression(_ expression: Element?) -> Set<Element> {
-        if let expression {
-            Set(CollectionOfOne(expression))
-        } else {
-            Set()
-        }
-    }
-}
-
-
 #endif
