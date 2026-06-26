@@ -40,7 +40,7 @@ extension Task.Context {
         public let componentId: StudyDefinition.Component.ID
         /// The identifier of the specific study schedule from which the Task was created
         public let scheduleId: StudyDefinition.ComponentSchedule.ID
-        /// The `PersistentIdentifier` of the ``StudyEnrollment`` this `Task` belongs to.
+        /// The enrollment identifier of the ``StudyEnrollment`` this `Task` belongs to.
         public let enrollmentId: EnrollmentId
     }
     
