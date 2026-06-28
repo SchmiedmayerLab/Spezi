@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-// swiftlint:disable type_body_length multiline_function_chains file_types_order file_length
+// swiftlint:disable type_body_length multiline_function_chains file_types_order identifier_name file_length
 
 #if canImport(Darwin)
 import Foundation
@@ -39,6 +39,27 @@ extension Task.Context {
 }
 
 
+/// An identity-independent projection of an ``Event`` -- everything the app can actually observe about it.
+/// Used to assert that a destructive migration leaves the observable event stream unchanged.
+private struct EventSnapshot: Hashable {
+    let taskId: String
+    let occurrenceStart: Date
+    let title: String
+    let isCompleted: Bool
+    let outcomeId: UUID?
+    let componentId: UUID?
+}
+
+
+/// An identity-independent projection of an ``Outcome`` -- the user data a migration must never lose or mutate.
+private struct OutcomeSnapshot: Hashable {
+    let id: UUID
+    let occurrenceStart: Date
+    let completionDate: Date
+    let taskId: String
+}
+
+
 @Suite(.serialized)
 @MainActor
 final class StudyManagerTests {
@@ -48,7 +69,7 @@ final class StudyManagerTests {
     
     private let studyBundle: StudyBundle
     
-    init() throws { // swiftlint:disable:this function_body_length
+    init() throws {
         let testStudy = StudyDefinition(
             studyRevision: 0,
             metadata: .init(
@@ -361,9 +382,8 @@ final class StudyManagerTests {
     }
     
     
-    // swiftlint:disable identifier_name
     @Test
-    func taskVersionDeduplication() async throws { // swiftlint:disable:this function_body_length
+    func taskVersionDeduplication() async throws {
         let cal = Calendar.current
         let scheduler = Scheduler(persistence: .inMemory)
         let studyManager = StudyManager(persistence: .inMemory)
@@ -454,7 +474,6 @@ final class StudyManagerTests {
             #expect(task.nextVersion == nil)
         }
     }
-    // swiftlint:enable identifier_name
     
     
     @Test
@@ -513,6 +532,215 @@ final class StudyManagerTests {
             #expect(newContext.scheduleId == originalContext.scheduleId)
             #expect(newContext.enrollmentId == enrollment.id)
         }
+    }
+    
+    
+    /// Strong end-to-end equivalence test for the destructive dedup migration.
+    ///
+    /// Builds a realistic production-shaped history: a run of three equal duplicate versions (V1 -> V2 -> V3), each
+    /// responsible for, and owning a completed ``Outcome`` for, a distinct occurrence -- exactly the scattered-outcomes
+    /// state real users have on-device. It then asserts that running the migration:
+    /// - leaves the entire app-observable event stream (`queryEvents`) byte-for-byte identical,
+    /// - preserves every `Outcome` (id, occurrence, completion date) with nothing lost or mutated,
+    /// - collapses the run task to a single version that owns all consolidated outcomes,
+    /// - leaves every other task untouched, and
+    /// - is idempotent (a second run changes nothing).
+    @Test
+    func taskVersionDeduplicationPreservesObservableState() async throws {
+        let cal = Calendar.current
+        let scheduler = Scheduler(persistence: .inMemory)
+        let studyManager = StudyManager(persistence: .inMemory)
+        withDependencyResolution(standard: TestStandard()) {
+            scheduler
+            studyManager
+        }
+        let enrollmentDate = try #require(cal.date(byAdding: .day, value: -10, to: cal.startOfDay(for: .now)))
+        let rangeEnd = try #require(cal.date(byAdding: .day, value: 14, to: cal.startOfDay(for: .now)))
+        let wideRange = enrollmentDate..<rangeEnd
+        try await studyManager.enroll(in: studyBundle, enrollmentDate: enrollmentDate)
+        
+        func snapshotEvents() throws -> Set<EventSnapshot> {
+            Set(try scheduler.queryEvents(for: wideRange).map { event in
+                EventSnapshot(
+                    taskId: event.task.id,
+                    occurrenceStart: event.occurrence.start,
+                    title: String(localized: event.task.title),
+                    isCompleted: event.isCompleted,
+                    outcomeId: event.outcome?.id,
+                    componentId: event.task.studyContext?.componentId
+                )
+            })
+        }
+        func snapshotOutcomes() throws -> Set<OutcomeSnapshot> {
+            Set(try scheduler.queryAllOutcomes().map { outcome in
+                OutcomeSnapshot(
+                    id: outcome.id,
+                    occurrenceStart: outcome.occurrence.start,
+                    completionDate: outcome.completionDate,
+                    taskId: outcome.task.id
+                )
+            })
+        }
+        
+        // the recurring 6-minute walk task (daily, interval 2) gives us several occurrences to spread versions/outcomes across.
+        let runTask = try #require(try scheduler.queryAllTasks().first { $0.studyContext?.componentId == Self.sixMinuteWalkTestComponentId })
+        let runTaskId = runTask.id
+        let origContext = try #require(runTask.studyContext)
+        let origAction = try #require(runTask.studyScheduledTaskAction)
+        let origEffectiveFrom = runTask.firstVersion.effectiveFrom
+        
+        func runEventsSorted() throws -> [Event] {
+            try scheduler.queryEvents(for: wideRange, predicate: #Predicate { $0.id == runTaskId })
+        }
+        func completeEvent(at start: Date) throws -> Outcome {
+            let event = try #require(try runEventsSorted().first { $0.occurrence.start == start })
+            let outcome = try event.complete(ignoreCompletionPolicy: true)
+            try scheduler.context.save()
+            return outcome
+        }
+        // creates a new version equal to the latest in every observable way, differing only by a non-study userInfo marker
+        // (this is exactly the shape the production duplication bug produced, and exactly what the dedup must merge).
+        func makeEqualNextVersion(marker: String, effectiveFrom: Date) throws {
+            runTask.latestVersion.unsafelyUpdateContext { context in
+                context.dedupeTestMarker = marker
+            }
+            try scheduler.context.save()
+            _ = try scheduler.createOrUpdateTask(
+                id: runTaskId,
+                title: runTask.latestVersion.title,
+                instructions: runTask.latestVersion.instructions,
+                category: runTask.latestVersion.category,
+                schedule: runTask.latestVersion.schedule,
+                completionPolicy: runTask.latestVersion.completionPolicy,
+                scheduleNotifications: runTask.latestVersion.scheduleNotifications,
+                notificationThread: runTask.latestVersion.notificationThread,
+                notificationTime: runTask.latestVersion.notificationTime,
+                tags: runTask.latestVersion.tags,
+                effectiveFrom: effectiveFrom,
+                shadowedOutcomesHandling: .delete,
+                with: { context in
+                    context.studyContext = origContext
+                    context.studyScheduledTaskAction = origAction
+                }
+            )
+        }
+        
+        // capture the first four occurrence start dates (all owned by V1 at this point).
+        let occStarts = try runEventsSorted().prefix(4).map(\.occurrence.start)
+        try #require(occStarts.count == 4)
+        
+        // build V1 -> V2 -> V3, completing a distinct occurrence in each version's responsibility window.
+        let o1 = try completeEvent(at: occStarts[0]) // owned by V1
+        try makeEqualNextVersion(marker: "m1", effectiveFrom: try #require(cal.date(byAdding: .second, value: 1, to: occStarts[0])))
+        let o2 = try completeEvent(at: occStarts[1]) // owned by V2
+        try makeEqualNextVersion(marker: "m2", effectiveFrom: try #require(cal.date(byAdding: .second, value: 1, to: occStarts[1])))
+        let o3 = try completeEvent(at: occStarts[2]) // owned by V3
+        // occStarts[3] is intentionally left incomplete, to prove incomplete events also survive unchanged.
+        
+        // precondition: the three outcomes really are scattered across three distinct version objects.
+        let runOutcomes = try scheduler.queryAllOutcomes().filter { $0.task.id == runTaskId }
+        try #require(runOutcomes.count == 3)
+        try #require(Set(runOutcomes.map { ObjectIdentifier($0.task) }).count == 3)
+        try #require(try scheduler.queryAllTasks().filter { $0.id == runTaskId }.count == 3)
+        
+        let eventsBefore = try snapshotEvents()
+        let outcomesBefore = try snapshotOutcomes()
+        let orderedEventsBefore = try scheduler.queryEvents(for: wideRange).count
+        let totalTasksBefore = try scheduler.queryAllTasks().count
+        
+        try studyManager.fixTaskContextAndDuplicateVersions()
+        
+        // 1. the observable event stream is byte-for-byte identical (occurrences, titles, completion, outcome identity).
+        #expect(try snapshotEvents() == eventsBefore)
+        #expect(try scheduler.queryEvents(for: wideRange).count == orderedEventsBefore)
+        // 2. every outcome is preserved exactly -- nothing lost or mutated.
+        #expect(try snapshotOutcomes() == outcomesBefore)
+        // 3. the run task collapsed to a single version that owns all three (now consolidated) outcomes.
+        #expect(try scheduler.queryAllTasks().count == totalTasksBefore - 2)
+        let survivors = try scheduler.queryAllTasks().filter { $0.id == runTaskId }
+        #expect(survivors.count == 1)
+        let surviving = try #require(survivors.first)
+        #expect(surviving.previousVersion == nil)
+        #expect(surviving.nextVersion == nil)
+        #expect(surviving.effectiveFrom == origEffectiveFrom) // responsibility window start unchanged
+        let survivingOutcomeIds: Set<UUID> = Set(surviving.outcomes.map(\.id))
+        let expectedOutcomeIds: Set<UUID> = [o1.id, o2.id, o3.id]
+        #expect(survivingOutcomeIds == expectedOutcomeIds)
+        #expect(surviving.studyContext == origContext)
+        #expect(surviving.studyScheduledTaskAction == origAction)
+        
+        // 4. idempotency: a second run is a complete no-op.
+        try studyManager.fixTaskContextAndDuplicateVersions()
+        #expect(try snapshotEvents() == eventsBefore)
+        #expect(try snapshotOutcomes() == outcomesBefore)
+        #expect(try scheduler.queryAllTasks().count == totalTasksBefore - 2)
+    }
+    
+    
+    /// Guards the other direction: the dedup must NEVER merge versions that genuinely differ (here, by title).
+    /// Over-merging would silently delete a version the app still renders distinctly -- i.e. data loss.
+    @Test
+    func taskVersionDeduplicationKeepsGenuinelyDistinctVersions() async throws {
+        let cal = Calendar.current
+        let scheduler = Scheduler(persistence: .inMemory)
+        let studyManager = StudyManager(persistence: .inMemory)
+        withDependencyResolution(standard: TestStandard()) {
+            scheduler
+            studyManager
+        }
+        let enrollmentDate = try #require(cal.date(byAdding: .day, value: -4, to: cal.startOfDay(for: .now)))
+        let rangeEnd = try #require(cal.date(byAdding: .day, value: 14, to: cal.startOfDay(for: .now)))
+        let wideRange = enrollmentDate..<rangeEnd
+        try await studyManager.enroll(in: studyBundle, enrollmentDate: enrollmentDate)
+        
+        func snapshotEvents() throws -> Set<EventSnapshot> {
+            Set(try scheduler.queryEvents(for: wideRange).map { event in
+                EventSnapshot(
+                    taskId: event.task.id,
+                    occurrenceStart: event.occurrence.start,
+                    title: String(localized: event.task.title),
+                    isCompleted: event.isCompleted,
+                    outcomeId: event.outcome?.id,
+                    componentId: event.task.studyContext?.componentId
+                )
+            })
+        }
+        
+        let runTask = try #require(try scheduler.queryAllTasks().first { $0.studyContext?.componentId == Self.sixMinuteWalkTestComponentId })
+        let runTaskId = runTask.id
+        let origContext = try #require(runTask.studyContext)
+        let origAction = try #require(runTask.studyScheduledTaskAction)
+        
+        // V2 differs from V1 by an observable property (title) -> subsumes() must return false -> no merge.
+        _ = try scheduler.createOrUpdateTask(
+            id: runTaskId,
+            title: "A Genuinely Different Title",
+            instructions: runTask.instructions,
+            category: runTask.category,
+            schedule: runTask.schedule,
+            completionPolicy: runTask.completionPolicy,
+            scheduleNotifications: runTask.scheduleNotifications,
+            notificationThread: runTask.notificationThread,
+            notificationTime: runTask.notificationTime,
+            tags: runTask.tags,
+            effectiveFrom: try #require(cal.date(byAdding: .day, value: 1, to: cal.startOfDay(for: .now))),
+            shadowedOutcomesHandling: .delete,
+            with: { context in
+                context.studyContext = origContext
+                context.studyScheduledTaskAction = origAction
+            }
+        )
+        try #require(try scheduler.queryAllTasks().filter { $0.id == runTaskId }.count == 2)
+        
+        let eventsBefore = try snapshotEvents()
+        let totalTasksBefore = try scheduler.queryAllTasks().count
+        
+        try studyManager.fixTaskContextAndDuplicateVersions()
+        
+        // nothing merged, nothing deleted, observable stream unchanged (V1's window keeps its title, V2's window keeps the new one).
+        #expect(try scheduler.queryAllTasks().count == totalTasksBefore)
+        #expect(try scheduler.queryAllTasks().filter { $0.id == runTaskId }.count == 2)
+        #expect(try snapshotEvents() == eventsBefore)
     }
     
     
