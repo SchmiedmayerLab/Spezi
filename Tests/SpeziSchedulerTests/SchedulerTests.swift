@@ -10,6 +10,7 @@
 
 import Spezi
 @_spi(TestingSupport)
+@_spi(APISupport)
 @testable import SpeziScheduler
 import SpeziTesting
 import SwiftData
@@ -861,6 +862,124 @@ struct SchedulerTests { // swiftlint:disable:this type_body_length
         )
         #expect(String(localized: task3.instructions) == "Task 3")
     }
+    
+    
+    @Test
+    func userInfoPersistance() throws {
+        struct TaskContextKey: TaskStorageKey, _UserInfoKey<TaskAnchor> {
+            typealias Value = Int
+            static let identifier = "tKey1"
+            static let coding = UserStorageCoding.json
+        }
+        struct OutcomeContextKey: OutcomeStorageKey, _UserInfoKey<OutcomeAnchor> {
+            typealias Value = Int
+            static let identifier = "oKey1"
+            static let coding = UserStorageCoding.json
+        }
+        do {
+            let jsonEncoder = JSONEncoder()
+            jsonEncoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+            var storage = UserInfoStorage<TaskAnchor>()
+            var cache = UserInfoStorage<TaskAnchor>.RepositoryCache()
+            try storage.set(TaskContextKey.self, value: 52, cache: &cache)
+            #expect(storage.userInfo == ["tKey1": Data(#"{"value":52}"#.utf8)])
+            let storageJson = try jsonEncoder.encode(storage)
+            #expect(String(decoding: storageJson, as: UTF8.self) == #"{"userInfo":{"tKey1":"\#(Data(#"{"value":52}"#.utf8).base64EncodedString())"}}"#)
+        }
+        let scheduler = Scheduler(persistence: .inMemory)
+        withDependencyResolution {
+            scheduler
+        }
+        try scheduler.createOrUpdateTask(
+            id: "t0",
+            title: "T",
+            instructions: "I",
+            schedule: .weekly(hour: 0, minute: 0, startingAt: .now)
+        ) { context in
+            context[TaskContextKey.self] = 7
+        }
+        #expect(try scheduler.queryAllTasks().count == 1)
+        let events = try scheduler.queryEvents(for: Calendar.current.rangeOfDay(for: .now))
+        #expect(events.count == 1)
+        let event = try #require(events.first)
+        #expect(event.task[TaskContextKey.self] == 7)
+        #expect(!event.isCompleted)
+        #expect(event.outcome == nil)
+        try event.complete { outcome in
+            outcome[OutcomeContextKey.self] = 5
+        }
+        #expect(event.isCompleted)
+        #expect(event.outcome != nil)
+        #expect(event.outcome?[OutcomeContextKey.self] == 5)
+        try scheduler.context.save()
+    }
+
+
+    /// Regression guard for the on-disk `Codable` representation of ``UserInfoStorage``.
+    ///
+    /// `UserInfoStorage` is persisted directly as a `Codable` property on the `Task` and `Outcome` SwiftData models,
+    /// so its `Codable` shape *is* its on-disk format. This test ensures we:
+    /// - a) can still decode data encoded by the previous, `RawRepresentable`-based implementation
+    ///   (reproduced here as `LegacyUserInfoStorage`), and
+    /// - b) catch any future change to how `UserInfoStorage` en/decodes, before it can silently break
+    ///   previously-persisted `Task`s/`Outcome`s.
+    @Test
+    nonisolated func userInfoStorageCodableFormatIsStable() throws {
+        struct IntKey: TaskStorageKey, _UserInfoKey<TaskAnchor> {
+            typealias Value = Int
+            static let identifier = "tKey1"
+            static let coding = UserStorageCoding.json
+        }
+        struct StringKey: TaskStorageKey, _UserInfoKey<TaskAnchor> {
+            typealias Value = String
+            static let identifier = "tKey2"
+            static let coding = UserStorageCoding.json
+        }
+        
+        // Per-key inner encodings (driven by each key's `coding`; independent of the container's `Codable`).
+        let innerInt = Data(#"{"value":52}"#.utf8)
+        let innerString = Data(#"{"value":"hello"}"#.utf8)
+        let rawUserInfo = ["tKey1": innerInt, "tKey2": innerString]
+        
+        // The canonical, frozen wire format: a single keyed container `{ "userInfo": <[String: Data]> }`, with the
+        // `Data` values base64-encoded. Changing this string means changing the on-disk format -- which would make
+        // existing persisted `Task`/`Outcome` `userInfo` undecodable, i.e. a breaking migration.
+        let golden = #"{"userInfo":{"tKey1":"\#(innerInt.base64EncodedString())","tKey2":"\#(innerString.base64EncodedString())"}}"#
+        
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+        let decoder = JSONDecoder()
+        
+        // b) Format lock: the current implementation encodes to exactly the canonical format.
+        var storage = UserInfoStorage<TaskAnchor>()
+        var cache = UserInfoStorage<TaskAnchor>.RepositoryCache()
+        try storage.set(IntKey.self, value: 52, cache: &cache)
+        try storage.set(StringKey.self, value: "hello", cache: &cache)
+        #expect(storage.userInfo == rawUserInfo)
+        #expect(String(decoding: try encoder.encode(storage), as: UTF8.self) == golden)
+        
+        // a) Backward compatibility: bytes produced by the previous (`RawRepresentable`-based) implementation still
+        // decode -- and round-trip the typed values -- with the current implementation.
+        let legacyEncoded = try encoder.encode(LegacyUserInfoStorage(rawValue: rawUserInfo))
+        #expect(String(decoding: legacyEncoded, as: UTF8.self) == golden) // the previous impl emitted these exact bytes
+        
+        for persisted in [legacyEncoded, Data(golden.utf8)] { // legacy-produced bytes, and a frozen literal blob
+            let decoded = try decoder.decode(UserInfoStorage<TaskAnchor>.self, from: persisted)
+            var decodedCache = UserInfoStorage<TaskAnchor>.RepositoryCache()
+            #expect(decoded.userInfo == rawUserInfo)
+            #expect(try decoded.get(IntKey.self, cache: &decodedCache) == 52)
+            #expect(try decoded.get(StringKey.self, cache: &decodedCache) == "hello")
+        }
+        
+        // The same compatibility must hold through a binary property list (SwiftData persists via a plist-backed store).
+        let plistEncoder = PropertyListEncoder()
+        plistEncoder.outputFormat = .binary
+        let decodedFromPlist = try PropertyListDecoder().decode(
+            UserInfoStorage<TaskAnchor>.self,
+            from: try plistEncoder.encode(LegacyUserInfoStorage(rawValue: rawUserInfo))
+        )
+        #expect(decodedFromPlist.userInfo == rawUserInfo)
+    }
 }
 
 
@@ -880,3 +999,29 @@ final class OtherSchedulerTests: XCTestCase {
         #endif
     }
 }
+
+
+/// Faithful reproduction of the pre-PR `UserInfoStorage` `Codable` conformance, used by
+/// ``SchedulerTests/userInfoStorageCodableFormatIsStable()`` to prove the current implementation stays
+/// byte-compatible with data persisted by older app versions.
+///
+/// The previous implementation conformed `UserInfoStorage` to `RawRepresentable` (with a `[String: Data]` `rawValue`)
+/// plus an empty `Codable` extension. The compiler-synthesized memberwise `Codable` shadows the stdlib
+/// `RawRepresentable` single-value default, so the wire format was already `{ "userInfo": ... }` -- identical to the
+/// current memberwise conformance. Don't "simplify" this type: it deliberately mirrors the old declaration so the
+/// regression test stays meaningful.
+private struct LegacyUserInfoStorage {
+    private(set) var userInfo: [String: Data] = [:]
+}
+
+extension LegacyUserInfoStorage: RawRepresentable {
+    var rawValue: [String: Data] {
+        userInfo
+    }
+    
+    init(rawValue: [String: Data]) {
+        self.userInfo = rawValue
+    }
+}
+
+extension LegacyUserInfoStorage: Codable {}

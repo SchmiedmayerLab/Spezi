@@ -14,7 +14,11 @@ import SwiftData
 
 /// Tracks a user's enrollment into a study.
 @Model
-public final class StudyEnrollment {
+public final class StudyEnrollment: Identifiable {
+    public typealias ID = UUID
+    
+    #Index<StudyEnrollment>([\.id])
+    
     /// The primary key.
     @Attribute(.unique)
     public private(set) var id = UUID()

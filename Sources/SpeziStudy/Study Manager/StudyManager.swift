@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+// swiftlint:disable file_length
+
 import Algorithms
 import Combine
 import Foundation
@@ -40,6 +42,8 @@ import class UIKit.UIApplication
 /// - ``enroll(in:enrollmentDate:)``
 /// - ``unenroll(from:)``
 /// - ``informAboutStudies(_:)``
+/// - ``enrollment(withId:)-(StudyEnrollment.ID)``
+/// - ``enrollment(withId:)-(PersistentIdentifier)``
 /// - ``StudyEnrollment``
 /// - ``StudyEnrollmentError``
 ///
@@ -198,6 +202,12 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
             }
         }
         #endif
+        
+        do {
+            try fixTaskContextAndDuplicateVersions()
+        } catch {
+            logger.error("-fixTaskContextAndDuplicateVersions failed: \(error)")
+        }
     }
     
     
@@ -210,6 +220,172 @@ public final class StudyManager: Module, EnvironmentAccessible, Sendable {
                     consume(notification)
                 }
             }
+    }
+}
+
+
+extension StudyManager {
+    private struct MigrationError: Error {
+        let message: String
+        let file: StaticString
+        let line: UInt
+    }
+    
+    
+    /// Applies task fixes and deduplicates them where needed.
+    ///
+    /// This function does the following:
+    /// - Updates all SpeziStudy-managed Scheduler Tasks to use `UUID`s instead of `PersistentIdentifier`s
+    /// - Merges successive task versions where possible.
+    @MainActor
+    @_spi(TestingSupport)
+    public func fixTaskContextAndDuplicateVersions() throws {
+        let context = try scheduler.context
+        // we first save the scheduler's context, to ensure that we are operating on a clean slate.
+        try context.save()
+        do {
+            try _fixTaskContextAndDuplicateVersions()
+            try context.save()
+        } catch {
+            // if something goes wrong, we roll back the whole thing
+            context.rollback()
+            throw error
+        }
+    }
+    
+    // NOTE: it's important that this function remain isolated to the MainActor, and not be made async,
+    // since that would break the atomicity we currently have in the migration!
+    @MainActor
+    private func _fixTaskContextAndDuplicateVersions() throws { // swiftlint:disable:this function_body_length cyclomatic_complexity
+        func check(_ condition: Bool, _ message: @autoclosure () -> String, file: StaticString = #file, line: UInt = #line) throws {
+            if !condition {
+                throw StudyManager.MigrationError(
+                    message: message(),
+                    file: file,
+                    line: line
+                )
+            }
+        }
+        /// Determines if `fstVersion` subsumes `sndVersion`, i.e., if `sndVersion` can be "merged" into `fstVersion`.
+        func subsumes(_ fstVersion: Task, _ sndVersion: Task) -> Bool {
+            guard fstVersion.nextVersion == sndVersion,
+                  fstVersion.id.starts(with: Self.speziStudyDomainTaskIdPrefix),
+                  sndVersion.id.starts(with: Self.speziStudyDomainTaskIdPrefix) else {
+                // unreachable in the context of this function.
+                return false
+            }
+            var nonEqualKeyPaths = fstVersion.keyPathsNecessitatingNewTaskVersion(
+                title: sndVersion.title,
+                instructions: sndVersion.instructions,
+                category: sndVersion.category,
+                schedule: sndVersion.schedule,
+                completionPolicy: sndVersion.completionPolicy,
+                scheduleNotifications: sndVersion.scheduleNotifications,
+                notificationThread: sndVersion.notificationThread,
+                notificationTime: sndVersion.notificationTime,
+                tags: sndVersion.tags,
+                // NOTE: we're intentionally passing the current task's value in here, bc this would otherwise always cause the whole check to fail.
+                effectiveFrom: fstVersion.effectiveFrom,
+                with: { context in
+                    // set the context to that of the task
+                    context = sndVersion[dynamicMember: \.self]
+                }
+            )
+            guard !nonEqualKeyPaths.isEmpty else {
+                return true
+            }
+            if nonEqualKeyPaths.contains(\.userInfo) {
+                /// Checks if `fstVersion` and `sndVersion` have equal task context entries, at the specified key paths.
+                func equalContext<each Value: Equatable>(_ keyPath: repeat KeyPath<Task, each Value>) -> Bool {
+                    for keyPath in repeat each keyPath {
+                        let val0 = fstVersion[keyPath: keyPath]
+                        let val1 = sndVersion[keyPath: keyPath]
+                        if val0 != val1 {
+                            return false
+                        }
+                    }
+                    return true
+                }
+                if equalContext(\.studyContext, \.studyScheduledTaskAction) {
+                    nonEqualKeyPaths.remove(\.userInfo)
+                }
+            }
+            // if they are empty, none of the properties are non-equal, and `fstVersion` subsumes `sndVersion`
+            return nonEqualKeyPaths.isEmpty
+        }
+        for enrollment in studyEnrollments {
+            guard let studyBundle = enrollment.studyBundle else {
+                continue
+            }
+            let prefix = taskIdPrefix(for: studyBundle)
+            var allStudyTasks: [Task] {
+                get throws {
+                    try scheduler.queryTasks(for: Date.distantPast...Date.distantFuture, predicate: #Predicate<Task> {
+                        // we filter for all tasks that are part of this study (determined based on prefix)
+                        $0.id.starts(with: prefix)
+                    })
+                }
+            }
+            // Step 1: update all tasks to use the correct, UUID-based context
+            for task in try allStudyTasks {
+                try task.unsafelyUpdateContext { context in
+                    switch (context.studyContextOld, context.studyContext) {
+                    case (.none, .none), (.none, .some), (.some, .some):
+                        break
+                    case (.some(let oldStudyContext), .none):
+                        try check(self.enrollment(withId: oldStudyContext.enrollmentId) == enrollment, "invalid enrollment")
+                        context.studyContextOld = nil // clear it from the cache
+                        context.studyContext = .init(
+                            studyId: oldStudyContext.studyId,
+                            componentId: oldStudyContext.componentId,
+                            scheduleId: oldStudyContext.scheduleId,
+                            enrollmentId: enrollment.id
+                        )
+                        try check(context.studyContext != nil, "new context is nil?")
+                        try check(context.studyContextOld == nil, "old context not nil?")
+                    }
+                }
+                try check(task.studyContext != nil, "new context is nil?")
+                try check(task.studyContextOld == nil, "old context not nil?")
+            }
+            
+            // Step 2: Delete all unnecessary task versions.
+            for var currentVersion in try allStudyTasks.mapIntoSet(\.firstVersion) {
+                // walk over the chain of task versions
+                loop: while let nextVersion = currentVersion.nextVersion {
+                    guard subsumes(currentVersion, nextVersion) else {
+                        currentVersion = nextVersion
+                        continue loop
+                    }
+                    // `nextVersion` can be subsumed into `currentVersion`.
+                    // this means the following:
+                    // - we update all Outcomes belonging to `nextVersion` to instead belong to `currentVersion`
+                    // - we adjust the task versioning chain, so that `currentVersion.nextVersion == nextVersion.nextVersion`
+                    // - we delete `nextVersion`
+                    for outcome in Array(nextVersion.outcomes) {
+                        outcome.unsafelyReassignTask(to: currentVersion)
+                    }
+                    let newNextVersion = nextVersion.nextVersion
+                    currentVersion.unsafelyUpdateNextVersion(to: nextVersion.nextVersion)
+                    nextVersion.unsafelyUpdateNextVersion(to: nil) // technically not required, but we add it to make this explicit.
+                    try check(nextVersion.previousVersion == nil, "invalid previousVersion")
+                    try check(nextVersion.nextVersion == nil, "invalid nextVersion")
+                    try check(nextVersion.outcomes.isEmpty, "still has outcomes")
+                    try check(currentVersion.nextVersion != nextVersion, "invalid nextVersion")
+                    try check(currentVersion.nextVersion == newNextVersion, "invalid nextVersion")
+                    if let newNextVersion {
+                        try check(newNextVersion.previousVersion == currentVersion, "invalid previousVersion")
+                    }
+                    if let newNextVersion = currentVersion.nextVersion {
+                        try check(newNextVersion.previousVersion == currentVersion, "invalid previousVersion")
+                    }
+                    try scheduler.context.delete(nextVersion)
+                    // we just subsumed `nextVersion` into `currentVersion`.
+                    // this means that we now want to check `currentVersion` again, but this time against the new next version,
+                    // so we re-enter the loop **without** updating `currentVersion`.
+                }
+            }
+        }
     }
 }
 
@@ -320,6 +496,8 @@ extension StudyManager {
                 try scheduler.deleteAllVersions(of: orphanedTask)
             }
         }
+        try modelContext.save()
+        try scheduler.context.save()
     }
     
     
@@ -378,7 +556,7 @@ extension StudyManager {
                     studyId: studyBundle.studyDefinition.id,
                     componentId: component.id,
                     scheduleId: componentSchedule.id,
-                    enrollmentId: enrollment.persistentModelID
+                    enrollmentId: enrollment.id
                 )
                 context.studyScheduledTaskAction = action
             }
@@ -485,6 +663,14 @@ extension StudyManager {
         try modelContext.save()
     }
     
+    
+    /// Fetches the ``StudyEnrollment`` for the specified ``StudyEnrollment/ID``.
+    public func enrollment(withId id: StudyEnrollment.ID) -> StudyEnrollment? {
+        let enrollments = (try? modelContext.fetch(FetchDescriptor(predicate: #Predicate<StudyEnrollment> {
+            $0.id == id
+        }))) ?? []
+        return enrollments.first
+    }
     
     /// Fetches the ``StudyEnrollment`` for the specified `PersistentIdentifier`.
     public func enrollment(withId id: PersistentIdentifier) -> StudyEnrollment? {
@@ -683,5 +869,3 @@ extension StudyManager {
         }
     }
 }
-
-// swiftlint:disable:this file_length
