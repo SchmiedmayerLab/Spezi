@@ -26,6 +26,7 @@ public import Foundation
 /// - ``hasEntry(for:)-(LocalPreferenceKey<Any>)``
 /// - ``removeEntry(for:)-(LocalPreferenceKey<Any>.Key)``
 /// - ``removeEntry(for:)-(LocalPreferenceKey<Any>)``
+/// - ``removeAllEntries(in:)``
 ///
 /// ### Migrations
 /// - ``runMigrations(_:)``
@@ -61,6 +62,19 @@ extension LocalPreferencesStore {
         defaults.hasEntry(for: key.value)
     }
     
+    /// Checks whether the store contains any entry that falls into the specified namespace.
+    ///
+    /// - parameter namespace: The ``LocalPreferenceKeys/Namespace`` to check for. Must not be the global namespace.
+    internal func hasEntry(in namespace: LocalPreferenceKeys.Namespace) -> Bool {
+        guard !namespace.isGlobal else {
+            assertionFailure("Passed global namespace to \(#function)")
+            return !defaults.dictionaryRepresentation().isEmpty
+        }
+        return defaults.dictionaryRepresentation().keys.contains { key in
+            key.starts(with: namespace.format(keyName: "", applyKVOCompatibilityFixes: true))
+        }
+    }
+    
     /// Removes the entry for the specified key from the store.
     @inlinable
     public func removeEntry(for key: LocalPreferenceKey<some Any>) {
@@ -71,6 +85,20 @@ extension LocalPreferencesStore {
     @inlinable
     public func removeEntry(for key: LocalPreferenceKey<some Any>.Key) {
         defaults.removeObject(forKey: key.value)
+    }
+    
+    /// Removes from the store all those entries which fall into the specified namespace.
+    ///
+    /// - Note: This function does not remove entries stored using keys created via ``LocalPreferenceKey/Key/init(verbatim:in:)``.
+    public func removeAllEntries(in namespace: LocalPreferenceKeys.Namespace) {
+        let prefix = namespace.format(keyName: "", applyKVOCompatibilityFixes: true)
+        guard !prefix.isEmpty else {
+            // if this is a global namespace, we don't delete anything.
+            return
+        }
+        for key in defaults.dictionaryRepresentation().keys where key.starts(with: prefix) {
+            defaults.removeObject(forKey: key)
+        }
     }
     
     /// Accesses a ``LocalPreferenceKey``'s persisted value.

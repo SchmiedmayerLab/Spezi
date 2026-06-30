@@ -288,6 +288,12 @@ extension LocalPreferenceKey {
         public let value: String
         @usableFromInline let isKVOCompatible: Bool
         
+        @inlinable
+        init(value: String) {
+            self.value = value
+            self.isKVOCompatible = !value.contains { $0 == "." || $0 == "@" }
+        }
+        
         /// Creates a key.
         ///
         /// The actual key value used when persisting data associated with this key in the `UserDefaults` is derived from `key` and `namespace`.
@@ -300,8 +306,7 @@ extension LocalPreferenceKey {
         public init(_ key: String, in namespace: LocalPreferenceKeys.Namespace = .app) {
             // We want to be able to observe these entries via KVO, which doesn't work if they appear to be keyPaths,
             // therefore we replace all '.' with '_'.
-            value = namespace.format(keyName: key).replacingOccurrences(of: ".", with: "_")
-            isKVOCompatible = true
+            self.init(value: namespace.format(keyName: key, applyKVOCompatibilityFixes: true))
         }
         
         /// Creates a key.
@@ -313,8 +318,7 @@ extension LocalPreferenceKey {
         ///     Use ``init(_:in:)`` instead if possible.
         @inlinable
         public init(verbatim key: String, in namespace: LocalPreferenceKeys.Namespace = .app) {
-            value = namespace.format(keyName: key)
-            isKVOCompatible = !value.contains { $0 == "." || $0 == "@" }
+            self.init(value: namespace.format(keyName: key, applyKVOCompatibilityFixes: false))
         }
         
         /// Creates a key from a `String` literal.
@@ -338,8 +342,18 @@ extension LocalPreferenceKeys {
     /// - ``app``
     /// - ``bundle(_:)``
     /// - ``custom(_:)``
-    public struct Namespace: Sendable {
+    public struct Namespace: Equatable, Sendable {
         @usableFromInline let value: String
+        
+        /// Checks if this is the global namespace.
+        ///
+        /// The global namespace is the one into which all entries are placed whose keys are not explicitly associated with a namespace.
+        /// The global namespace is equivalent to ``none``.
+        @inlinable public var isGlobal: Bool {
+            // ^^ Note: intentionally not calling this `isEmpty`, since that would look like an operation that checks
+            // the actual contents of the namespace (in the UserDefaults), which is not at all what's happening here.
+            self == .none
+        }
         
         @inlinable
         init(value: String) {
@@ -347,11 +361,18 @@ extension LocalPreferenceKeys {
         }
         
         @inlinable
-        func format(keyName: String) -> String {
-            if value.isEmpty {
+        func format(keyName: String, applyKVOCompatibilityFixes: Bool) -> String {
+            let fullKey = if isGlobal {
                 keyName
             } else {
                 "\(value):\(keyName)"
+            }
+            return if applyKVOCompatibilityFixes {
+                // We want to be able to observe these entries via KVO, which doesn't work if they appear to be keyPaths,
+                // therefore we replace all '.' with '_'.
+                fullKey.replacingOccurrences(of: ".", with: "_")
+            } else {
+                fullKey
             }
         }
     }

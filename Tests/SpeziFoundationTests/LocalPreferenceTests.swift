@@ -341,6 +341,23 @@ final class LocalPreferenceTests {
     }
     
     
+    @Test
+    func namespaceRemoval() {
+        let namespaceKeyPrefix = LocalPreferenceKeys.Namespace.speziFoundationUnitTests.format(keyName: "", applyKVOCompatibilityFixes: true)
+        store[.string] = "Hey!"
+        store[.stringOpt] = "Hey!!!!!"
+        #expect(store.defaults.dictionaryRepresentation().keys.count { key in
+            key.starts(with: namespaceKeyPrefix)
+        } == 2)
+        #expect(store.hasEntry(in: .speziFoundationUnitTests))
+        store.removeAllEntries(in: .speziFoundationUnitTests)
+        #expect(store.defaults.dictionaryRepresentation().keys.count { key in
+            key.starts(with: namespaceKeyPrefix)
+        } == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTests))
+    }
+    
+    
     // MARK: Migration Testing
     
     private func withTemporarySuiteForMigration(
@@ -449,13 +466,17 @@ final class LocalPreferenceTests {
 }
 
 
+extension LocalPreferenceKeys.Namespace {
+    fileprivate static let speziFoundationUnitTests: Self = .custom("edu.stanford.SpeziFoundation.unitTests")
+}
+
 extension LocalPreferenceKeys {
     fileprivate static let string = LocalPreferenceKey<String>(
-        .init("string", in: .custom("edu.stanford.SpeziFoundation.unitTests")),
+        .init("string", in: .speziFoundationUnitTests),
         default: ""
     )
     fileprivate static let stringOpt = LocalPreferenceKey<String?>(
-        .init("stringOpt", in: .custom("edu.stanford.SpeziFoundation.unitTests")),
+        .init("stringOpt", in: .speziFoundationUnitTests),
         default: nil
     )
 }
