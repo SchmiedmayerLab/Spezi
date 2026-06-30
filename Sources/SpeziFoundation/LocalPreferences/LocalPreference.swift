@@ -117,7 +117,7 @@ public struct LocalPreference<T: SendableMetatype>: DynamicProperty, Sendable {
     }
     
     @_documentation(visibility: internal)
-    nonisolated mutating public func update() {
+    nonisolated public mutating func update() {
         usageContext = .swiftUI
         observer.configure(for: key, in: store)
     }
