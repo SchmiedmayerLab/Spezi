@@ -89,13 +89,14 @@ extension LocalPreferencesStore {
     
     /// Removes from the store all those entries which fall into the specified namespace.
     ///
-    /// - Note: This function does not remove entries stored using keys created via ``LocalPreferenceKey/Key/init(verbatim:in:)``.
+    /// - parameter namespace: The ``LocalPreferenceKeys/Namespace`` whose entries should be removed. Must not be the global namespace.
     public func removeAllEntries(in namespace: LocalPreferenceKeys.Namespace) {
-        let prefix = namespace.format(keyName: "", applyKVOCompatibilityFixes: true)
-        guard !prefix.isEmpty else {
-            // if this is a global namespace, we don't delete anything.
+        guard !namespace.isGlobal else {
+            assertionFailure("Passed global namespace to \(#function)")
+            // in the case of the global namespace, we simply don't remove anything.
             return
         }
+        let prefix = namespace.format(keyName: "", applyKVOCompatibilityFixes: true)
         for key in defaults.dictionaryRepresentation().keys where key.starts(with: prefix) {
             defaults.removeObject(forKey: key)
         }
