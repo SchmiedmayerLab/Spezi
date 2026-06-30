@@ -304,8 +304,6 @@ extension LocalPreferenceKey {
         ///     The resulting key can be used the same way, and will behave the same as keys created via ``init(_:in:)``, but using it with ``LocalPreference`` will result in slower code.
         @inlinable
         public init(_ key: String, in namespace: LocalPreferenceKeys.Namespace = .app) {
-            // We want to be able to observe these entries via KVO, which doesn't work if they appear to be keyPaths,
-            // therefore we replace all '.' with '_'.
             self.init(value: namespace.format(keyName: key, applyKVOCompatibilityFixes: true))
         }
         
