@@ -70,8 +70,9 @@ extension LocalPreferencesStore {
             assertionFailure("Passed global namespace to \(#function)")
             return !defaults.dictionaryRepresentation().isEmpty
         }
+        let prefix = namespace.format(keyName: "", applyKVOCompatibilityFixes: true)
         return defaults.dictionaryRepresentation().keys.contains { key in
-            key.starts(with: namespace.format(keyName: "", applyKVOCompatibilityFixes: true))
+            key.starts(with: prefix)
         }
     }
     
