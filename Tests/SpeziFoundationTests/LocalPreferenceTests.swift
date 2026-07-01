@@ -341,6 +341,63 @@ final class LocalPreferenceTests {
     }
     
     
+    @Test
+    func namespaceRemoval() {
+        func countEntries(in namespace: LocalPreferenceKeys.Namespace) -> Int {
+            store.defaults.dictionaryRepresentation().keys.count { key in
+                key.starts(with: namespace.format(keyName: "", applyKVOCompatibilityFixes: true))
+            }
+        }
+        func makeKey(_ key: String, in namespace: LocalPreferenceKeys.Namespace) -> LocalPreferenceKey<String> {
+            .init(LocalPreferenceKey<String>.Key(key, in: namespace), default: "")
+        }
+        
+        #expect(countEntries(in: .speziFoundationUnitTests) == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTests))
+        #expect(countEntries(in: .speziFoundationUnitTestsAlt) == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTestsAlt))
+        
+        let key1Main = makeKey("1", in: .speziFoundationUnitTests)
+        let key2Main = makeKey("2", in: .speziFoundationUnitTests)
+        let key1Alt = makeKey("1", in: .speziFoundationUnitTestsAlt)
+        
+        store[key1Main] = "Hey!"
+        store[key2Main] = "Hey!!!"
+        #expect(countEntries(in: .speziFoundationUnitTests) == 2)
+        #expect(store.hasEntry(in: .speziFoundationUnitTests))
+        #expect(countEntries(in: .speziFoundationUnitTestsAlt) == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTestsAlt))
+        
+        store.removeAllEntries(in: .speziFoundationUnitTests)
+        #expect(countEntries(in: .speziFoundationUnitTests) == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTests))
+        #expect(countEntries(in: .speziFoundationUnitTests) == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTests))
+        #expect(countEntries(in: .speziFoundationUnitTestsAlt) == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTestsAlt))
+        
+        store[key1Alt] = "Hi!"
+        store[key2Main] = "Oha"
+        #expect(countEntries(in: .speziFoundationUnitTestsAlt) == 1)
+        #expect(store.hasEntry(in: .speziFoundationUnitTestsAlt))
+        store.removeAllEntries(in: .speziFoundationUnitTestsAlt)
+        #expect(countEntries(in: .speziFoundationUnitTestsAlt) == 0)
+        #expect(!store.hasEntry(in: .speziFoundationUnitTestsAlt))
+        #expect(countEntries(in: .speziFoundationUnitTests) == 1)
+        #expect(store.hasEntry(in: .speziFoundationUnitTests))
+        
+        let verbatimKey = LocalPreferenceKey<String?>(.init(verbatim: "h.mmm", in: .speziFoundationUnitTests), default: nil)
+        let nonVerbatimKey = LocalPreferenceKey<String?>(.init("h.mmm", in: .speziFoundationUnitTests), default: nil)
+        store[verbatimKey] = "value1"
+        store[nonVerbatimKey] = "value2"
+        #expect(store[verbatimKey] == "value1")
+        #expect(store[nonVerbatimKey] == "value2")
+        store.removeAllEntries(in: .speziFoundationUnitTests)
+        #expect(store[verbatimKey] == nil)
+        #expect(store[nonVerbatimKey] == nil)
+    }
+    
+    
     // MARK: Migration Testing
     
     private func withTemporarySuiteForMigration(
@@ -449,13 +506,18 @@ final class LocalPreferenceTests {
 }
 
 
+extension LocalPreferenceKeys.Namespace {
+    fileprivate static let speziFoundationUnitTests: Self = .custom("edu.stanford.SpeziFoundation.unitTests")
+    fileprivate static let speziFoundationUnitTestsAlt: Self = .custom("edu.stanford.SpeziFoundation.unitTests.alt")
+}
+
 extension LocalPreferenceKeys {
     fileprivate static let string = LocalPreferenceKey<String>(
-        .init("string", in: .custom("edu.stanford.SpeziFoundation.unitTests")),
+        .init("string", in: .speziFoundationUnitTests),
         default: ""
     )
     fileprivate static let stringOpt = LocalPreferenceKey<String?>(
-        .init("stringOpt", in: .custom("edu.stanford.SpeziFoundation.unitTests")),
+        .init("stringOpt", in: .speziFoundationUnitTests),
         default: nil
     )
 }
