@@ -385,6 +385,16 @@ final class LocalPreferenceTests {
         #expect(!store.hasEntry(in: .speziFoundationUnitTestsAlt))
         #expect(countEntries(in: .speziFoundationUnitTests) == 1)
         #expect(store.hasEntry(in: .speziFoundationUnitTests))
+        
+        let verbatimKey = LocalPreferenceKey<String?>(.init(verbatim: "h.mmm", in: .speziFoundationUnitTests), default: nil)
+        let nonVerbatimKey = LocalPreferenceKey<String?>(.init("h.mmm", in: .speziFoundationUnitTests), default: nil)
+        store[verbatimKey] = "value1"
+        store[nonVerbatimKey] = "value2"
+        #expect(store[verbatimKey] == "value1")
+        #expect(store[nonVerbatimKey] == "value2")
+        store.removeAllEntries(in: .speziFoundationUnitTests)
+        #expect(store[verbatimKey] == nil)
+        #expect(store[nonVerbatimKey] == nil)
     }
     
     

@@ -70,9 +70,12 @@ extension LocalPreferencesStore {
             assertionFailure("Passed global namespace to \(#function)")
             return !defaults.dictionaryRepresentation().isEmpty
         }
-        let prefix = namespace.format(keyName: "", applyKVOCompatibilityFixes: true)
+        let prefixes = [
+            namespace.format(keyName: "", applyKVOCompatibilityFixes: true),
+            namespace.format(keyName: "", applyKVOCompatibilityFixes: false)
+        ]
         return defaults.dictionaryRepresentation().keys.contains { key in
-            key.starts(with: prefix)
+            prefixes.contains { key.starts(with: $0) }
         }
     }
     
@@ -97,8 +100,11 @@ extension LocalPreferencesStore {
             // in the case of the global namespace, we simply don't remove anything.
             return
         }
-        let prefix = namespace.format(keyName: "", applyKVOCompatibilityFixes: true)
-        for key in defaults.dictionaryRepresentation().keys where key.starts(with: prefix) {
+        let prefixes = [
+            namespace.format(keyName: "", applyKVOCompatibilityFixes: true),
+            namespace.format(keyName: "", applyKVOCompatibilityFixes: false)
+        ]
+        for key in defaults.dictionaryRepresentation().keys where prefixes.contains(where: { key.starts(with: $0) }) {
             defaults.removeObject(forKey: key)
         }
     }
